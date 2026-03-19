@@ -74,10 +74,9 @@ If you use the Claude desktop app, [Cowork](https://claude.com/product/cowork) c
 
 1. Download and unzip the toolkit (see above)
 2. Open Claude Desktop and start a Cowork session
-3. Point Claude to your toolkit folder. It can read and write your local files directly.
-4. Paste the companion prompt from `prompts/esf-companion.md` at the start of the conversation
+3. Point Claude to your toolkit folder — it can read your local files directly, including the companion prompt and all templates
 
-Claude will follow the ESF process: checking for your Position Statement, helping you explore and build, and prompting you to log AI contributions and record moments of resistance. Since Cowork handles multi-step tasks and works with local files, it can help you manage the full ESF workflow without you needing to switch between tools.
+That is it. Claude will read the ESF companion prompt on its own, check for your Position Statement, and guide you through the full workflow — exploring, building, logging AI contributions, and recording moments of resistance. No copying or pasting required.
 
 Available on Pro, Max, Team, and Enterprise plans.
 
