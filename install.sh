@@ -288,6 +288,14 @@ if [ ! -f "README.md" ] && [ ! -f "WORKFLOW.md" ]; then
   fi
 fi
 
+# Auto-commit toolkit files if in a git repo
+if [ -d ".git" ]; then
+  git add -A 2>/dev/null
+  git commit -m "Install ESF Companion" --quiet 2>/dev/null
+  echo ""
+  echo -e "  ${GREEN}Toolkit files committed to git.${NC}"
+fi
+
 echo ""
 echo -e "${GREEN}ESF Companion installed.${NC}"
 echo ""
