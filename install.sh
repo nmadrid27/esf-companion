@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # ESF Companion Installer
-# Drops the .claude/ configuration into your current directory.
+# Installs the ESF Companion into your current directory.
 #
-# Usage (run from inside your portfolio repo):
+# Usage (run from your project directory):
 #   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 #
 # Options:
@@ -67,7 +67,7 @@ if [ ! -d ".git" ]; then
     echo -e "${YELLOW}Force mode: installing without git repo.${NC}"
   else
     echo -e "${YELLOW}Warning: This directory is not a git repository.${NC}"
-    echo "The toolkit works best inside a git repo (your portfolio repo)."
+    echo "The toolkit works best inside a git repo (your project directory)."
     echo ""
     echo "Options:"
     echo "  1) Run the setup script (creates a repo for you)"
@@ -77,8 +77,11 @@ if [ ! -d ".git" ]; then
     case "$GIT_CHOICE" in
       1)
         SETUP_URL="https://raw.githubusercontent.com/nmadrid27/esf-companion/main/setup-repo.sh"
-        echo "Launching setup script..."
-        curl -fsSL "$SETUP_URL" | bash
+        echo "Downloading setup script..."
+        curl -fsSL "$SETUP_URL" -o /tmp/esf-setup-repo.sh
+        echo "Running setup script..."
+        bash /tmp/esf-setup-repo.sh </dev/tty
+        rm -f /tmp/esf-setup-repo.sh
         exit $?
         ;;
       2)
@@ -119,6 +122,11 @@ fi
 echo "Installing..."
 
 if [ "$PLATFORM" = "conversation" ]; then
+  # Warn if --sample was passed (sample data requires Claude Code)
+  if [ "$SAMPLE" = true ]; then
+    echo -e "${YELLOW}Note: --sample requires Claude Code. Sample data not installed in conversation mode.${NC}"
+  fi
+
   # Lightweight install for conversation-based tools
   mkdir -p prompts
   mkdir -p templates
@@ -172,7 +180,7 @@ mkdir -p templates
 
 # Download agents (preserve personalized agent on re-install)
 echo "  Fetching agents..."
-if [ "$FORCE" != true ] && [ -f ".claude/agents/esf-companion.md" ] && grep -q "STUDENT_NAME\|^- \*\*Name:\*\*" .claude/agents/esf-companion.md 2>/dev/null && ! grep -q "\[STUDENT_NAME\]" .claude/agents/esf-companion.md 2>/dev/null; then
+if [ "$FORCE" != true ] && [ -f ".claude/agents/esf-companion.md" ] && grep -q "NAME\|^- \*\*Name:\*\*" .claude/agents/esf-companion.md 2>/dev/null && ! grep -q "\[NAME\]" .claude/agents/esf-companion.md 2>/dev/null; then
   echo -e "  ${YELLOW}Personalized agent file found; skipping to preserve your profile.${NC}"
   echo "  To force update: re-run with --force flag."
 else
@@ -204,7 +212,7 @@ curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-template.md"           -o templat
 curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md"     -o templates/ai-use-log-lite-template.md
 curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance-template.md" -o templates/record-of-resistance-template.md
 curl -fsSL "$TOOLKIT_BASE/templates/session-log-template.md"          -o templates/session-log-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/student-reflection-template.md"   -o templates/student-reflection-template.md
+curl -fsSL "$TOOLKIT_BASE/templates/reflection-template.md"   -o templates/reflection-template.md
 curl -fsSL "$TOOLKIT_BASE/templates/evolution-log-template.md"        -o templates/evolution-log-template.md
 
 # Download reference files
@@ -212,7 +220,7 @@ echo "  Fetching reference files..."
 curl -fsSL "$TOOLKIT_BASE/.claude/reference/esf-guide.md"   -o .claude/reference/esf-guide.md
 curl -fsSL "$TOOLKIT_BASE/.claude/reference/disclosure-protocol.md" -o .claude/reference/disclosure-protocol.md
 
-# Download workflow diagram (skip if file already exists; student may have customized it)
+# Download workflow diagram (skip if file already exists; user may have customized it)
 if [ ! -f "WORKFLOW.md" ]; then
   curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
 fi
@@ -229,20 +237,13 @@ if [ -n "$COURSE" ]; then
   echo "  Fetching course configuration for $COURSE..."
   COURSE_LOWER=$(echo "$COURSE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
 
-  # Try microsite first
+  # Try microsite
   COURSE_CONFIG_URL="https://astro-${COURSE_LOWER}.vercel.app/course-config.json"
   if curl -fsSL "$COURSE_CONFIG_URL" -o .claude/course-config.json 2>/dev/null; then
     echo -e "  ${GREEN}Course config loaded from microsite.${NC}"
     COURSE_LOADED=true
   else
-    # Try GitHub fallback
-    GITHUB_CONFIG_URL="$TOOLKIT_BASE/courses/${COURSE_LOWER}.yaml"
-    if curl -fsSL "$GITHUB_CONFIG_URL" -o .claude/course-config.yaml 2>/dev/null; then
-      echo -e "  ${GREEN}Course config loaded from repository.${NC}"
-      COURSE_LOADED=true
-    else
-      echo -e "  ${YELLOW}Could not fetch course config for '$COURSE'. Run /esf-onboarding to set up manually.${NC}"
-    fi
+    echo -e "  ${YELLOW}Could not fetch course config for '$COURSE'. Run /esf-onboarding to set up manually.${NC}"
   fi
 fi
 

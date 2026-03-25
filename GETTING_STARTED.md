@@ -4,7 +4,7 @@ entities: [ESF]
 
 # Getting Started: Install to First AI Session
 
-This walkthrough follows a student from the moment they receive the toolkit URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.
+This walkthrough follows a first-time user from the moment they receive the toolkit URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.
 
 If you want to see the full ESF process across an entire project (all five phases, Build Practice, Records of Resistance, Five Questions, disclosure), read `WALKTHROUGH.md` after this.
 
@@ -86,7 +86,7 @@ ai-work/
 │   ├── ai-use-log-template.md
 │   ├── record-of-resistance-template.md
 │   ├── session-log-template.md
-│   ├── student-reflection-template.md
+│   ├── reflection-template.md
 │   └── evolution-log-template.md
 └── WORKFLOW.md
 ```
@@ -129,7 +129,7 @@ Then runs the onboarding skill:
 
 Behind the scenes, onboarding does three things:
 
-1. **Personalizes the agent file** (`esf-companion.md`): replaces `[STUDENT_NAME]` with "Jordan Park," fills in their program, course, and current project. Sets the phase to "Inquire."
+1. **Personalizes the agent file** (`esf-companion.md`): replaces `[NAME]` with "Jordan Park," fills in their program, course, and current project. Sets the phase to "Inquire."
 
 2. **Creates the folder structure:**
 
@@ -263,7 +263,7 @@ The toolkit's first action is always the readability pass. It reads Jordan's Pos
 
 > Here is your Position Statement with readability edits only. I fixed a few sentence fragments and cleaned up the structure. Your ideas are unchanged.
 >
-> **My position:** I want to evaluate an AI tool relevant to animation, not just image generation. Most students will pick Midjourney or DALL-E. I want to test something for motion or timing.
+> **My position:** I want to evaluate an AI tool relevant to animation, not just image generation. Most users will pick Midjourney or DALL-E. I want to test something for motion or timing.
 >
 > **What matters most:** An honest evaluation. The brief asks me to notice how the tool shapes my decisions. I need to actually observe that, not just report that "it was helpful."
 >
@@ -293,7 +293,7 @@ Jordan sits with this. The AI is not telling them what to do. It is asking wheth
 >
 > On the second one: you're right that "different" isn't the goal. But I think a timing tool would reveal more about how AI shapes decisions because the decisions are less visible. With image generation, you can see the AI's influence in the output. With timing, the influence is in the rhythm and pacing, which is harder to notice. That's exactly what the brief is asking me to evaluate.
 
-The toolkit notes that Jordan defended their position with reasoning that connects back to the brief. That's the Explore phase working: the student's thinking sharpened, but the direction is still theirs.
+The toolkit notes that Jordan defended their position with reasoning that connects back to the brief. That's the Explore phase working: the user's thinking sharpened, but the direction is still theirs.
 
 ### Step 3: Research Support
 
@@ -359,17 +359,17 @@ The Position Statement exists and has been confirmed. The agent file records Jor
 
 ## Key Observations
 
-1. **Onboarding ends with "close this tool."** The first thing the toolkit tells a new student to do is stop using it. That is intentional. Phases 1 and 2 are human-only because AI framing, even helpful framing, shapes the student's position before they've formed it.
+1. **Onboarding ends with "close this tool."** The first thing the toolkit tells a new user to do is stop using it. That is intentional. Phases 1 and 2 are human-only because AI framing, even helpful framing, shapes the user's position before they've formed it.
 
-2. **The gate is structural.** When Jordan (hypothetically) tried to skip the Position Statement, the toolkit did not warn and proceed. It blocked engagement and explained why. The student cannot route around this by rephrasing the request.
+2. **The gate is structural.** When Jordan (hypothetically) tried to skip the Position Statement, the toolkit did not warn and proceed. It blocked engagement and explained why. The user cannot route around this by rephrasing the request.
 
-3. **The readability pass is trust-building.** The first thing AI does when it enters (Phase 3) is clean up the student's writing without changing it. This establishes the dynamic: the student's ideas are the foundation; AI improves presentation, then challenges substance.
+3. **The readability pass is trust-building.** The first thing AI does when it enters (Phase 3) is clean up the user's writing without changing it. This establishes the dynamic: the user's ideas are the foundation; AI improves presentation, then challenges substance.
 
 4. **Challenge means questions, not answers.** The toolkit asked whether Jordan's reasoning held up. It did not suggest a different tool or a different angle. Jordan's direction sharpened through the challenge, but the direction remained theirs.
 
-5. **Verification is prompted, not assumed.** When the toolkit presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the student's initiative.
+5. **Verification is prompted, not assumed.** When the toolkit presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the user's initiative.
 
-6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The toolkit calibrates its tone and support level to the student's position in the sequence. By BUILD and DESIGN levels, students are expected to drive the process with less scaffolding.
+6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The toolkit calibrates its tone and support level to the user's position in the sequence. By BUILD and DESIGN levels, users are expected to drive the process with less scaffolding.
 
 ---
 

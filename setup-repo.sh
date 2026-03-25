@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # ESF Companion - Repository Setup
-# Creates a git repository for students who are new to GitHub.
+# Creates a git repository for users who are new to GitHub.
 #
 # Usage:
 #   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/setup-repo.sh | bash
@@ -64,8 +64,8 @@ if [ -d "$REPO_NAME" ]; then
   exit 1
 fi
 
-# Ask for student name (used in README)
-read -r -p "Your name (for the README): " STUDENT_NAME
+# Ask for user name (used in README)
+read -r -p "Your name (for the README): " USER_NAME
 
 echo ""
 echo -e "${CYAN}Creating repository...${NC}"
@@ -102,7 +102,7 @@ GITIGNORE
 
 # Create initial README
 cat > README.md << README
-# ${STUDENT_NAME:-My} AI Portfolio
+# ${USER_NAME:-My} AI Portfolio
 
 This repository holds my coursework, position statements, records of resistance, and project artifacts across the program.
 

@@ -195,7 +195,7 @@ Marcus is three weeks into a second course project. He used ChatGPT extensively 
 
 **Step 3: Targeted revision.** He rewrites his methodology to describe what he will actually do, in his own words. He verifies the two AI-suggested references and keeps one (it exists and is relevant) and removes one (it does not say what the AI claimed). He starts a Record of Resistance log for all future AI interactions.
 
-**Step 4: Forward commitment.** For the remaining project work, Marcus uses his Retrospective Position Statement as his anchor. When AI suggests directions, he checks them against his three answers. He now has the same foundation a greenfield student would have, just arrived at from a different direction.
+**Step 4: Forward commitment.** For the remaining project work, Marcus uses his Retrospective Position Statement as his anchor. When AI suggests directions, he checks them against his three answers. He now has the same foundation a greenfield user would have, just arrived at from a different direction.
 
 **Total time added:** about 45 minutes. He did not restart his project. He identified what was genuinely his, fixed what was not, and moved forward with clarity.
 

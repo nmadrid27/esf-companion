@@ -167,7 +167,7 @@ If you teach at a university, college, or training program, see [Adopting ESF fo
 
 This community toolkit is a simplified, portable version of the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-companion). For the ideas behind the toolkit, read [What Is ESF?](docs/what-is-esf.md). The full ESF repository adds:
 
-- A two-level architecture (faculty content production and student epistemic development)
+- A two-level architecture (faculty content production and user epistemic development)
 - Detailed implementation guides for academic institutions
 - Curriculum integration patterns
 - Complete scholarly grounding and literature review (35 sources)

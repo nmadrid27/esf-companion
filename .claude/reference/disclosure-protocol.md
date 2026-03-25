@@ -1,4 +1,4 @@
-# ESF Disclosure Protocol: Student Reference
+# ESF Disclosure Protocol: Reference
 
 ## Why Disclosure Matters
 

@@ -1,5 +1,5 @@
 # The Epistemic Stewardship Framework
-## Student Implementation Guide
+## Implementation Guide
 
 ---
 
@@ -10,11 +10,11 @@ You are going to use AI. That is not the question.
 The question is whether the work you produce with AI is actually yours: whether it reflects your thinking, your judgment, and your developing expertise, or whether it is something you accepted because it sounded good enough to submit.
 
 This is not a question about academic integrity in the traditional sense. You are not being accused of anything.
-This guide exists because you face a new problem that no previous generation of students has faced. AI tools can produce work that is competent, well-organized, and persuasive, and that has nothing to do with what you know, what you believe, or what you are learning to do.
+This guide exists because you face a new problem that no previous generation of users has faced. AI tools can produce work that is competent, well-organized, and persuasive, and that has nothing to do with what you know, what you believe, or what you are learning to do.
 
 The Epistemic Stewardship Framework (ESF) gives you a process for using AI that keeps the intellectual work yours. Not by restricting what tools you can use, but by structuring *when* and *how* you use them so that your thinking stays at the center.
 
-Here is the core insight: **you must know what you think before the AI tells you what to think.** The student process builds in that sequence. You articulate your understanding, stake out your position, and *then* bring AI into the conversation as a thinking partner.
+Here is the core insight: **you must know what you think before the AI tells you what to think.** The user process builds in that sequence. You articulate your understanding, stake out your position, and *then* bring AI into the conversation as a thinking partner.
 If you skip that sequence, the AI fills the vacuum with plausible content, and you learn to approve rather than to think.
 
 This guide introduces a five-phase process (Inquire, Position, Explore, Make, Reflect) and four engagement levels that develop your capacity to work with AI as an intellectual partner. The goal is not less AI use or more AI use. The goal is *better* AI use: the kind where you can defend every claim, explain every choice, and honestly describe what you contributed and what the AI contributed.
@@ -23,7 +23,7 @@ That skill, epistemic stewardship, is what your future employers, collaborators,
 
 ---
 
-## B. The Student Process: Inquire, Position, Explore, Make, Reflect
+## B. The Process: Inquire, Position, Explore, Make, Reflect
 
 This is your process for working with AI on any assignment that matters. It is built on two principles:
 
@@ -204,7 +204,7 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 
 The five-phase process is the same at every level. What changes is how much support you get at each gate and how much independence you exercise.
 
-> **Note on evidence base:** The four engagement levels and their readiness indicators are theoretically grounded in research on scaffolded learning, Socratic inquiry, and metacognitive development. They have not yet been empirically validated against actual student progression data. The thresholds, readiness indicators, and level descriptions reflect the framework author's professional judgment and pedagogical experience, not measured outcomes. Treat the levels as a useful developmental map, not a tested diagnostic instrument. As ESF is applied in more courses and contexts, these levels will be revised based on observed student development.
+> **Note on evidence base:** The four engagement levels and their readiness indicators are theoretically grounded in research on scaffolded learning, Socratic inquiry, and metacognitive development. They have not yet been empirically validated against actual user progression data. The thresholds, readiness indicators, and level descriptions reflect the framework author's professional judgment and pedagogical experience, not measured outcomes. Treat the levels as a useful developmental map, not a tested diagnostic instrument. As ESF is applied in more courses and contexts, these levels will be revised based on observed user development.
 
 ### Level 1: Discovery
 
@@ -426,10 +426,10 @@ The goal is not perfection. The goal is honest, evolving practice: the kind wher
 
 ---
 
-> **AI Collaboration Disclosure:** This student guide was developed through human-AI collaboration. The two-level architecture, the student process model (Inquire, Position, Explore, Make, Reflect), and the integration of design thinking with Socratic human gates were designed by the author based on the ESF Framework Document and supported by research from multiple scholarly traditions (Hutson, 2025; Washington OSPI, 2024; Pasmala et al., 2026; Degen & Asanov, 2025; Favero et al., 2024; Naeem, 2025; Plate & Hutson, 2025). AI assisted with structural organization, prose drafting, and the construction of discipline-specific examples. All pedagogical judgments, the developmental progression model, the gate design, and claims about effective student practice reflect the author's professional assessment. This document follows the ESF protocol it describes.
+> **AI Collaboration Disclosure:** This guide was developed through human-AI collaboration. The two-level architecture, the user process model (Inquire, Position, Explore, Make, Reflect), and the integration of design thinking with Socratic human gates were designed by the author based on the ESF Framework Document and supported by research from multiple scholarly traditions (Hutson, 2025; Washington OSPI, 2024; Pasmala et al., 2026; Degen & Asanov, 2025; Favero et al., 2024; Naeem, 2025; Plate & Hutson, 2025). AI assisted with structural organization, prose drafting, and the construction of discipline-specific examples. All pedagogical judgments, the developmental progression model, the gate design, and claims about effective practice reflect the author's professional assessment. This document follows the ESF protocol it describes.
 
 ---
 
 *Version 2.0-draft | 2026-02-19*
-*Epistemic Stewardship Framework; Student Implementation Guide*
+*Epistemic Stewardship Framework; Implementation Guide*
 *Nathan Madrid*

@@ -6,7 +6,7 @@ The ESF Companion is framework-agnostic. The `.claude/` directory is the Claude 
 
 ## How to Use
 
-### Step 1: Set up your student prompt
+### Step 1: Set up your companion prompt
 
 Open `companion.md` and fill in every `[PLACEHOLDER]` with your information. Save it in your project folder so the AI can find it.
 
@@ -46,7 +46,7 @@ When referencing a file, copy its contents into your chat. The AI cannot read yo
 
 | Feature | Claude Code | Any LLM |
 |---------|-------------|---------|
-| Student context | Loaded automatically | Paste at session start |
+| User context | Loaded automatically | Paste at session start |
 | Position Statement gate | Checks file system automatically | You confirm verbally or paste the file |
 | File creation | AI creates files for you | You create files yourself |
 | Session memory | Persists within session | Persists within conversation |
@@ -56,6 +56,6 @@ The ESF process works the same way in both. The difference is automation, not su
 
 ---
 
-## Updating Your Student Prompt
+## Updating Your Companion Prompt
 
 When you start a new course, update the Enrolled Courses and Current Project sections of your `companion.md`. Previous course entries stay; they are part of your record.

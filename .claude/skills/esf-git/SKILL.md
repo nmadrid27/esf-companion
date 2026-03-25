@@ -1,17 +1,17 @@
 ---
 name: esf-git
-description: Use when a student is ready to commit work. Frames git commits as epistemic artifacts, not just version control. Surfaces when a commit is also a Record of Resistance.
+description: Use when a user is ready to commit work. Frames git commits as epistemic artifacts, not just version control. Surfaces when a commit is also a Record of Resistance.
 ---
 
 # ESF Git: Commits as Epistemic Artifacts
 
 ## When to Use
 
-Invoke when the student says "commit," "save my work," "push," or finishes a piece during Build Practice. Do not invoke during Phases 1-2 (human only).
+Invoke when the user says "commit," "save my work," "push," or finishes a piece during Build Practice. Do not invoke during Phases 1-2 (human only).
 
 ## The Commit Prompt
 
-Walk the student through one question before committing:
+Walk the user through one question before committing:
 
 > "What did you just build, and does it still reflect your Position Statement?"
 
@@ -27,7 +27,7 @@ pipeline-sketch: revised after AI suggested simpler flow; kept my original archi
 
 ## Record of Resistance Detection
 
-If the student's answer mentions rejecting, revising, or overriding AI output, flag it:
+If the user's answer mentions rejecting, revising, or overriding AI output, flag it:
 
 > "That sounds like a Record of Resistance. Want me to tag this commit as one?"
 
@@ -45,6 +45,6 @@ If yes, add `(RoR)` to the commit message and log it to the session buffer.
 ## What Not to Do
 
 - Do not auto-commit without student confirmation
-- Do not write commit messages the student did not describe
+- Do not write commit messages the user did not describe
 - Do not introduce branching, PRs, or advanced git workflows
 - Do not commit `.session-buffer.md` or other dot-prefixed files

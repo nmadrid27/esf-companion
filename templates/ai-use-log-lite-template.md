@@ -2,7 +2,7 @@
 title: "AI Use Log (Lite)"
 type: esf-template
 assignment: ""
-course: ""
+context: ""
 date: 2026-03-16
 engagement-level: ""
 status: complete

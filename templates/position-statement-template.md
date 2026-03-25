@@ -1,6 +1,6 @@
 ---
 type: position-statement
-course: ""
+context: ""
 project: ""
 date: ""
 ---

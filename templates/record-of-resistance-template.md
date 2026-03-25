@@ -1,6 +1,6 @@
 ---
 type: record-of-resistance
-course: ""
+context: ""
 project: ""
 date: ""
 record-number: 1

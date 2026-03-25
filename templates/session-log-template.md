@@ -1,6 +1,6 @@
 ---
 type: session-log
-course: ""
+context: ""
 project: ""
 date: ""
 phase: ""

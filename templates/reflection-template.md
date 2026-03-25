@@ -1,14 +1,14 @@
 ---
-title: "Student Reflection"
+title: "Reflection"
 type: esf-template
 assignment: ""
-course: ""
+context: ""
 date: 2026-03-02
 engagement-level: ""
 status: complete
 ---
 
-# Student Reflection
+# Reflection
 
 **Assignment:** [Assignment name]
 **Course:** [Course name and number]
@@ -107,5 +107,5 @@ status: complete
 
 ---
 
-*Epistemic Stewardship Framework, Student Reflection Template*
+*Epistemic Stewardship Framework, Reflection Template*
 *Complete for any assignment involving AI collaboration.*
