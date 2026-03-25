@@ -8,7 +8,7 @@
 # Options:
 #   --sample    Install pre-filled BUILD-level test data (Alex Rivera)
 #   --force     Skip all interactive prompts (for scripted installs)
-#   --course    Fetch course-specific config (e.g., --course ai-180)
+#   --course    Fetch course-specific config (requires course microsite deployed)
 #   --platform  Set platform without prompting (claude or conversation)
 #
 # Examples:
@@ -109,8 +109,13 @@ fi
 # Determine platform
 PLATFORM="claude"
 if [ -n "$PLATFORM_FLAG" ]; then
-  PLATFORM="$PLATFORM_FLAG"
-  echo "Platform: $PLATFORM (set via --platform flag)"
+  if [ "$PLATFORM_FLAG" = "claude" ] || [ "$PLATFORM_FLAG" = "conversation" ]; then
+    PLATFORM="$PLATFORM_FLAG"
+    echo "Platform: $PLATFORM (set via --platform flag)"
+  else
+    echo -e "${RED}Error: --platform must be 'claude' or 'conversation'. Got: '$PLATFORM_FLAG'${NC}"
+    exit 1
+  fi
 elif [ "$FORCE" != true ]; then
   echo ""
   echo "What AI tool will you use with ESF Companion?"
@@ -163,6 +168,13 @@ if [ "$PLATFORM" = "conversation" ]; then
 
   if [ ! -f "WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
+  fi
+
+  # Auto-commit conversation toolkit files if in a git repo
+  if [ -d ".git" ]; then
+    git add prompts/ templates/ WORKFLOW.md 2>/dev/null
+    git commit -m "Install ESF Companion (conversation mode)" --quiet 2>/dev/null && \
+      echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
   fi
 
   echo ""
@@ -315,12 +327,11 @@ if [ ! -f "README.md" ] && [ ! -f "WORKFLOW.md" ]; then
   fi
 fi
 
-# Auto-commit toolkit files if in a git repo
+# Auto-commit only toolkit files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
-  git add -A 2>/dev/null
-  git commit -m "Install ESF Companion" --quiet 2>/dev/null
-  echo ""
-  echo -e "  ${GREEN}Toolkit files committed to git.${NC}"
+  git add .claude/ prompts/ templates/ WORKFLOW.md 2>/dev/null
+  git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
+    echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
 fi
 
 echo ""
