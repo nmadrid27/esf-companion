@@ -1,0 +1,68 @@
+name: Test Install Scripts
+
+on:
+  push:
+    paths:
+      - 'install.sh'
+      - 'setup-repo.sh'
+  pull_request:
+    paths:
+      - 'install.sh'
+      - 'setup-repo.sh'
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check bash syntax
+        run: |
+          bash -n install.sh
+          bash -n setup-repo.sh
+
+  test-claude-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test Claude Code install (force mode)
+        run: |
+          mkdir -p /tmp/test-claude && cd /tmp/test-claude
+          git init
+          bash "$GITHUB_WORKSPACE/install.sh" --force --platform claude
+          test -f .claude/agents/esf-companion.md || exit 1
+          test -f prompts/companion.md || exit 1
+          test -f prompts/esf-companion.md || exit 1
+          test -f templates/position-statement.md || exit 1
+          test -f templates/five-questions-checklist.md || exit 1
+          test -f WORKFLOW.md || exit 1
+          echo "Claude install: all expected files present"
+
+  test-conversation-install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test conversation install (force mode)
+        run: |
+          mkdir -p /tmp/test-conv && cd /tmp/test-conv
+          git init
+          bash "$GITHUB_WORKSPACE/install.sh" --force --platform conversation
+          test -f prompts/companion.md || exit 1
+          test -f prompts/esf-companion.md || exit 1
+          test -f templates/position-statement.md || exit 1
+          test -f templates/five-questions-checklist.md || exit 1
+          test -f templates/disclosure-statement.md || exit 1
+          test ! -d .claude || exit 1
+          echo "Conversation install: correct files present, no .claude/"
+
+  test-platform-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Test invalid platform flag exits with error
+        run: |
+          mkdir -p /tmp/test-invalid && cd /tmp/test-invalid
+          if bash "$GITHUB_WORKSPACE/install.sh" --force --platform typo 2>/dev/null; then
+            echo "ERROR: should have exited non-zero"
+            exit 1
+          fi
+          echo "Platform validation: correctly rejected invalid value"

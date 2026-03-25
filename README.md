@@ -43,17 +43,20 @@ Five practices, applied before, during, and after AI-assisted work:
 
 ## Quick Start
 
-Pick the path that fits you best. They all get you to the same place.
+### Which path should I use?
 
-### Download and use the templates (no install needed)
+| | **Templates only** | **ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
+|---|---|---|---|---|
+| **What you get** | Markdown files to fill in | AI follows ESF process via custom instructions | AI reads ESF files from your computer | Full agent with drift detection, skills, and session memory |
+| **Requirements** | None | Any AI chat tool | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
+| **Install** | Download ZIP | Download ZIP or run installer | Download ZIP | Run installer |
+| **Best for** | Trying ESF on one project | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
 
-The simplest way to start. No terminal, no coding, no special tools.
+### Path 1: Download and use the templates (no install needed)
 
 1. Click the green **Code** button at the top of this page, then **Download ZIP**
-2. Unzip the folder and open `templates/`
+2. Unzip and open `templates/`
 3. Copy `position-statement.md` into your project folder and fill it in before opening any AI tool
-
-That is all you need to get started. See the **[Getting Started guide](docs/getting-started.md)** for a full step-by-step walkthrough.
 
 ```
 templates/
@@ -64,38 +67,62 @@ templates/
 └── disclosure-statement.md    ← Add to finished deliverables
 ```
 
-### Use with any AI tool (ChatGPT, Gemini, Claude, etc.)
+### Path 2: Use with ChatGPT, Gemini, or any conversation tool
 
-Open `prompts/esf-companion.md`, copy the contents, and paste it at the start of a new conversation with your AI tool. It works with ChatGPT, Gemini, Claude.ai, or any tool that accepts text input. The AI will follow the ESF process and ask for your Position Statement before helping with project work.
+Open `prompts/esf-companion.md`, copy the contents, and paste into your AI tool's custom instructions. The AI will follow the ESF process and ask for your Position Statement before helping with project work.
 
-### Use with Claude Cowork (no terminal needed)
-
-If you use the Claude desktop app, [Cowork](https://claude.com/product/cowork) can work directly with the ESF templates on your computer — no terminal required.
-
-1. Download and unzip the toolkit (see above)
-2. Open Claude Desktop and start a Cowork session
-3. Point Claude to your toolkit folder — it can read your local files directly, including the companion prompt and all templates
-
-That is it. Claude will read the ESF companion prompt on its own, check for your Position Statement, and guide you through the full workflow — exploring, building, logging AI contributions, and recording moments of resistance. No copying or pasting required.
-
-Available on Pro, Max, Team, and Enterprise plans.
-
-### Use the installer (for terminal users)
-
-If you are comfortable with the command line and want a ready-made project structure with git:
+Or run the installer for a cleaner setup:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
-The installer asks what AI tool you use (Claude Code, ChatGPT, or other) and installs accordingly. It does NOT create a new directory; it installs into your current directory. Run it from inside the project folder where you want ESF Companion to live.
+Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
-**For Claude Code users:** The installer sets up a `.claude/` directory with an agent, skills, and reference files. When you start a session, the Companion checks for a Position Statement before assisting with project work. It also monitors for drift between your stated direction and your actual work.
+### Path 3: Use with Claude Cowork (no terminal needed)
 
-**For ChatGPT, Gemini, or other tools:** The installer drops a companion prompt and templates into your directory. Copy the prompt into your tool's custom instructions to get started.
+1. Download and unzip the repo (see Path 1)
+2. Open Claude Desktop and start a Cowork session
+3. Point Claude to your folder. It reads the ESF companion prompt and templates directly.
 
+Available on Pro, Max, Team, and Enterprise plans.
 
-**Already mid-project?** If you have existing work and want ESF to work with it instead of starting fresh, see [Using ESF with Existing Work](docs/existing-work.md).
+### Path 4: Use with Claude Code (full experience)
+
+```bash
+mkdir my-project && cd my-project && git init
+curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+```
+
+Choose option 1 (Claude Code) when prompted. This installs the agent, skills, reference files, prompts, and templates. Then:
+
+```bash
+claude
+/esf-onboarding
+```
+
+**What the installer does:**
+- Asks which AI tool you use
+- Asks for a project folder name (creates it if needed)
+- Downloads files into your current directory
+- Auto-commits toolkit files to git (only toolkit files, not your existing work)
+- Does NOT send data anywhere. Everything is local.
+
+**Already have work in this directory?** The installer adds ESF files alongside your existing files. It will not modify or overwrite your work. See [Using ESF with Existing Work](docs/existing-work.md).
+
+---
+
+## FAQ
+
+**Do I need Claude Code?** No. ESF Companion works with any AI tool. Claude Code gives you the richest experience (drift detection, session memory, skills). ChatGPT and Gemini get the core process via the companion prompt.
+
+**Can I use this with existing work?** Yes. Run the installer inside your existing project directory. It adds ESF files without touching your work. See [Using ESF with Existing Work](docs/existing-work.md).
+
+**Does the installer create a new folder?** It asks if you want one. If you say yes, it creates the folder and installs inside it. If you are already in a project directory, it installs there.
+
+**What is the difference between `companion.md` and `esf-companion.md`?** Both are companion prompts. `esf-companion.md` is the original full prompt. `companion.md` is a streamlined version. Use whichever works for your AI tool's custom instructions limit.
+
+**What does `--course` do?** It fetches course-specific configuration from a deployed course microsite. This is for students in courses that use ESF. If you are not in a course, you do not need it.
 ---
 
 ## The Process
