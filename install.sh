@@ -293,13 +293,13 @@ else
   echo "  1. Open Claude Code in this directory:"
   echo "     claude"
   echo ""
-  echo "  2. Run onboarding to personalize your toolkit:"
+  echo "  2. Run onboarding to personalize your workspace:"
   echo "     /esf-onboarding"
   echo ""
-  echo "  Onboarding takes about 5 minutes and sets up your name, courses,"
-  echo "  and project folder structure."
+  echo "  Onboarding takes about 5 minutes and sets up your identity,"
+  echo "  project context, and folder structure."
   echo ""
-  echo "  Adding a new course later? Re-run /esf-onboarding and say 'update'."
+  echo "  Starting a new project later? Re-run /esf-onboarding and say 'update'."
 fi
 
 echo "──────────────────────────────────────"

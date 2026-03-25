@@ -1,8 +1,8 @@
-# ESF Community Toolkit
+# ESF Companion
 
-A lightweight, domain-agnostic version of the Epistemic Stewardship Framework for anyone who works with AI and wants to stay in control of the result.
+An extended thinking partner that helps you direct AI from a position you can defend.
 
-No institution, course, or program required. If you use AI to write, research, design, code, or create, this toolkit gives you a repeatable process for keeping the work genuinely yours.
+No institution, course, or program required. If you use AI to write, research, design, code, or create, the ESF Companion gives you a repeatable process for keeping the work genuinely yours.
 
 ---
 
@@ -88,11 +88,11 @@ If you are comfortable with the command line and want a ready-made project struc
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
-The script creates a directory, initializes git, drops in the templates, and gives you a clean starting point.
+The installer asks what AI tool you use (Claude Code, ChatGPT, or other) and installs accordingly. It does NOT create a new directory; it installs into your current directory. Run it from inside the project folder where you want ESF Companion to live.
 
-### Use with Claude Code
+**For Claude Code users:** The installer sets up a `.claude/` directory with an agent, skills, and reference files. When you start a session, the Companion checks for a Position Statement before assisting with project work. It also monitors for drift between your stated direction and your actual work.
 
-The installer also sets up a `.claude/` configuration that teaches Claude Code the ESF process. When you start a session, Claude checks for a Position Statement before assisting with project work.
+**For ChatGPT, Gemini, or other tools:** The installer drops a companion prompt and templates into your directory. Copy the prompt into your tool's custom instructions to get started.
 
 
 **Already mid-project?** If you have existing work and want ESF to work with it instead of starting fresh, see [Using ESF with Existing Work](docs/existing-work.md).
@@ -163,20 +163,14 @@ If you teach at a university, college, or training program, see [Adopting ESF fo
 
 ---
 
-## Relationship to the Full ESF
+## Roadmap
 
-This community toolkit is a simplified, portable version of the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-companion). For the ideas behind the toolkit, read [What Is ESF?](docs/what-is-esf.md). The full ESF repository adds:
+The ESF Companion is actively developed. See [ROADMAP.md](ROADMAP.md) for the full product vision, research foundation (30+ sources), and version plan.
 
-- A two-level architecture (faculty content production and user epistemic development)
-- Detailed implementation guides for academic institutions
-- Curriculum integration patterns
-- Complete scholarly grounding and literature review (35 sources)
-- Onboarding agents and project workflow skills
-
-If you work in higher education, the full framework and its academic toolkits may be a better fit. This community toolkit is for everyone else, or for academics who want the practices without the institutional scaffolding.
+For the complete walkthrough, see [WALKTHROUGH.md](WALKTHROUGH.md).
 
 ---
 
-*Epistemic Stewardship Framework — Community Edition*
+*ESF Companion*
 *Nathan Madrid*
 *Licensed under CC BY 4.0*
