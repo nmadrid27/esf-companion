@@ -43,6 +43,15 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+# Download a file only if it does not already exist (preserves user customizations)
+fetch_if_missing() {
+  local url="$1"
+  local dest="$2"
+  if [ ! -f "$dest" ]; then
+    curl -fsSL "$url" -o "$dest"
+  fi
+}
+
 echo ""
 echo -e "${CYAN}ESF Companion - Installer${NC}"
 echo "──────────────────────────────────────"
@@ -140,20 +149,20 @@ if [ "$PLATFORM" = "conversation" ]; then
   mkdir -p templates
 
   echo "  Fetching companion prompts..."
-  curl -fsSL "$TOOLKIT_BASE/prompts/companion.md"        -o prompts/companion.md
-  curl -fsSL "$TOOLKIT_BASE/prompts/esf-companion.md"    -o prompts/esf-companion.md
-  curl -fsSL "$TOOLKIT_BASE/prompts/project-workflow.md"  -o prompts/project-workflow.md
-  curl -fsSL "$TOOLKIT_BASE/prompts/README.md"            -o prompts/README.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
 
   echo "  Fetching templates..."
-  curl -fsSL "$TOOLKIT_BASE/templates/position-statement-template.md"    -o templates/position-statement-template.md
-  curl -fsSL "$TOOLKIT_BASE/templates/position-statement.md"             -o templates/position-statement.md
-  curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance-template.md"  -o templates/record-of-resistance-template.md
-  curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance.md"           -o templates/record-of-resistance.md
-  curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-template.md"           -o templates/ai-use-log-template.md
-  curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log.md"                    -o templates/ai-use-log.md
-  curl -fsSL "$TOOLKIT_BASE/templates/five-questions-checklist.md"      -o templates/five-questions-checklist.md
-  curl -fsSL "$TOOLKIT_BASE/templates/disclosure-statement.md"          -o templates/disclosure-statement.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" templates/position-statement-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" templates/position-statement.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
 
   if [ ! -f "WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
@@ -161,7 +170,7 @@ if [ "$PLATFORM" = "conversation" ]; then
 
   # Auto-commit conversation toolkit files if in a git repo
   if [ -d ".git" ]; then
-    git add prompts/ templates/ WORKFLOW.md 2>/dev/null
+    git add prompts/ templates/ WORKFLOW.md .gitignore 2>/dev/null
     git commit -m "Install ESF Companion (conversation mode)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
   fi
@@ -222,26 +231,26 @@ curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version
 
 # Download prompts
 echo "  Fetching prompts..."
-curl -fsSL "$TOOLKIT_BASE/prompts/companion.md"        -o prompts/companion.md
-curl -fsSL "$TOOLKIT_BASE/prompts/esf-companion.md"    -o prompts/esf-companion.md
-curl -fsSL "$TOOLKIT_BASE/prompts/project-workflow.md"  -o prompts/project-workflow.md
-curl -fsSL "$TOOLKIT_BASE/prompts/README.md"            -o prompts/README.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
 
 # Download templates
 echo "  Fetching templates..."
-curl -fsSL "$TOOLKIT_BASE/templates/position-statement-template.md"    -o templates/position-statement-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/position-statement.md"             -o templates/position-statement.md
-curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-template.md"           -o templates/ai-use-log-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md"     -o templates/ai-use-log-lite-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log.md"                    -o templates/ai-use-log.md
-curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance-template.md" -o templates/record-of-resistance-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance.md"          -o templates/record-of-resistance.md
-curl -fsSL "$TOOLKIT_BASE/templates/five-questions-checklist.md"      -o templates/five-questions-checklist.md
-curl -fsSL "$TOOLKIT_BASE/templates/disclosure-statement.md"          -o templates/disclosure-statement.md
-curl -fsSL "$TOOLKIT_BASE/templates/evolution-log-template.md"        -o templates/evolution-log-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/session-log-template.md"          -o templates/session-log-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/reflection-template.md"   -o templates/reflection-template.md
-curl -fsSL "$TOOLKIT_BASE/templates/evolution-log-template.md"        -o templates/evolution-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" templates/position-statement-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" templates/position-statement.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" templates/ai-use-log-lite-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
+fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
+fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
+fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
+fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 
 # Download reference files
 echo "  Fetching reference files..."
@@ -302,7 +311,7 @@ fi
 
 # Auto-commit only toolkit files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
-  git add .claude/ prompts/ templates/ WORKFLOW.md 2>/dev/null
+  git add .claude/ prompts/ templates/ WORKFLOW.md .gitignore 2>/dev/null
   git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
     echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
 fi
