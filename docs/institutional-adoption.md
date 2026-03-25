@@ -1,6 +1,6 @@
 # Adopting ESF for Your Institution
 
-If you teach at a university, college, or training program and want students to use ESF in your courses, the community toolkit is a starting point you can customize. Fork this repository or copy the `community-toolkit/` directory and make the following changes.
+If you teach at a university, college, or training program and want students to use ESF in your courses, the ESF Companion is a starting point you can customize. Fork this repository or fork this repository and make the following changes.
 
 ## 1. Add your course context to the agent
 
@@ -82,7 +82,7 @@ Two options:
 **Option A: Give students the install command.** Point them to your fork:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/YOUR-ORG/YOUR-FORK/main/community-toolkit/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/YOUR-ORG/YOUR-FORK/main/install.sh | bash
 ```
 
 Update the `TOOLKIT_BASE` URL at the top of `install.sh` to point to your fork.
