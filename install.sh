@@ -8,11 +8,9 @@
 # Options:
 #   --sample    Install pre-filled BUILD-level test data (Alex Rivera)
 #   --force     Skip all interactive prompts (for scripted installs)
-#   --course    Fetch course-specific config (requires course microsite deployed)
 #   --platform  Set platform without prompting (claude or conversation)
 #
 # Examples:
-#   curl -fsSL ... | bash -s -- --course ai-180
 #   curl -fsSL ... | bash -s -- --force --platform claude
 #   curl -fsSL ... | bash -s -- --force --platform conversation
 #   curl -fsSL ... | bash -s -- --sample
@@ -21,25 +19,16 @@ set -e
 
 SAMPLE=false
 FORCE=false
-COURSE=""
-COURSE_NEXT=false
 PLATFORM_FLAG=""
 PLATFORM_NEXT=false
 for arg in "$@"; do
-  if [ "$COURSE_NEXT" = true ]; then
-    COURSE="$arg"
-    COURSE_NEXT=false
-  elif [ "$PLATFORM_NEXT" = true ]; then
+  if [ "$PLATFORM_NEXT" = true ]; then
     PLATFORM_FLAG="$arg"
     PLATFORM_NEXT=false
   elif [ "$arg" = "--sample" ]; then
     SAMPLE=true
   elif [ "$arg" = "--force" ]; then
     FORCE=true
-  elif [[ "$arg" == --course=* ]]; then
-    COURSE="${arg#--course=}"
-  elif [ "$arg" = "--course" ]; then
-    COURSE_NEXT=true
   elif [[ "$arg" == --platform=* ]]; then
     PLATFORM_FLAG="${arg#--platform=}"
   elif [ "$arg" = "--platform" ]; then
@@ -269,22 +258,6 @@ if [ -f ".gitignore" ] && ! grep -q '.session-buffer.md' .gitignore 2>/dev/null;
   printf '\n# ESF session buffer (ephemeral, not versioned)\n.session-buffer.md\n' >> .gitignore
 fi
 
-# Fetch course config if --course flag was provided
-COURSE_LOADED=false
-if [ -n "$COURSE" ]; then
-  echo ""
-  echo "  Fetching course configuration for $COURSE..."
-  COURSE_LOWER=$(echo "$COURSE" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')
-
-  # Try microsite
-  COURSE_CONFIG_URL="https://astro-${COURSE_LOWER}.vercel.app/course-config.json"
-  if curl -fsSL "$COURSE_CONFIG_URL" -o .claude/course-config.json 2>/dev/null; then
-    echo -e "  ${GREEN}Course config loaded from microsite.${NC}"
-    COURSE_LOADED=true
-  else
-    echo -e "  ${YELLOW}Could not fetch course config for '$COURSE'. Run /esf-onboarding to set up manually.${NC}"
-  fi
-fi
 
 # Install sample data if --sample flag was passed
 if [ "$SAMPLE" = true ]; then
@@ -350,13 +323,6 @@ if [ "$SAMPLE" = true ]; then
   echo ""
   echo "  When you're ready to set up your own profile, run:"
   echo "     /esf-onboarding"
-elif [ "$COURSE_LOADED" = true ]; then
-  echo "  Course config for '$COURSE' loaded. Open Claude Code and run onboarding:"
-  echo "     cd $(pwd) && claude"
-  echo "     /esf-onboarding"
-  echo ""
-  echo "  Onboarding will detect your course config and auto-populate your setup."
-  echo "  It takes about 2 minutes when a config is available."
 else
   echo "  1. Open Claude Code in your project folder:"
   echo "     cd $(pwd) && claude"
