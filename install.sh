@@ -92,8 +92,76 @@ if [ ! -d ".git" ]; then
   fi
 fi
 
+# Ask which AI tool the user will use
+PLATFORM="claude"
+if [ "$FORCE" != true ]; then
+  echo ""
+  echo "What AI tool will you use with ESF Companion?"
+  echo ""
+  echo "  1) Claude Code (full experience: agent, skills, drift detection)"
+  echo "  2) ChatGPT, Gemini, or other conversation tool"
+  echo "  3) Not sure yet"
+  echo ""
+  read -r -p "Choose [1/2/3]: " PLATFORM_CHOICE </dev/tty
+  case "$PLATFORM_CHOICE" in
+    2)
+      PLATFORM="conversation"
+      ;;
+    3)
+      PLATFORM="conversation"
+      ;;
+    *)
+      PLATFORM="claude"
+      ;;
+  esac
+fi
+
 echo "Installing..."
 
+if [ "$PLATFORM" = "conversation" ]; then
+  # Lightweight install for conversation-based tools
+  mkdir -p prompts
+  mkdir -p templates
+
+  echo "  Fetching companion prompt..."
+  curl -fsSL "$TOOLKIT_BASE/prompts/companion.md"        -o prompts/companion.md
+  curl -fsSL "$TOOLKIT_BASE/prompts/project-workflow.md"  -o prompts/project-workflow.md
+  curl -fsSL "$TOOLKIT_BASE/prompts/README.md"            -o prompts/README.md
+
+  echo "  Fetching templates..."
+  curl -fsSL "$TOOLKIT_BASE/templates/position-statement-template.md"    -o templates/position-statement-template.md
+  curl -fsSL "$TOOLKIT_BASE/templates/record-of-resistance-template.md"  -o templates/record-of-resistance-template.md
+  curl -fsSL "$TOOLKIT_BASE/templates/ai-use-log-template.md"           -o templates/ai-use-log-template.md
+
+  if [ ! -f "WORKFLOW.md" ]; then
+    curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
+  fi
+
+  echo ""
+  echo -e "${GREEN}ESF Companion installed (conversation tool mode).${NC}"
+  echo ""
+  echo "──────────────────────────────────────"
+  echo -e "${CYAN}Next steps:${NC}"
+  echo ""
+  echo "  1. Open prompts/companion.md"
+  echo "  2. Copy its contents into your AI tool's custom instructions"
+  echo "     (ChatGPT: Settings > Personalization > Custom Instructions)"
+  echo "     (Gemini: paste at the start of your conversation)"
+  echo ""
+  echo "  3. Start a new conversation and tell it what you are working on."
+  echo "     It will guide you through writing a Position Statement"
+  echo "     and the rest of the ESF process."
+  echo ""
+  echo "  Templates are in the templates/ folder."
+  echo "  The visual process diagram is in WORKFLOW.md."
+  echo ""
+  echo "  Want the full experience later? Re-run with Claude Code (option 1)."
+  echo "──────────────────────────────────────"
+  echo ""
+  exit 0
+fi
+
+# Full Claude Code install
 # Create directory structure
 mkdir -p .claude/agents
 mkdir -p .claude/skills/esf-onboarding
