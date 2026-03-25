@@ -268,8 +268,30 @@ if [ "$SAMPLE" = true ]; then
     -o projects/build-course/records-of-resistance/ror-01.md
 fi
 
+# Create a project folder if not already in one
+if [ ! -f "README.md" ] && [ ! -f "WORKFLOW.md" ]; then
+  echo ""
+  echo -e "${CYAN}Let's set up your project folder.${NC}"
+  echo ""
+  read -r -p "Project name (e.g., portfolio-redesign, client-rebrand, thesis): " PROJECT_NAME </dev/tty
+  if [ -n "$PROJECT_NAME" ]; then
+    # Sanitize: lowercase, replace spaces with hyphens
+    FOLDER_NAME=$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+    mkdir -p "$FOLDER_NAME"
+    # Move installed files into the project folder
+    for item in .claude prompts templates WORKFLOW.md; do
+      [ -e "$item" ] && mv "$item" "$FOLDER_NAME/" 2>/dev/null
+    done
+    cd "$FOLDER_NAME"
+    echo -e "  ${GREEN}Created project folder: $FOLDER_NAME/${NC}"
+    echo "  Installed files are inside this folder."
+  fi
+fi
+
 echo ""
 echo -e "${GREEN}ESF Companion installed.${NC}"
+echo ""
+echo "  Installed to: $(pwd)"
 echo ""
 echo "──────────────────────────────────────"
 echo -e "${CYAN}Next steps:${NC}"
@@ -277,21 +299,21 @@ echo ""
 
 if [ "$SAMPLE" = true ]; then
   echo "  Sample data installed. Open Claude Code and try:"
-  echo "     claude"
+  echo "     cd $(pwd) && claude"
   echo "  Then: \"I want to keep working on my responsive system.\""
   echo ""
   echo "  When you're ready to set up your own profile, run:"
   echo "     /esf-onboarding"
 elif [ "$COURSE_LOADED" = true ]; then
   echo "  Course config for '$COURSE' loaded. Open Claude Code and run onboarding:"
-  echo "     claude"
+  echo "     cd $(pwd) && claude"
   echo "     /esf-onboarding"
   echo ""
   echo "  Onboarding will detect your course config and auto-populate your setup."
   echo "  It takes about 2 minutes when a config is available."
 else
-  echo "  1. Open Claude Code in this directory:"
-  echo "     claude"
+  echo "  1. Open Claude Code in your project folder:"
+  echo "     cd $(pwd) && claude"
   echo ""
   echo "  2. Run onboarding to personalize your workspace:"
   echo "     /esf-onboarding"
