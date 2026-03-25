@@ -10,10 +10,10 @@ This folder contains pre-filled BUILD-level sample data for testing the toolkit 
 
 ## How to Use
 
-Copy these files into your portfolio repo after running the installer:
+Copy these files into your project repo after running the installer:
 
 ```bash
-# From inside your portfolio repo, after running install.sh:
+# From inside your project repo, after running install.sh:
 cp path/to/sample/agents/esf-companion.md .claude/agents/esf-companion.md
 cp -r path/to/sample/projects/build-course projects/
 ```
