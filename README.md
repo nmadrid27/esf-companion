@@ -122,7 +122,6 @@ claude
 
 **What is the difference between `companion.md` and `esf-companion.md`?** Both are companion prompts. `esf-companion.md` is the original full prompt. `companion.md` is a streamlined version. Use whichever works for your AI tool's custom instructions limit.
 
-**What does `--course` do?** It fetches course-specific configuration from a deployed course microsite. This is for students in courses that use ESF. If you are not in a course, you do not need it.
 ---
 
 ## The Process

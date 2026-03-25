@@ -50,7 +50,6 @@ When the user provides a course code, try to load the course configuration autom
 1. **Normalize the course code:** Convert to lowercase, replace spaces with hyphens (e.g., "AI 180" becomes "ai-180").
 
 2. **Try to fetch the course config.** Use WebFetch or Bash curl to try these sources in order:
-   - **Local file:** `.claude/course-config.json` or `.claude/course-config.yaml` (may have been placed by the install script's `--course` flag)
    - **Microsite:** `https://astro-{code}.vercel.app/course-config.json`
    - **GitHub:** `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/courses/{code}.yaml`
 
