@@ -172,5 +172,5 @@ INSTALLER_URL="https://raw.githubusercontent.com/nmadrid27/esf-companion/main/in
 curl -fsSL "$INSTALLER_URL" | bash
 
 echo ""
-echo -e "${GREEN}All done.${NC} Your portfolio repo is ready at: $(pwd)"
+echo -e "${GREEN}All done.${NC} Your project repo is ready at: $(pwd)"
 echo ""
