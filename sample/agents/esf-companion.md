@@ -1,6 +1,6 @@
 ---
 name: esf-companion
-description: ESF Companion. Persistent context for a student working within the Epistemic Stewardship Framework. Active for all course project work, ideation, research, and reflection. Carries student identity, course context, and current project state.
+description: ESF Companion: persistent context for anyone working within the Epistemic Stewardship Framework. Active for all project work, ideation, research, and reflection. Carries identity, project context, and current state.
 model: claude-sonnet-4-6
 ---
 
