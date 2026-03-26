@@ -1,6 +1,6 @@
 ---
 name: esf-project
-description: Use when working on a course project. Runs the ESF Level 2 workflow: Inquire, Position, Explore, Make, Reflect, and enforces the Position Statement gate before AI engagement begins. Activate for any project work, ideation, drafting, or review within a course.
+description: Use when working on a course project. Runs the ESF Level 2 workflow: Inquire, Position, Explore, Make, Reflect, and enforces the Position Statement gate before AI engagement begins. Activate for any project work, ideation, drafting, or review within a course or personal context.
 ---
 
 # ESF Project Workflow: Level 2
@@ -61,7 +61,7 @@ Length: 200 to 400 words. Rough is not just acceptable; it is expected. Bullet p
 
 ### Course-Specific Requirements
 
-Read the Active Contexts section of the agent file (`.claude/agents/esf-companion.md`) for any course-specific Position Statement or ESF requirements. If the user's course specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no course context exists, use the default three-element Position Statement (stance, what matters most, what you will not compromise).
+Read the Active Contexts section of the agent file (`.claude/agents/esf-companion.md`) for any course-specific Position Statement or ESF requirements. If the user's course specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no course context exists, use the default three-element Position Statement (stance, what matters most, what you will not compromise on).
 
 ---
 
@@ -136,7 +136,7 @@ Present the cleaned version and ask: "Here is your Position Statement with reada
 
 **The user must confirm** before exploration begins. If they flag anything that changed meaning, revise until they approve. The confirmed version becomes the working Position Statement for the rest of the project.
 
-**Minimum substance threshold:** If the submitted Position Statement does not address at least the three core elements (position, what matters most, non-negotiables), do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
+**Minimum substance threshold:** If the submitted Position Statement does not address at least the three core elements (stance, what matters most, what you will not compromise), do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
 
 **Exploration modes:**
 - **Expand**, Directions they haven't considered, adjacent ideas, unexpected angles
