@@ -1,6 +1,6 @@
 # ESF Companion: Walkthrough
 
-A step-by-step guide to using the ESF Companion. Start here after installing.
+A process reference and 10-minute worked example. For first steps after installing, see [START_HERE.md](START_HERE.md).
 
 ---
 

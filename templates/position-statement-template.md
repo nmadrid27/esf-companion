@@ -29,7 +29,7 @@ date: ""
 
 ---
 
-## Element 3: What I Will Not Compromise
+## Element 3: What I Will Not Compromise On
 
 *The line AI will not cross. What decisions, judgments, or creative choices remain entirely mine?*
 
