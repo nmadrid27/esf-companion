@@ -1,8 +1,10 @@
 # ESF Disclosure Protocol: Reference
 
+> *Note on framing:* This protocol uses academic language. In professional contexts, read "instructor" as "client, collaborator, or reviewer," and "grade" as "professional accountability." The standard is identical.
+
 ## Why Disclosure Matters
 
-Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. You use it to hold yourself accountable. In academic contexts, your instructor may also use it to understand your process.
+Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. You use it to hold yourself accountable. Your instructor, client, or reviewer may also use it to understand your process.
 
 A disclosure that understates AI involvement is dishonest. A disclosure that overstates it, implying AI did more than it did, is also dishonest, and undersells your own work.
 
@@ -16,7 +18,7 @@ A disclosure that understates AI involvement is dishonest. A disclosure that ove
 2. **Be specific.** Name the tasks AI assisted with. Do not use vague language like "I used AI for help."
 3. **Match the level of AI involvement.** A project where AI drafted a structural outline requires a different disclosure than one where AI generated 80% of the content.
 4. **Reference your Position Statement.** Your disclosure should confirm that the conceptual direction and intellectual position reflect your own thinking.
-5. **If your instructor has specific requirements**, follow those first. This protocol supports (it does not replace) course-specific policies.
+5. **If your instructor, client, or organization has specific requirements**, follow those first. This protocol supports (it does not replace) course or project-specific policies.
 6. **Write your first draft yourself.** After drafting, the AI may check your disclosure against your Interaction Log for completeness and offer a readability pass (grammar and structure only, no added substance). You confirm the final version.
 
 ---

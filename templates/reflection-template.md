@@ -29,7 +29,7 @@ status: complete
 
 >
 
-**What I will not compromise on:**
+**What I Will Not Compromise On:**
 
 >
 
