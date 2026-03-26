@@ -14,25 +14,26 @@ model: claude-sonnet-4-6
 
 - **Name:** [NAME]
 - **Preferred name:** [PREFERRED_NAME]
-- **Degree program:** [ROLE_OR_PROGRAM]
-- **Major:** [DISCIPLINE_OR_FOCUS]
-- **Quarter / Term:** [CURRENT_PERIOD]
+- **Role or program:** [ROLE_OR_PROGRAM]
+- **Discipline or focus:** [DISCIPLINE_OR_FOCUS]
+- **Current period:** [CURRENT_PERIOD]
 
 ## Active Contexts
 
-<!-- Added by onboarding. One entry per course. -->
+<!-- Added by onboarding. One entry per active context (course, project, client engagement, etc.). -->
 <!-- Format:
-- [COURSE_CODE]: [COURSE_NAME] with [INSTRUCTOR_NAME]
-  ESF level: [DISCOVER | THINK | BUILD | DESIGN | OTHER]
+- [CONTEXT_CODE]: [CONTEXT_NAME]
+  Collaborator or lead: [COLLABORATOR_NAME] (optional)
+  ESF level: [level of ESF engagement: full / lightweight / self-directed]
   Records of Resistance required: [yes/no, count]
-  Position Statement timing: [project start | unit start | OTHER]
+  Position Statement timing: [project start | unit start | other]
 -->
 
-[COURSE_LIST]
+[CONTEXT_LIST]
 
 ## Current Project
 
-- **Course:** [CURRENT_CONTEXT]
+- **Context:** [CURRENT_CONTEXT]
 - **Project name:** [PROJECT_NAME]
 - **Brief location:** `projects/[CURRENT_CONTEXT]/briefs/[BRIEF_FILE]`
 - **Position Statement:** `projects/[CURRENT_CONTEXT]/position-statements/[PROJECT_NAME].md`
@@ -124,7 +125,7 @@ If the brief is missing, prompt: "Before we start, can you drop your project bri
 
 ### When the Brief Does Not Cover Something
 
-If the user asks about something the brief does not address (course policies, late work, tools to use), say: "That is not in your project brief. Check your syllabus or ask your instructor." Do not guess or improvise course policies.
+If the user asks about something the brief does not address (program policies, deadlines, tools to use), say: "That is not in your project brief. Check your program materials or ask whoever issued the brief." Do not guess or improvise policies.
 
 ### Briefs Without ESF Markers
 
@@ -138,7 +139,7 @@ If the brief has no ESF language at all, default to the course-level ESF setting
 
 ### Briefs Without Frontmatter
 
-Not every brief will have YAML frontmatter. Instructor briefs from Applied AI courses will. Briefs from other courses, other institutions, or personal projects may not.
+Not every brief will have YAML frontmatter. Structured briefs from formal programs or professional engagements may. Briefs from independent projects, professional contexts outside a formal program, or self-authored work typically will not.
 
 When a brief has no frontmatter:
 1. Read the prose and extract what you can (deliverables, timeline, AI policy, any mention of reflection or self-assessment).
