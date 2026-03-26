@@ -281,6 +281,8 @@ If any answer is **no**, you have three options:
 
 *Each level maps to increasing professional independence: from guided exploration to directing your own process. By Level 4, you are operating the way senior creatives work with AI in studios and agencies.*
 
+**Phases are the per-project process.** You run all five phases on every project, at every level. **Engagement levels are your position in the curriculum.** You progress through levels over multiple courses as your practice matures. They are independent: a Level 4 user still completes all five phases on each project.
+
 Your process deepens across the AI curriculum.
 
 | Stage | Level | What Changes |
