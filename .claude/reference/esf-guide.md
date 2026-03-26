@@ -1,6 +1,8 @@
 # The Epistemic Stewardship Framework
 ## Implementation Guide
 
+> *Note on framing:* This guide uses academic language throughout. In professional or personal contexts, read "instructor" as "client, collaborator, or creative director," and "assignment" as "project or deliverable." The process is identical.
+
 ---
 
 ## A. Why This Matters to You
@@ -82,7 +84,9 @@ The Position Statement should take 5–10 minutes. Those minutes are where the l
 Write the Position Statement offline, without AI assistance. This means not asking an AI tool to help you think through your position, suggest a structure, or prompt you with questions.
 Even well-intentioned AI questions introduce framing before you form your own position. Asking AI "What should I be thinking about?" still yields an AI-shaped position.
 
-Your Position Statement does not need to be polished. Rough outlines, bullet points, fragments, and incomplete sentences are all acceptable. What matters is that it captures your direction, not that it reads well. When you bring the Position Statement into Phase 3, the AI's first action will be a readability pass: cleaning up grammar and sentence structure without changing your ideas. You will review the cleaned version and confirm it still says what you meant before any exploration begins.
+*Accessibility exception:* If you cannot write due to a processing barrier, or if verbal expression works better for you than writing, conversational drafting is available. Tell the AI you need articulation support. It will ask you three questions: What are you making? What matters most? What will you not compromise on? Answer in whatever form you can. The AI structures your answers into a Position Statement draft, reads it back, and asks if it sounds like you. The ideas must be yours; the structure is the AI's contribution.
+
+Your Position Statement does not need to be polished. Rough outlines, bullet points, fragments, and incomplete sentences are all acceptable. All three elements must still be present: your position, what matters most, and your non-negotiables. Rough form is fine; missing elements are not. What matters is that it captures your direction, not that it reads well. When you bring the Position Statement into Phase 3, the AI's first action will be a readability pass: cleaning up grammar and sentence structure without changing your ideas. You will review the cleaned version and confirm it still says what you meant before any exploration begins.
 
 **Human Gate:** *Have I written my position before consulting AI?* The position must exist before you open an AI tool on this project, and before you ask AI any process questions about how to write it. This is not a suggestion. It is the mechanism that protects your intellectual ownership of everything that follows.
 
@@ -104,9 +108,9 @@ With your Position Statement as an anchor, you can engage AI output critically, 
 - Use AI to find relevant sources, examples, or data, then verify them independently.
 - Track what the AI suggests and what you think about each suggestion. This is the raw material for your process artifacts in Phase 5.
 
-**The Five Questions activate here.** From this point forward, apply them at every significant decision:
+**The Five Questions activate in Phase 3 and remain active through Phase 5.** Apply them at every significant decision from this point forward, and at the end of each major section in Phase 4:
 
-1. **Can I defend this?** Could I explain this to my instructor without saying "the AI suggested it"?
+1. **Can I defend this?** Could I explain this to my instructor, collaborator, or reviewer without saying "the AI suggested it"?
 2. **Is this mine?** Did I direct this, or did I accept the AI's framing because it sounded reasonable? "Mine" means you exercised design authority, not that you wrote every word. The test: did the AI perform the judgment through which your professional knowledge develops? If so, you have given up more than authorship.
 3. **Did I verify?** Have I checked factual claims, sources, and data independently?
 4. **Would I teach this?** Could I explain my reasoning to a classmate?
@@ -205,6 +209,8 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 The five-phase process is the same at every level. What changes is how much support you get at each gate and how much independence you exercise.
 
 > **Note on evidence base:** The four engagement levels and their readiness indicators are theoretically grounded in research on scaffolded learning, Socratic inquiry, and metacognitive development. They have not yet been empirically validated against actual user progression data. The thresholds, readiness indicators, and level descriptions reflect the framework author's professional judgment and pedagogical experience, not measured outcomes. Treat the levels as a useful developmental map, not a tested diagnostic instrument. As ESF is applied in more courses and contexts, these levels will be revised based on observed user development.
+
+If you are in a structured AI curriculum, these levels correspond to the course stages in that sequence: Discovery (DISCOVER), Guided Use (THINK), Independent Use (BUILD), Critical Partnership (DESIGN).
 
 ### Level 1: Discovery
 

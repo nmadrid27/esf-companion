@@ -21,6 +21,12 @@ One log per project or document. Update it as you work.
 | **What I changed** | [What I revised, rewrote, or rejected] |
 | **My contribution** | [What I created independently: structure, argument, direction, edits] |
 
+**Verification** (fill in if AI produced factual claims, sources, or data):
+
+| Claim or source | Checked? | Result |
+|---|---|---|
+|   |   |   |
+
 ### Session 2 — [Date]
 
 [Copy the table above for each session]
