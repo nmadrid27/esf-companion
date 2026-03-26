@@ -15,24 +15,26 @@
 1. Product Overview
 2. Core Loop
 3. Scaffolding Modes
-4. Cognitive Techniques Engine [v2]
+4. Cognitive Techniques Engine [SHIPPING]
 5. Architecture
 6. Brief-Driven Guidance
 7. Universal Onboarding
 8. Memory Architecture
 9. Operational Mechanics
 10. Position Statement Mechanism
-11. Cognitive Friction [v2]
+11. Cognitive Friction [SHIPPING]
 12. Boundaries and Accessibility
 13. Research Foundation
 14. Success Metrics
 15. Version Roadmap
 
-Items marked [v2] or [v3] are roadmap features, not v1 scope.
+Status tags: **[SHIPPED]** fully implemented. **[SHIPPING]** being implemented this session. **[PARTIAL]** partially implemented. **[ROADMAP]** future work.
+
+Items marked [v3] are roadmap features outside current scope.
 
 ---
 
-## 1. Product Overview
+## 1. Product Overview [SHIPPED]
 
 ### Core Problem
 
@@ -60,7 +62,7 @@ Grounded in Tankelevitch et al. (2024, CHI Best Paper) on metacognitive demands,
 
 One loop. Every user, every project, every session.
 
-**Position → Work → Monitor → Surface → Decide**
+**Position → Work → Monitor → Surface → Decide** [SHIPPED]
 
 1. **Position.** Before AI enters, the user writes their stance: what they are making, what matters most, what they will not compromise. This is the anchor.
 
@@ -71,8 +73,8 @@ One loop. Every user, every project, every session.
    - **Agency drift:** the user is accepting AI output without evaluation.
 
 4. **Surface.** When drift is detected, the Companion makes it visible. Always Socratic, never prescriptive: "Your Position Statement says X. The work is heading toward Y. Is that intentional?"
-   - **Mirror mode (default):** surfaces drift, user decides. No gates.
-   - **Gate mode (educator-activated via brief frontmatter):** surfaces drift and enforces hard stops at Five Questions. If the student cannot answer, the Companion redirects to the Position Statement.
+   - **Mirror mode (default):** surfaces drift, user decides. No gates. [SHIPPED]
+   - **Gate mode (educator-activated via brief frontmatter):** surfaces drift and enforces hard stops at Five Questions. If the student cannot answer, the Companion redirects to the Position Statement. [SHIPPED]
 
 5. **Decide.** The user chooses: correct the drift, update the position (deliberate pivot), or continue (acknowledged deviation). All three are valid. The point is the decision is conscious.
 
@@ -80,7 +82,7 @@ One loop. Every user, every project, every session.
 
 ## 3. Scaffolding Modes
 
-### Three Levels
+### Three Levels [PARTIAL]
 
 | Level | Who gets it | How it works |
 |-------|------------|-------------|
@@ -94,13 +96,13 @@ One loop. Every user, every project, every session.
 2. The user confirms or overrides.
 3. The Companion can push back if a user selects Independent but shows persistent unacknowledged drift.
 
-### The Scaffolding Floor
+### The Scaffolding Floor [SHIPPED]
 
 Drift detection is always on. It is not an ESF construct. It is the Companion's baseline behavior. Even a user who opts out of all ESF constructs (no Position Statement, no Records of Resistance, no Five Questions) still gets drift flags and access to cognitive techniques.
 
 ---
 
-## 4. Cognitive Techniques Engine [v2]
+## 4. Cognitive Techniques Engine [SHIPPING]
 
 Five research-backed techniques the Companion can guide in real time:
 
@@ -112,34 +114,34 @@ Five research-backed techniques the Companion can guide in real time:
 | **Random stimulus** | "Force a connection between this arbitrary input and your project." | Agency drift: accepting AI defaults without pushing back. |
 | **Perspective shift** | "Adopt the position of someone who would never approach this your way." | Proactively at Explore phase. Reactively when work and Position Statement converge too neatly. |
 
-**Proactive cadence:** One technique per phase transition.
-**Reactive triggers:** Fixation, agency drift, fluency collapse, convergence.
+**Proactive cadence:** One technique per phase transition. [SHIPPING]
+**Reactive triggers:** Fixation, agency drift, fluency collapse, convergence. [SHIPPING]
 
-**v1 note:** The existing Phase 3 exploration modes and Phase 4 drift detection provide the foundation. The structured five-technique engine with proactive/reactive cadence ships in v2.
+**Note:** The existing Phase 3 exploration modes and Phase 4 drift detection provide the foundation. The structured five-technique engine with proactive/reactive cadence is shipping this session via the esf-cognitive skill.
 
 ---
 
 ## 5. Architecture
 
-### One Repo, One Install
+### One Repo, One Install [SHIPPED]
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
-### Multi-Platform Install
+### Multi-Platform Install [SHIPPED]
 
 The install script detects or asks the platform, then installs only what that user needs:
 
-| Platform | What gets installed |
-|----------|-------------------|
-| **Claude Code** | `.claude/` directory (agents, skills, reference) |
-| **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) |
-| **Gemini CLI** | `GEMINI.md` format |
-| **Codex CLI** | `.codex/` directory |
-| **Other / Not sure** | `COMPANION.md` (universal system prompt) |
+| Platform | What gets installed | Status |
+|----------|-------------------|--------|
+| **Claude Code** | `.claude/` directory (agents, skills, reference) | [SHIPPED] |
+| **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) | [ROADMAP] |
+| **Gemini CLI** | `GEMINI.md` format | [ROADMAP] |
+| **Codex CLI** | `.codex/` directory | [ROADMAP] |
+| **Other / Not sure** | `COMPANION.md` (universal system prompt) | [SHIPPED] |
 
-**v1 scope:** Claude Code is the full experience. Other platforms get `prompts/` directory (manual paste, honest about limitations). Multi-platform install with `--platform` flag ships in v2.
+**v1 scope:** Claude Code is the full experience. Other platforms get the `prompts/` directory (manual paste, honest about limitations). Platform-specific files for ChatGPT, Gemini, and Codex are [ROADMAP].
 
 ### Repo Structure
 
@@ -156,12 +158,12 @@ esf-companion/
 ├── .claude/                     # Claude Code (v1 primary platform)
 │   ├── agents/esf-companion.md
 │   ├── skills/
-│   │   ├── esf-onboarding/
-│   │   ├── esf-project/
-│   │   ├── esf-cognitive/       [v2]
-│   │   ├── esf-git/
-│   │   ├── esf-verify/
-│   │   └── esf-update/
+│   │   ├── esf-onboarding/      [SHIPPED]
+│   │   ├── esf-project/         [SHIPPED]
+│   │   ├── esf-cognitive/       [SHIPPING]
+│   │   ├── esf-git/             [SHIPPED]
+│   │   ├── esf-verify/          [SHIPPED]
+│   │   └── esf-update/          [SHIPPED]
 │   └── reference/
 │
 ├── prompts/                     # Non-Claude platforms (manual paste)
@@ -175,13 +177,13 @@ esf-companion/
 
 ### Three Paths In
 
-| Path | User action | Companion response |
-|------|-----------|-------------------|
-| **Drop a file** | Places `.md`, `.pdf`, `.docx`, or `.txt` in `projects/[name]/briefs/` | Reads frontmatter first (instant). If none, reads prose and asks clarifying questions. |
-| **Paste or describe** | Pastes text or describes project verbally | Extracts structure, generates formatted brief, asks "does this capture it?" |
-| **Build from scratch** | Says "I'm starting a new project" | Asks 5 questions: what, deliverables, AI boundaries, deadline, ESF preference. Generates and saves the brief. |
+| Path | User action | Companion response | Status |
+|------|-----------|-------------------|----|
+| **Drop a file** | Places `.md`, `.pdf`, `.docx`, or `.txt` in `projects/[name]/briefs/` | Reads frontmatter first (instant). If none, reads prose and asks clarifying questions. | [SHIPPED] |
+| **Paste or describe** | Pastes text or describes project verbally | Extracts structure, generates formatted brief, asks "does this capture it?" | [PARTIAL] |
+| **Build from scratch** | Says "I'm starting a new project" | Asks 5 questions: what, deliverables, AI boundaries, deadline, ESF preference. Generates and saves the brief. | [PARTIAL] |
 
-### Three-Value Frontmatter Fields
+### Three-Value Frontmatter Fields [SHIPPED]
 
 `position-statement` and `five-questions` accept three values:
 
@@ -203,7 +205,7 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 **Step 1: Platform.** From install flag or first question.
 
-**Step 2: Who are you.** One open question: "Tell me about yourself and what you do." The Companion infers context without categorizing. Confirms understanding.
+**Step 2: Who are you.** One open question: "Tell me about yourself and what you do." The Companion infers context without categorizing. Confirms understanding. [SHIPPING]
 
 **Step 3: First project (optional).** "Are you starting a specific project, or is this general setup?"
 
@@ -211,21 +213,21 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 **Step 5: Workspace creation.** Adapted to what the Companion learned about the user.
 
-### Onboarding does NOT:
+### Onboarding does NOT: [SHIPPING]
 - Ask "are you a student or faculty?"
 - Ask for scaffolding level preference (determined later, from Position Statement)
 - Ask the user to write a Position Statement during setup
 
-### Addressed Gaps
+### Addressed Gaps [PARTIAL]
 
-| Scenario | Solution |
-|----------|---------|
-| Self-motivated student, no institutional context | Calibrating question: "Have you felt AI start driving your direction instead of you?" |
-| Educator creating briefs | Guided walkthrough generating complete briefs with all ESF chain elements |
-| Professional, confidentiality concern | Local-only assurance, `.gitignore` guidance, conversation platform trade-off named |
-| Explorer returns after weeks | No guilt, fresh start, first Position Statement gets full explanation |
-| Platform migration | Migrate/fresh/cancel options, manual import help |
-| Multiple concurrent projects | Active project selection at session start, locked context per session |
+| Scenario | Solution | Status |
+|----------|---------|--------|
+| Self-motivated student, no institutional context | Calibrating question: "Have you felt AI start driving your direction instead of you?" | [SHIPPING] |
+| Educator creating briefs | Guided walkthrough generating complete briefs with all ESF chain elements | [SHIPPED] |
+| Professional, confidentiality concern | Local-only assurance, `.gitignore` guidance, conversation platform trade-off named | [SHIPPED] |
+| Explorer returns after weeks | No guilt, fresh start, first Position Statement gets full explanation | [SHIPPED] |
+| Platform migration | Migrate/fresh/cancel options, manual import help | [ROADMAP] |
+| Multiple concurrent projects | Active project selection at session start, locked context per session | [SHIPPED] |
 
 ---
 
@@ -233,11 +235,11 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 ### Three Layers
 
-| Layer | What it holds | Where it lives | Persistence |
-|-------|-------------|---------------|-------------|
-| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `.claude/agents/esf-companion.md` | Permanent, updated at project completion |
-| **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `projects/[name]/PROJECT.md` | Per project, updated each session |
-| **Session memory** | Decisions made, techniques used, drift flagged | `projects/[name]/logs/session-YYYY-MM-DD.md` | Created each session |
+| Layer | What it holds | Where it lives | Persistence | Status |
+|-------|-------------|---------------|-------------|--------|
+| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `.claude/agents/esf-companion.md` | Permanent, updated at project completion | [SHIPPED] |
+| **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `projects/[name]/PROJECT.md` | Per project, updated each session | [SHIPPED] |
+| **Session memory** | Decisions made, techniques used, drift flagged | `projects/[name]/logs/session-YYYY-MM-DD.md` | Created each session | [SHIPPED] |
 
 ### Session Start Protocol
 
@@ -247,9 +249,9 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 4. Read most recent session log's "Next Session" section
 5. Orient the user
 
-### Conversation-Platform Users
+### Conversation-Platform Users [PARTIAL]
 
-`PROJECT.md` is the portable context object. Short enough to paste (10 to 15 lines). The Companion generates an updated version at session end for the user to save.
+`PROJECT.md` is the portable context object. Short enough to paste (10 to 15 lines). The Companion generates an updated version at session end for the user to save. Generation at session end is documented in esf-project but no auto-generation for initial setup exists for conversation users.
 
 ### Addressed Gaps
 
@@ -265,11 +267,11 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 ### Who Does What
 
-| Artifact | Generated by | User's role | When |
-|----------|-------------|-------------|------|
-| **Record of Resistance** | User writes, Companion prompts and pre-fills "what AI produced" | Writes the reasoning (why rejected, what instead) | Real-time, when rejection happens |
-| **AI Use Log** | Companion auto-drafts from session | Reviews, corrects, approves | End of each session |
-| **Disclosure Statement** | Companion drafts from accumulated logs and RoRs | Reviews, edits, owns | At milestones and project close |
+| Artifact | Generated by | User's role | When | Status |
+|----------|-------------|-------------|------|--------|
+| **Record of Resistance** | User writes, Companion prompts and pre-fills "what AI produced" | Writes the reasoning (why rejected, what instead) | Real-time, when rejection happens | [SHIPPING] |
+| **AI Use Log** | Companion auto-drafts from session | Reviews, corrects, approves | End of each session | [SHIPPING] |
+| **Disclosure Statement** | Companion drafts from accumulated logs and RoRs | Reviews, edits, owns | At milestones and project close | [SHIPPING] |
 
 ### Records of Resistance Detail
 
@@ -287,7 +289,7 @@ Generated at two points: milestone checkpoints (if brief defines milestones) and
 
 ## 10. Position Statement Mechanism
 
-### Three Reference Points
+### Three Reference Points [SHIPPED]
 
 The Companion extracts:
 
@@ -305,19 +307,19 @@ Course-specific alias: "Design Intent" (AI 201).
 
 ### Key Behaviors
 
-- **Vague statements rejected.** The Companion asks specificity questions until the statement is trackable.
-- **Understanding confirmed.** The Companion reflects back its reading before work begins.
-- **Readability pass offered, not assumed.** "Want me to clean up the language?"
-- **Versioning for pivots.** When the user deliberately changes direction, the Companion saves v1 and creates v2 with reasoning. The disclosure references the full arc.
-- **Milestone comparison.** Automatic when brief defines milestones. Offered at project midpoint otherwise.
+- **Vague statements rejected.** The Companion asks specificity questions until the statement is trackable. [SHIPPED]
+- **Understanding confirmed.** The Companion reflects back its reading before work begins. [SHIPPED]
+- **Readability pass offered, not assumed.** "Want me to clean up the language?" [SHIPPED]
+- **Versioning for pivots.** When the user deliberately changes direction, the Companion saves v1 and creates v2 with reasoning. The disclosure references the full arc. [SHIPPED]
+- **Milestone comparison.** Automatic when brief defines milestones. Offered at project midpoint otherwise. [SHIPPED]
 
-### Conversational Drafting (accessibility)
+### Conversational Drafting (accessibility) [SHIPPED]
 
 For users who cannot write due to processing barriers, the Companion asks the three Position Statement questions aloud and drafts from their answers. The ideas are the user's. The structure is the Companion's contribution. The user confirms the meaning is preserved before proceeding. This is articulation support, not content generation.
 
 ---
 
-## 11. Cognitive Friction [v2]
+## 11. Cognitive Friction [SHIPPING]
 
 ### Convergence Signals
 
@@ -352,13 +354,13 @@ For users who cannot write due to processing barriers, the Companion asks the th
 - **Competent but stagnant:** project-close growth question
 - **Collaborative work:** friction is personal, per user's own Position Statement
 
-**v1 note:** The existing Phase 3 exploration and Phase 4 drift detection provide baseline friction. The structured convergence detection and proactive cadence ship in v2.
+**Note:** The existing Phase 3 exploration and Phase 4 drift detection provide baseline friction. The structured convergence detection and proactive cadence are shipping this session.
 
 ---
 
 ## 12. Boundaries and Accessibility
 
-### What the Companion Does NOT Do
+### What the Companion Does NOT Do [SHIPPED]
 
 - **Does not originate Position Statement ideas.** Helps articulate through conversational drafting. Never drafts content.
 - **Does not produce deliverables.** Helps think through the work. Does not generate it.
@@ -373,28 +375,28 @@ For users who cannot write due to processing barriers, the Companion asks the th
 All adaptations available to everyone. No labels. No disclosure required. Calibrated through "how do you prefer to work?"
 
 **ADHD support:**
-- Small questions instead of documents for Position Statement
-- Checkpoint saves ("save where you are, pick up next time")
-- Thread tracking for context-switching between project aspects
-- Gentle interrupts during extended unbroken work (hyperfocus check)
+- Small questions instead of documents for Position Statement [SHIPPED]
+- Checkpoint saves ("save where you are, pick up next time") [ROADMAP]
+- Thread tracking for context-switching between project aspects [ROADMAP]
+- Gentle interrupts during extended unbroken work (hyperfocus check) [SHIPPED]
 
 **Dyslexia support:**
-- Conversational drafting (talk through ideas, Companion structures)
-- Brief summarization ("walk through deliverables one at a time")
-- Pre-filled Records of Resistance (Companion fills "what AI produced")
-- Auto-generated session logs (user reviews, does not write from scratch)
+- Conversational drafting (talk through ideas, Companion structures) [SHIPPED]
+- Brief summarization ("walk through deliverables one at a time") [SHIPPED]
+- Pre-filled Records of Resistance (Companion fills "what AI produced") [SHIPPING]
+- Auto-generated session logs (user reviews, does not write from scratch) [SHIPPING]
 
 **Autism support:**
-- Explicit schedule on request ("I will check in once during Make phase and once before your milestone")
-- Direct expectations ("Right now I need you to answer three questions")
-- Structured alternatives to open-ended Socratic questions
-- "Less interruption today" scales back to essential drift flags only
+- Explicit schedule on request ("I will check in once during Make phase and once before your milestone") [SHIPPING]
+- Direct expectations ("Right now I need you to answer three questions") [SHIPPED]
+- Structured alternatives to open-ended Socratic questions [ROADMAP]
+- "Less interruption today" scales back to essential drift flags only [SHIPPING]
 
 **Research basis:** Zhu, Yu & Luo (2026, CHI): GenAI metacognitive scaffolding for ADHD. Kalmanovich-Cohen & Stanton (2025): 81% of neurodivergent employees mask; universal design delivers implicit support. Carik et al. (2025): neurodivergent users already use LLMs as translators. Goodman et al. (2024): AI writing scaffolding for dyslexic adults. Full citations in Section 13.
 
 ---
 
-## 13. Research Foundation
+## 13. Research Foundation [SHIPPED]
 
 ### Core Architecture
 
@@ -456,7 +458,7 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 ---
 
-## 14. Success Metrics
+## 14. Success Metrics [SHIPPED]
 
 ### Individual Users
 
@@ -496,42 +498,38 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 ## 15. Version Roadmap
 
-### v1: Claude Code + Applied AI Students (current, refine)
+### v1: Claude Code + Applied AI Students [SHIPPING]
 
 **Audience:** Students with instructor briefs on Claude Code.
 
-**Scope:**
-- Five-phase workflow (esf-project skill, production-ready)
-- Brief-driven guidance with frontmatter extraction
-- Drift detection (direction + agency)
-- Position Statement mechanism with versioning
-- Records of Resistance (prompted, pre-filled)
-- AI Use Log (auto-generated)
-- Disclosure Statement (at milestones + close)
-- Session memory (PROJECT.md + session logs)
-- Self-authored briefs for personal projects
-- Conversational drafting for Position Statement (accessibility)
-- Universal onboarding (no role labels)
-- `prompts/` directory for non-Claude platforms (manual paste, honest about limitations)
+**Shipped:**
+- Five-phase workflow (esf-project skill, production-ready) [SHIPPED]
+- Brief-driven guidance with frontmatter extraction [SHIPPED]
+- Drift detection (direction + agency) [SHIPPED]
+- Position Statement mechanism with versioning [SHIPPED]
+- Session memory (PROJECT.md + session logs) [SHIPPED]
+- Self-authored briefs for personal projects [SHIPPED]
+- Conversational drafting for Position Statement (accessibility) [SHIPPED]
+- `prompts/` directory for non-Claude platforms (manual paste, honest about limitations) [SHIPPED]
 
-**Fixes before shipping:**
-- Resolve naming: rename from "ESF Companion" to "ESF Companion" across all files
-- Standardize Position Statement terminology (stance / what matters most / what I will not compromise)
-- Add Position Statement versioning (v1, v2 with pivot reasoning)
-- Add conversational drafting exception to Phase 2 gate language
-- Add PROJECT.md generation at session end
+**Shipping this session:**
+- Cognitive techniques engine (five techniques, proactive/reactive cadence) [SHIPPING]
+- Cognitive friction as active behavior (convergence detection, friction moves) [SHIPPING]
+- Records of Resistance (prompted, pre-filled) [SHIPPING]
+- AI Use Log (auto-generated) [SHIPPING]
+- Disclosure Statement (at milestones + close) [SHIPPING]
+- Universal onboarding (no role labels, one open question) [SHIPPING]
 
-### v2: Universal Tool + Cognitive Techniques
+### v2: Universal Tool + Full Conversation Platform
 
-**Audience:** Students, professionals, graduates on Claude Code. Improved multi-platform support.
+**Audience:** Students, professionals, graduates on Claude Code and conversation platforms.
 
 **Adds:**
-- Cognitive techniques engine (five techniques, proactive/reactive cadence)
-- Cognitive friction as active behavior (convergence detection, friction moves)
+- Full conversation-platform experience (PROJECT.md auto-generation, context restoration)
+- Platform migration (migrate/fresh/cancel)
 - Educator brief-authoring walkthrough
-- Neurodivergent accessibility features (ADHD, dyslexia, autism adaptations)
+- Neurodivergent accessibility: checkpoint saves, thread tracking, structured Socratic alternatives
 - Identity recalibration (every 3 projects)
-- Multi-platform install with `--platform` flag
 - Platform-specific configuration files (ChatGPT, Gemini, Codex)
 - Growth Record with development tracking
 
@@ -540,8 +538,6 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 **Audience:** Everyone, every platform.
 
 **Adds:**
-- Full conversation-platform experience (PROJECT.md auto-generation, context restoration)
-- Platform migration (migrate/fresh/cancel)
 - Educator dashboard or progress visibility (opt-in by student)
 - Collective/cohort-level homogenization detection
 - Framework Evolution Protocol (built-in self-revision mechanism)

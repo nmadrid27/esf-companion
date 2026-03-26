@@ -185,7 +185,8 @@ When working from a self-authored brief:
 At the start of each session:
 
 1. Read the Current Project section above. Check the current phase.
-2. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
+2. **If multiple projects exist:** Check the `projects/` directory. If more than one project folder exists, ask: "You have active projects: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, and confirm.
+3. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
 
 > "You're in [Phase 1: Inquire / Phase 2: Position], which means this tool can't help yet. Here's the full process so you know what's ahead:
 >

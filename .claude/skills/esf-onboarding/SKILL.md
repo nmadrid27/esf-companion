@@ -168,35 +168,26 @@ If `vocabulary.pipeline_distinction` exists, add:
 
 ---
 
-### Step 6: Update Skill Addendum Blocks
+### Step 6: Write Course Context to Agent File (if applicable)
 
-For each course with specific ESF requirements, update the `[COURSE_ADDENDUM]`, `[COURSE_ADDENDUM_MAKE]`, and `[COURSE_LEVEL_ADDENDUM]` blocks in `.claude/skills/esf-project/SKILL.md`.
+If the user provided course information in Step 3, write it to the Active Contexts section of the agent file (`.claude/agents/esf-companion.md`). Do NOT edit any skill files. All personalization lives in the agent context only.
 
-Replace each comment block with the appropriate course-specific text based on the course level classification above.
-
-**For THINK level, `[COURSE_ADDENDUM]` becomes:**
+For course users, add to the Active Contexts section:
 ```
-**THINK level: Position Statement note:**
-Your Position Statement should also note where you plan to use AI in this project:
-which tasks you'll delegate, and which you'll keep human-only. This becomes the
-basis for your Records of Resistance documentation.
+- [COURSE_CODE]: [COURSE_NAME] with [INSTRUCTOR]
+  Scaffolding: [Guided | Supported | Independent]
+  Records of Resistance: [requirement from course, e.g., "1 for P1, 3 for P2"]
+  Position Statement: [timing, e.g., "required before each project"]
 ```
 
-**For BUILD level, `[COURSE_ADDENDUM]` becomes:**
+For independent/professional users, add:
 ```
-**BUILD level: Design Intent note:**
-Your Position Statement should include a Design Intent section: your position on
-the creative/technical problem you're solving, the AI tools you plan to use and why,
-and what success looks like on your own terms before you've seen AI output.
+- [PROJECT_NAME]: [brief description]
+  Scaffolding: [Guided | Supported | Independent]
+  ESF level: [full | optional | drift-only]
 ```
 
-**For `[COURSE_LEVEL_ADDENDUM]`**, set the calibration note based on the highest-level course enrolled:
-- DISCOVER: lighter scaffolding, more encouraging tone
-- THINK: standard scaffolding, full gate enforcement
-- BUILD: reduced scaffolding, increased challenge and independence
-- DESIGN: self-directed; prompt them to define their own gates
-
-If the user is enrolled in multiple courses at different levels, use the highest level as the default calibration and note that lighter scaffolding is available for the lower-level course.
+The esf-project skill reads these entries at runtime to calibrate its behavior. No skill file mutation is needed.
 
 ---
 

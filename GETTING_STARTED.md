@@ -2,6 +2,8 @@
 entities: [ESF]
 ---
 
+> For a quick start, see [START_HERE.md](START_HERE.md). This document is a detailed walkthrough of a first-time user's experience, from install through Phase 3.
+
 # Getting Started: Install to First AI Session
 
 This walkthrough follows a first-time user from the moment they receive the toolkit URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.

@@ -59,20 +59,9 @@ Length: 200 to 400 words. Rough is not just acceptable; it is expected. Bullet p
 
 ---
 
-### [COURSE_ADDENDUM]
+### Course-Specific Requirements
 
-<!-- Populated by onboarding agent with course-specific Position Statement requirements.
-     Example for THINK level:
-
-     At the THINK level, your Position Statement should also note where you plan to use AI in
-     this project, which tasks you will delegate, and which you will keep human-only.
-     This becomes the basis for your Records of Resistance documentation.
-
-     Example for BUILD level:
-     At the BUILD level, your Position Statement should include a Design Intent section: your
-     position on the creative/technical problem you're solving, the AI tools you plan
-     to use and why, and what success looks like on your own terms.
--->
+Read the Active Contexts section of the agent file (`.claude/agents/esf-companion.md`) for any course-specific Position Statement or ESF requirements. If the user's course specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no course context exists, use the default three-element Position Statement (stance, what matters most, what you will not compromise).
 
 ---
 
@@ -226,23 +215,9 @@ Log each check result silently to the session buffer (drift level: none/minor/si
 
 ---
 
-### [COURSE_ADDENDUM_MAKE]
+### Course-Specific Make Phase Requirements
 
-<!-- Populated by onboarding agent with course-specific Make phase requirements.
-     Example for THINK level:
-     Track Records of Resistance for this project as required by your course syllabus:
-     moments where you deliberately chose to keep, revise, or reject an AI suggestion.
-     Document them in `projects/[course]/records-of-resistance/[project-name].md`.
-
-     Example for BUILD level:
-     Track Records of Resistance as required by your course syllabus. Each entry should
-     include: the AI suggestion, your decision, and your reasoning. These are assessed
-     as part of your project submission.
-
-     Build Practice note for BUILD level:
-     Your Studio Board should show weight tags ([H], [M], [L]) for each piece.
-     High-weight items move into "Making" first.
--->
+Read the Active Contexts section of the agent file for RoR requirements and any course-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Save each Record of Resistance as a separate file: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 ---
 
@@ -375,19 +350,15 @@ This replaces the generic "what are you working on?" opening with specific conte
 
 ---
 
-### [COURSE_LEVEL_ADDENDUM]
+### Scaffolding Calibration
 
-<!-- Populated by onboarding agent with course-level calibration.
-     Example for DISCOVER level:
-     This user is in their first AI course. Use lighter gate language, more
-     encouraging, less confrontational. More scaffolding at each phase. Expect
-     the Position Statement to be rough; that's appropriate for this level.
+Read the Active Contexts section of the agent file for the user's scaffolding level (Guided, Supported, or Independent). Calibrate tone and gate strictness accordingly:
 
-     Example for DESIGN level:
-     This user is designing AI systems. They should be designing their own
-     gates and process artifacts, not just following the ESF phases. Prompt
-     them to define their own gate criteria at the start of each project.
--->
+- **Guided:** Lighter gate language, more encouraging, more scaffolding at each phase. Expect rough Position Statements; that is appropriate. Explain the purpose of each step.
+- **Supported:** Standard gate enforcement. Direct tone. Check in at key moments but do not walk through every step.
+- **Independent:** Minimal interruption. The user runs their own process. Surface only significant drift. Challenge rather than scaffold.
+
+If no scaffolding level is set, default to Supported. Invoke the `esf-cognitive` skill for technique suggestions at phase transitions and when drift signals appear.
 
 ---
 

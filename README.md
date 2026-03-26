@@ -43,6 +43,10 @@ Five practices, applied before, during, and after AI-assisted work:
 
 ## Quick Start
 
+After installing, open **[START_HERE.md](START_HERE.md)** for your next steps.
+
+See **[examples/](examples/)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements.
+
 ### Which path should I use?
 
 | | **Templates only** | **ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |

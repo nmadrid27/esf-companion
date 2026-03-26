@@ -182,7 +182,7 @@ Without it, the Companion starts fresh and cannot compare your work to your orig
 ## Common Situations
 
 **"I want to start a second project."**
-Tell the Companion. It creates a new project folder. Each project has its own Position Statement and context. At session start, the Companion asks which project you are working on.
+Tell the Companion. It creates a new project folder. Each project has its own Position Statement and context. At the start of each session, the Companion asks which project you are working on.
 
 **"My Position Statement is wrong. I need to change direction."**
 Tell the Companion. It saves your current statement as v1 and helps you write a new one. The pivot is documented with your reasoning. Position Statement evolution is a feature, not a failure.
@@ -191,13 +191,18 @@ Tell the Companion. It saves your current statement as v1 and helps you write a 
 Say "less interruption today." The Companion scales back to essential drift flags only. No proactive check-ins, no friction questions. Just the baseline monitoring.
 
 **"I am stuck."**
-Tell the Companion. It offers a cognitive technique: lateral thinking, perspective shift, constraint manipulation, or analogical reasoning. These are structured exercises that help you break out of fixation. You choose whether to try one.
+Tell the Companion. It offers a cognitive technique to help you break out of fixation: lateral thinking (approach the problem from an unrelated angle), perspective shift (describe the project as if explaining it to someone in a different field), constraint manipulation (add or remove a constraint and see what opens up), or analogical reasoning (find a parallel problem in a different domain and examine how it was solved). You choose whether to try one.
 
 **"I finished my project."**
-The Companion runs a close-out: generates the final Disclosure Statement, updates your Growth Record with what you developed, and archives the project context. Your next project starts fresh with a new Position Statement.
+The Companion runs a close-out: it generates the final Disclosure Statement and updates your Growth Record with what you developed this project. Your next project starts fresh with a new Position Statement.
 
 **"I want to use this after I graduate."**
 Write your own briefs. The Companion works the same way with self-authored briefs as with instructor briefs. Set your own ESF level. The tool becomes a lifelong practice, not a course requirement.
+
+---
+
+For quick setup after install, see [START_HERE.md](START_HERE.md).
+For filled examples of Position Statements, Records of Resistance, and Disclosures, see [examples/](examples/).
 
 ---
 

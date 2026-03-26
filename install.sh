@@ -193,6 +193,8 @@ if [ "$PLATFORM" = "conversation" ]; then
   echo "  Templates are in the templates/ folder."
   echo "  The visual process diagram is in WORKFLOW.md."
   echo ""
+  echo "  For a quick overview, read START_HERE.md"
+  echo ""
   echo "  Want the full experience later? Re-run with Claude Code (option 1)."
   echo "──────────────────────────────────────"
   echo ""
@@ -341,6 +343,8 @@ else
   echo ""
   echo "  Onboarding takes about 5 minutes and sets up your identity,"
   echo "  project context, and folder structure."
+  echo ""
+  echo "  For a quick overview, read START_HERE.md"
   echo ""
   echo "  Starting a new project later? Re-run /esf-onboarding and say 'update'."
 fi
