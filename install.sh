@@ -59,7 +59,7 @@ echo "────────────────────────�
 # Warn if already installed
 if [ -d ".claude/agents" ] && [ -f ".claude/agents/esf-companion.md" ]; then
   if [ "$FORCE" = true ]; then
-    echo -e "${YELLOW}Force mode: overwriting existing installation.${NC}"
+    echo -e "${YELLOW}Force mode: skipping prompts. Existing customized files will be preserved.${NC}"
   else
     echo -e "${YELLOW}Warning: ESF Companion appears to already be installed.${NC}"
     read -r -p "Overwrite with the latest version? (y/N): " confirm </dev/tty
@@ -167,10 +167,11 @@ if [ "$PLATFORM" = "conversation" ]; then
   if [ ! -f "WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
   fi
+  fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
   # Auto-commit conversation toolkit files if in a git repo
   if [ -d ".git" ]; then
-    git add prompts/ templates/ WORKFLOW.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
+    git add prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
     git commit -m "Install ESF Companion (conversation mode)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
   fi
@@ -223,10 +224,11 @@ fi
 echo "  Fetching skills..."
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-onboarding/SKILL.md" -o .claude/skills/esf-onboarding/SKILL.md
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-project/SKILL.md"    -o .claude/skills/esf-project/SKILL.md
-mkdir -p .claude/skills/esf-git .claude/skills/esf-verify .claude/skills/esf-update
+mkdir -p .claude/skills/esf-git .claude/skills/esf-verify .claude/skills/esf-update .claude/skills/esf-cognitive
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-git/SKILL.md"        -o .claude/skills/esf-git/SKILL.md
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-verify/SKILL.md"     -o .claude/skills/esf-verify/SKILL.md
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/skills/esf-update/SKILL.md
+curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md
 
 # Download version file
 curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version
@@ -259,10 +261,11 @@ echo "  Fetching reference files..."
 curl -fsSL "$TOOLKIT_BASE/.claude/reference/esf-guide.md"   -o .claude/reference/esf-guide.md
 curl -fsSL "$TOOLKIT_BASE/.claude/reference/disclosure-protocol.md" -o .claude/reference/disclosure-protocol.md
 
-# Download workflow diagram (skip if file already exists; user may have customized it)
+# Download workflow diagram and onboarding guide (skip if already exists)
 if [ ! -f "WORKFLOW.md" ]; then
   curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
 fi
+fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
 # Ensure .session-buffer.md is gitignored (covers install into existing repos)
 if [ -f ".gitignore" ] && ! grep -q '.session-buffer.md' .gitignore 2>/dev/null; then
@@ -313,7 +316,7 @@ fi
 
 # Auto-commit only toolkit files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
-  git add .claude/ prompts/ templates/ WORKFLOW.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
+  git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
   git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
     echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
 fi

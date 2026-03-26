@@ -3,7 +3,7 @@
 # Creates a git repository for users who are new to GitHub.
 #
 # Usage:
-#   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/setup-repo.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/setup-repo.sh -o setup-repo.sh && bash setup-repo.sh
 #
 # What it does:
 #   1. Creates a portfolio directory
@@ -125,6 +125,21 @@ If the toolkit is not yet installed, run:
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 \`\`\`
 README
+
+# Ensure git identity is configured (required for commits)
+if [ -z "$(git config --global user.name 2>/dev/null)" ] || [ -z "$(git config --global user.email 2>/dev/null)" ]; then
+  echo ""
+  echo -e "${YELLOW}Git needs your name and email before it can make commits.${NC}"
+  read -r -p "Your name (e.g., Alex Rivera): " GIT_NAME
+  read -r -p "Your email (e.g., alex@example.com): " GIT_EMAIL
+  if [ -z "$GIT_NAME" ] || [ -z "$GIT_EMAIL" ]; then
+    echo -e "${RED}Error: Name and email are required.${NC}"
+    exit 1
+  fi
+  git config --global user.name "$GIT_NAME"
+  git config --global user.email "$GIT_EMAIL"
+  echo -e "${GREEN}  Git identity configured.${NC}"
+fi
 
 # First commit
 git add .
