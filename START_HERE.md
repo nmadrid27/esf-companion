@@ -24,9 +24,11 @@ Both paths include the same templates in `templates/` and the same process.
 
 ### If you use ChatGPT, Gemini, or another conversation tool
 
-1. Open `prompts/companion.md`
-2. Copy the full contents into your AI tool's custom instructions
-3. Open `templates/position-statement-template.md`, fill it in before your next AI session, and save it to your project folder
+1. Open `prompts/companion.md` and fill in your information
+2. Paste it into your AI tool's custom instructions (or as your first message)
+3. Write your Position Statement offline using `templates/position-statement-template.md` and save it to your project folder
+
+**Returning to a project?** At the end of each session, the Companion generates a PROJECT.md block with your phase, position summary, Records of Resistance count, and next step. Save that file and paste it at the start of your next session instead of re-explaining your context. See `prompts/README.md` for the full session-start format.
 
 ---
 

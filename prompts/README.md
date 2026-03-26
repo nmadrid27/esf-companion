@@ -16,7 +16,9 @@ This is your persistent identity file. It tells the AI who you are, what courses
 
 **If you use Claude Code:** The AI reads your `companion.md` and `project-workflow.md` automatically from your toolkit folder. Just tell it what project you want to work on.
 
-**If you use ChatGPT, Gemini, or another tool:** Paste your filled-in `companion.md` as your first message (or as a system prompt if your tool supports it). Then paste `project-workflow.md` as a second message.
+**If you use ChatGPT, Gemini, or another tool:**
+
+*First session on a project:* Paste your filled-in `companion.md` as your first message (or as a system prompt if your tool supports it). Then paste `project-workflow.md` as a second message.
 
 ```
 [paste companion.md with your info filled in]
@@ -25,7 +27,16 @@ This is your persistent identity file. It tells the AI who you are, what courses
 Now: I want to work on [project name].
 ```
 
-The AI now has your identity context and the full ESF workflow instructions.
+*Returning to a project:* Paste `PROJECT.md` first, then paste `project-workflow.md`. PROJECT.md is the portable context object the Companion generates at the end of each session — it carries your phase, position summary, Records of Resistance count, and next step.
+
+```
+[paste PROJECT.md from your last session]
+[paste project-workflow.md]
+
+Now: picking up from where I left off.
+```
+
+The AI now has your current project context and the full ESF workflow instructions.
 ### Step 3: Maintain your project files
 
 Keep your project files organized the same way as the Claude Code version:
@@ -58,4 +69,6 @@ The ESF process works the same way in both. The difference is automation, not su
 
 ## Updating Your Companion Prompt
 
-When you start a new course, update the Enrolled Courses and Current Project sections of your `companion.md`. Previous course entries stay; they are part of your record.
+When you start a new project or context, update the Current Project section of your `companion.md`. Previous entries stay; they are part of your record.
+
+Also save the PROJECT.md block the Companion generates at the end of each session. That file is your portable context object: paste it at the start of your next session instead of re-explaining where you left off.
