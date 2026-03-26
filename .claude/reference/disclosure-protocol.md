@@ -102,4 +102,4 @@ If your course requires Records of Resistance documentation, include a brief not
 
 > *Records of Resistance: [number] documented. Key moments: [brief description of 1–2 significant decisions where you revised or rejected AI output and why.]*
 
-The full Records of Resistance document lives at `projects/[course]/records-of-resistance/[project-name].md`.
+The full Records of Resistance files live in `projects/[course]/records-of-resistance/` using one file per decision, for example: `projects/[course]/records-of-resistance/[project-slug]-ror-01.md`.

@@ -2,6 +2,8 @@
 
 A Record of Resistance documents a moment where you deliberately rejected, revised, or overrode an AI suggestion. One record per decision.
 
+Save each record as its own file in `projects/[course]/records-of-resistance/[project-slug]-ror-NN.md`.
+
 **Project:** [Project name]
 **Date:** [YYYY-MM-DD]
 
