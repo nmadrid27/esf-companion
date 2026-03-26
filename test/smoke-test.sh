@@ -5,10 +5,14 @@
 # Usage: bash test/smoke-test.sh
 # Exit 0: all assertions pass
 # Exit 1: one or more assertions failed
+#
+# Content assertions run against local source files (faster, no CDN lag).
+# Install assertions run against temp git repos (fresh installs).
 
 set -e
 
-INSTALL_SH="$(cd "$(dirname "$0")/.." && pwd)/install.sh"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+INSTALL_SH="$REPO_ROOT/install.sh"
 PASS=0
 FAIL=0
 
@@ -62,15 +66,15 @@ assert "esf-cognitive in git commit"                   "$(git show --name-only H
 # Phase 2 accessibility exception: conversational drafting exception present
 assert "Phase 2 accessibility exception in esf-project" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
-      .claude/skills/esf-project/SKILL.md && echo 0 || echo 1)"
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 
-# Disclosure contract: Companion drafts, user approves
+# Disclosure contract: Companion drafts, user approves (checked against source)
 assert "Disclosure: Companion drafts candidate"        \
   "$(grep -q 'The Companion drafts the disclosure candidate' \
-      .claude/skills/esf-project/SKILL.md && echo 0 || echo 1)"
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 assert "Disclosure: approval mandatory"                \
   "$(grep -q 'explicit approval\|explicitly approves' \
-      .claude/skills/esf-project/SKILL.md && echo 0 || echo 1)"
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 
 # ────────────────────────────────────────────────────────────────
 echo ""
@@ -92,19 +96,19 @@ assert "START_HERE.md in git commit"                   "$(git show --name-only H
 # Phase 2 accessibility exception: present in conversation prompt
 assert "Phase 2 accessibility exception in project-workflow" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
-      prompts/project-workflow.md && echo 0 || echo 1)"
+      "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 
-# PROJECT.md handoff: session end emits PROJECT.md
+# PROJECT.md handoff: session end emits PROJECT.md (checked against source)
 assert "Session end emits PROJECT.md block"            \
-  "$(grep -q 'PROJECT.md' prompts/project-workflow.md && echo 0 || echo 1)"
+  "$(grep -q 'PROJECT.md' "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 assert "Cross-session note references PROJECT.md"      \
   "$(grep -q 'paste your PROJECT.md\|Paste it at the start' \
-      prompts/project-workflow.md && echo 0 || echo 1)"
+      "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 
-# Disclosure: conversation prompt also offers to draft
+# Disclosure: conversation prompt also offers to draft (checked against source)
 assert "Disclosure: Companion offers to draft in conversation" \
   "$(grep -q "draft a disclosure\|I will pull from" \
-      prompts/project-workflow.md && echo 0 || echo 1)"
+      "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 
 # ────────────────────────────────────────────────────────────────
 echo ""
@@ -112,13 +116,11 @@ echo "Test 3: Onboarding can complete without course data"
 
 assert "Universal identity question present"           \
   "$(grep -q 'Tell me about yourself' \
-      "$INSTALL_SH" 2>/dev/null || \
-     grep -q 'Tell me about yourself' \
-      "$CLAUDE_DIR/.claude/skills/esf-onboarding/SKILL.md" && echo 0 || echo 1)"
+      "$REPO_ROOT/.claude/skills/esf-onboarding/SKILL.md" && echo 0 || echo 1)"
 
 assert "No dead courses/ yaml fallback"                \
   "$(grep -q 'courses/{code}.yaml\|courses/.*yaml' \
-      "$CLAUDE_DIR/.claude/skills/esf-onboarding/SKILL.md" && echo 1 || echo 0)"
+      "$REPO_ROOT/.claude/skills/esf-onboarding/SKILL.md" && echo 1 || echo 0)"
 
 # ────────────────────────────────────────────────────────────────
 echo ""
