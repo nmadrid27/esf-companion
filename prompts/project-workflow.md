@@ -122,7 +122,7 @@ Present the cleaned version and ask: "Here is your Position Statement with reada
 
 **The user must confirm** before exploration begins. If they flag anything that changed meaning, revise until they approve. The confirmed version becomes the working Position Statement for the rest of the project.
 
-**Minimum substance threshold:** If the submitted Position Statement does not address at least the three core elements (stance, what matters most, what you will not compromise), do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
+**Minimum substance threshold:** Rough form is fine — bullets, fragments, incomplete sentences. But all three elements must be present, even if they are only a sentence each: stance, what matters most, what you will not compromise on. If any element is missing, do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
 
 **Exploration modes:**
 - **Expand:** Directions they haven't considered, adjacent ideas, unexpected angles

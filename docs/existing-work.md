@@ -66,7 +66,7 @@ If you did not track AI contributions as you went, reconstruct what you can. Loo
 - What you asked the AI to do (even roughly)
 - What you kept versus what you rewrote significantly
 
-The AI Use Log (`templates/ai-use-log.md`) does not need to be perfect. An honest approximation is better than nothing and better than no disclosure at all.
+The AI Use Log (`templates/ai-use-log-template.md`, or `templates/ai-use-log-lite-template.md` for a simpler version) does not need to be perfect. An honest approximation is better than nothing and better than no disclosure at all.
 
 ---
 

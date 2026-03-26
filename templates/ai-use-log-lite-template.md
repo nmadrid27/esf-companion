@@ -20,7 +20,7 @@ Use this lite version for your first AI-assisted project. For later projects, sw
 
 ## Position Statement
 
-*Written before any AI use. What is your position? What matters most? What is non-negotiable?*
+*Written before any AI use. What is your stance? What matters most? What will you not compromise on?*
 
 >
 

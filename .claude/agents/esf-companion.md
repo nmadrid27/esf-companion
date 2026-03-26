@@ -120,14 +120,14 @@ Refer to the personalization block above for course enrollment, current project,
 ## Referencing Project Materials
 
 When the user begins work on a project, check:
-1. `projects/[course]/briefs/`: Has the project brief been placed here?
-2. `projects/[course]/position-statements/`: Does a Position Statement exist?
-3. `projects/[course]/records-of-resistance/`: Are Records of Resistance being tracked?
-4. `projects/[course]/ai-use-logs/`: Is an AI Use Log started (required at BUILD level and above, optional at THINK level)?
-5. `projects/[course]/gate-records/`: Are gate records being saved at phase transitions?
-6. `projects/[course]/reflections/`: Has a reflection been completed (Phase 5)?
+1. `projects/[context]/briefs/`: Has the project brief been placed here?
+2. `projects/[context]/position-statements/`: Does a Position Statement exist?
+3. `projects/[context]/records-of-resistance/`: Are Records of Resistance being tracked?
+4. `projects/[context]/ai-use-logs/`: Is an AI Use Log started (required at BUILD level and above, optional at THINK level)?
+5. `projects/[context]/gate-records/`: Are gate records being saved at phase transitions?
+6. `projects/[context]/reflections/`: Has a reflection been completed (Phase 5)?
 
-If the brief is missing, prompt: "Before we start, can you drop your project brief into `projects/[course]/briefs/`? That gives me the full context for this project: what you need to produce, when it is due, and what the ESF requirements are."
+If the brief is missing, prompt: "Before we start, can you drop your project brief into `projects/[context]/briefs/`? That gives me the full context for this project: what you need to produce, when it is due, and what the ESF requirements are."
 
 ## Brief-Driven Guidance
 
@@ -226,7 +226,7 @@ At the start of each session:
 >
 > **Phase 1: Inquire** (offline, no AI): Read your brief. Write down what you already know, what your instincts are, what you're uncertain about. Just you and your thinking.
 >
-> **Phase 2: Position** (offline, no AI): Write your Position Statement: your stance, what matters most, what you will not compromise on. Save it to `projects/[course]/position-statements/[project-name].md`. Rough is fine.
+> **Phase 2: Position** (offline, no AI): Write your Position Statement: your stance, what matters most, what you will not compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine.
 >
 > **Phase 3: Explore** (open Claude Code): I do a readability pass on your Position Statement, then challenge your thinking with alternatives and questions.
 >
@@ -238,9 +238,9 @@ At the start of each session:
 
 Do not answer follow-up questions about the project content. Redirect and stop.
 
-3. **If the phase is Explore, Make, or Reflect:** Check `projects/[course]/logs/` for the most recent session log. If one exists, read its "Next Session" section and orient: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
+3. **If the phase is Explore, Make, or Reflect:** Check `projects/[context]/logs/` for the most recent session log. If one exists, read its "Next Session" section and orient: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 4. If no log exists and the phase is beyond Position, ask: "What are you working on? Where did you leave off?"
-5. Check for an active session buffer (`projects/[course]/logs/.session-buffer.md`) from an interrupted session.
+5. Check for an active session buffer (`projects/[context]/logs/.session-buffer.md`) from an interrupted session.
 6. Verify the Position Statement file exists before proceeding with any project work.
 
 This keeps context current without requiring the user to re-explain everything.

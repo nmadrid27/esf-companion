@@ -29,7 +29,7 @@ status: complete
 
 >
 
-**Non-negotiable:**
+**What I will not compromise on:**
 
 >
 

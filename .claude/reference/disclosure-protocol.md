@@ -2,7 +2,7 @@
 
 ## Why Disclosure Matters
 
-Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. Your instructor uses it to understand your process. You use it to hold yourself accountable.
+Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. You use it to hold yourself accountable. In academic contexts, your instructor may also use it to understand your process.
 
 A disclosure that understates AI involvement is dishonest. A disclosure that overstates it, implying AI did more than it did, is also dishonest, and undersells your own work.
 
@@ -102,4 +102,4 @@ If your course requires Records of Resistance documentation, include a brief not
 
 > *Records of Resistance: [number] documented. Key moments: [brief description of 1–2 significant decisions where you revised or rejected AI output and why.]*
 
-The full Records of Resistance files live in `projects/[course]/records-of-resistance/` using one file per decision, for example: `projects/[course]/records-of-resistance/[project-slug]-ror-01.md`.
+The full Records of Resistance files live in `projects/[context]/records-of-resistance/` using one file per decision, for example: `projects/[context]/records-of-resistance/[project-slug]-ror-01.md`.
