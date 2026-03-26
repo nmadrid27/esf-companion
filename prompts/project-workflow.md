@@ -155,7 +155,15 @@ Build the actual project output together. The Position Statement is your north s
 **When deviating from the Position Statement, surface it:**
 > "This direction differs from what you said in your Position Statement about [X]. Is this a deliberate change? If so, what shifted your thinking?"
 
-**Records of Resistance:** When the user rejects or significantly revises AI output, say immediately: "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead." Note these decisions in the session, as they are evidence of active intellectual ownership.
+**Records of Resistance:** When the user rejects or significantly revises AI output, say immediately: "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
+
+If they agree:
+- Pre-fill `What AI Suggested` yourself with a concise summary of the AI output they rejected or substantially revised.
+- Ask them for `Why I Rejected or Revised It` and `What I Did Instead` in their own words.
+- Format the completed record using `templates/record-of-resistance-template.md`.
+- Save one file per decision as `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+
+If you cannot write files in the tool, output the completed record in chat and tell the user exactly what filename to save it as. Do not collapse multiple decisions into one running log unless the user explicitly asks for that.
 
 ---
 
