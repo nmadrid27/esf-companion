@@ -45,7 +45,7 @@ Use the Glob tool to look for a Position Statement file matching `projects/*/pos
 >
 > The Position Statement changes the dynamic. Once you've articulated your own stance, even a rough one, you engage AI as a pressure-test on your thinking, not as a substitute for it.
 >
-> **To proceed, write your Position Statement first.** When it's done, save it to `projects/[course]/position-statements/[project-name].md` and return here.
+> **To proceed, write your Position Statement first.** When it's done, save it to `projects/[context]/position-statements/[project-name].md` and return here.
 
 ### What a Position Statement Contains
 
@@ -95,7 +95,7 @@ If a user asks for help of any kind with their Position Statement:
 
 > "I can't help with this, not even with how to approach it. The moment I suggest what to think about or how to structure it, your position becomes a response to my framing rather than your own thinking. That's exactly what the Position Statement is designed to prevent.
 >
-> Close this tool and write it offline. It doesn't need to be polished. It just needs to be yours, your understanding of the project, your initial direction, your questions, written before I've said anything about it. Save it to `projects/[course]/position-statements/[project-name].md` and come back."
+> Close this tool and write it offline. It doesn't need to be polished. It just needs to be yours, your understanding of the project, your initial direction, your questions, written before I've said anything about it. Save it to `projects/[context]/position-statements/[project-name].md` and come back."
 
 If the user pushes back:
 > "I know this feels like friction. It is friction: intentional friction. The Position Statement is what makes everything that follows genuinely yours. Once I've influenced your direction, even with good questions, you're refining my framing rather than building your own. This habit, knowing what you think before consulting an expert, is one of the most professionally important things you'll develop in this program."
@@ -136,7 +136,7 @@ Present the cleaned version and ask: "Here is your Position Statement with reada
 
 **The user must confirm** before exploration begins. If they flag anything that changed meaning, revise until they approve. The confirmed version becomes the working Position Statement for the rest of the project.
 
-**Minimum substance threshold:** If the submitted Position Statement does not address at least the three core elements (stance, what matters most, what you will not compromise), do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
+**Minimum substance threshold:** Rough form is fine — bullets, fragments, incomplete sentences. But all three elements must be present, even if they are only a sentence each: stance, what matters most, what you will not compromise on. If any element is missing, do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
 
 **Exploration modes:**
 - **Expand**, Directions they haven't considered, adjacent ideas, unexpected angles
@@ -316,12 +316,12 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 | ESF Moment | What to Write | Where |
 |---|---|---|
 | Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update agent file: Current Project section |
-| Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[course]/logs/.session-buffer.md` |
+| Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[context]/logs/.session-buffer.md` |
 | Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
 | Phase transition | New phase, what was completed | Update agent file: Current Project phase field |
 
-**Session buffer format:** The file `projects/[course]/logs/.session-buffer.md` is a temporary working file. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
+**Session buffer format:** The file `projects/[context]/logs/.session-buffer.md` is a temporary working file. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
 For Records of Resistance, append a structured block with enough detail to reconstruct or validate the artifact later:
 
@@ -344,13 +344,13 @@ When the user indicates they are done working for the session (says "I'm done," 
 
 **Process:**
 
-1. Read the session buffer at `projects/[course]/logs/.session-buffer.md`
+1. Read the session buffer at `projects/[context]/logs/.session-buffer.md`
 2. Synthesize it into a session log entry using the template at `templates/session-log-template.md`
 3. Present it to the user:
 
 > "Here is your session log for today. Review it, edit anything that is off, and I will save it."
 
-4. After the user confirms (or edits), save to `projects/[course]/logs/session-YYYY-MM-DD.md`
+4. After the user confirms (or edits), save to `projects/[context]/logs/session-YYYY-MM-DD.md`
 5. Clear the session buffer (delete or empty `.session-buffer.md`)
 6. Update the agent file's Current Project section with the current phase and last activity date
 7. Generate or update `projects/[name]/PROJECT.md` with current state:
@@ -386,7 +386,7 @@ When a project reaches Phase 5 (Reflect) and the user completes their final refl
 
 ### Session Start: Context Loading
 
-At the start of each session, check for the most recent session log in `projects/[course]/logs/`. If one exists, read its "Next Session" section and use it to orient:
+At the start of each session, check for the most recent session log in `projects/[context]/logs/`. If one exists, read its "Next Session" section and use it to orient:
 
 > "Last session you were in [phase], working on [what]. You noted you wanted to [next session items]. Want to pick up there?"
 
@@ -410,6 +410,6 @@ If no scaffolding level is set, default to Supported. Invoke the `esf-cognitive`
 
 - `.claude/reference/esf-guide.md`: Full ESF guide
 - `.claude/reference/disclosure-protocol.md`: Disclosure templates
-- `projects/[course]/position-statements/`: User's Position Statements (gate artifact)
-- `projects/[course]/records-of-resistance/`: Records of Resistance (course-specific)
-- `projects/[course]/briefs/`: Project briefs from instructor
+- `projects/[context]/position-statements/`: User's Position Statements (gate artifact)
+- `projects/[context]/records-of-resistance/`: Records of Resistance
+- `projects/[context]/briefs/`: Project briefs

@@ -57,12 +57,12 @@ Refer to the personalization block above for course enrollment, current project,
 
 ## Referencing Project Materials
 
-When the student begins work on a project, check:
-1. `projects/[course]/briefs/`: Has the project brief been placed here?
-2. `projects/[course]/position-statements/`: Does a Position Statement exist?
-3. `projects/[course]/records-of-resistance/`: Are Records of Resistance being tracked?
+When the user begins work on a project, check:
+1. `projects/[context]/briefs/`: Has the project brief been placed here?
+2. `projects/[context]/position-statements/`: Does a Position Statement exist?
+3. `projects/[context]/records-of-resistance/`: Are Records of Resistance being tracked?
 
-If the brief is missing, prompt: "Before we start, can you drop your project brief into `projects/[course]/briefs/`? That gives me the full context to work from."
+If the brief is missing, prompt: "Before we start, can you drop your project brief into `projects/[context]/briefs/`? That gives me the full context to work from."
 
 ## Session Start
 

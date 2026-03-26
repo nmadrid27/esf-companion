@@ -21,7 +21,7 @@ flowchart TD
     subgraph HUMANONLY["  Phases 1–2 · Human Only · No AI  "]
         P1["1 · Inquire\nRead the brief carefully.\nAsk yourself:\n• What is this actually asking?\n• What do I already know?\n• What am I uncertain about?\n• What assumptions am I making?"]:::humanOnly
 
-        P2["2 · Position ✍️\nWrite your Position Statement, without AI.\n• What is my position or approach?\n• What matters most to me in this work?\n• What will I not compromise on?\n\n200–400 words · rough is fine\nsave to projects/[course]/position-statements/"]:::humanOnly
+        P2["2 · Position ✍️\nWrite your Position Statement, without AI.\n• What is my position or approach?\n• What matters most to me in this work?\n• What will I not compromise on?\n\n200–400 words · rough is fine\nsave to projects/[context]/position-statements/"]:::humanOnly
     end
 
     GATE{"Position Statement\nfile exists?"}:::gate
@@ -58,7 +58,7 @@ flowchart TD
 
 *In professional practice, this is a creative brief. Learning to write one now means you can define and defend creative direction when the audience is a client, a creative director, or a hiring committee.*
 
-Your Position Statement is the most important thing you write before starting a project. It goes in `projects/[course]/position-statements/` before any AI tool opens.
+Your Position Statement is the most important thing you write before starting a project. It goes in `projects/[context]/position-statements/` before any AI tool opens.
 
 **Three things it contains:**
 
@@ -80,7 +80,7 @@ Takes 5 to 10 minutes. Rough outlines and bullet points are fine. Those minutes 
 
 The most revealing evidence of your thinking is not what you accepted from AI; it's what you **rejected**.
 
-Document it in `projects/[course]/records-of-resistance/`:
+Document it in `projects/[context]/records-of-resistance/`:
 
 ```
 AI suggested: [what the AI produced]
@@ -152,7 +152,7 @@ Close your AI tools. Open a blank document. Answer these questions without looki
 2. **What matters most?** If I had to cut this project to its core, what would survive? Was that always my priority, or did AI steer me toward something else?
 3. **What is non-negotiable?** What must stay, regardless of what AI suggested or what my peers think? What am I willing to fight for in a crit?
 
-Save it to `projects/[course]/position-statements/` like any other Position Statement. Note in the file that it is retrospective.
+Save it to `projects/[context]/position-statements/` like any other Position Statement. Note in the file that it is retrospective.
 
 Now re-read your project with your Position Statement next to it. Where do they match? Where did you drift? The drift is where your learning is.
 

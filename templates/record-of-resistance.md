@@ -15,21 +15,17 @@ Describe or quote the AI output you chose not to accept as-is.
 
 [Write here]
 
-## Why
+## Why I Rejected or Revised It
 
-What was your reasoning? Reference your Position Statement if relevant.
+What was wrong with the suggestion? Did it conflict with your Position Statement, miss context, or feel like someone else's work? Name the reason.
 
 [Write here]
 
 ## What I Did Instead
 
-What did you keep, change, or reject? Be specific.
+What did you keep, change, or create in place of the AI's suggestion? How is your version different?
 
-- [ ] Rejected entirely
-- [ ] Accepted with revisions (describe below)
-- [ ] Used the idea but rewrote the execution
-
-[Describe your changes]
+[Write here]
 
 ---
 

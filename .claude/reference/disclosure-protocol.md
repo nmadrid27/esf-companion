@@ -4,7 +4,7 @@
 
 ## Why Disclosure Matters
 
-Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. Your instructor, client, or reviewer uses it to understand your process. You use it to hold yourself accountable.
+Disclosure is not a formality. It is the final act of epistemic stewardship: an honest accounting of what you contributed and what the AI contributed. You use it to hold yourself accountable. Your instructor, client, or reviewer may also use it to understand your process.
 
 A disclosure that understates AI involvement is dishonest. A disclosure that overstates it, implying AI did more than it did, is also dishonest, and undersells your own work.
 

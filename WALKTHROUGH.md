@@ -161,7 +161,7 @@ The Companion generates a Disclosure Statement from your session logs and Record
 
 ### If you have an instructor brief
 
-Drop the `.md` file into `projects/[course]/briefs/`. The Companion reads it and extracts: deliverables, AI use policy, Records of Resistance minimum, Five Questions requirement, and timeline. If your instructor set these to "required," the Companion enforces them as hard gates.
+Drop the `.md` file into `projects/[context]/briefs/`. The Companion reads it and extracts: deliverables, AI use policy, Records of Resistance minimum, Five Questions requirement, and timeline. If your instructor set these to "required," the Companion enforces them as hard gates.
 
 ### If you are working on a personal project
 

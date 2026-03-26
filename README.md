@@ -131,19 +131,21 @@ claude
 ## The Process
 
 ```
-1. POSITION    Write your Position Statement. No AI yet.
+1. INQUIRE     Read the brief. Ask yourself what you know, what you
+               don't, and what you're assuming. No AI.
        ↓
-2. EXPLORE     Bring AI in as a thinking partner. It challenges
+2. POSITION    Write your Position Statement: your stance, what
+               matters most, what you will not compromise on. No AI.
+       ↓
+3. EXPLORE     Bring AI in as a thinking partner. It challenges
                your position, surfaces alternatives, asks questions.
                It does not originate direction.
        ↓
-3. BUILD       Work with AI on the deliverable. Log AI contributions.
+4. MAKE        Work with AI on the deliverable. Log AI contributions.
                Record every time you reject or revise AI output.
        ↓
-4. VALIDATE    Run the Five Questions. Fix anything that fails.
-       ↓
-5. DISCLOSE    Write an honest disclosure statement.
-               Attach it to the finished work.
+5. REFLECT     Run the Five Questions. Write an honest disclosure.
+               Compare final work to your Position Statement.
 ```
 
 The Position Statement is the gate. Everything downstream depends on it. Without it, you have no anchor for evaluating whether the AI's contributions serve your intent or replace it.

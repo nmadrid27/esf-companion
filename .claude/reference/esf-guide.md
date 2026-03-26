@@ -75,7 +75,7 @@ Write a **Position Statement** with three elements:
 
    > *Example:* "Emphasize the structural analysis. De-emphasize the historical context; the professor said we should assume the reader knows the background."
 
-3. **What is non-negotiable?** Name the elements that must be present in the final work regardless of what the AI suggests.
+3. **What will I not compromise on?** Name the elements that must be present in the final work regardless of what the AI suggests.
 
    > *Example:* "Must include at least two primary sources I found myself. Must address the counterargument about economic factors. Must not use sources I cannot access and verify."
 
@@ -84,9 +84,9 @@ The Position Statement should take 5–10 minutes. Those minutes are where the l
 Write the Position Statement offline, without AI assistance. This means not asking an AI tool to help you think through your position, suggest a structure, or prompt you with questions.
 Even well-intentioned AI questions introduce framing before you form your own position. Asking AI "What should I be thinking about?" still yields an AI-shaped position.
 
-*Accessibility exception:* If you cannot write due to a processing barrier, or if verbal expression works better for you than writing, conversational drafting is available. Tell the AI you need articulation support. It will ask you three questions: What are you making? What matters most? What will you not compromise on? Answer in whatever form you can. The AI structures your answers into a Position Statement draft, reads it back, and asks if it sounds like you. The ideas must be yours; the structure is the AI's contribution.
+**Accessibility exception:** If you cannot write due to a processing barrier, learning difference, or preference for verbal expression, conversational drafting is available. Tell the AI you need articulation support. It will ask you three questions: What are you making? What matters most? What will you not compromise on? Answer in whatever form you can — fragments, spoken language, bullet points. The AI structures your answers into a Position Statement draft, reads it back, and asks if it sounds like you. The ideas must be yours; the structure is the AI's contribution. This is articulation support, not content generation.
 
-Your Position Statement does not need to be polished. Rough outlines, bullet points, fragments, and incomplete sentences are all acceptable. All three elements must still be present: your position, what matters most, and your non-negotiables. Rough form is fine; missing elements are not. What matters is that it captures your direction, not that it reads well. When you bring the Position Statement into Phase 3, the AI's first action will be a readability pass: cleaning up grammar and sentence structure without changing your ideas. You will review the cleaned version and confirm it still says what you meant before any exploration begins.
+Your Position Statement does not need to be polished. Rough outlines, bullet points, fragments, and incomplete sentences are all acceptable. All three elements must still be present: your stance, what matters most, and what you will not compromise on. Rough form is fine; missing elements are not. What matters is that it captures your direction, not that it reads well. When you bring the Position Statement into Phase 3, the AI's first action will be a readability pass: cleaning up grammar and sentence structure without changing your ideas. You will review the cleaned version and confirm it still says what you meant before any exploration begins.
 
 **Human Gate:** *Have I written my position before consulting AI?* The position must exist before you open an AI tool on this project, and before you ask AI any process questions about how to write it. This is not a suggestion. It is the mechanism that protects your intellectual ownership of everything that follows.
 
@@ -178,7 +178,7 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 ├─────────────────────────────────────────────────────────┤
 │  PHASE 2: POSITION (Human Only)                         │
 │  Write Position Statement:                              │
-│  • My position  • What matters most  • Non-negotiables  │
+│  • My position  • What matters most  • What I will not compromise on  │
 │                                                         │
 │  GATE: Have I written my position before consulting AI? │
 ├─────────────────────────────────────────────────────────┤
@@ -207,6 +207,8 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 ## C. The Four Engagement Levels
 
 The five-phase process is the same at every level. What changes is how much support you get at each gate and how much independence you exercise.
+
+> **Naming note:** Some course contexts use shorthand labels (DISCOVER, THINK, BUILD, DESIGN) to refer to these levels. The mapping is: DISCOVER = Discovery, THINK = Guided Use, BUILD = Independent Use, DESIGN = Critical Partnership.
 
 > **Note on evidence base:** The four engagement levels and their readiness indicators are theoretically grounded in research on scaffolded learning, Socratic inquiry, and metacognitive development. They have not yet been empirically validated against actual user progression data. The thresholds, readiness indicators, and level descriptions reflect the framework author's professional judgment and pedagogical experience, not measured outcomes. Treat the levels as a useful developmental map, not a tested diagnostic instrument. As ESF is applied in more courses and contexts, these levels will be revised based on observed user development.
 
@@ -420,7 +422,7 @@ Start where you are.
 Try the Inquire and Position phases before your next AI-assisted assignment. Spend 10 minutes writing down what the problem is, what you already know, and what your position is. Then use AI as usual. Notice whether having a position changes how you evaluate the output.
 
 **If you already use AI regularly but without structure:**
-Add the Position Statement to your process. Three sentences: what is my position, what matters most, what is non-negotiable. Keep it visible while you work. See if it changes how you react when the AI suggests something you did not expect.
+Add the Position Statement to your process. Three sentences: what is my position, what matters most, what will I not compromise on. Keep it visible while you work. See if it changes how you react when the AI suggests something you did not expect.
 
 **If you want to develop a systematic practice:**
 Run the full five-phase process for one assignment. Track your process artifacts: what you asked, what you kept, what you rejected, and why. Write the reflection at the end.
