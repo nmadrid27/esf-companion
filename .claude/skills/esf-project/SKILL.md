@@ -211,13 +211,32 @@ Log each check result silently to the session buffer (drift level: none/minor/si
 **When deviating from the Position Statement, surface it:**
 > "This direction differs from what you said in your Position Statement about [X]. Is this a deliberate change? If so, what shifted your thinking?"
 
-**Records of Resistance:** Note decisions where the user's judgment overrode AI suggestions. These are valuable, they're evidence of active intellectual ownership, not failure. For code-based projects, annotated commits can serve as both a check and a Record of Resistance.
+**Records of Resistance:** When the user rejects or significantly revises AI output, stop and offer to capture it immediately:
+
+> "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
+
+If the user says yes:
+1. Read the current context and project name from the agent file.
+2. Derive `project-slug` from the project name and find the next record number by checking `projects/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
+3. Create `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
+4. Pre-fill these fields yourself before asking the user to write anything:
+   - frontmatter: `context`, `project`, `date`, `record-number`
+   - header metadata: Course, Project, Date, Record #
+   - `What AI Suggested`: a concise summary of the AI output the user rejected or substantially revised
+5. Ask the user for the remaining two sections in their own words:
+   - `Why I Rejected or Revised It`
+   - `What I Did Instead`
+6. Save the file, then confirm the saved path.
+
+If the user declines, do not create the file, but note the declined RoR moment in the session buffer so the count can still be tracked against the brief.
+
+For code-based projects, annotated commits can supplement a Record of Resistance. If the course or brief requires formal RoR files, still create the file even when a commit captures the same decision.
 
 ---
 
 ### Course-Specific Make Phase Requirements
 
-Read the Active Contexts section of the agent file for RoR requirements and any course-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Save each Record of Resistance as a separate file: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+Read the Active Contexts section of the agent file for RoR requirements and any course-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 ---
 
@@ -286,13 +305,26 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 |---|---|---|
 | Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update agent file: Current Project section |
 | Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[course]/logs/.session-buffer.md` |
-| Record of Resistance documented (Phase 4) | Increment RoR count, brief one-line summary | Append to session buffer |
+| Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
 | Phase transition | New phase, what was completed | Update agent file: Current Project phase field |
 
 **Session buffer format:** The file `projects/[course]/logs/.session-buffer.md` is a temporary working file. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
-**Implementation:** After each gate interaction where the user provides responses (Five Questions Y/N, drift assessment, RoR documentation), silently use the Edit or Write tool to append the data point to the session buffer. Do not announce this to the user. Do not ask permission. This is bookkeeping, not a process step.
+For Records of Resistance, append a structured block with enough detail to reconstruct or validate the artifact later:
+
+```markdown
+## RoR
+status: saved
+file: projects/[context]/records-of-resistance/[project-slug]-ror-NN.md
+ai_suggested: [brief summary]
+why: [user reasoning]
+did_instead: [user replacement action]
+```
+
+If the user declines capture, still append a `## RoR` block with `status: declined`, the AI output summary, and any brief reason they gave for declining.
+
+**Implementation:** After each gate interaction where the user provides responses (Five Questions Y/N, drift assessment, RoR documentation), silently use the Edit or Write tool to append the data point to the session buffer. For Records of Resistance, append the structured block immediately after saving the file so later synthesis has the full artifact details, not just a count. Do not announce this to the user. Do not ask permission. This is bookkeeping, not a process step.
 
 ### Layer 2: End-of-Session Synthesis
 
