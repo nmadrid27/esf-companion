@@ -72,15 +72,16 @@ The AI Use Log (`templates/ai-use-log-template.md`, or `templates/ai-use-log-lit
 
 ## Step 5: Continue With the Normal Workflow
 
-Once you have a Position Statement and a basic sense of where AI contributed, continue with the standard ESF process from the BUILD or VALIDATE phase:
+Once you have a Position Statement and a basic sense of where AI contributed, continue with the standard ESF process from the EXPLORE or MAKE phase:
 
 ```
 [You are here] ↓
-3. BUILD       Work with AI. Log contributions. Record resistance.
+3. EXPLORE     Bring AI in as a thinking partner. Surface alternatives.
        |
-4. VALIDATE    Run the Five Questions. Fix anything that fails.
+4. MAKE        Work with AI. Log contributions. Record resistance.
        |
-5. DISCLOSE    Write an honest disclosure statement.
+5. REFLECT     Run the Five Questions. Fix anything that fails.
+               Write an honest disclosure statement.
 ```
 
 Run the Five Questions against your existing work before continuing. This is the point where you decide what to keep, what to revise, and what to rebuild.

@@ -59,19 +59,19 @@ Records of Resistance are evidence of judgment. Every time you catch AI pulling 
 This toolkit uses a single five-phase workflow:
 
 ```
-1. POSITION    Write your Position Statement. No AI yet.
+1. INQUIRE     Define what you are making and why. No AI yet.
        |
-2. EXPLORE     Bring AI in as a thinking partner.
+2. POSITION    Write your Position Statement. No AI yet.
+       |
+3. EXPLORE     Bring AI in as a thinking partner.
                It challenges your position, surfaces alternatives.
                It does not originate direction.
        |
-3. BUILD       Work with AI on the deliverable.
+4. MAKE        Work with AI on the deliverable.
                Log AI contributions. Record resistance.
        |
-4. VALIDATE    Run the Five Questions. Fix anything that fails.
-       |
-5. DISCLOSE    Write an honest disclosure statement.
-               Attach it to the finished work.
+5. REFLECT     Run the Five Questions. Fix anything that fails.
+               Write an honest disclosure statement.
 ```
 
 The Position Statement is the gate. Everything downstream depends on it. Without it, you have no anchor for evaluating whether AI output serves your intent or replaces it.
