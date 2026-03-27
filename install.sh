@@ -316,7 +316,7 @@ fi
 
 # Auto-commit only toolkit files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
-  git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
+  git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -d projects ] && git add projects/ 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
   git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
     echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
 fi

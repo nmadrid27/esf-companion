@@ -83,7 +83,7 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 
 ### Step 5: Write the Personalization
 
-Use the Edit tool to update `.claude/agents/esf-companion.md`. Replace all `[PLACEHOLDER]` values with what was collected.
+Create `projects/_esf/companion-state.md` (creating the `projects/_esf/` directory if needed). Use the Edit tool to replace all `[PLACEHOLDER]` values with what was collected. Do NOT edit `.claude/agents/esf-companion.md` — all personalization lives in the companion state file.
 
 **Replacement table:**
 
@@ -121,9 +121,9 @@ For independent/professional contexts:
 
 ---
 
-### Step 6: Write Context to Agent File
+### Step 6: Write Context to State File
 
-Write the formatted context list to the Active Contexts section of `.claude/agents/esf-companion.md`. Do NOT edit any skill files. All personalization lives in the agent file only.
+Write the formatted context list to the Active Contexts section of `projects/_esf/companion-state.md`. Do NOT edit the agent file (`.claude/agents/esf-companion.md`) or any skill files. All personalization lives in the companion state file only.
 
 The esf-project skill reads these entries at runtime to calibrate its behavior. No skill file mutation is needed.
 
@@ -132,6 +132,11 @@ The esf-project skill reads these entries at runtime to calibrate its behavior. 
 ### Step 7: Create Folder Structure
 
 Create the standard ESF project folder structure for each context. Adapt folder names to what the user described (use their label/code, not a forced course-code format).
+
+First, ensure the shared state directory exists:
+```bash
+mkdir -p projects/_esf
+```
 
 For each active context:
 ```bash
@@ -208,7 +213,9 @@ If the user says "update" at the start, ask only what changed:
 - New project to set up?
 - Period change?
 
-Make targeted edits rather than re-running the full flow. Do not overwrite existing personalization that has not changed.
+Make targeted edits to `projects/_esf/companion-state.md` rather than re-running the full flow. Do not overwrite existing personalization that has not changed.
+
+**Migration:** If `projects/_esf/companion-state.md` does not exist but `.claude/agents/esf-companion.md` contains populated personalization data (Identity section has values other than placeholders), read the personalization from the agent file, write it to the state file, and inform the user: "I migrated your profile to `projects/_esf/companion-state.md`. This avoids writing to `.claude/` at runtime."
 
 ---
 
