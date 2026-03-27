@@ -94,17 +94,17 @@ ESF artifacts are process documentation, not deliverables. Decide which ones cou
 | Five Questions | Spot-check at submission; ask students to defend a randomly selected answer |
 | Disclosure | Required for submission; accuracy assessed against AI Use Log |
 
-## Example: What a Customized Installation Looks Like
+## What a Customized Installation Adds
 
-The full ESF repository includes a [ESF Companion](https://github.com/nmadrid27/esf-companion) which shows what a fully customized version looks like. It adds:
+A forked and configured Companion gives your students:
 
-- Course-specific onboarding (`/esf-onboarding` skill)
+- Course-specific onboarding that reads your context from `companion-state.md`
 - Per-course project folder structure
 - Session memory across conversations
-- Automated Five Questions checkpoints
+- Automated Five Questions checkpoints calibrated to your brief's requirements
 - Portfolio accumulation across a multi-course sequence
 
-You do not need all of that. Start with the ESF Companion, add your course context and minimums, and expand as needed.
+Start with the base Companion, add your course context and minimums, and expand from there.
 
 ---
 

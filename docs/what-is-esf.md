@@ -81,16 +81,18 @@ The Position Statement is the gate. Everything downstream depends on it. Without
 
 ---
 
-## The Full Framework
+## For Educators
 
-The ESF Companion is a simplified, portable version of ESF designed for individual practitioners. The full framework, developed for academic institutions, adds:
+The ESF Companion is the same tool for everyone. Students, faculty, professionals, and independent creators all use the same core loop: Position, Work, Monitor, Surface, Decide. The difference for educators is what you do with it.
 
-- **A two-level architecture.** Level 1 (Content Production) serves faculty and professionals producing work. Level 2 (Epistemic Development) serves students building the capacity to think with AI. The levels connect: when a faculty member uses Level 1 to design an assignment, they are designing the environment students work within at Level 2.
-- **Eight core constructs.** The Position Statement, the Five Questions, Content Weight, Verification Gates, a Phased Workflow Model, a Disclosure Protocol, a Framework Evolution Protocol, and Build Practice. Each is grounded in established research on epistemic agency, metacognition, and iterative design methods.
-- **Implementation guides** for individual faculty, departments, and institutions, including accreditation crosswalks and assessment rubrics.
-- **A Framework Evolution Protocol** with built-in mechanisms for revision as AI and research evolve, including challenge protocols and sunset criteria for every construct.
+When the Companion detects that you are an educator during onboarding, it introduces two ways to work:
 
-The full framework and its academic toolkits are available at [github.com/nmadrid27/esf-companion](https://github.com/nmadrid27/esf-companion).
+- **Your own practice.** You use the Companion the same way anyone does. Write a Position Statement before AI enters your work. Monitor for drift. Record resistance. Run the Five Questions. The problem ESF solves applies to faculty producing syllabi, assessments, and institutional documents, not only to students producing coursework.
+- **Your students' environment.** You author project briefs with ESF requirements embedded in frontmatter. Those briefs configure the Companion for your students: whether the Position Statement is required, optional, or skipped; whether the Five Questions enforce hard stops or surface observations; minimum Records of Resistance per project. When you design a brief, you are designing the epistemic environment your students work within.
+
+These are not separate systems. They are the same Companion configured for different purposes. The constructs (Position Statement, Five Questions, Content Weight, Records of Resistance, Disclosure Protocol) are built into the Companion. They do not require a separate framework or installation.
+
+For institutional adoption, including forking the repository, setting course-specific requirements, and distributing to students, see [Adopting ESF for Your Institution](institutional-adoption.md).
 
 ---
 
@@ -111,7 +113,7 @@ ESF is grounded in 35 verified scholarly sources. Four findings shaped the frame
 3. **Human-first sequencing develops agency.** Students (and professionals) must establish their own understanding before AI enters the process. Socratic AI tutoring that questions reasoning produces stronger epistemic agency than AI that answers directly (Degen & Asanov, 2025).
 4. **Widespread AI adoption without structural safeguards produces "organized immaturity":** people become passive consumers of AI-generated knowledge rather than active producers and evaluators of it (Lindebaum et al., 2025).
 
-The full literature review, citations, and research summary are available in the [ESF Companion repository](https://github.com/nmadrid27/esf-companion).
+The literature review and citations are documented in the ESF research files within this repository.
 
 ---
 
