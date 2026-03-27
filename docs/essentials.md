@@ -56,5 +56,5 @@ That is epistemic stewardship. It works with any AI tool, any discipline, any pr
 
 ---
 
-*For the full framework, workflow diagram, and templates, see the [ESF Companion](../README.md).*
-*For the scholarly grounding and institutional implementation, see the [full ESF repository](https://github.com/nmadrid27/esf-companion).*
+*For the workflow diagram and templates, see the [ESF Companion](../README.md).*
+*For the scholarly grounding, see [What Is ESF?](what-is-esf.md). For institutional implementation, see [Adopting ESF for Your Institution](institutional-adoption.md).*

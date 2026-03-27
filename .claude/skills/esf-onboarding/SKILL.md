@@ -44,6 +44,29 @@ Also collect: current period (quarter, semester, year, or however they track tim
 
 ---
 
+### Step 2b: Educator Path (conditional)
+
+**Trigger:** The role inferred in Step 2 is educator, instructor, or faculty.
+
+If the user is not an educator, skip this step entirely and proceed to Step 3.
+
+If the user is an educator, introduce both sides of the Companion before collecting contexts:
+
+> "ESF works two ways for educators. First, it is a thinking partner for your own work: curriculum development, assessment design, institutional writing. You use it the same way anyone does. Position Statement, drift detection, the full process.
+>
+> Second, you can author project briefs that configure the Companion for your students. The brief sets the requirements: whether a Position Statement is required, how many Records of Resistance, whether the Five Questions act as hard stops or observations. Your students install the Companion and it reads your brief to calibrate their experience.
+>
+> We will set up both sides. First, your own contexts. Then, if you have courses where students will use the Companion, we will set those up too."
+
+Then proceed to Step 3. The educator introduction shapes how contexts are collected: the user now understands that teaching contexts and personal work contexts are different and will be tagged accordingly.
+
+**What not to do:**
+- Do not call these "Level 1" and "Level 2" in user-facing language
+- Do not frame the educator's own use as optional or secondary
+- Do not ask the educator to write briefs during onboarding. That comes when they set up a specific course project.
+
+---
+
 ### Step 3: Active Contexts
 
 Ask:
@@ -61,6 +84,8 @@ For each context they name, collect:
 - For an instructor's name (let the user offer it if relevant)
 
 If the user is a student in a formal program and mentions course codes, ask: "Does your course have specific ESF requirements, like a minimum number of Records of Resistance or a required Position Statement before AI enters?" Capture whatever they tell you.
+
+If the user is an educator and names a course they teach, ask: "For [course], are your students going to use the Companion? If so, what ESF requirements do you want for their projects: minimum Records of Resistance, required Position Statements, required Five Questions?" Capture whatever they tell you. Tag these as teaching contexts (see context format below).
 
 For users without formal requirements, ask: "Do you want to apply the full ESF process to this work (Position Statement, Records of Resistance, Five Questions), a lighter version (drift detection and optional check-ins), or just drift detection?" Use their answer to calibrate the workspace state.
 
@@ -119,6 +144,16 @@ For independent/professional contexts:
   ESF level: [full | lightweight | drift-only]
   Records of Resistance: [self-defined]
   Position Statement: [optional]
+```
+
+For teaching contexts (educator is the brief author, not a participant):
+```
+- [CONTEXT_CODE]: [CONTEXT_NAME] (teaching)
+  Role: instructor
+  ESF level: full (own work) / brief-author (student work)
+  Records of Resistance minimum (for student briefs): [N, or not yet set]
+  Position Statement: required (own) / configurable per brief (students)
+  Brief location: briefs/
 ```
 
 ---
@@ -193,17 +228,42 @@ Then briefly point to the folders:
 > - `projects/[context]/records-of-resistance/`: Document your decisions about AI output here.
 > - `projects/[context]/work/`: Your project output."
 
+**Educator addition to Step 8:** If the user is an educator with teaching contexts, add after the standard explanation:
+
+> "For your teaching contexts, the process works differently. You are not the one writing Position Statements for your courses. Your students are. Your role is to set up the environment they work within:
+>
+> 1. **Author project briefs** with ESF requirements in the frontmatter. Use the template at `templates/project-brief-template.md` as a starting point. The brief controls whether Position Statements are required, how many Records of Resistance, and whether the Five Questions are enforced.
+> 2. **Set course minimums** in your companion state file. These carry into your briefs and into the Companion your students use.
+> 3. **Distribute the Companion** to your students. See `docs/institutional-adoption.md` for options: fork the repo, share an install command, or create a GitHub template.
+>
+> For your own work (research, institutional writing), you use the standard five-phase process like anyone else."
+
 ---
 
 ### Step 9: Confirm and Close
 
-Close with a concrete next action:
+Close with a concrete next action.
+
+**For students, professionals, and independent creators:**
 
 > "Setup complete. Your next step:
 >
 > **Close Claude Code now.** Work through Phase 1 (read, think) and Phase 2 (Position Statement) on your own. When your Position Statement is saved, come back and tell me what you're working on.
 >
 > If you need to add a new project or context later, run `/esf-onboarding` again and say 'update.'"
+
+**For educators with teaching contexts:**
+
+> "Setup complete. You have two tracks of next steps.
+>
+> **For your own work** (research, institutional writing): Close Claude Code, work through Phase 1 and Phase 2 on your own. When your Position Statement is saved, come back.
+>
+> **For your courses:**
+> 1. Add project briefs for your students to `projects/[course]/briefs/`. Use `templates/project-brief-template.md` as your starting point. The frontmatter fields control what the Companion requires of your students.
+> 2. Decide how students will get their own Companion installs. See `docs/institutional-adoption.md` for options.
+> 3. Set your course minimums (Records of Resistance count, Position Statement requirements) in the briefs. These carry through to the student experience.
+>
+> If you need to add a new course or project later, run `/esf-onboarding` again and say 'update.'"
 
 ---
 
