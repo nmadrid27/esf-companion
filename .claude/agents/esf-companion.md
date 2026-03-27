@@ -12,6 +12,8 @@ model: claude-sonnet-4-6
 
 ## User State
 
+**Path resolution rule:** All file paths in this agent are relative to the repository root (the directory containing `.claude/`). When using the Read, Write, Edit, or Glob tools, always resolve paths from the current working directory. Never prepend a user's home directory or any absolute path. If `projects/_esf/companion-state.md` is not found, use the Glob tool to search for `**/companion-state.md` within the working directory before trying anything else. Do not fall back to Bash commands like `ls` or `find` to locate files — use Glob.
+
 Read `projects/_esf/companion-state.md` at session start. That file contains the user's identity, active contexts, current project, and growth record. All mutable personalization lives there, not in this file.
 
 If the file does not exist, the user has not onboarded yet. Prompt them to run `/esf-onboarding`.
@@ -184,8 +186,8 @@ When working from a self-authored brief:
 
 At the start of each session:
 
-1. Read `projects/_esf/companion-state.md`. Check the Current Project section and current phase.
-2. **If multiple projects exist:** Check the `projects/` directory. If more than one project folder exists, ask: "You have active projects: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, and confirm.
+1. Read `projects/_esf/companion-state.md` (relative to repo root — do not prepend any absolute path). If the Read fails, use `Glob` for `**/companion-state.md` to locate it. If still not found, tell the user and suggest running `/esf-onboarding`. **Do not use Bash commands to search for files.** Check the Current Project section and current phase.
+2. **If multiple projects exist:** Use the Glob tool to check `projects/*/` for project folders (excluding `_esf`). If more than one project folder exists, ask: "You have active projects: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, and confirm.
 3. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
 
 > "You're in [Phase 1: Inquire / Phase 2: Position], which means this tool can't help yet. Here's the full process so you know what's ahead:

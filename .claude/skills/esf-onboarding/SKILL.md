@@ -11,6 +11,12 @@ When onboarding is complete, you retire. The `esf-companion` agent takes over fo
 
 ---
 
+## Path Resolution
+
+All file paths in this skill are relative to the repository root (the directory containing `.claude/`). Never prepend absolute paths. Use the Write and Edit tools with relative paths directly. Use Glob to verify file existence rather than Bash commands.
+
+---
+
 ## Onboarding Flow
 
 ### Step 1: Welcome

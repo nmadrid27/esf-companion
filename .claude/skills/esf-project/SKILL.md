@@ -13,6 +13,12 @@ The Level 2 framework exists because the order of operations matters. When AI ou
 
 ---
 
+## Path Resolution
+
+All file paths in this skill are relative to the repository root (the directory containing `.claude/`). Never prepend absolute paths like `/Users/...` or `/home/...`. Use the Read tool with the relative path directly. If a read fails, use Glob to locate the file within the workspace. Do not fall back to Bash `ls` or `find` commands to search for files.
+
+---
+
 ## The Level 2 Process
 
 | Phase | Name | AI Role | Human Gate |
