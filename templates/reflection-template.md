@@ -13,7 +13,7 @@ status: complete
 **Assignment:** [Assignment name]
 **Course:** [Course name and number]
 **Date:** [Date of submission]
-**Engagement Level:** [1, Discovery / 2, Guided Use / 3, Independent Use / 4, Critical Partnership]
+**Engagement Level:** [Discovery / Guided Use / Independent Use / Critical Partnership]
 
 ---
 

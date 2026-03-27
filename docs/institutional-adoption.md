@@ -1,6 +1,6 @@
 # Adopting ESF for Your Institution
 
-If you teach at a university, college, or training program and want students to use ESF in your courses, the ESF Companion is a starting point you can customize. Fork this repository or fork this repository and make the following changes.
+If you teach at a university, college, or training program and want students to use ESF in your courses, the ESF Companion is a starting point you can customize. Fork this repository and make the following changes.
 
 ## 1. Add your course context to the workspace state
 

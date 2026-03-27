@@ -1,6 +1,6 @@
 # ESF Workflow
 
-The ESF Level 2 process keeps your thinking at the center of everything you produce with AI.
+The ESF process keeps your thinking at the center of everything you produce with AI.
 
 **The core rule:** You think first. AI assists second. Your Position Statement must exist before any AI tool opens.
 
