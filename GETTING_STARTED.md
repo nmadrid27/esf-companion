@@ -6,7 +6,7 @@ entities: [ESF]
 
 # Getting Started: Install to First AI Session
 
-This walkthrough follows a first-time user from the moment they receive the toolkit URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.
+This walkthrough follows a first-time user from the moment they receive the Companion URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.
 
 If you want to see the full ESF process across an entire project (all five phases, Build Practice, Records of Resistance, Five Questions, disclosure), read `WALKTHROUGH.md` after this.
 
@@ -14,7 +14,7 @@ If you want to see the full ESF process across an entire project (all five phase
 
 ## Meet Jordan
 
-Jordan Park is a first-year animation student starting a DISCOVER-level course: their first in the AI sequence. Their instructor shared the toolkit URL in Week 1 and said: "Set this up before our next class. You will use it for Project 1."
+Jordan Park is a first-year animation student starting a DISCOVER-level course: their first in the AI sequence. Their instructor shared the Companion URL in Week 1 and said: "Set this up before our next class. You will use it for Project 1."
 
 Jordan has used git a few times (pushing class projects to GitHub) but has never used Claude Code.
 
@@ -51,7 +51,7 @@ Next steps:
   1. Open Claude Code in this directory:
      claude
 
-  2. Run onboarding to personalize your toolkit:
+  2. Run onboarding to personalize your Companion:
      /esf-onboarding
 
   Onboarding takes about 5 minutes and sets up your name, courses,
@@ -111,19 +111,15 @@ Then runs the onboarding skill:
 
 **What they see:**
 
-> Welcome to the ESF Companion. I'm going to ask you a few questions to set up your workspace; this takes about 5 minutes. Once we're done, your toolkit will be configured for your courses and I'll walk you through where things live.
+> Welcome to the ESF Companion. I'll ask you a couple of things to set up your workspace; this takes about 5 minutes.
 
 **The conversation:**
 
-> **Claude:** What's your name, degree program, and current term?
+> **Claude:** Tell me about yourself and what you do.
 >
-> **Jordan:** Jordan Park, BFA in Animation, Spring 2026.
+> **Jordan:** I'm Jordan Park, BFA in Animation. I'm taking Discovering AI with Professor Reyes this term. It's the first course in the AI sequence.
 >
-> **Claude:** Got it. Now tell me about the courses you're taking that will use this toolkit. For each one, I need the course code and name, your instructor's name, and whether it's part of the AI sequence.
->
-> **Jordan:** Just one. It's called Discovering AI with Professor Reyes. It's the first course in the AI sequence.
->
-> **Claude:** That's a DISCOVER-level course. Are you working on a specific project right now, or is this general setup?
+> **Claude:** Got it: Jordan Park, animation, taking a DISCOVER-level course with Professor Reyes. Are you starting a specific project, or is this general setup?
 >
 > **Jordan:** We just got our first project brief. It's called "Tool Audit." We have to pick an AI tool and evaluate it for our creative practice.
 >
@@ -223,7 +219,7 @@ Jordan, eager to get started, opens Claude Code and says:
 
 > "Help me pick an AI tool for my Tool Audit project."
 
-The toolkit checks for a Position Statement file at `projects/discover-course/position-statements/*.md`. None exists. It responds:
+The Companion checks for a Position Statement file at `projects/discover-course/position-statements/*.md`. None exists. It responds:
 
 > I can't help with this project yet, and here's why that matters.
 >
@@ -237,7 +233,7 @@ The toolkit checks for a Position Statement file at `projects/discover-course/po
 >
 > To proceed, write your Position Statement first. When it's done, save it to `projects/discover-course/position-statements/tool-audit.md` and return here.
 
-If Jordan tries a follow-up question ("Can you at least help me understand the brief?"), the toolkit holds:
+If Jordan tries a follow-up question ("Can you at least help me understand the brief?"), the Companion holds:
 
 > I can't help with this, not even with how to approach it. The moment I suggest what to think about or how to structure it, your position becomes a response to my framing rather than your own thinking. That's exactly what the Position Statement is designed to prevent.
 >
@@ -253,7 +249,7 @@ Jordan has saved their Position Statement. They open Claude Code.
 
 **What happens at session start:**
 
-The toolkit reads Jordan's workspace state file, sees the current phase is "Inquire" (set during onboarding), and checks for a Position Statement. The file exists. It reads the last session log for context (none yet; this is the first session). It orients:
+The Companion reads Jordan's workspace state file, sees the current phase is "Inquire" (set during onboarding), and checks for a Position Statement. The file exists. It reads the last session log for context (none yet; this is the first session). It orients:
 
 > "This is your first project session. I see your Position Statement for the Tool Audit is saved. Ready to start Phase 3?"
 
@@ -261,7 +257,7 @@ Jordan confirms.
 
 ### Step 1: Readability Pass
 
-The toolkit's first action is always the readability pass. It reads Jordan's Position Statement and cleans up grammar and sentence structure without changing ideas:
+The Companion's first action is always the readability pass. It reads Jordan's Position Statement and cleans up grammar and sentence structure without changing ideas:
 
 > Here is your Position Statement with readability edits only. I fixed a few sentence fragments and cleaned up the structure. Your ideas are unchanged.
 >
@@ -279,7 +275,7 @@ Jordan reads it. It does. They confirm.
 
 ### Step 2: Challenge
 
-Now the toolkit shifts to its thinking-partner role. It pushes back on Jordan's position:
+Now the Companion shifts to its thinking-partner role. It pushes back on Jordan's position:
 
 > You said you want to test a tool for motion or timing because it's "closer to what I'd actually use." Two questions:
 >
@@ -295,13 +291,13 @@ Jordan sits with this. The AI is not telling them what to do. It is asking wheth
 >
 > On the second one: you're right that "different" isn't the goal. But I think a timing tool would reveal more about how AI shapes decisions because the decisions are less visible. With image generation, you can see the AI's influence in the output. With timing, the influence is in the rhythm and pacing, which is harder to notice. That's exactly what the brief is asking me to evaluate.
 
-The toolkit notes that Jordan defended their position with reasoning that connects back to the brief. That's the Explore phase working: the user's thinking sharpened, but the direction is still theirs.
+The Companion notes that Jordan defended their position with reasoning that connects back to the brief. That's the Explore phase working: the user's thinking sharpened, but the direction is still theirs.
 
 ### Step 3: Research Support
 
 > Your reasoning about invisible influence is strong. There are a few AI tools in the animation timing space. Want me to find options so you can evaluate which one to test?
 
-Jordan says yes. The toolkit surfaces three tools with brief descriptions of what each does and how it handles timing decisions.
+Jordan says yes. The Companion surfaces three tools with brief descriptions of what each does and how it handles timing decisions.
 
 > I made some factual claims there. Before you use any of that, check the ones that matter to your project. Your AI Use Log has a Verification table for tracking what you checked and what you found.
 
@@ -309,7 +305,7 @@ Jordan notes which claims to verify. They pick one tool to test based on their o
 
 ### Step 4: Phase Gate
 
-Before moving to Phase 4 (Make), the toolkit runs the gate check:
+Before moving to Phase 4 (Make), the Companion runs the gate check:
 
 > Looking back at your Position Statement, has your direction changed? If so, can you explain what you kept from your original thinking and what shifted, and why?
 
@@ -355,23 +351,23 @@ ai-work/
 └── WORKFLOW.md
 ```
 
-The Position Statement exists and has been confirmed. The workspace state file records Jordan's current phase (Explore, transitioning to Make) and project context. When Jordan opens Claude Code next session, the toolkit will read the session log and pick up where they left off.
+The Position Statement exists and has been confirmed. The workspace state file records Jordan's current phase (Explore, transitioning to Make) and project context. When Jordan opens Claude Code next session, the Companion will read the session log and pick up where they left off.
 
 ---
 
 ## Key Observations
 
-1. **Onboarding ends with "close this tool."** The first thing the toolkit tells a new user to do is stop using it. That is intentional. Phases 1 and 2 are human-only because AI framing, even helpful framing, shapes the user's position before they've formed it.
+1. **Onboarding ends with "close this tool."** The first thing the Companion tells a new user to do is stop using it. That is intentional. Phases 1 and 2 are human-only because AI framing, even helpful framing, shapes the user's position before they've formed it.
 
-2. **The gate is structural.** When Jordan (hypothetically) tried to skip the Position Statement, the toolkit did not warn and proceed. It blocked engagement and explained why. The user cannot route around this by rephrasing the request.
+2. **The gate is structural.** When Jordan (hypothetically) tried to skip the Position Statement, the Companion did not warn and proceed. It blocked engagement and explained why. The user cannot route around this by rephrasing the request.
 
 3. **The readability pass is trust-building.** The first thing AI does when it enters (Phase 3) is clean up the user's writing without changing it. This establishes the dynamic: the user's ideas are the foundation; AI improves presentation, then challenges substance.
 
-4. **Challenge means questions, not answers.** The toolkit asked whether Jordan's reasoning held up. It did not suggest a different tool or a different angle. Jordan's direction sharpened through the challenge, but the direction remained theirs.
+4. **Challenge means questions, not answers.** The Companion asked whether Jordan's reasoning held up. It did not suggest a different tool or a different angle. Jordan's direction sharpened through the challenge, but the direction remained theirs.
 
-5. **Verification is prompted, not assumed.** When the toolkit presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the user's initiative.
+5. **Verification is prompted, not assumed.** When the Companion presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the user's initiative.
 
-6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The toolkit calibrates its tone and support level to the user's position in the sequence. By BUILD and DESIGN levels, users are expected to drive the process with less scaffolding.
+6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The Companion calibrates its tone and support level to the user's position in the sequence. By BUILD and DESIGN levels, users are expected to drive the process with less scaffolding.
 
 ---
 

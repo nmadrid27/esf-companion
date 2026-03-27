@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Have an idea to improve the toolkit? We'd love to hear it!
+        Have an idea to improve the ESF Companion? We'd love to hear it!
   - type: textarea
     id: problem
     attributes:

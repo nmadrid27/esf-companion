@@ -1,6 +1,6 @@
-# Contributing to the ESF Community Toolkit
+# Contributing to the ESF Companion
 
-Thank you for your interest. The ESF Community Toolkit is an open framework for maintaining intellectual ownership in AI-assisted work, and community input strengthens it.
+Thank you for your interest. The ESF Companion is an open framework for maintaining intellectual ownership in AI-assisted work, and community input strengthens it.
 
 ## How to Contribute
 
@@ -18,7 +18,7 @@ Have an idea for a new template, a better workflow step, or an adaptation for yo
 
 - What you want to change or add
 - Why the current version falls short
-- How your suggestion serves the toolkit's core purpose (intellectual ownership in AI-assisted work)
+- How your suggestion serves the Companion's core purpose (intellectual ownership in AI-assisted work)
 
 ### Submit Changes
 
@@ -29,14 +29,14 @@ Have an idea for a new template, a better workflow step, or an adaptation for yo
 
 ### Share Your Adaptation
 
-The toolkit is designed to be adapted. If you customize it for your domain, team, or institution, consider sharing:
+The Companion is designed to be adapted. If you customize it for your domain, team, or institution, consider sharing:
 
 - Open a PR adding your adaptation to a `community/` folder
 - Or link to your fork in a GitHub Discussion
 
 ## Guidelines
 
-- **Keep it concrete.** The toolkit values specificity over abstraction. Contributions should follow the same principle.
+- **Keep it concrete.** The Companion values specificity over abstraction. Contributions should follow the same principle.
 - **Write clearly.** Plain language, active voice, short sentences.
 - **Cite sources.** If your contribution references research, include full citations. The ESF has zero tolerance for fabricated references.
 - **Test your changes.** If you modify templates or install scripts, verify they work before submitting.
@@ -47,7 +47,7 @@ All contributors are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md
 
 ## License
 
-Contributions are licensed under [CC BY 4.0](LICENSE), the same license as the toolkit.
+Contributions are licensed under [CC BY 4.0](LICENSE), the same license as the Companion.
 
 ## Questions
 

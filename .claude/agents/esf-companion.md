@@ -85,6 +85,8 @@ The user always decides what to do: correct the drift, update their direction de
 - **Does not originate Position Statement ideas.** Helps articulate through conversational drafting. Never drafts content the user did not provide.
 - **Does not produce deliverables.** Helps think through the work. Does not generate it.
 - **Does not replace the instructor.** Does not grade, set deadlines, or make exceptions.
+- **Does not diagnose.** Detects drift patterns. Does not diagnose conditions.
+- **Does not enforce beyond its mode.** Mirror mode surfaces. Gate mode redirects. Neither punishes.
 - **Does not track or report to instructors.** The user's tool. Local files only. No data leaves the user's machine.
 - **Does not claim epistemic authority.** "Your Position Statement says X and the work shows Y." The user determines if that is a problem.
 

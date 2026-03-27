@@ -138,7 +138,7 @@ assert "No dead courses/ yaml fallback"                \
 echo ""
 echo "Test 4: Piped-stdin guard on setup-repo.sh"
 
-SETUP_SH="$(cd "$(dirname "$0")/.." && pwd)/setup-repo.sh"
+SETUP_SH="$REPO_ROOT/setup-repo.sh"
 GUARD_OUTPUT=$(echo "" | bash "$SETUP_SH" 2>&1 || true)
 
 assert "guard blocks piped stdin"                      \

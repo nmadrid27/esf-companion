@@ -1,6 +1,6 @@
 # ESF Companion: Sample Data
 
-This folder contains pre-filled BUILD-level sample data for testing the toolkit without running onboarding.
+This folder contains pre-filled BUILD-level sample data for testing the Companion without running onboarding.
 
 **Sample student:** Alex Rivera, BFA Motion Media Design, BUILD level (Creative Computing with AI)
 **Sample project:** Project 2, Responsive System (reaction-diffusion system with sound input)
@@ -33,7 +33,7 @@ claude
 
 Try: "I want to keep working on my responsive system. I'm in the Explore phase and need to think through my shader implementation."
 
-The toolkit will load Alex's context, check for the Position Statement (it exists), confirm the phase, and engage as a thinking partner from there.
+The Companion will load Alex's context, check for the Position Statement (it exists), confirm the phase, and engage as a thinking partner from there.
 
 ---
 
@@ -61,7 +61,7 @@ The toolkit will load Alex's context, check for the Position Statement (it exist
 
 ## What to Test
 
-- **Gate enforcement:** Delete the position statement file and try to start a project session. The toolkit should block until it's restored.
+- **Gate enforcement:** Delete the position statement file and try to start a project session. The Companion should block until it's restored.
 - **Phase awareness:** The workspace state says Alex is in Explore phase. Ask about the Inquire phase artifacts; it should know they're complete.
-- **AI calibration:** BUILD-level calibration means less hand-holding. Ask a vague question and notice how the toolkit pushes back rather than filling in the gaps.
-- **Records of Resistance:** Ask the toolkit to help you review your RoR count. It should know 3 are required and 1 is complete.
+- **AI calibration:** BUILD-level calibration means less hand-holding. Ask a vague question and notice how the Companion pushes back rather than filling in the gaps.
+- **Records of Resistance:** Ask the Companion to help you review your RoR count. It should know 3 are required and 1 is complete.

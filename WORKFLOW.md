@@ -65,7 +65,7 @@ Your Position Statement is the most important thing you write before starting a 
 | Element | Question | Example |
 |---------|----------|---------|
 | **Position** | What do I think, want to argue, or want to create? | *"This poster series should make climate data feel personal, not abstract."* |
-| **Emphasis** | What matters most? What should I avoid? | *"Emphasize the emotional connection. De-emphasize statistics."* |
+| **What matters most** | What matters most? What should I avoid? | *"Emphasize the emotional connection. De-emphasize statistics."* |
 | **Non-negotiables** | What must be present, no matter what AI suggests? | *"Every piece must be reworked by hand. AI images are reference only."* |
 
 Takes 5 to 10 minutes. Rough outlines and bullet points are fine. Those minutes are where the learning happens. AI cleans up readability at the start of Phase 3.

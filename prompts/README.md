@@ -14,7 +14,7 @@ This is your persistent identity file. It tells the AI who you are, what courses
 
 ### Step 2: Start a session
 
-**If you use Claude Code:** The AI reads your `companion.md` and `project-workflow.md` automatically from your toolkit folder. Just tell it what project you want to work on.
+**If you use Claude Code:** The AI reads your `companion.md` and `project-workflow.md` automatically from your Companion folder. Just tell it what project you want to work on.
 
 **If you use ChatGPT, Gemini, or another tool:**
 

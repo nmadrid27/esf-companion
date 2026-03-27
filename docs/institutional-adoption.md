@@ -37,7 +37,7 @@ Scale minimums to project complexity. A short exercise needs fewer Records of Re
 Drop your assignment briefs into a `briefs/` directory. Reference them in the workspace state so the AI has context when students ask about project requirements:
 
 ```
-your-course-toolkit/
+your-course-repo/
 ├── briefs/
 │   ├── project-1-brief.md
 │   └── project-2-brief.md
@@ -80,7 +80,7 @@ curl -fsSL https://raw.githubusercontent.com/YOUR-ORG/YOUR-FORK/main/install.sh 
 
 Update the `TOOLKIT_BASE` URL at the top of `install.sh` to point to your fork.
 
-**Option B: Provide a pre-configured repo template.** Create a GitHub template repository with the toolkit already installed and your course context pre-loaded. Students click "Use this template" and get a ready-to-use project repo.
+**Option B: Provide a pre-configured repo template.** Create a GitHub template repository with the Companion already installed and your course context pre-loaded. Students click "Use this template" and get a ready-to-use project repo.
 
 ## 6. Decide what you assess
 
@@ -94,7 +94,7 @@ ESF artifacts are process documentation, not deliverables. Decide which ones cou
 | Five Questions | Spot-check at submission; ask students to defend a randomly selected answer |
 | Disclosure | Required for submission; accuracy assessed against AI Use Log |
 
-## Example: What a Customized Toolkit Looks Like
+## Example: What a Customized Installation Looks Like
 
 The full ESF repository includes a [ESF Companion](https://github.com/nmadrid27/esf-companion) which shows what a fully customized version looks like. It adds:
 
@@ -104,8 +104,8 @@ The full ESF repository includes a [ESF Companion](https://github.com/nmadrid27/
 - Automated Five Questions checkpoints
 - Portfolio accumulation across a multi-course sequence
 
-You do not need all of that. Start with the community toolkit, add your course context and minimums, and expand as needed.
+You do not need all of that. Start with the ESF Companion, add your course context and minimums, and expand as needed.
 
 ---
 
-*[Back to Community Toolkit](../README.md)*
+*[Back to ESF Companion](../README.md)*
