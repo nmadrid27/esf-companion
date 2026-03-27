@@ -67,6 +67,13 @@ assert "esf-cognitive in git commit"                   "$(git show --name-only H
 assert "Phase 2 accessibility exception in esf-project" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
+assert "Phase 1 redirect includes questions + non-negotiable in esf-project" \
+  "$(grep -q 'What questions do I have.*non-negotiable\|non-negotiable.*What questions do I have' \
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
+assert "esf-cognitive defines trigger detection guidance" \
+  "$(grep -q 'How to detect them' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && \
+    grep -q 'count consecutive AI suggestions' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && \
+    grep -q 'rapid agreement' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && echo 0 || echo 1)"
 
 # Disclosure contract: Companion drafts, user approves (checked against source)
 assert "Disclosure: Companion drafts candidate"        \
@@ -97,6 +104,9 @@ assert "START_HERE.md in git commit"                   "$(git show --name-only H
 assert "Phase 2 accessibility exception in project-workflow" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
       "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
+assert "Phase 1 redirect includes questions + non-negotiable in project-workflow" \
+  "$(grep -q 'What questions do I have.*non-negotiable\|non-negotiable.*What questions do I have' \
+      "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 
 # PROJECT.md handoff: session end emits PROJECT.md (checked against source)
 assert "Session end emits PROJECT.md block"            \
@@ -109,6 +119,8 @@ assert "Cross-session note references PROJECT.md"      \
 assert "Disclosure: Companion offers to draft in conversation" \
   "$(grep -q "draft a disclosure\|I will pull from" \
       "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
+assert "Disclosure: no conflicting manual-only instruction in conversation" \
+  "$([ "$(grep -c 'Do not draft it for them' "$REPO_ROOT/prompts/project-workflow.md")" -eq 0 ] && echo 0 || echo 1)"
 
 # ────────────────────────────────────────────────────────────────
 echo ""
