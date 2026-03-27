@@ -54,23 +54,26 @@ Records of Resistance are evidence of judgment. Every time you catch AI pulling 
 
 ---
 
-## The Community Workflow
+## The Companion Workflow
 
-This toolkit uses a single five-phase workflow:
+The ESF Companion uses a single five-phase workflow:
 
 ```
-1. POSITION    Write your Position Statement. No AI yet.
+1. INQUIRE     Read the brief. Ask what you already know,
+               what you are uncertain about, what you assume.
        |
-2. EXPLORE     Bring AI in as a thinking partner.
+2. POSITION    Write your Position Statement. No AI yet.
+       |
+3. EXPLORE     Bring AI in as a thinking partner.
                It challenges your position, surfaces alternatives.
                It does not originate direction.
        |
-3. BUILD       Work with AI on the deliverable.
+4. MAKE        Work with AI on the deliverable.
                Log AI contributions. Record resistance.
+               Run the Five Questions at each major section.
        |
-4. VALIDATE    Run the Five Questions. Fix anything that fails.
-       |
-5. DISCLOSE    Write an honest disclosure statement.
+5. REFLECT     Compare final work to your Position Statement.
+               Write an honest disclosure statement.
                Attach it to the finished work.
 ```
 
@@ -80,7 +83,7 @@ The Position Statement is the gate. Everything downstream depends on it. Without
 
 ## The Full Framework
 
-The community toolkit is a simplified, portable version of ESF designed for individual practitioners. The full framework, developed for academic institutions, adds:
+The ESF Companion is a simplified, portable version of ESF designed for individual practitioners. The full framework, developed for academic institutions, adds:
 
 - **A two-level architecture.** Level 1 (Content Production) serves faculty and professionals producing work. Level 2 (Epistemic Development) serves students building the capacity to think with AI. The levels connect: when a faculty member uses Level 1 to design an assignment, they are designing the environment students work within at Level 2.
 - **Eight core constructs.** The Position Statement, the Five Questions, Content Weight, Verification Gates, a Phased Workflow Model, a Disclosure Protocol, a Framework Evolution Protocol, and Build Practice. Each is grounded in established research on epistemic agency, metacognition, and iterative design methods.
@@ -116,5 +119,5 @@ The full literature review, citations, and research summary are available in the
 
 ---
 
-*Epistemic Stewardship Framework, Community Edition | Nathan Madrid | 2026*
+*Epistemic Stewardship Framework, ESF Companion | Nathan Madrid | 2026*
 *Licensed under CC BY 4.0*

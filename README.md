@@ -109,7 +109,7 @@ claude
 - Asks which AI tool you use
 - Asks for a project folder name (creates it if needed)
 - Downloads files into your current directory
-- Auto-commits toolkit files to git (only toolkit files, not your existing work)
+- Auto-commits Companion files to git (only Companion files, not your existing work)
 - Does NOT send data anywhere. Everything is local.
 
 **Already have work in this directory?** The installer adds ESF files alongside your existing files. It will not modify or overwrite your work. See [Using ESF with Existing Work](docs/existing-work.md).

@@ -76,7 +76,7 @@ if [ ! -d ".git" ]; then
     echo -e "${YELLOW}Force mode: installing without git repo.${NC}"
   else
     echo -e "${YELLOW}Warning: This directory is not a git repository.${NC}"
-    echo "The toolkit works best inside a git repo (your project directory)."
+    echo "The Companion works best inside a git repo (your project directory)."
     echo ""
     echo "Options:"
     echo "  1) Run the setup script (creates a repo for you)"
@@ -170,11 +170,11 @@ if [ "$PLATFORM" = "conversation" ]; then
   fi
   fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
-  # Auto-commit conversation toolkit files if in a git repo
+  # Auto-commit conversation Companion files if in a git repo
   if [ -d ".git" ]; then
     git add prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
     git commit -m "Install ESF Companion (conversation mode)" --quiet 2>/dev/null && \
-      echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
+      echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
   fi
 
   echo ""
@@ -251,7 +251,6 @@ fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/dis
 fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 
 # Download reference files
 echo "  Fetching reference files..."
@@ -264,8 +263,9 @@ if [ ! -f "WORKFLOW.md" ]; then
 fi
 fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
-# Ensure .session-buffer.md is gitignored (covers install into existing repos)
-if [ -f ".gitignore" ] && ! grep -q '.session-buffer.md' .gitignore 2>/dev/null; then
+# Ensure .session-buffer.md is gitignored (covers fresh and existing repos)
+touch .gitignore
+if ! grep -q '.session-buffer.md' .gitignore 2>/dev/null; then
   printf '\n# ESF session buffer (ephemeral, not versioned)\n.session-buffer.md\n' >> .gitignore
 fi
 
@@ -312,7 +312,7 @@ if [ ! -f "README.md" ] && [ ! -f "WORKFLOW.md" ]; then
   fi
 fi
 
-# Auto-commit only toolkit files if in a git repo (do not stage unrelated work)
+# Auto-commit only Companion files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
   git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
@@ -322,8 +322,16 @@ if [ -d ".git" ]; then
     git add projects/ 2>/dev/null
   fi
 
-  git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
-    echo -e "  ${GREEN}Toolkit files committed to git.${NC}" || true
+  # Check git identity before committing
+  if git config user.name > /dev/null 2>&1 && git config user.email > /dev/null 2>&1; then
+    git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
+      echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
+  else
+    echo -e "  ${YELLOW}Note:${NC} Git identity not configured. Run:"
+    echo "    git config --global user.name \"Your Name\""
+    echo "    git config --global user.email \"you@example.com\""
+    echo "  Then commit manually: git commit -m \"Install ESF Companion\""
+  fi
 fi
 
 echo ""

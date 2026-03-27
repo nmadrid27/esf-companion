@@ -35,16 +35,16 @@ If yes, add `(RoR)` to the commit message and log it to the session buffer.
 
 ## Commit Workflow
 
-1. Student describes what they built and whether it aligns
+1. User describes what they built and whether it aligns
 2. You draft the commit message from their description
-3. Student confirms or edits
+3. User confirms or edits
 4. Stage relevant files (`git add` specific files, not `git add .`)
 5. Commit with the confirmed message
 6. Log the commit to the session buffer (piece name, weight, RoR flag)
 
 ## What Not to Do
 
-- Do not auto-commit without student confirmation
+- Do not auto-commit without user confirmation
 - Do not write commit messages the user did not describe
 - Do not introduce branching, PRs, or advanced git workflows
 - Do not commit `.session-buffer.md` or other dot-prefixed files

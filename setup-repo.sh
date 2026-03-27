@@ -114,12 +114,12 @@ After running the ESF Companion installer, the repository will contain:
 
 - \`projects/\` — Course projects, organized by course
 - \`templates/\` — ESF templates (position statements, records of resistance, AI use logs)
-- \`.claude/\` — Toolkit configuration (if using Claude Code)
+- \`.claude/\` — Companion configuration (if using Claude Code)
 - \`prompts/\` — Plain-text prompts (if using other AI tools)
 
 ## Setup
 
-If the toolkit is not yet installed, run:
+If the Companion is not yet installed, run:
 
 \`\`\`bash
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
@@ -158,7 +158,7 @@ if command -v gh &> /dev/null; then
   if [[ "$CREATE_REMOTE" =~ ^[Yy]$ ]]; then
     # Check if logged in
     if gh auth status &> /dev/null; then
-      # Create the remote but don't push yet; install.sh will add toolkit files and auto-commit
+      # Create the remote but don't push yet; install.sh will add Companion files and auto-commit
       gh repo create "$REPO_NAME" --private --source=. -q 2>/dev/null && \
         PUSH_AFTER_INSTALL=true && \
         echo -e "${GREEN}  GitHub repo created. Will push after install completes.${NC}" || \
@@ -191,7 +191,7 @@ curl -fsSL "$INSTALLER_URL" | bash
 # Push to GitHub if remote was created earlier
 if [ "$PUSH_AFTER_INSTALL" = true ]; then
   git push -u origin main --quiet 2>/dev/null && \
-    echo -e "  ${GREEN}Pushed to GitHub (includes toolkit files).${NC}" || \
+    echo -e "  ${GREEN}Pushed to GitHub (includes Companion files).${NC}" || \
     echo -e "  ${YELLOW}Could not push. Run 'git push -u origin main' later.${NC}"
 fi
 

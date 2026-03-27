@@ -13,7 +13,7 @@ Three practices. Learn them. Use them every time.
 Before you open any AI tool on a project, write a Position Statement: a short document (200 to 400 words, rough is fine) that captures three things.
 
 - **Your position.** What do you want to make, argue, or explore?
-- **Your emphasis.** What matters most? What should you avoid?
+- **What matters most.** What matters most? What should you avoid?
 - **Your non-negotiables.** What must be present in the final work, no matter what the AI suggests?
 
 This takes five to ten minutes. Those minutes are where the real thinking happens. Your Position Statement becomes the anchor for every decision that follows. When AI output drifts from your intent, the statement is how you notice.
@@ -56,5 +56,5 @@ That is epistemic stewardship. It works with any AI tool, any discipline, any pr
 
 ---
 
-*For the full framework, workflow diagram, and templates, see the [ESF Community Toolkit](../README.md).*
+*For the full framework, workflow diagram, and templates, see the [ESF Companion](../README.md).*
 *For the scholarly grounding and institutional implementation, see the [full ESF repository](https://github.com/nmadrid27/esf-companion).*

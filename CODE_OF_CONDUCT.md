@@ -2,14 +2,14 @@
 
 ## Our Commitment
 
-The ESF Community Toolkit is committed to providing a welcoming, respectful space for everyone, regardless of experience level, institution, discipline, identity, or background.
+The ESF Companion is committed to providing a welcoming, respectful space for everyone, regardless of experience level, institution, discipline, identity, or background.
 
 ## Expected Behavior
 
 - **Be respectful.** Disagreement is welcome; personal attacks are not.
 - **Be constructive.** Critique ideas, not people. Offer alternatives when you identify problems.
 - **Be honest.** The ESF is built on epistemic integrity. Apply the same standard to community interactions.
-- **Be inclusive.** The toolkit serves practitioners across disciplines and contexts. Contributions should reflect that breadth.
+- **Be inclusive.** The Companion serves practitioners across disciplines and contexts. Contributions should reflect that breadth.
 
 ## Unacceptable Behavior
 

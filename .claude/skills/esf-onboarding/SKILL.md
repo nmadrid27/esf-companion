@@ -17,7 +17,7 @@ When onboarding is complete, you retire. The `esf-companion` agent takes over fo
 
 Greet the user and explain what onboarding does:
 
-> "Welcome to the ESF Companion. I'm going to ask you a few questions to set up your workspace — this takes about 5 minutes. Once we're done, your toolkit will be configured for your work and I'll walk you through where things live.
+> "Welcome to the ESF Companion. I'm going to ask you a few questions to set up your workspace — this takes about 5 minutes. Once we're done, your Companion will be configured for your work and I'll walk you through where things live.
 >
 > If you're coming back to add a new project or update your context, just say 'update' and I'll ask only what's changed."
 
@@ -48,7 +48,7 @@ Also collect: current period (quarter, semester, year, or however they track tim
 
 Ask:
 
-> "What contexts are you working in right now? These could be courses, client projects, a personal project, a job, research — anything where you'll use this toolkit."
+> "What contexts are you working in right now? These could be courses, client projects, a personal project, a job, research — anything where you'll use the Companion."
 
 For each context they name, collect:
 - A short label or code they want to use (e.g., "AI-180", "client-rebrand", "thesis")

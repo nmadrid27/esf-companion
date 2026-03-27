@@ -1,6 +1,42 @@
 # Changelog
 
-All notable changes to the ESF Community Toolkit are documented here.
+All notable changes to the ESF Companion are documented here.
+
+## [Unreleased]
+
+### Added
+- Smoke test suite (`test/smoke-test.sh`): 32 assertions across Claude install, conversation install, onboarding, and setup-repo guard
+- Git identity check in install.sh (warns instead of silently failing)
+- `.gitignore` creation for fresh installs (no longer requires pre-existing file)
+- Sample data: THINK-level course content (position statements, records of resistance, AI use log, process blog)
+- `esf-cognitive` skill for cognitive technique triggers
+- `GETTING_STARTED.md` detailed first-session walkthrough
+- `START_HERE.md` quick-start guide (installed in both Claude and conversation modes)
+- Two agent boundaries from PRD: "does not diagnose," "does not enforce beyond its mode"
+
+### Changed
+- Universal language pass: "student" replaced with "user" across all agent-facing files
+- "ESF Community Toolkit" renamed to "ESF Companion" across all files
+- Phase names in docs standardized to canonical Inquire/Position/Explore/Make/Reflect
+- Position Statement terminology standardized ("what matters most" replaces "emphasis")
+- Onboarding flow uses single open question per PRD Section 7
+- Agent and skills aligned with PRD: drift reference points (direction, priority, boundary), mirror/gate mode, scaffolding levels
+- Records of Resistance: proactive workflow (one file per decision, pre-filled AI section, declined path tracked)
+- Conversation mode: PROJECT.md generation at session end, disclosure drafting
+- Install script: platform flag (`--platform claude|conversation`), `--force` for reinstall, `--sample` for demo data, `fetch_if_missing` preserves user customizations
+- Removed duplicate `evolution-log-template.md` fetch from install script
+
+### Fixed
+- Smoke test path bug (Test 4 used relative path after CWD change)
+- Install script silent commit failure when git identity missing
+- `setup-repo.sh` header and git identity check
+- Workspace-relative path discipline in agent and skill (never expand to absolute paths)
+- Sample install commit staging
+- Claude state moved out of `.claude/` to `projects/_esf/`
+
+### Security
+- Added `SECURITY.md` with responsible disclosure policy
+- Added CI workflow for install script validation
 
 ## [1.0.0] - 2026-03-13
 
@@ -15,7 +51,7 @@ All notable changes to the ESF Community Toolkit are documented here.
 ## [0.9.0] - 2026-03-12
 
 ### Added
-- Initial community toolkit release
+- Initial release
 - Five templates (Position Statement, Record of Resistance, AI Use Log, Five Questions Checklist, Disclosure Statement)
 - Workflow diagram (`WORKFLOW.md`)
 - Paste-anywhere companion prompt (`prompts/esf-companion.md`)
