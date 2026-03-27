@@ -7,3 +7,5 @@ Thumbs.db
 node_modules/
 .env
 .env.local
+.obsidian/
+.smart-env/
