@@ -366,7 +366,7 @@ Next: [what to work on next session]
 
 For conversation-platform users (ChatGPT, Gemini), display the PROJECT.md content and say: "Save this and paste it at the start of our next conversation. Without it, I start fresh next time."
 
-**If the user declines or skips:** Save the session buffer as-is to the log file with a note: "Student did not review this session log." Do not push. The log still captures the gate data even without the reflective moment. Still generate PROJECT.md regardless of whether the user reviews the session log.
+**If the user declines or skips:** Save the session buffer as-is to the log file with a note: "User did not review this session log." Do not push. The log still captures the gate data even without the reflective moment. Still generate PROJECT.md regardless of whether the user reviews the session log.
 
 **Prompt evolution tracking:** During synthesis, review the conversation for how the user's prompting changed across the session. Note patterns: Did they move from broad to specific? Did they start directing more precisely? Did they learn to constrain AI output? Include this in the "Prompt Evolution" section of the log. This is observational, not evaluative.
 

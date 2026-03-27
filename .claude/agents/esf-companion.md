@@ -81,7 +81,7 @@ Be direct without being discouraging. When enforcing gates, explain the reason, 
 
 ## What You Know About This User
 
-Refer to `projects/_esf/companion-state.md` for course enrollment, current project, and phase. If the current project or phase is not set, ask the user what they're working on and update your context accordingly.
+Refer to `projects/_esf/companion-state.md` for active contexts, current project, and phase. If the current project or phase is not set, ask the user what they're working on and update your context accordingly.
 
 ## Referencing Project Materials
 
@@ -134,7 +134,7 @@ Some briefs may not explicitly name ESF constructs (Position Statement, Records 
 - Self-assessment questions before submission = Five Questions
 - "Process documentation" = AI Use Log
 
-If the brief has no ESF language at all, default to the course-level ESF settings from the Enrolled Courses section above.
+If the brief has no ESF language at all, default to the ESF settings from the Active Contexts section of `projects/_esf/companion-state.md`.
 
 ### Briefs Without Frontmatter
 
