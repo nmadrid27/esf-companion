@@ -5,6 +5,17 @@ description: Use when working on a course project. Runs the ESF Level 2 workflow
 
 # ESF Project Workflow: Level 2
 
+## Workspace State Path Discipline
+
+`projects/_esf/companion-state.md` is always a workspace-relative path in the current repository.
+
+- Read and write it exactly at `projects/_esf/companion-state.md`.
+- Do not translate it into `~/projects/...`, `/Users/.../projects/...`, or any other absolute path.
+- Do not search outside the current working directory for alternate copies.
+- Do not use Bash to probe fallback locations if a read fails.
+
+If `projects/_esf/companion-state.md` is missing in the current workspace, stop and tell the user to run `/esf-onboarding` in this repository. Do not continue with project work.
+
 ## Who This Skill Is For
 
 You are working with a user using the Epistemic Stewardship Framework (ESF). Your role is not to produce their work, it is to be a thinking partner that helps them develop and maintain their own ideas throughout the project. The user owns the intellectual content. You support the process.
@@ -61,7 +72,7 @@ Length: 200 to 400 words. Rough is not just acceptable; it is expected. Bullet p
 
 ### Course-Specific Requirements
 
-Read the Active Contexts section of `projects/_esf/companion-state.md` for any course-specific Position Statement or ESF requirements. If the user's context specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no matching context exists in the state file, use the default three-element Position Statement (stance, what matters most, what you will not compromise on).
+Read the Active Contexts section of `projects/_esf/companion-state.md` in the current workspace for any course-specific Position Statement or ESF requirements. If the user's context specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no matching context exists in the state file, use the default three-element Position Statement (stance, what matters most, what you will not compromise on).
 
 ---
 
@@ -216,7 +227,7 @@ Log each check result silently to the session buffer (drift level: none/minor/si
 > "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
 
 If the user says yes:
-1. Read the current context and project name from `projects/_esf/companion-state.md`.
+1. Read the current context and project name from `projects/_esf/companion-state.md` in the current workspace only.
 2. Derive `project-slug` from the project name and find the next record number by checking `projects/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
 3. Create `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
 4. Pre-fill these fields yourself before asking the user to write anything:
@@ -236,7 +247,7 @@ For code-based projects, annotated commits can supplement a Record of Resistance
 
 ### Course-Specific Make Phase Requirements
 
-Read the Active Contexts section of `projects/_esf/companion-state.md` for RoR requirements and any context-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+Read the Active Contexts section of `projects/_esf/companion-state.md` in the current workspace for RoR requirements and any context-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 ---
 
@@ -315,11 +326,11 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 
 | ESF Moment | What to Write | Where |
 |---|---|---|
-| Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update `projects/_esf/companion-state.md`: Current Project section |
+| Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update `projects/_esf/companion-state.md` in the current workspace: Current Project section |
 | Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[context]/logs/.session-buffer.md` |
 | Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
-| Phase transition | New phase, what was completed | Update `projects/_esf/companion-state.md`: Current Project phase field |
+| Phase transition | New phase, what was completed | Update `projects/_esf/companion-state.md` in the current workspace: Current Project phase field |
 
 **Session buffer format:** The file `projects/[context]/logs/.session-buffer.md` is a temporary working file. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
@@ -352,7 +363,7 @@ When the user indicates they are done working for the session (says "I'm done," 
 
 4. After the user confirms (or edits), save to `projects/[context]/logs/session-YYYY-MM-DD.md`
 5. Clear the session buffer by overwriting it with empty content, then re-read it to confirm it is empty before reporting success
-6. Update `projects/_esf/companion-state.md` with the current phase, last activity date, and current scaffolding level if it changed during the session
+6. Update `projects/_esf/companion-state.md` in the current workspace with the current phase, last activity date, and current scaffolding level if it changed during the session
 7. Generate or update `projects/[context]/PROJECT.md` with current state:
 
 ```markdown
@@ -396,13 +407,15 @@ This replaces the generic "what are you working on?" opening with specific conte
 
 ### Scaffolding Calibration
 
-Read `projects/_esf/companion-state.md` for the user's current scaffolding level (Guided, Supported, or Independent), if it has already been set. If no scaffolding level is set yet, infer it from the first confirmed Position Statement, use it for the current session, and save it back into the Current Project section of the state file when you next update session state. Calibrate tone and gate strictness accordingly:
+Read `projects/_esf/companion-state.md` from the current workspace for the user's current scaffolding level (Guided, Supported, or Independent), if it has already been set. If no scaffolding level is set yet, infer it from the first confirmed Position Statement, use it for the current session, and save it back into the Current Project section of the state file when you next update session state. Calibrate tone and gate strictness accordingly:
 
 - **Guided:** Lighter gate language, more encouraging, more scaffolding at each phase. Expect rough Position Statements; that is appropriate. Explain the purpose of each step.
 - **Supported:** Standard gate enforcement. Direct tone. Check in at key moments but do not walk through every step.
 - **Independent:** Minimal interruption. The user runs their own process. Surface only significant drift. Challenge rather than scaffold.
 
 If no scaffolding level is set, default to Supported. Invoke the `esf-cognitive` skill for technique suggestions at phase transitions and when drift signals appear.
+
+If any read of `projects/_esf/companion-state.md` fails, stop immediately. Tell the user the workspace state file could not be resolved in this repository. Do not attempt alternate absolute paths. Do not run shell commands to search for another copy.
 
 ---
 

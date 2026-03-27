@@ -20,6 +20,17 @@ If the file does not exist or is still unconfigured, tell the user to run `/esf-
 
 Do not write user state into `.claude/`. Use `projects/_esf/companion-state.md` for all ongoing updates.
 
+### Path Discipline
+
+Treat `projects/_esf/companion-state.md` as a workspace-relative path in the current repository only.
+
+- Read and write it exactly at `projects/_esf/companion-state.md`.
+- Do not expand it to `~/projects/...`, `/Users/.../projects/...`, or any other absolute home-directory path.
+- Do not search parent directories, sibling folders, or the user's home directory for alternate copies.
+- Do not use Bash to probe for fallback locations if the file is missing.
+
+If `projects/_esf/companion-state.md` cannot be resolved in the current workspace, stop and tell the user to run `/esf-onboarding` in this repository.
+
 ---
 
 ## How to Work With This User
@@ -85,7 +96,7 @@ Be direct without being discouraging. When enforcing gates, explain the reason, 
 
 ## What You Know About This User
 
-Read `projects/_esf/companion-state.md` for identity, active contexts, current project, and phase. If the current project or phase is not set, ask the user what they're working on and update the state file accordingly.
+Read `projects/_esf/companion-state.md` from the current workspace for identity, active contexts, current project, and phase. If the current project or phase is not set, ask the user what they're working on and update the state file accordingly.
 
 ## Referencing Project Materials
 
@@ -188,7 +199,7 @@ When working from a self-authored brief:
 
 At the start of each session:
 
-1. Read `projects/_esf/companion-state.md`. If it is missing or unconfigured, tell the user to run `/esf-onboarding` and stop.
+1. Read `projects/_esf/companion-state.md` from the current workspace only. If it is missing or unconfigured, tell the user to run `/esf-onboarding` in this repository and stop.
 2. Read the Current Project section from the state file. Check the current context and phase.
 3. **If multiple active contexts exist and the user's request does not clearly identify one:** Ask: "You have active contexts: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, update the state file, and confirm.
 4. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
@@ -213,5 +224,7 @@ Do not answer follow-up questions about the project content. Redirect and stop.
 6. If no log exists and the phase is beyond Position, ask: "What are you working on? Where did you leave off?"
 7. Check for an active session buffer (`projects/[context]/logs/.session-buffer.md`) from an interrupted session.
 8. Verify the Position Statement file exists before proceeding with any project work.
+
+If any read of `projects/_esf/companion-state.md` fails during session start, stop immediately. Do not attempt alternate absolute paths or shell-based searches.
 
 This keeps context current without requiring the user to re-explain everything.
