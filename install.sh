@@ -161,6 +161,7 @@ if [ "$PLATFORM" = "conversation" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
   fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
 
@@ -211,14 +212,9 @@ mkdir -p .claude/reference
 mkdir -p prompts
 mkdir -p templates
 
-# Download agents (preserve personalized agent on re-install)
+# Download the static agent. User-specific state now lives in projects/_esf/.
 echo "  Fetching agents..."
-if [ "$FORCE" != true ] && [ -f ".claude/agents/esf-companion.md" ] && grep -q "NAME\|^- \*\*Name:\*\*" .claude/agents/esf-companion.md 2>/dev/null && ! grep -q "\[NAME\]" .claude/agents/esf-companion.md 2>/dev/null; then
-  echo -e "  ${YELLOW}Personalized agent file found; skipping to preserve your profile.${NC}"
-  echo "  To force update: re-run with --force flag."
-else
-  curl -fsSL "$TOOLKIT_BASE/.claude/agents/esf-companion.md" -o .claude/agents/esf-companion.md
-fi
+curl -fsSL "$TOOLKIT_BASE/.claude/agents/esf-companion.md" -o .claude/agents/esf-companion.md
 
 # Download skills
 echo "  Fetching skills..."
@@ -247,6 +243,7 @@ fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" templates/posit
 fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" templates/ai-use-log-lite-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
+fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
 fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
@@ -276,6 +273,7 @@ fi
 # Install sample data if --sample flag was passed
 if [ "$SAMPLE" = true ]; then
   echo "  Installing BUILD-level sample data (Alex Rivera)..."
+  mkdir -p projects/_esf
   mkdir -p projects/build-course/briefs
   mkdir -p projects/build-course/position-statements
   mkdir -p projects/build-course/records-of-resistance
@@ -284,8 +282,8 @@ if [ "$SAMPLE" = true ]; then
   mkdir -p projects/build-course/reflections
   mkdir -p projects/build-course/logs
   mkdir -p projects/build-course/work
-  curl -fsSL "$TOOLKIT_BASE/sample/agents/esf-companion.md" \
-    -o .claude/agents/esf-companion.md
+  curl -fsSL "$TOOLKIT_BASE/sample/projects/_esf/companion-state.md" \
+    -o projects/_esf/companion-state.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/briefs/p2-responsive-system.md" \
     -o projects/build-course/briefs/p2-responsive-system.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/position-statements/responsive-system.md" \

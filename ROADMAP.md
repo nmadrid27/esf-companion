@@ -237,13 +237,13 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 | Layer | What it holds | Where it lives | Persistence | Status |
 |-------|-------------|---------------|-------------|--------|
-| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `.claude/agents/esf-companion.md` | Permanent, updated at project completion | [SHIPPED] |
+| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `projects/_esf/companion-state.md` | Permanent, updated during onboarding and at project completion | [SHIPPED] |
 | **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `projects/[name]/PROJECT.md` | Per project, updated each session | [SHIPPED] |
 | **Session memory** | Decisions made, techniques used, drift flagged | `projects/[name]/logs/session-YYYY-MM-DD.md` | Created each session | [SHIPPED] |
 
 ### Session Start Protocol
 
-1. Read identity file
+1. Read workspace state file
 2. Ask which project (if multiple)
 3. Read that project's `PROJECT.md`
 4. Read most recent session log's "Next Session" section

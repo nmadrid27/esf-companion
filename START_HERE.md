@@ -6,7 +6,7 @@ You just installed the ESF Companion. This is your next step guide.
 
 ## What Got Installed
 
-**Claude Code path:** An agent (`.claude/agents/esf-companion.md`), five skills, templates, reference files, and a visual process diagram (`WORKFLOW.md`). The agent activates automatically when you run `claude` in this directory.
+**Claude Code path:** An agent (`.claude/agents/esf-companion.md`), five skills, templates, reference files, a workspace state file created during onboarding at `projects/_esf/companion-state.md`, and a visual process diagram (`WORKFLOW.md`). The agent activates automatically when you run `claude` in this directory.
 
 **Conversation path (ChatGPT, Gemini, other):** A companion prompt (`prompts/companion.md`), templates, and a visual process diagram. No agent; you paste the prompt manually.
 

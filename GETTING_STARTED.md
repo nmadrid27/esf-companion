@@ -68,7 +68,7 @@ Next steps:
 ```
 ai-work/
 ├── .claude/
-│   ├── agents/esf-companion.md       ← unpersonalized (placeholders)
+│   ├── agents/esf-companion.md       ← static agent instructions
 │   ├── skills/
 │   │   ├── esf-onboarding/
 │   │   ├── esf-project/
@@ -131,7 +131,7 @@ Then runs the onboarding skill:
 
 Behind the scenes, onboarding does three things:
 
-1. **Personalizes the agent file** (`esf-companion.md`): replaces `[NAME]` with "Jordan Park," fills in their program, course, and current project. Sets the phase to "Inquire."
+1. **Creates the workspace state file** (`projects/_esf/companion-state.md`): records Jordan Park, their contexts, current project, and starting phase.
 
 2. **Creates the folder structure:**
 
@@ -253,7 +253,7 @@ Jordan has saved their Position Statement. They open Claude Code.
 
 **What happens at session start:**
 
-The toolkit reads Jordan's agent file, sees the current phase is "Inquire" (set during onboarding), and checks for a Position Statement. The file exists. It reads the last session log for context (none yet; this is the first session). It orients:
+The toolkit reads Jordan's workspace state file, sees the current phase is "Inquire" (set during onboarding), and checks for a Position Statement. The file exists. It reads the last session log for context (none yet; this is the first session). It orients:
 
 > "This is your first project session. I see your Position Statement for the Tool Audit is saved. Ready to start Phase 3?"
 
@@ -334,7 +334,7 @@ For a complete Phase 4 and 5 walkthrough with Build Practice, Records of Resista
 ```
 ai-work/
 ├── .claude/
-│   ├── agents/esf-companion.md       ← personalized: Jordan Park, Animation BFA
+│   ├── agents/esf-companion.md       ← static agent instructions
 │   ├── skills/
 │   ├── reference/
 │   └── esf-version
@@ -355,7 +355,7 @@ ai-work/
 └── WORKFLOW.md
 ```
 
-The Position Statement exists and has been confirmed. The agent file records Jordan's current phase (Explore, transitioning to Make) and project context. When Jordan opens Claude Code next session, the toolkit will read the session log and pick up where they left off.
+The Position Statement exists and has been confirmed. The workspace state file records Jordan's current phase (Explore, transitioning to Make) and project context. When Jordan opens Claude Code next session, the toolkit will read the session log and pick up where they left off.
 
 ---
 

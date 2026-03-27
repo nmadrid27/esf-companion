@@ -2,33 +2,23 @@
 
 If you teach at a university, college, or training program and want students to use ESF in your courses, the ESF Companion is a starting point you can customize. Fork this repository or fork this repository and make the following changes.
 
-## 1. Add your course context to the agent
+## 1. Add your course context to the workspace state
 
-Edit `.claude/agents/esf-companion.md` to include your course information. Add a section after the Identity block:
+Edit `projects/_esf/companion-state.md` to include your course information. Add a context entry like this:
 
 ```markdown
-## Course Context
-
-- **Institution:** [Your institution name]
-- **Course:** [Course code and title]
-- **Instructor:** [Your name]
-- **AI Policy:** [Your course's AI use policy, or link to it]
-
-## Project Structure
-
-Students in this course complete the following projects:
-- **Project 1:** [Title and brief description]
-- **Project 2:** [Title and brief description]
-
-Each project requires a Position Statement before AI engagement
-and a minimum of [N] Records of Resistance.
+- your-course: [Course code and title]
+  Collaborator or lead: [Instructor name]
+  ESF level: full
+  Records of Resistance required: yes, minimum [N]
+  Position Statement timing: project start
 ```
 
-This gives Claude Code (or any AI tool using the companion prompt) the context to guide students within your specific course structure.
+This gives Claude Code the context to guide students within your specific course structure without needing to edit files under `.claude/`.
 
 ## 2. Set minimums for Records of Resistance
 
-The generic templates leave minimums open. For a course, you should set them. Edit the agent file and the companion prompt to enforce your requirements:
+The generic templates leave minimums open. For a course, you should set them. Edit the workspace state file and the companion prompt to enforce your requirements:
 
 ```markdown
 ## ESF Requirements for This Course
@@ -44,7 +34,7 @@ Scale minimums to project complexity. A short exercise needs fewer Records of Re
 
 ## 3. Add your project briefs
 
-Drop your assignment briefs into a `briefs/` directory. Reference them in the agent so the AI has context when students ask about project requirements:
+Drop your assignment briefs into a `briefs/` directory. Reference them in the workspace state so the AI has context when students ask about project requirements:
 
 ```
 your-course-toolkit/
@@ -53,12 +43,15 @@ your-course-toolkit/
 │   └── project-2-brief.md
 ├── templates/
 │   └── [ESF templates, unchanged or adapted]
+├── projects/
+│   └── _esf/
+│       └── companion-state.md   ← Holds your course context
 └── .claude/
     └── agents/
-        └── esf-companion.md   ← References your briefs
+        └── esf-companion.md     ← Static agent instructions
 ```
 
-In the agent file, add:
+In `projects/_esf/companion-state.md`, add:
 
 ```markdown
 ## Project Briefs

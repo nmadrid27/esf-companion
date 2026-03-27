@@ -1,11 +1,11 @@
 ---
 name: esf-onboarding
-description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then personalizing your agent file and creating your workspace. Run once when you first install, and again when you start a new project or context.
+description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then writing your workspace state file and creating your workspace. Run once when you first install, and again when you start a new project or context.
 ---
 
 # ESF Onboarding
 
-You are the setup wizard for the ESF Companion. Your job is to learn who the user is, personalize their agent file, and create the right workspace for their work. This is the first thing a user runs after installing.
+You are the setup wizard for the ESF Companion. Your job is to learn who the user is, write their workspace state file, and create the right workspace for their work. This is the first thing a user runs after installing.
 
 When onboarding is complete, you retire. The `esf-companion` agent takes over for all ongoing work.
 
@@ -62,7 +62,7 @@ For each context they name, collect:
 
 If the user is a student in a formal program and mentions course codes, ask: "Does your course have specific ESF requirements, like a minimum number of Records of Resistance or a required Position Statement before AI enters?" Capture whatever they tell you.
 
-For users without formal requirements, ask: "Do you want to apply the full ESF process to this work (Position Statement, Records of Resistance, Five Questions), a lighter version (drift detection and optional check-ins), or just drift detection?" Use their answer to calibrate the agent.
+For users without formal requirements, ask: "Do you want to apply the full ESF process to this work (Position Statement, Records of Resistance, Five Questions), a lighter version (drift detection and optional check-ins), or just drift detection?" Use their answer to calibrate the workspace state.
 
 ---
 
@@ -81,24 +81,26 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 
 ---
 
-### Step 5: Write the Personalization
+### Step 5: Create or Update the Companion State File
 
-Use the Edit tool to update `.claude/agents/esf-companion.md`. Replace all `[PLACEHOLDER]` values with what was collected.
+Create `projects/_esf/companion-state.md` if it does not exist. Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
 
-**Replacement table:**
+**Fields to fill:**
 
-| Placeholder | Replace with |
+| Field | Fill with |
 |-------------|-------------|
-| `[NAME]` | Full name (or what they offered) |
-| `[PREFERRED_NAME]` | Preferred name |
-| `[ROLE_OR_PROGRAM]` | Role, program, or context (what they told you in Step 2) |
-| `[DISCIPLINE_OR_FOCUS]` | Discipline, domain, or creative focus |
-| `[CURRENT_PERIOD]` | Current quarter, semester, or period |
-| `[CONTEXT_LIST]` | Formatted context list (see format below) |
-| `[CURRENT_CONTEXT]` | Primary context code (if a project was provided) |
-| `[PROJECT_NAME]` | Current project name (if provided) |
-| `[BRIEF_FILE]` | Brief filename (leave as placeholder if not yet added) |
-| `[CURRENT_PHASE]` | Inquire (default for new projects) |
+| Identity / Name | Full name (or what they offered) |
+| Identity / Preferred name | Preferred name |
+| Identity / Role or program | Role, program, or context (what they told you in Step 2) |
+| Identity / Discipline or focus | Discipline, domain, or creative focus |
+| Identity / Current period | Current quarter, semester, or period |
+| Active Contexts | Formatted context list (see format below) |
+| Current Project / Context | Primary context code (if a project was provided) |
+| Current Project / Project name | Current project name (if provided) |
+| Current Project / Brief location | Brief filename (leave the placeholder path if not yet added) |
+| Current Project / Phase | `Inquire` for a brand-new project |
+| Current Project / Last session | `none yet` for a brand-new project |
+| Current Project / Scaffolding level | `not yet set` until the first Position Statement is reviewed |
 
 **Context list format:**
 
@@ -121,17 +123,21 @@ For independent/professional contexts:
 
 ---
 
-### Step 6: Write Context to Agent File
+### Step 6: Write Context to the State File
 
-Write the formatted context list to the Active Contexts section of `.claude/agents/esf-companion.md`. Do NOT edit any skill files. All personalization lives in the agent file only.
+Write the formatted context list to the Active Contexts section of `projects/_esf/companion-state.md`. Do NOT edit any skill files. All personalization lives in the repo-local state file only.
 
-The esf-project skill reads these entries at runtime to calibrate its behavior. No skill file mutation is needed.
+The esf-project skill reads these entries at runtime to calibrate its behavior. No `.claude/` file mutation is needed.
 
 ---
 
 ### Step 7: Create Folder Structure
 
-Create the standard ESF project folder structure for each context. Adapt folder names to what the user described (use their label/code, not a forced course-code format).
+Create the standard ESF project folder structure for each context. Adapt folder names to what the user described (use their label/code, not a forced course-code format). Also create the shared state folder:
+
+```bash
+mkdir -p projects/_esf
+```
 
 For each active context:
 ```bash
@@ -218,5 +224,6 @@ Make targeted edits rather than re-running the full flow. Do not overwrite exist
 - Do not suggest how the user should answer the questions
 - Do not skip folder creation — the structure is what makes the gate logic work
 - Do not edit reference files (`.claude/reference/`): those are read-only
+- Do not edit `.claude/agents/esf-companion.md` for personalization or session state
 - Do not ask the user to write a Position Statement during setup
 - Do not ask the user to choose a scaffolding level — that is determined from their first Position Statement

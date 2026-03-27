@@ -14,7 +14,8 @@ Copy these files into your project repo after running the installer:
 
 ```bash
 # From inside your project repo, after running install.sh:
-cp path/to/sample/agents/esf-companion.md .claude/agents/esf-companion.md
+mkdir -p projects/_esf
+cp path/to/sample/projects/_esf/companion-state.md projects/_esf/companion-state.md
 cp -r path/to/sample/projects/build-course projects/
 ```
 
@@ -41,7 +42,7 @@ The toolkit will load Alex's context, check for the Position Statement (it exist
 | File | What it demonstrates |
 |------|---------------------|
 | **BUILD level (Creative Computing)** | **Alex Rivera, BFA Motion Media Design** |
-| `agents/esf-companion.md` | Fully personalized agent: BUILD-level calibration, 3 RoR required, Explore phase |
+| `projects/_esf/companion-state.md` | Sample workspace state: Alex Rivera, BUILD-level calibration, 3 RoR required, Explore phase |
 | `projects/build-course/briefs/p2-responsive-system.md` | Realistic BUILD-level project brief: tool-agnostic, emergence-focused |
 | `projects/build-course/position-statements/responsive-system.md` | Student-voice position statement with 3-element Design Intent |
 | `projects/build-course/records-of-resistance/ror-01.md` | Record of Resistance: AI suggestion documented and deliberately rejected |
@@ -61,6 +62,6 @@ The toolkit will load Alex's context, check for the Position Statement (it exist
 ## What to Test
 
 - **Gate enforcement:** Delete the position statement file and try to start a project session. The toolkit should block until it's restored.
-- **Phase awareness:** The agent knows Alex is in Explore phase. Ask about the Inquire phase artifacts; it should know they're complete.
+- **Phase awareness:** The workspace state says Alex is in Explore phase. Ask about the Inquire phase artifacts; it should know they're complete.
 - **AI calibration:** BUILD-level calibration means less hand-holding. Ask a vague question and notice how the toolkit pushes back rather than filling in the gaps.
 - **Records of Resistance:** Ask the toolkit to help you review your RoR count. It should know 3 are required and 1 is complete.
