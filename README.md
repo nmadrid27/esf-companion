@@ -163,7 +163,8 @@ your-project/
 │       └── esf-guide.md             ← Framework reference
 ├── templates/                        ← Blank templates for each practice
 ├── prompts/
-│   └── esf-companion.md             ← Paste-anywhere system prompt
+│   ├── esf-companion.md             ← Paste-anywhere system prompt
+│   └── companion.md                 ← Compact companion prompt
 ├── projects/
 │   └── [your-project]/
 │       ├── position-statement.md     ← Your direction (write this first)
