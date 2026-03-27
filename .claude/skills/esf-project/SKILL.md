@@ -61,7 +61,7 @@ Length: 200 to 400 words. Rough is not just acceptable; it is expected. Bullet p
 
 ### Course-Specific Requirements
 
-Read the Active Contexts section of the agent file (`.claude/agents/esf-companion.md`) for any course-specific Position Statement or ESF requirements. If the user's course specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no course context exists, use the default three-element Position Statement (stance, what matters most, what you will not compromise on).
+Read the Active Contexts section of the companion state file (`projects/_esf/companion-state.md`) for any course-specific Position Statement or ESF requirements. If the user's course specifies additional Position Statement elements (e.g., Design Intent, AI use planning), include those in the gate check. If no course context exists, use the default three-element Position Statement (stance, what matters most, what you will not compromise on).
 
 ---
 
@@ -134,7 +134,7 @@ Before exploration begins, reformat the user's rough Position Statement for read
 
 Present the cleaned version and ask: "Here is your Position Statement with readability edits only. Does this still say what you meant? If anything shifted, tell me and I will fix it."
 
-**The user must confirm** before exploration begins. If they flag anything that changed meaning, revise until they approve. The confirmed version becomes the working Position Statement for the rest of the project.
+**HARD STOP: The user must confirm before exploration begins.** After presenting the readability pass, stop. Do not provide tensions, alternatives, challenges, or any exploration content in the same response. Wait for the user's explicit confirmation that the cleaned version still says what they meant. If they flag anything that changed meaning, revise and wait again. Only after the user confirms does exploration begin. The confirmed version becomes the working Position Statement for the rest of the project.
 
 **Minimum substance threshold:** Rough form is fine — bullets, fragments, incomplete sentences. But all three elements must be present, even if they are only a sentence each: stance, what matters most, what you will not compromise on. If any element is missing, do not proceed with the readability pass. Instead: "Your Position Statement needs a bit more before I can work with it. Right now it does not cover [missing elements]. Go back and add those. Rough is still fine. Then paste it again."
 
@@ -216,7 +216,7 @@ Log each check result silently to the session buffer (drift level: none/minor/si
 > "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
 
 If the user says yes:
-1. Read the current context and project name from the agent file.
+1. Read the current context and project name from `projects/_esf/companion-state.md`.
 2. Derive `project-slug` from the project name and find the next record number by checking `projects/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
 3. Create `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
 4. Pre-fill these fields yourself before asking the user to write anything:
@@ -236,7 +236,7 @@ For code-based projects, annotated commits can supplement a Record of Resistance
 
 ### Course-Specific Make Phase Requirements
 
-Read the Active Contexts section of the agent file for RoR requirements and any course-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+Read the Active Contexts section of `projects/_esf/companion-state.md` for RoR requirements and any course-specific Make phase guidance. If the brief frontmatter specifies `ror-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 ---
 
@@ -315,11 +315,11 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 
 | ESF Moment | What to Write | Where |
 |---|---|---|
-| Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update agent file: Current Project section |
+| Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update companion state file: Current Project section |
 | Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[context]/logs/.session-buffer.md` |
 | Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
-| Phase transition | New phase, what was completed | Update agent file: Current Project phase field |
+| Phase transition | New phase, what was completed | Update companion state file: Current Project phase field |
 
 **Session buffer format:** The file `projects/[context]/logs/.session-buffer.md` is a temporary working file. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
@@ -351,8 +351,8 @@ When the user indicates they are done working for the session (says "I'm done," 
 > "Here is your session log for today. Review it, edit anything that is off, and I will save it."
 
 4. After the user confirms (or edits), save to `projects/[context]/logs/session-YYYY-MM-DD.md`
-5. Clear the session buffer (delete or empty `.session-buffer.md`)
-6. Update the agent file's Current Project section with the current phase and last activity date
+5. Clear the session buffer: use the Write tool to overwrite `projects/[context]/logs/.session-buffer.md` with empty content. Then read the file back to confirm it is empty. If stale content remains, delete the file and recreate it empty. Do not report session end until the buffer is verified clear.
+6. Update `projects/_esf/companion-state.md` Current Project section with the current phase and last activity date
 7. Generate or update `projects/[name]/PROJECT.md` with current state:
 
 ```markdown
@@ -372,7 +372,7 @@ For conversation-platform users (ChatGPT, Gemini), display the PROJECT.md conten
 
 ### Project Completion: Growth Snapshot
 
-When a project reaches Phase 5 (Reflect) and the user completes their final reflection, generate a growth snapshot and append it to the agent file.
+When a project reaches Phase 5 (Reflect) and the user completes their final reflection, generate a growth snapshot and append it to `projects/_esf/companion-state.md`.
 
 **Growth snapshot content:**
 - Project name and course
@@ -382,7 +382,7 @@ When a project reaches Phase 5 (Reflect) and the user completes their final refl
 - Position Statement drift pattern (did drift increase or decrease across sessions?)
 - Prompt evolution summary (one sentence: how did their prompting mature?)
 
-**Where to store:** Append to the agent file (`esf-companion.md`) under the "Growth Record" section. Each completed project adds one entry. Over the full course sequence (DISCOVER through DESIGN), this builds a visible development arc.
+**Where to store:** Append to `projects/_esf/companion-state.md` under the "Growth Record" section. Each completed project adds one entry. Over the full course sequence (DISCOVER through DESIGN), this builds a visible development arc.
 
 ### Session Start: Context Loading
 
@@ -396,7 +396,7 @@ This replaces the generic "what are you working on?" opening with specific conte
 
 ### Scaffolding Calibration
 
-Read the Active Contexts section of the agent file for the user's scaffolding level (Guided, Supported, or Independent). Calibrate tone and gate strictness accordingly:
+Read the Active Contexts section of `projects/_esf/companion-state.md` for the user's scaffolding level (Guided, Supported, or Independent). Calibrate tone and gate strictness accordingly:
 
 - **Guided:** Lighter gate language, more encouraging, more scaffolding at each phase. Expect rough Position Statements; that is appropriate. Explain the purpose of each step.
 - **Supported:** Standard gate enforcement. Direct tone. Check in at key moments but do not walk through every step.
