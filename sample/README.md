@@ -2,7 +2,7 @@
 
 This folder contains pre-filled BUILD-level sample data for testing the toolkit without running onboarding.
 
-**Sample student:** Alex Rivera, BFA Motion Media Design, BUILD level (Creative Computing with AI)
+**Sample user:** Alex Rivera, BFA Motion Media Design, BUILD level (Creative Computing with AI)
 **Sample project:** Project 2, Responsive System (reaction-diffusion system with sound input)
 **Phase:** Explore (Position Statement complete, working on implementation)
 
@@ -43,10 +43,10 @@ The toolkit will load Alex's context, check for the Position Statement (it exist
 | **BUILD level (Creative Computing)** | **Alex Rivera, BFA Motion Media Design** |
 | `agents/esf-companion.md` | Fully personalized agent: BUILD-level calibration, 3 RoR required, Explore phase |
 | `projects/build-course/briefs/p2-responsive-system.md` | Realistic BUILD-level project brief: tool-agnostic, emergence-focused |
-| `projects/build-course/position-statements/responsive-system.md` | Student-voice position statement with 3-element Design Intent |
+| `projects/build-course/position-statements/responsive-system.md` | User-voice position statement with 3-element Design Intent |
 | `projects/build-course/records-of-resistance/ror-01.md` | Record of Resistance: AI suggestion documented and deliberately rejected |
 | `projects/build-course/records-of-resistance/ror-02-technical-decision.md` | Record of Resistance: choosing raw Canvas API over a suggested library for aesthetic and creative control reasons |
-| `projects/build-course/gate-records/gate-no-remediation.md` | Gate record where Q2 ("Is this mine?") fails; student returns to Position Statement, redesigns system architecture, passes on second attempt |
+| `projects/build-course/gate-records/gate-no-remediation.md` | Gate record where Q2 ("Is this mine?") fails; user returns to Position Statement, redesigns system architecture, passes on second attempt |
 | **THINK level (Creativity and AI)** | **Jamie Torres, BFA Illustration; Priya Kapoor, BFA Graphic Design; Sam Chen, BFA Photography** |
 | `projects/think-course/briefs/p2-visual-essay.md` | THINK-level project brief: personal visual essay, tool-agnostic, process-focused |
 | `projects/think-course/position-statements/visual-essay.md` | Non-technical position statement: identity, memory, and place in illustration |
@@ -54,7 +54,7 @@ The toolkit will load Alex's context, check for the Position Statement (it exist
 | `projects/think-course/records-of-resistance/ror-02-source-verification.md` | Source verification: catching a misattributed design history reference the AI presented confidently |
 | `projects/think-course/records-of-resistance/ror-03-low-stakes.md` | Low-stakes pushback: rejecting a single wording change in an artist statement, showing RoR as habit, not heroics |
 | `projects/think-course/logs/ai-use-log-sample.md` | Filled-in AI Use Log with 3 sessions: composition research, statement review, reference research |
-| `projects/think-course/process/process-blog-entry.md` | Process blog entry in student voice: metacognitive reflection on how the Position Statement shaped real-time decisions |
+| `projects/think-course/process/process-blog-entry.md` | Process blog entry in user voice: metacognitive reflection on how the Position Statement shaped real-time decisions |
 
 ---
 

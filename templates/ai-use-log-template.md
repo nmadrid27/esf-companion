@@ -168,7 +168,7 @@ status: complete
 
 *Document moments where you consciously redirected or rejected AI output. These are evidence of active intellectual ownership.*
 
-| Moment | AI Output | Student Decision | Reasoning |
+| Moment | AI Output | User Decision | Reasoning |
 |--------|-----------|-----------------|-----------|
 | *e.g., "During interaction 2, AI suggested reorganizing my argument structure"* | *Brief description of what AI produced* | *Keep / Revise / Reject* | *Why you made this choice, referencing your Position Statement* |
 | | | | |

@@ -254,7 +254,6 @@ fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/dis
 fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 
 # Download reference files
 echo "  Fetching reference files..."

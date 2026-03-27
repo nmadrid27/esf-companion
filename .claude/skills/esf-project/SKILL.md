@@ -340,7 +340,7 @@ If the user declines capture, still append a `## RoR` block with `status: declin
 
 ### Layer 2: End-of-Session Synthesis
 
-When the user indicates they are done working for the session (says "I'm done," "that's it for today," "let's stop here," wrapping up, or the conversation is clearly concluding), generate an evo log entry.
+When the user indicates they are done working for the session (says "I'm done," "that's it for today," "let's stop here," wrapping up, or the conversation is clearly concluding), generate a session log entry.
 
 **Process:**
 
