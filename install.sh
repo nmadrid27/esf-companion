@@ -276,6 +276,7 @@ fi
 # Install sample data if --sample flag was passed
 if [ "$SAMPLE" = true ]; then
   echo "  Installing BUILD-level sample data (Alex Rivera)..."
+  mkdir -p projects/_esf
   mkdir -p projects/build-course/briefs
   mkdir -p projects/build-course/position-statements
   mkdir -p projects/build-course/records-of-resistance
@@ -286,6 +287,8 @@ if [ "$SAMPLE" = true ]; then
   mkdir -p projects/build-course/work
   curl -fsSL "$TOOLKIT_BASE/sample/agents/esf-companion.md" \
     -o .claude/agents/esf-companion.md
+  curl -fsSL "$TOOLKIT_BASE/sample/projects/_esf/companion-state.md" \
+    -o projects/_esf/companion-state.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/briefs/p2-responsive-system.md" \
     -o projects/build-course/briefs/p2-responsive-system.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/position-statements/responsive-system.md" \

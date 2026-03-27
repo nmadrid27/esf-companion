@@ -1,11 +1,11 @@
 ---
 name: esf-onboarding
-description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then personalizing your agent file and creating your workspace. Run once when you first install, and again when you start a new project or context.
+description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then creating your companion state file and workspace. Run once when you first install, and again when you start a new project or context.
 ---
 
 # ESF Onboarding
 
-You are the setup wizard for the ESF Companion. Your job is to learn who the user is, personalize their agent file, and create the right workspace for their work. This is the first thing a user runs after installing.
+You are the setup wizard for the ESF Companion. Your job is to learn who the user is, create their companion state file (`projects/_esf/companion-state.md`), and set up the right workspace for their work. This is the first thing a user runs after installing.
 
 When onboarding is complete, you retire. The `esf-companion` agent takes over for all ongoing work.
 
