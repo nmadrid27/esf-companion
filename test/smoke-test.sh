@@ -8,6 +8,12 @@
 #
 # Content assertions run against local source files (faster, no CDN lag).
 # Install assertions run against temp git repos (fresh installs).
+#
+# Known limitation: install.sh fetches from GitHub main, not the local
+# checkout. Content assertions use $REPO_ROOT to validate local source,
+# but the install path validates remote main. For pre-merge testing,
+# content assertions are the reliable gate; install assertions confirm
+# the installer script mechanics, not the content being installed.
 
 set -e
 
@@ -67,9 +73,12 @@ assert "esf-cognitive in git commit"                   "$(git show --name-only H
 assert "Phase 2 accessibility exception in esf-project" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
-assert "Phase 1 redirect includes questions + non-negotiable in esf-project" \
-  "$(grep -q 'What questions do I have.*non-negotiable\|non-negotiable.*What questions do I have' \
-      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
+assert "Phase 1 redirect includes inquiry questions in esf-project" \
+  "$(grep -A5 'Phase 1 is yours alone' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
+      grep -q 'What is this project asking' && echo 0 || echo 1)"
+assert "Position Statement spec includes non-negotiable in esf-project" \
+  "$(grep -A10 'What a Position Statement Contains' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
+      grep -q 'non-negotiable' && echo 0 || echo 1)"
 assert "esf-cognitive defines trigger detection guidance" \
   "$(grep -q 'How to detect them' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && \
     grep -q 'count consecutive AI suggestions' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && \
@@ -104,9 +113,12 @@ assert "START_HERE.md in git commit"                   "$(git show --name-only H
 assert "Phase 2 accessibility exception in project-workflow" \
   "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
       "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
-assert "Phase 1 redirect includes questions + non-negotiable in project-workflow" \
-  "$(grep -q 'What questions do I have.*non-negotiable\|non-negotiable.*What questions do I have' \
-      "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
+assert "Phase 1 redirect includes inquiry questions in project-workflow" \
+  "$(grep -A5 'Phase 1 is yours alone' "$REPO_ROOT/prompts/project-workflow.md" | \
+      grep -q 'What is this project asking' && echo 0 || echo 1)"
+assert "Position Statement spec includes non-negotiable in project-workflow" \
+  "$(grep -A10 'What a Position Statement Contains' "$REPO_ROOT/prompts/project-workflow.md" | \
+      grep -q 'non-negotiable' && echo 0 || echo 1)"
 
 # PROJECT.md handoff: session end emits PROJECT.md (checked against source)
 assert "Session end emits PROJECT.md block"            \
