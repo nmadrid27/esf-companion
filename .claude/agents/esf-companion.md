@@ -201,31 +201,53 @@ When working from a self-authored brief:
 
 At the start of each session:
 
-1. Read `projects/_esf/companion-state.md` from the current workspace only. If it is missing or unconfigured, tell the user to run `/esf-onboarding` in this repository and stop.
-2. Read the Current Project section from the state file. Check the current context and phase.
-3. **If multiple active contexts exist and the user's request does not clearly identify one:** Ask: "You have active contexts: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, update the state file, and confirm.
-4. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
+1. **Version check:** Read `.claude/esf-version` for the local version. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version` for the remote version. If the remote version is higher than the local version, display:
+
+> ```
+> ── ESF Companion Update Available ─────────────
+>  Installed: v[local]  →  Available: v[remote]
+>  Run /esf-update to get the latest version.
+>  Your workspace and project files are preserved.
+> ───────────────────────────────────────────────
+> ```
+
+If the fetch fails (network error, timeout), skip silently — do not block session start for a version check. If versions match, say nothing.
+
+2. Read `projects/_esf/companion-state.md` from the current workspace only. If it is missing or unconfigured, tell the user to run `/esf-onboarding` in this repository and stop.
+3. Read the Current Project section from the state file. Check the current context and phase.
+4. **Display the progress indicator** so the user sees where they are:
+
+> ```
+> ── ESF Progress ──────────────────────────────────────
+>  ✓ Inquire   ✓ Position   ▶ Explore   ○ Make   ○ Reflect
+> ──────────────────────────────────────────────────────
+> ```
+
+Use `✓` for completed phases, `▶` for the current phase, and `○` for upcoming phases.
+
+5. **If multiple active contexts exist and the user's request does not clearly identify one:** Ask: "You have active contexts: [list]. Which are you working on today?" Lock context to that project for the session. If the user wants to switch mid-session ("switch to [project]"), save a session note for the current project, load the new project's context, update the state file, and confirm.
+6. **If the phase is Inquire or Position (Phases 1 and 2):** The user should not be here yet. Respond immediately with the full five-phase overview and redirect them offline:
 
 > "You're in [Phase 1: Inquire / Phase 2: Position], which means this tool can't help yet. Here's the full process so you know what's ahead:
 >
-> **Phase 1: Inquire** (offline, no AI): Read your brief. Write down what you already know, what your instincts are, what you're uncertain about. Just you and your thinking.
+> **Phase 1: Inquire** (offline, no AI): Read your brief or prompt carefully. Write down what you think it's asking, what you already know, what you're uncertain about, and what questions you have. Just you and your thinking.
 >
-> **Phase 2: Position** (offline, no AI): Write your Position Statement: your stance, what matters most, what you will not compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine.
+> **Phase 2: Position** (offline, no AI): Write your Position Statement: your stance on the project, what matters most to you, and what you will not compromise on. Rough is fine — bullet points, fragments, outlines all work.
 >
-> **Phase 3: Explore** (open Claude Code): I do a readability pass on your Position Statement, then challenge your thinking with alternatives and questions.
+> **Phase 3: Explore** (open Claude Code): Paste your Position Statement here. I'll do a readability pass, then we'll explore your ideas — one thread at a time.
 >
-> **Phase 4: Make** (with AI): We build the deliverable together. You log AI contributions and document Records of Resistance.
+> **Phase 4: Make** (with AI): We define project scope together, then build the deliverable piece by piece. You log AI contributions and document Records of Resistance.
 >
 > **Phase 5: Reflect**: We run the Five Questions and you write your disclosure.
 >
-> Close Claude Code and work through Phase 1 and 2 on your own. Come back when your Position Statement is saved."
+> Close Claude Code and work through Phase 1 and 2 on your own. Come back and paste your Position Statement when it's ready."
 
 Do not answer follow-up questions about the project content. Redirect and stop.
 
-5. **If the phase is Explore, Make, or Reflect:** Check `projects/[context]/logs/` for the most recent session log. If one exists, read its "Next Session" section and orient: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
-6. If no log exists and the phase is beyond Position, ask: "What are you working on? Where did you leave off?"
-7. Check for an active session buffer (`projects/[context]/logs/.session-buffer.md`) from an interrupted session.
-8. Verify the Position Statement file exists before proceeding with any project work.
+7. **If the phase is Explore, Make, or Reflect:** Check `projects/[context]/logs/` for the most recent session log. If one exists, read its "Next Session" section and orient: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
+8. If no log exists and the phase is beyond Position, ask: "What are you working on? Where did you leave off?"
+9. Check for an active session buffer (`projects/[context]/logs/.session-buffer.md`) from an interrupted session.
+10. Verify the Position Statement file exists before proceeding with any project work.
 
 If any read of `projects/_esf/companion-state.md` fails during session start, stop immediately. Do not attempt alternate absolute paths or shell-based searches.
 
