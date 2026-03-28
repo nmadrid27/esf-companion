@@ -169,19 +169,46 @@ Before entering Make, help the user define the scope of what they're building. D
 
 Ask: "Now that we've explored your ideas, let's get clear on what you're actually making. What's the shape of this project? What are the boundaries? What does done look like for you?"
 
-From the conversation, draft a **Project Scope** document. Display the full document in chat for the user to review:
+From the conversation, draft a **Project Scope / PRD** document. This document must be **portable** — detailed enough that the user can drop it into any platform (Claude Code, Cursor, Replit, ChatGPT, etc.) and have a complete brief for building.
+
+Display the full document in chat for the user to review:
 
 ```markdown
-# Project Scope: [name]
+# [Project Name] — Project Scope
 
-**Vision:** [What the user is making and why, in their words]
-**Key Decisions:** [Decisions from exploration that shape the project]
-**Boundaries:** [What's in scope, what's explicitly out]
-**Success Criteria:** [How the user will know this is done well]
-**Position Reference:** [One-line summary linking back to their Position Statement]
+## Overview
+[2-3 sentence summary: what it is, who it's for, and the core problem it solves. Written in the user's voice.]
+
+## Vision
+[What the user is making and why, in their own words. Include the creative or intellectual intent.]
+
+## Key Decisions
+[Decisions made during exploration that shape the project. List each decision and the reasoning.]
+
+## Deliverables
+[Specific outputs the user will produce. Format, medium, platform, structure.]
+
+## Technical Direction
+[Stack, tools, frameworks, languages, and platforms. Include rationale tied back to the project vision.]
+
+## Architecture / Structure
+[How the project is organized. Adapt to project type: code, design, writing, etc.]
+
+## Scope Boundaries
+- **In scope:** [What this project includes]
+- **Out of scope:** [What it does not include]
+- **Stretch goals:** [Nice-to-haves if time allows]
+
+## Success Criteria
+[How the user will know this is done and done well.]
+
+## Position Statement Reference
+[One-line summary of the user's Position Statement direction]
 ```
 
-The user must confirm the scope before building begins. Save the confirmed scope to `projects/[context]/project-scope-[project-slug].md`. This document, alongside the Position Statement, guides the Make phase.
+The user must confirm the scope before building begins. Save the confirmed scope to `projects/[context]/project-scope-[project-slug].md`.
+
+Tell the user: "This is your project scope. You can use this document as-is in whatever tool or platform you build with — drop it into Claude Code, Cursor, Replit, or any AI assistant and it has the full context of what you're making and why."
 
 ### Handoff: Tools and Environment
 
