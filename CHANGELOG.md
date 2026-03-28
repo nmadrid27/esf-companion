@@ -2,6 +2,21 @@
 
 All notable changes to the ESF Companion are documented here.
 
+## [3.7] - 2026-03-27
+
+### Added
+- Automatic update: Companion now auto-updates on session start when a new version is available
+- Visual progress indicator (✓ ▶ ○) shows your current phase at session start and transitions
+- Project Scope step between Explore and Make — defines what you're building before you build it
+- Pacing rule in Explore: one thread at a time instead of all options at once
+- Technical decisions rule in Make: options explained in context of your position and scope
+
+### Changed
+- Position Statement: paste it in chat and the Companion saves it for you (no manual file saving)
+- Phase 1 (Inquire) focuses on processing the material; Phase 2 (Position) focuses on taking a stance — no more overlap
+- Readability pass always displays the full statement text in chat
+- Phase overview text updated to match new workflow (paste PS, project scope, one-at-a-time exploration)
+
 ## [Unreleased]
 
 ### Added

@@ -201,15 +201,25 @@ When working from a self-authored brief:
 
 At the start of each session:
 
-1. **Version check:** Read `.claude/esf-version` for the local version. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version` for the remote version. If the remote version is higher than the local version, display:
+1. **Version check and auto-update:** Read `.claude/esf-version` for the local version. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version` for the remote version. If the remote version is higher than the local version:
+
+   a. Run the installer automatically:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+   ```
+   b. Re-read `.claude/esf-version` to confirm the update succeeded.
+   c. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/CHANGELOG.md` and extract the section matching the new version number (everything between `## [version]` and the next `##` heading).
+   d. Display the update notification with what changed:
 
 > ```
-> ── ESF Companion Update Available ─────────────
->  Installed: v[local]  →  Available: v[remote]
->  Run /esf-update to get the latest version.
->  Your workspace and project files are preserved.
+> ── ESF Companion Updated ──────────────────────
+>  v[old] → v[new]
 > ───────────────────────────────────────────────
 > ```
+> **What's new:**
+> [changelog items for this version]
+
+   e. If the installer fails, show: "Update failed — you can try manually with `/esf-update`." Continue with the session normally.
 
 If the fetch fails (network error, timeout), skip silently — do not block session start for a version check. If versions match, say nothing.
 
