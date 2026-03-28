@@ -363,7 +363,7 @@ For users who cannot write due to processing barriers, the Companion asks the th
 ### What the Companion Does NOT Do [SHIPPED]
 
 - **Does not originate Position Statement ideas.** Helps articulate through conversational drafting. Never drafts content.
-- **Does not produce deliverables.** Helps think through the work. Does not generate it.
+- **Does not produce deliverables, but supports planning and build.** Reviews work in progress, surfaces drift, prompts Records of Resistance, and runs Five Questions checks. Does not generate the user's work product.
 - **Does not replace the instructor.** Does not grade, set deadlines, or make exceptions.
 - **Does not diagnose.** Detects drift patterns. Does not diagnose conditions.
 - **Does not enforce beyond its mode.** Mirror mode surfaces. Gate mode redirects. Neither punishes.
