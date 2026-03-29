@@ -29,7 +29,7 @@ The ESF Companion is framework-agnostic. The `.claude/` directory is the Claude 
 
 **If you use Claude Code:** The AI reads your `companion.md` and `project-workflow.md` automatically from your Companion folder. Just tell it what project you want to work on.
 
-**If you use ChatGPT, Gemini, or another tool:**
+**If you use Claude.ai, ChatGPT, Gemini, or another conversation tool:**
 
 *First session on a project:* Paste your filled-in `companion.md` as your first message (or as a system prompt if your tool supports it). Then paste `project-workflow.md` as a second message.
 
@@ -50,6 +50,15 @@ Now: picking up from where I left off.
 ```
 
 The AI now has your current project context and the full ESF workflow instructions.
+
+**If you use Claude.ai Projects:**
+
+Projects let you skip most of the paste workflow. Create a project, add these files as project knowledge, and set `esf-companion.md` as the system prompt:
+
+- `companion.md` (your filled-in identity file)
+- Your project brief (if you have one)
+
+The Companion loads your context automatically at the start of every conversation. For returning sessions, still paste your PROJECT.md to restore where you left off — project knowledge does not carry session-level continuity on its own.
 ### Step 3: Maintain your project files
 
 Keep your project files organized the same way as the Claude Code version:

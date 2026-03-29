@@ -31,6 +31,8 @@ All notable changes to the ESF Companion are documented here.
 - Frontmatter schema explanations added directly to `templates/project-brief-template.md`: inline comments explain `required`, `optional`, and `not-required` values for each ESF field.
 - Educator cross-reference added to onboarding Step 2b: educators are directed to `docs/institutional-adoption.md` at the point where the educator path is introduced.
 - Session-end handling in agent: explicit session end behavior with one-time reminder after extended Make/Reflect work.
+- Claude.ai named explicitly throughout docs (previously listed only as "or other conversation tool").
+- Claude.ai Projects setup instructions added to `WALKTHROUGH.md`, `START_HERE.md`, and `prompts/README.md`: upload `companion.md` and brief as project knowledge, set `esf-companion.md` as system prompt, skip the manual paste workflow for returning sessions.
 
 ### Changed
 - `START_HERE.md` simplified to a redirect page pointing to `WALKTHROUGH.md` as the primary guide.

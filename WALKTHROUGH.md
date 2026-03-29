@@ -24,7 +24,7 @@ One command:
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
-The installer asks what AI tool you use (Claude Code, ChatGPT, or other) and sets up accordingly.
+The installer asks what AI tool you use (Claude Code, Claude.ai, ChatGPT, or other) and sets up accordingly.
 
 **What got installed:**
 - An agent that knows the ESF process (`.claude/agents/esf-companion.md`)
@@ -171,11 +171,21 @@ Describe your project to the Companion or write your own brief. You control the 
 
 Tell the Companion you want to create a brief for your students. It walks you through the fields: deliverables, AI policy, ESF requirements. It generates a `.md` file with frontmatter your students' Companions can read. Distribute it however you normally share assignments.
 
-### If you are using ChatGPT or another conversation tool
+### If you are using Claude.ai, ChatGPT, or another conversation tool
 
 The core process is the same. The difference: context does not persist between conversations. At the end of each session, the Companion generates a PROJECT.md summary. Save it. Paste it at the start of your next conversation. This takes 30 seconds and keeps drift detection working across sessions.
 
 Without it, the Companion starts fresh and cannot compare your work to your original direction.
+
+**Getting started:** Open `prompts/quick-start.md`, fill in the four placeholders at the top (name, discipline, project, phase), and paste the whole document as your first message. No other setup needed.
+
+**Returning to a project:** Paste your saved PROJECT.md first, then paste `prompts/project-workflow.md`. The Companion picks up where you left off.
+
+#### Claude.ai Projects (recommended for returning users)
+
+If you use Claude.ai, Projects give you persistent file context without pasting. Create a project, upload your `companion-state.md` and project brief as project knowledge files, and set `prompts/esf-companion.md` as the project system prompt. The Companion reads your files at the start of every conversation automatically.
+
+This removes the manual paste step for returning sessions. You still paste PROJECT.md to restore session-level continuity, but your core identity and project configuration load automatically.
 
 ---
 
