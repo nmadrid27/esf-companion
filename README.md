@@ -49,10 +49,10 @@ See **[examples/](examples/)** for filled-in Position Statements, Records of Res
 
 ### Which path should I use?
 
-| | **Templates only** | **ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
+| | **Templates only** | **Claude.ai / ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
 |---|---|---|---|---|
-| **What you get** | Markdown files to fill in | AI follows ESF process via custom instructions | AI reads ESF files from your computer | Full agent with drift detection, skills, and session memory |
-| **Requirements** | None | Any AI chat tool | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
+| **What you get** | Markdown files to fill in | AI follows ESF process via custom instructions. Claude.ai Projects adds persistent file context. | AI reads ESF files from your computer | Full agent with drift detection, skills, and session memory |
+| **Requirements** | None | Any AI chat tool. Claude.ai Projects requires a free or paid Claude.ai account. | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
 | **Install** | Download ZIP | Download ZIP or run installer | Download ZIP | Run installer |
 | **Best for** | Trying ESF on one project | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
 
@@ -71,7 +71,7 @@ templates/
 └── disclosure-statement.md    ← Add to finished deliverables
 ```
 
-### Path 2: Use with ChatGPT, Gemini, or any conversation tool
+### Path 2: Use with Claude.ai, ChatGPT, Gemini, or any conversation tool
 
 Open `prompts/esf-companion.md`, copy the contents, and paste into your AI tool's custom instructions. The AI will follow the ESF process and ask for your Position Statement before helping with project work.
 
@@ -82,6 +82,8 @@ curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/instal
 ```
 
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
+
+**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session — no manual paste needed as long as you re-upload `companion-state.md` after each session.
 
 ### Path 3: Use with Claude Cowork (no terminal needed)
 
@@ -118,7 +120,7 @@ claude
 
 ## FAQ
 
-**Do I need Claude Code?** No. ESF Companion works with any AI tool. Claude Code gives you the richest experience (drift detection, session memory, skills). ChatGPT and Gemini get the core process via the companion prompt.
+**Do I need Claude Code?** No. ESF Companion works with any AI tool. Claude Code gives you the richest experience (drift detection, session memory, skills). Claude.ai, ChatGPT, and Gemini get the core process via the companion prompt. Claude.ai Projects adds persistent context without the paste workflow.
 
 **Can I use this with existing work?** Yes. Run the installer inside your existing project directory. It adds ESF files without touching your work. See [Using ESF with Existing Work](docs/existing-work.md).
 
