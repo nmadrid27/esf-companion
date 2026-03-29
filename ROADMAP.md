@@ -8,29 +8,29 @@ What is built, what is coming next, and what is planned for later.
 
 The full Claude Code experience: five-phase workflow, drift detection, Position Statement gate, Records of Resistance, AI Use Log, Disclosure Statement, session memory, cognitive techniques, progress indicator, auto-update on session start. Universal onboarding with educator path. Brief-driven guidance with frontmatter field control. Conversation-platform prompts for ChatGPT, Gemini, and other tools.
 
-## What Is Coming (v2)
+## What Is Shipped (v2)
 
-Cross-project intelligence: the Companion reads your accumulated Position Statements and Records of Resistance across completed projects and surfaces patterns you cannot see from inside a single project. ("I noticed you avoid technical constraints in your Position Statements. Is that deliberate?")
+Multi-platform support: install with a `--platform` flag targeting Claude Code, Claude.ai, ChatGPT, Gemini, or Codex CLI. Platform-specific config files included: `chatgpt-instructions.md`, `GEMINI.md`, `.codex/AGENTS.md`.
 
-Growth Record with development tracking across projects.
+Platform migration: migrate/fresh/cancel options when switching platforms. Portable PROJECT.md generated for conversation-platform users.
 
-Accessibility additions: checkpoint saves for ADHD support, structured alternatives to Socratic questions, explicit check-in schedule on request.
+Accessibility additions: checkpoint saves for mid-session pauses, thread tracking for concurrent project aspects, structured alternatives to open-ended Socratic questions.
 
-Active cognitive friction: convergence detection and proactive friction moves when the Companion detects passive agreement across multiple exchanges.
+Growth Record with development tracking across projects (companion-state.md Growth Record section, populated at project completion).
 
-Educator brief-authoring walkthrough: guided process for generating complete project briefs from a conversation.
+Educator course configs: `courses/` folder documented for optional course-level ESF requirement templates.
 
-Multi-platform install with a `--platform` flag (ChatGPT, Gemini, Codex).
+## What Is Shipped (v3)
 
-## What Is Planned (v3)
+Framework Evolution Protocol: users can propose revisions to the ESF process, document deliberate deviations, and build a personal version of ESF. Evolutions are recorded in `projects/_esf/evolution-log.md` and applied going forward. See `.claude/reference/evolution-protocol.md`.
+
+Cohort homogenization detection: opt-in educator tool that analyzes a cohort's Position Statements for shared vocabulary, direction overlap, and concept space gaps. See `docs/cohort-analysis.md`.
+
+## What Is Planned (still coming)
 
 A local visual dashboard: a browser-based interface that renders your project cards, phase progress, cross-project themes, and growth arc from the same local files the CLI Companion writes. No new app. The CLI remains the primary surface; the dashboard makes your accumulated work visible at a glance.
 
-Full conversation-platform context restoration (PROJECT.md auto-generation and paste-back workflow).
-
-Cohort-level homogenization detection for educators: opt-in collective analysis that surfaces when a group's Position Statements are converging toward similar directions.
-
-Framework Evolution Protocol: a built-in mechanism for users to propose revisions to the ESF process and document how their practice diverges from the default.
+Full conversation-platform context restoration (PROJECT.md auto-generation and paste-back workflow for initial session setup, not just session end).
 
 ---
 
@@ -174,9 +174,9 @@ The install script detects or asks the platform, then installs only what that us
 | Platform | What gets installed | Status |
 |----------|-------------------|--------|
 | **Claude Code** | `.claude/` directory (agents, skills, reference) | [SHIPPED] |
-| **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) | [ROADMAP] |
-| **Gemini CLI** | `GEMINI.md` format | [ROADMAP] |
-| **Codex CLI** | `.codex/` directory | [ROADMAP] |
+| **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) | [SHIPPED] |
+| **Gemini CLI** | `GEMINI.md` format | [SHIPPED] |
+| **Codex CLI** | `.codex/AGENTS.md` directory | [SHIPPED] |
 | **Other / Not sure** | `COMPANION.md` (universal system prompt) | [SHIPPED] |
 
 **v1 scope:** Claude Code is the full experience. Other platforms get the `prompts/` directory (manual paste, honest about limitations). Platform-specific files for ChatGPT, Gemini, and Codex are [ROADMAP].
@@ -264,7 +264,7 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 | Educator creating briefs | Guided walkthrough generating complete briefs with all ESF chain elements | [SHIPPED] |
 | Professional, confidentiality concern | Local-only assurance, `.gitignore` guidance, conversation platform trade-off named | [SHIPPED] |
 | Explorer returns after weeks | No guilt, fresh start, first Position Statement gets full explanation | [SHIPPED] |
-| Platform migration | Migrate/fresh/cancel options, manual import help | [ROADMAP] |
+| Platform migration | Migrate/fresh/cancel options, manual import help | [SHIPPED] |
 | Multiple concurrent projects | Active project selection at session start, locked context per session | [SHIPPED] |
 
 ---
@@ -414,8 +414,8 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 **ADHD support:**
 - Small questions instead of documents for Position Statement [SHIPPED]
-- Checkpoint saves ("save where you are, pick up next time") [ROADMAP]
-- Thread tracking for context-switching between project aspects [ROADMAP]
+- Checkpoint saves ("save where you are, pick up next time") [SHIPPED]
+- Thread tracking for context-switching between project aspects [SHIPPED]
 - Gentle interrupts during extended unbroken work (hyperfocus check) [SHIPPED]
 
 **Dyslexia support:**
@@ -427,7 +427,7 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 **Autism support:**
 - Explicit schedule on request ("I will check in once during Make phase and once before your milestone") [SHIPPED]
 - Direct expectations ("Right now I need you to answer three questions") [SHIPPED]
-- Structured alternatives to open-ended Socratic questions [ROADMAP]
+- Structured alternatives to open-ended Socratic questions [SHIPPED]
 - "Less interruption today" scales back to essential drift flags only [SHIPPED]
 
 **Research basis:** Zhu, Yu & Luo (2026, CHI): GenAI metacognitive scaffolding for ADHD. Kalmanovich-Cohen & Stanton (2025): 81% of neurodivergent employees mask; universal design delivers implicit support. Carik et al. (2025): neurodivergent users already use LLMs as translators. Goodman et al. (2024): AI writing scaffolding for dyslexic adults. Full citations in Section 13.
@@ -558,24 +558,31 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 - Disclosure Statement (at milestones + close) [SHIPPED]
 - Universal onboarding (no role labels, one open question) [SHIPPED]
 
-### v2: Universal Tool + Full Conversation Platform
+### v2: Universal Tool + Full Conversation Platform [SHIPPED]
 
 **Audience:** Students, professionals, graduates on Claude Code and conversation platforms.
 
-**Adds:**
-- Full conversation-platform experience (PROJECT.md auto-generation, context restoration)
-- Platform migration (migrate/fresh/cancel)
-- Educator brief-authoring walkthrough
-- Neurodivergent accessibility: checkpoint saves, thread tracking, structured Socratic alternatives
-- Identity recalibration (every 3 projects)
-- Platform-specific configuration files (ChatGPT, Gemini, Codex)
-- Growth Record with development tracking
+**Shipped:**
+- Multi-platform install: `--platform` flag for claude, conversation, chatgpt, gemini, codex [SHIPPED]
+- Platform-specific config files: `chatgpt-instructions.md`, `GEMINI.md`, `.codex/AGENTS.md` [SHIPPED]
+- Platform migration (migrate/fresh/cancel) in esf-onboarding skill [SHIPPED]
+- Accessibility: checkpoint saves, thread tracking, structured Socratic alternatives [SHIPPED]
+- Growth Record with development tracking (appended to companion-state.md at project close) [SHIPPED]
+- Educator course configs folder documented [SHIPPED]
+- Identity recalibration (every 3 projects) — offered at project completion [SHIPPED]
+- Educator brief-authoring walkthrough — in esf-onboarding educator path [SHIPPED]
 
-### v3: Full Multi-Platform + Collective Features
+**Partial (deferred to dashboard):**
+- Full conversation-platform context restoration for initial session setup [PARTIAL — session end generates PROJECT.md; first-session auto-generation not yet built]
+
+### v3: Framework Evolution + Collective Features [SHIPPED]
 
 **Audience:** Everyone, every platform.
 
-**Adds:**
-- Educator dashboard or progress visibility (opt-in by student)
-- Collective/cohort-level homogenization detection
-- Framework Evolution Protocol (built-in self-revision mechanism)
+**Shipped:**
+- Framework Evolution Protocol: user-proposed ESF adaptations, recorded and applied [SHIPPED]
+- Cohort homogenization detection: opt-in Position Statement analysis for educators [SHIPPED]
+
+**Planned:**
+- Local visual dashboard (browser-based project cards, phase progress, growth arc) [ROADMAP]
+- Educator dashboard or progress visibility (opt-in by student) [ROADMAP]

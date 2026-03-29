@@ -74,7 +74,7 @@ Also collect: current period (quarter, semester, year, or however they track tim
 
 If the user is not an educator, skip this step entirely and proceed to Step 3.
 
-If the user is an educator, introduce both sides of the Companion before collecting contexts. Also note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. We will cover the basics during setup, but that document has everything you need to configure a course from scratch."
+If the user is an educator, introduce both sides of the Companion before collecting contexts. Also note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. We will cover the basics during setup, but that document has everything you need to configure a course from scratch. When your course is running, you can also run a cohort homogenization analysis to surface patterns across your students' Position Statements — see `docs/cohort-analysis.md`."
 
 > "ESF works two ways for educators. First, it is a thinking partner for your own work: curriculum development, assessment design, institutional writing. You use it the same way anyone does. Position Statement, drift detection, the full process.
 >
@@ -299,6 +299,54 @@ If the user says "update" at the start, ask only what changed:
 - Period change?
 
 Make targeted edits rather than re-running the full flow. Do not overwrite existing personalization that has not changed.
+
+---
+
+## Platform Migration
+
+**Trigger:** The user has an existing `companion-state.md` (evidence of prior use) but is now accessing the Companion from a different platform, or explicitly says they are moving from one tool to another (e.g., "I was using Claude Code, now I'm on ChatGPT").
+
+When migration is detected or requested, offer three options:
+
+> "It looks like you have an existing ESF workspace from [previous platform]. How do you want to handle it?
+>
+> **A) Migrate** — I will transfer your identity, contexts, and Growth Record to this platform. Your project history and Position Statements stay in your files; I will generate a portable context block you can paste going forward.
+>
+> **B) Fresh start** — Start a new profile for this platform. Your old files stay untouched; we just set up a new context here.
+>
+> **C) Cancel** — Do nothing. Keep using the existing setup."
+
+### Option A: Migrate
+
+1. Read `projects/_esf/companion-state.md` from the user's existing workspace.
+2. Summarize what exists: identity, active contexts, completed projects in the Growth Record, current project and phase.
+3. Confirm with the user: "Here is what I found. Is this still accurate? Anything outdated?"
+4. For conversation-platform users (ChatGPT, Gemini, generic):
+   - Generate a portable `PROJECT.md` for any active project, formatted for pasting.
+   - Instruct: "Save this. Paste it at the start of each session on [new platform] to restore your context."
+   - If the new platform supports persistent files (ChatGPT Projects, Claude.ai Projects), explain how to upload `companion-state.md` so context loads automatically.
+5. For Codex CLI:
+   - Confirm `.codex/AGENTS.md` is in the project directory.
+   - The existing `companion-state.md` will be read automatically.
+6. Close with: "Migration complete. Your ESF workspace carries forward. The five-phase process works the same on every platform; what changes is how context is restored each session."
+
+### Option B: Fresh Start
+
+1. Run the standard onboarding flow from Step 2.
+2. Do not touch the existing `companion-state.md`. New profile writes to a new location or overwrites with explicit user confirmation only.
+3. If the user wants to reference old projects from the new profile, they can copy specific PROJECT.md or session log excerpts and paste them as context in future sessions.
+
+### Platform Capability Differences (inform the user during migration)
+
+| Capability | Claude Code | Claude.ai Projects | ChatGPT / Gemini | Codex CLI |
+|------------|-------------|-------------------|-----------------|-----------|
+| Agent + skills (full experience) | Yes | No | No | Partial |
+| Persistent files (auto-loaded) | Yes (local) | Yes (project files) | No (paste required) | Yes (local) |
+| Drift detection | Full | Prompt-guided | Prompt-guided | Prompt-guided |
+| Checkpoint saves | Full | Full | Manual | Full |
+| Thread tracking | Full | Full | Manual | Full |
+
+Be honest about capability differences. Do not oversell non-Claude-Code platforms. The conversation experience is genuine but lighter.
 
 ---
 

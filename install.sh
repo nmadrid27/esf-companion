@@ -8,11 +8,14 @@
 # Options:
 #   --sample    Install pre-filled BUILD-level test data (Alex Rivera)
 #   --force     Skip all interactive prompts (for scripted installs)
-#   --platform  Set platform without prompting (claude or conversation)
+#   --platform  Set platform without prompting
+#               Values: claude, conversation, chatgpt, gemini, codex
 #
 # Examples:
 #   curl -fsSL ... | bash -s -- --force --platform claude
-#   curl -fsSL ... | bash -s -- --force --platform conversation
+#   curl -fsSL ... | bash -s -- --force --platform chatgpt
+#   curl -fsSL ... | bash -s -- --force --platform gemini
+#   curl -fsSL ... | bash -s -- --force --platform codex
 #   curl -fsSL ... | bash -s -- --sample
 
 set -e
@@ -107,27 +110,42 @@ fi
 # Determine platform
 PLATFORM="claude"
 if [ -n "$PLATFORM_FLAG" ]; then
-  if [ "$PLATFORM_FLAG" = "claude" ] || [ "$PLATFORM_FLAG" = "conversation" ]; then
-    PLATFORM="$PLATFORM_FLAG"
-    echo "Platform: $PLATFORM (set via --platform flag)"
-  else
-    echo -e "${RED}Error: --platform must be 'claude' or 'conversation'. Got: '$PLATFORM_FLAG'${NC}"
-    exit 1
-  fi
+  case "$PLATFORM_FLAG" in
+    claude|conversation|chatgpt|gemini|codex)
+      PLATFORM="$PLATFORM_FLAG"
+      echo "Platform: $PLATFORM (set via --platform flag)"
+      ;;
+    *)
+      echo -e "${RED}Error: --platform must be one of: claude, conversation, chatgpt, gemini, codex. Got: '$PLATFORM_FLAG'${NC}"
+      exit 1
+      ;;
+  esac
 elif [ "$FORCE" != true ]; then
   echo ""
   echo "What AI tool will you use with ESF Companion?"
   echo ""
   echo "  1) Claude Code (full experience: agent, skills, drift detection)"
-  echo "  2) Claude.ai, ChatGPT, Gemini, or other conversation tool"
-  echo "  3) Not sure yet"
+  echo "  2) Claude.ai (conversation or Projects)"
+  echo "  3) ChatGPT"
+  echo "  4) Gemini"
+  echo "  5) Codex CLI"
+  echo "  6) Not sure yet"
   echo ""
-  read -r -p "Choose [1/2/3]: " PLATFORM_CHOICE </dev/tty
+  read -r -p "Choose [1-6]: " PLATFORM_CHOICE </dev/tty
   case "$PLATFORM_CHOICE" in
     2)
       PLATFORM="conversation"
       ;;
     3)
+      PLATFORM="chatgpt"
+      ;;
+    4)
+      PLATFORM="gemini"
+      ;;
+    5)
+      PLATFORM="codex"
+      ;;
+    6)
       PLATFORM="conversation"
       ;;
     *)
@@ -138,13 +156,14 @@ fi
 
 echo "Installing..."
 
-if [ "$PLATFORM" = "conversation" ]; then
+# Conversation-mode platforms: claude.ai, chatgpt, gemini, codex, or generic conversation
+if [ "$PLATFORM" != "claude" ]; then
   # Warn if --sample was passed (sample data requires Claude Code)
   if [ "$SAMPLE" = true ]; then
-    echo -e "${YELLOW}Note: --sample requires Claude Code. Sample data not installed in conversation mode.${NC}"
+    echo -e "${YELLOW}Note: --sample requires Claude Code. Sample data not installed for this platform.${NC}"
   fi
 
-  # Lightweight install for conversation-based tools
+  # Base lightweight install (shared by all non-Claude-Code platforms)
   mkdir -p prompts
   mkdir -p templates
 
@@ -170,42 +189,101 @@ if [ "$PLATFORM" = "conversation" ]; then
   fi
   fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
-  # Auto-commit conversation Companion files if in a git repo
+  # Platform-specific config file
+  case "$PLATFORM" in
+    chatgpt)
+      echo "  Fetching ChatGPT custom instructions..."
+      fetch_if_missing "$TOOLKIT_BASE/chatgpt-instructions.md" chatgpt-instructions.md
+      ;;
+    gemini)
+      echo "  Fetching Gemini system prompt..."
+      fetch_if_missing "$TOOLKIT_BASE/GEMINI.md" GEMINI.md
+      ;;
+    codex)
+      echo "  Fetching Codex CLI agent config..."
+      mkdir -p .codex
+      fetch_if_missing "$TOOLKIT_BASE/.codex/AGENTS.md" .codex/AGENTS.md
+      ;;
+  esac
+
+  # Auto-commit if in a git repo
   if [ -d ".git" ]; then
-    git add prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null; [ -f .gitignore ] && git add .gitignore 2>/dev/null
-    git commit -m "Install ESF Companion (conversation mode)" --quiet 2>/dev/null && \
+    git add prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
+    [ -f .gitignore ] && git add .gitignore 2>/dev/null
+    [ -f chatgpt-instructions.md ] && git add chatgpt-instructions.md 2>/dev/null
+    [ -f GEMINI.md ] && git add GEMINI.md 2>/dev/null
+    [ -d .codex ] && git add .codex/ 2>/dev/null
+    git commit -m "Install ESF Companion ($PLATFORM)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
   fi
 
   echo ""
-  echo -e "${GREEN}ESF Companion installed (conversation tool mode).${NC}"
+  echo -e "${GREEN}ESF Companion installed.${NC}"
   echo ""
   echo "──────────────────────────────────────"
   echo -e "${CYAN}Next steps:${NC}"
   echo ""
-  echo "  1. Open prompts/quick-start.md, fill in the four fields at the top,"
-  echo "     and paste the whole document as your first message."
-  echo ""
-  echo "  Or set up custom instructions for your tool:"
-  echo "     Claude.ai:  Settings > Custom Instructions (or use a Project)"
-  echo "     ChatGPT:    Settings > Personalization > Custom Instructions"
-  echo "     Gemini:     Paste at the start of your conversation"
-  echo ""
-  echo "  Claude.ai Projects (recommended for returning users):"
-  echo "     Create a project, upload companion-state.md and your brief"
-  echo "     as knowledge files, set prompts/esf-companion.md as the"
-  echo "     system prompt. Context loads automatically every session."
-  echo ""
-  echo "  2. Start a conversation and tell it what you are working on."
-  echo "     It will guide you through writing a Position Statement"
-  echo "     and the rest of the ESF process."
+
+  case "$PLATFORM" in
+    chatgpt)
+      echo "  1. Open chatgpt-instructions.md."
+      echo "     Copy Section 1 into ChatGPT Settings > Personalization >"
+      echo "     Custom Instructions > 'What to know about you'."
+      echo "     Copy Section 2 into 'How to respond'."
+      echo ""
+      echo "  2. (Optional) Use ChatGPT Projects for persistent context:"
+      echo "     Create a project and upload companion-state.md as a project file."
+      echo "     Context loads automatically each session."
+      echo ""
+      echo "  3. Start a conversation and paste your Position Statement to begin."
+      echo "     The Companion will guide you through the ESF workflow."
+      ;;
+    gemini)
+      echo "  1. Open GEMINI.md."
+      echo "     Paste everything below the '---' line as your first message"
+      echo "     in a new Gemini conversation."
+      echo ""
+      echo "  2. After the system prompt, say what you are working on."
+      echo "     The Companion will check for your Position Statement and guide"
+      echo "     you through the ESF workflow."
+      echo ""
+      echo "  3. At session end, ask the Companion to generate a PROJECT.md block."
+      echo "     Save it and paste it at the start of your next conversation."
+      ;;
+    codex)
+      echo "  1. .codex/AGENTS.md is now in your project directory."
+      echo "     Codex CLI reads it automatically when you open a session."
+      echo ""
+      echo "  2. Run onboarding in your first session:"
+      echo "     Tell the Companion: 'Run ESF onboarding. Here are my details: [your context]'"
+      echo ""
+      echo "  3. The Companion will create projects/_esf/companion-state.md"
+      echo "     and guide you through the ESF workflow from there."
+      ;;
+    *)
+      # Claude.ai or generic conversation
+      echo "  1. Open prompts/quick-start.md, fill in the four fields at the top,"
+      echo "     and paste the whole document as your first message."
+      echo ""
+      echo "  Or set up custom instructions for your tool:"
+      echo "     Claude.ai:  Settings > Custom Instructions (or use a Project)"
+      echo "     ChatGPT:    Settings > Personalization > Custom Instructions"
+      echo "     Gemini:     Paste GEMINI.md at the start of your conversation"
+      echo ""
+      echo "  Claude.ai Projects (recommended for returning users):"
+      echo "     Create a project, upload companion-state.md and your brief"
+      echo "     as knowledge files, set prompts/esf-companion.md as the"
+      echo "     system prompt. Context loads automatically every session."
+      ;;
+  esac
+
   echo ""
   echo "  Templates are in the templates/ folder."
   echo "  The visual process diagram is in WORKFLOW.md."
   echo ""
   echo "  For a quick overview, read START_HERE.md"
   echo ""
-  echo "  Want the full experience later? Re-run with Claude Code (option 1)."
+  echo "  Want the full Claude Code experience later? Re-run and choose option 1."
   echo "──────────────────────────────────────"
   echo ""
   exit 0

@@ -2,6 +2,43 @@
 
 All notable changes to the ESF Companion are documented here.
 
+## [3.8] - 2026-03-29
+
+### Added
+
+**Multi-platform support (v2)**
+- `chatgpt-instructions.md`: ChatGPT Custom Instructions format — paste Section 1 into "What to know," Section 2 into "How to respond"
+- `GEMINI.md`: Gemini session prompt — paste at the start of any Gemini conversation
+- `.codex/AGENTS.md`: Codex CLI agent config — reads automatically when Codex opens in your project directory
+- `install.sh` expanded platform menu: choose Claude Code, Claude.ai, ChatGPT, Gemini, or Codex CLI. Each gets tailored install and next-steps instructions
+- `--platform` flag now accepts `chatgpt`, `gemini`, and `codex` in addition to `claude` and `conversation`
+
+**Accessibility additions (v2)**
+- Checkpoint saves: say "save where I am" or "checkpoint" to write a mid-session checkpoint without closing the session. Resumes from that point next time
+- Thread tracking: the Companion tracks multiple concurrent project aspects and orients you when switching between them
+- Structured alternatives to open-ended Socratic questions: available to any user who finds open questions difficult to process. Offer explicit choices rather than blank questions
+
+**Platform migration (v2)**
+- Onboarding now detects when a user has an existing workspace and is switching platforms. Offers migrate (transfer identity and context), fresh start, or cancel
+
+**Framework Evolution Protocol (v3)**
+- Users can now propose changes to their ESF practice. The Companion walks through the reasoning, reflects the consequences honestly, and records confirmed evolutions in `projects/_esf/evolution-log.md`
+- Active evolutions are loaded at session start and applied going forward
+- Full protocol spec: `.claude/reference/evolution-protocol.md`
+- Template updated: `templates/evolution-log-template.md` now supports both FEP entries and project-level reflections
+
+**Cohort homogenization detection (v3)**
+- Opt-in educator feature: collect consenting students' Position Statements, ask the Companion to run a cohort analysis. Surfaces shared vocabulary, direction overlap, and concept space gaps across the cohort
+- No student attribution by default. Local only. No data leaves the classroom context
+- Full guide: `docs/cohort-analysis.md`
+
+**Educator course configs**
+- `courses/README.md`: documents the purpose of the `courses/` folder (optional educator course templates for distribution). Includes format guide and example
+
+### Changed
+- ROADMAP.md v2 and v3 sections updated: all shipped features marked [SHIPPED]. Remaining items marked [ROADMAP]
+- esf-onboarding educator path updated to mention cohort-analysis.md at the point where institutional adoption is introduced
+
 ## [3.7] - 2026-03-27
 
 ### Added
