@@ -20,6 +20,26 @@ All notable changes to the ESF Companion are documented here.
 ## [Unreleased]
 
 ### Added
+- `prompts/quick-start.md`: single-paste prompt for conversation platforms (ChatGPT, Gemini, Claude). Fill in four fields at the top, paste the whole document. Replaces the previous two-step paste workflow for new users.
+- Three new examples from non-design, non-student contexts: `examples/position-statement-consultant.md` (management consulting, market entry analysis), `examples/position-statement-writer.md` (narrative nonfiction, book chapter), `examples/record-of-resistance-researcher.md` (academic dissertation, literature review).
+- User-facing roadmap section at the top of `ROADMAP.md`: plain-language summary of what is shipped, what is coming in v2, and what is planned for v3. Full PRD remains below it.
+- Onboarding now opens with ESF overview before collecting user information (Step 1 reordered). Users understand what they are setting up before providing context.
+- Quick-start evaluation path in onboarding Step 1: users can say "quick start" to write a Position Statement for one project without full setup, then continue to full onboarding after.
+- Session-end reminder in agent: after 4+ substantive exchanges in Make/Reflect without a continuation signal, the Companion mentions once that it can generate a session log when the user is ready to wrap up.
+- Phase 1 redirect reframed: instead of "close this tool," users now receive preparation guidance oriented toward their next step (writing the Position Statement and returning).
+- Version display at session start when no update is available: "ESF Companion v[version]" shown as part of session greeting so users always know which version they are running.
+- Frontmatter schema explanations added directly to `templates/project-brief-template.md`: inline comments explain `required`, `optional`, and `not-required` values for each ESF field.
+- Educator cross-reference added to onboarding Step 2b: educators are directed to `docs/institutional-adoption.md` at the point where the educator path is introduced.
+- Session-end handling in agent: explicit session end behavior with one-time reminder after extended Make/Reflect work.
+
+### Changed
+- `START_HERE.md` simplified to a redirect page pointing to `WALKTHROUGH.md` as the primary guide.
+- `GETTING_STARTED.md` header updated to clearly label the document as a technical first-session walkthrough and direct users to `WALKTHROUGH.md` for the primary guide.
+- `README.md` Quick Start section updated: primary link now points to `WALKTHROUGH.md` rather than `START_HERE.md`. Examples description updated to mention multi-discipline coverage.
+- `README.md` FAQ updated: prompt file descriptions now include `quick-start.md` and clarify the purpose of each option.
+- `prompts/README.md` reorganized: new "Which File Should I Use?" table at top directs new users to `quick-start.md` immediately.
+
+### [Previous entries continue below]
 - Smoke test suite (`test/smoke-test.sh`): 32 assertions across Claude install, conversation install, onboarding, and setup-repo guard
 - Git identity check in install.sh (warns instead of silently failing)
 - `.gitignore` creation for fresh installs (no longer requires pre-existing file)

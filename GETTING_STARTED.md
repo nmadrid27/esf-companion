@@ -2,7 +2,9 @@
 entities: [ESF]
 ---
 
-> For a quick start, see [START_HERE.md](START_HERE.md). This document is a detailed walkthrough of a first-time user's experience, from install through Phase 3.
+> **For the primary user guide, see [WALKTHROUGH.md](WALKTHROUGH.md).** That document covers the full five-phase process with worked examples.
+>
+> This document is a detailed technical walkthrough for first-time Claude Code users, following one student from install to Phase 3. Read it if you want to see every screen and prompt during setup.
 
 # Getting Started: Install to First AI Session
 

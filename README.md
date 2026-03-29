@@ -43,9 +43,9 @@ Five practices, applied before, during, and after AI-assisted work:
 
 ## Quick Start
 
-After installing, open **[START_HERE.md](START_HERE.md)** for your next steps.
+**[WALKTHROUGH.md](WALKTHROUGH.md)** is the single guide for the complete process: install, onboarding, all five phases, and worked examples. Start there.
 
-See **[examples/](examples/)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements.
+See **[examples/](examples/)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements across design, writing, research, and consulting contexts.
 
 ### Which path should I use?
 
@@ -124,7 +124,7 @@ claude
 
 **Does the installer create a new folder?** It asks if you want one. If you say yes, it creates the folder and installs inside it. If you are already in a project directory, it installs there.
 
-**What is the difference between `companion.md` and `esf-companion.md`?** Both are companion prompts. `esf-companion.md` is the original full prompt. `companion.md` is a streamlined version. Use whichever works for your AI tool's custom instructions limit.
+**What is the difference between the companion prompts?** Three options in `prompts/`: `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message — fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
 
 ---
 

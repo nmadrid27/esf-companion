@@ -1,3 +1,41 @@
+# ESF Companion Roadmap
+
+What is built, what is coming next, and what is planned for later.
+
+---
+
+## What Is Shipped (v1 — current)
+
+The full Claude Code experience: five-phase workflow, drift detection, Position Statement gate, Records of Resistance, AI Use Log, Disclosure Statement, session memory, cognitive techniques, progress indicator, auto-update on session start. Universal onboarding with educator path. Brief-driven guidance with frontmatter field control. Conversation-platform prompts for ChatGPT, Gemini, and other tools.
+
+## What Is Coming (v2)
+
+Cross-project intelligence: the Companion reads your accumulated Position Statements and Records of Resistance across completed projects and surfaces patterns you cannot see from inside a single project. ("I noticed you avoid technical constraints in your Position Statements. Is that deliberate?")
+
+Growth Record with development tracking across projects.
+
+Accessibility additions: checkpoint saves for ADHD support, structured alternatives to Socratic questions, explicit check-in schedule on request.
+
+Active cognitive friction: convergence detection and proactive friction moves when the Companion detects passive agreement across multiple exchanges.
+
+Educator brief-authoring walkthrough: guided process for generating complete project briefs from a conversation.
+
+Multi-platform install with a `--platform` flag (ChatGPT, Gemini, Codex).
+
+## What Is Planned (v3)
+
+A local visual dashboard: a browser-based interface that renders your project cards, phase progress, cross-project themes, and growth arc from the same local files the CLI Companion writes. No new app. The CLI remains the primary surface; the dashboard makes your accumulated work visible at a glance.
+
+Full conversation-platform context restoration (PROJECT.md auto-generation and paste-back workflow).
+
+Cohort-level homogenization detection for educators: opt-in collective analysis that surfaces when a group's Position Statements are converging toward similar directions.
+
+Framework Evolution Protocol: a built-in mechanism for users to propose revisions to the ESF process and document how their practice diverges from the default.
+
+---
+
+*For the full product requirements document (research mapping, implementation spec, success metrics, version history), see below.*
+
 ---
 
 # ESF Companion: Product Requirements Document

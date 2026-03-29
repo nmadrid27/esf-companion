@@ -4,13 +4,26 @@ The ESF Companion is framework-agnostic. The `.claude/` directory is the Claude 
 
 ---
 
+## Which File Should I Use?
+
+| File | Use when |
+|------|----------|
+| `quick-start.md` | **New user. Fastest path.** Fill in your info at the top, paste the whole file as your first message. One step. |
+| `companion.md` | Returning user. Fill in your current context and paste as a system prompt or first message. |
+| `esf-companion.md` | Full system prompt only. Use if you want to set up the AI instructions separately from your identity context. |
+| `project-workflow.md` | Full workflow instructions. Paste alongside `companion.md` for the complete session setup. |
+
+**Recommended for new users:** Open `quick-start.md`, fill in the four placeholders at the top, paste the entire file as your first message. You are ready to work.
+
+---
+
 ## How to Use
 
 ### Step 1: Set up your companion prompt
 
-Open `companion.md` and fill in every `[PLACEHOLDER]` with your information. Save it in your project folder so the AI can find it.
+**New users:** Open `quick-start.md`, fill in your name, discipline, project, and current phase. Paste the whole document as your first message.
 
-This is your persistent identity file. It tells the AI who you are, what courses you are in, and what project you are currently working on.
+**Returning users:** Open `companion.md` and fill in every `[PLACEHOLDER]` with your information. Save it in your project folder so the AI can find it. This is your persistent identity file. It tells the AI who you are, what courses you are in, and what project you are currently working on.
 
 ### Step 2: Start a session
 

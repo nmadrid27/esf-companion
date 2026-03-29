@@ -1,59 +1,23 @@
 # Start Here
 
-You just installed the ESF Companion. This is your next step guide.
+You just installed the ESF Companion.
+
+**[WALKTHROUGH.md](WALKTHROUGH.md) is the one guide you need.** It covers what got installed, how to run onboarding, the full five-phase process with a worked example, and what to do for different use cases (instructor brief, personal project, conversation tools, ChatGPT/Gemini).
 
 ---
 
-## What Got Installed
+## If you want the shortest possible path
 
-**Claude Code path:** An agent (`.claude/agents/esf-companion.md`), five skills, templates, reference files, a workspace state file created during onboarding at `projects/_esf/companion-state.md`, and a visual process diagram (`WORKFLOW.md`). The agent activates automatically when you run `claude` in this directory.
+**Claude Code:** Open Claude Code in your project directory (`claude`), run `/esf-onboarding`, and follow the prompts.
 
-**Conversation path (ChatGPT, Gemini, other):** A companion prompt (`prompts/companion.md`), templates, and a visual process diagram. No agent; you paste the prompt manually.
-
-Both paths include the same templates in `templates/` and the same process.
+**ChatGPT, Gemini, or other conversation tools:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message. That is your entire setup.
 
 ---
 
-## Your Next 3 Steps
+## Reference links
 
-### If you use Claude Code
-
-1. Open Claude Code in your project directory: `claude`
-2. Run onboarding: `/esf-onboarding`
-3. Follow the Companion's instructions. It will ask you to close Claude Code, write a Position Statement offline, and return.
-
-### If you use ChatGPT, Gemini, or another conversation tool
-
-1. Open `prompts/companion.md` and fill in your information
-2. Paste it into your AI tool's custom instructions (or as your first message)
-3. Write your Position Statement offline using `templates/position-statement-template.md` and save it to your project folder
-
-**Returning to a project?** At the end of each session, the Companion generates a PROJECT.md block with your phase, position summary, Records of Resistance count, and next step. Save that file and paste it at the start of your next session instead of re-explaining your context. See `prompts/README.md` for the full session-start format.
-
----
-
-## What Success Looks Like
-
-You have a Position Statement written before AI enters your project. It does not need to be polished. It needs to capture your direction: what you are making, what matters most, and what you will not compromise on.
-
-That is the gate. Everything else follows from it.
-
----
-
-## The Process in Plain Language
-
-**Before AI:** Write your Position Statement. Close your AI tool. Work from your own thinking first.
-
-**While using AI:** The Companion watches for drift between your Position Statement and where the work is heading. When it notices a gap, it asks you about it. You decide what to do.
-
-**Before submitting:** Answer the Five Questions: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest? The Companion generates a draft Disclosure Statement from your session logs.
-
----
-
-## Quick Links
-
-- **[WALKTHROUGH.md](WALKTHROUGH.md)** — Full guide: the complete five-phase process with a worked example
-- **[WORKFLOW.md](WORKFLOW.md)** — Visual diagram of the process
+- **[WALKTHROUGH.md](WALKTHROUGH.md)** — Complete guide
+- **[WORKFLOW.md](WORKFLOW.md)** — Visual process diagram
 - **[templates/](templates/)** — Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
-- **[examples/](examples/)** — Filled samples: what a completed Position Statement, Record of Resistance, and Disclosure look like
-- **[GETTING_STARTED.md](GETTING_STARTED.md)** — Detailed first-session walkthrough following a new user from install to Phase 3
+- **[examples/](examples/)** — Filled samples across design, writing, research, and consulting
+- **[ROADMAP.md](ROADMAP.md)** — What is shipped, what is coming
