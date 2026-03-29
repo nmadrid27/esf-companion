@@ -185,7 +185,7 @@ Without it, the Companion starts fresh and cannot compare your work to your orig
 
 If you use Claude.ai, Projects give you persistent file context without pasting. Create a project, upload your `companion-state.md` and project brief as project knowledge files, and set `prompts/esf-companion.md` as the project system prompt. The Companion reads your files at the start of every conversation automatically.
 
-This removes the manual paste step for returning sessions. You still paste PROJECT.md to restore session-level continuity, but your core identity and project configuration load automatically.
+No paste needed as long as your knowledge files are current. After each session, re-upload your updated `companion-state.md` to keep the project knowledge in sync. If you skip this step, paste your PROJECT.md at the start of the next conversation to catch the Companion up.
 
 ---
 

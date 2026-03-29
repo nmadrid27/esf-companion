@@ -12,7 +12,7 @@ You just installed the ESF Companion.
 
 **Claude.ai, ChatGPT, Gemini, or other conversation tools:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message. That is your entire setup.
 
-**Claude.ai Projects (best for returning users):** Create a project in Claude.ai, upload your `companion-state.md` and brief as knowledge files, and set `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session.
+**Claude.ai Projects (best for returning users):** Create a project in Claude.ai, upload your `companion-state.md` and brief as knowledge files, and set `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session. Re-upload `companion-state.md` after each session to keep it current.
 
 ---
 

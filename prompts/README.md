@@ -58,7 +58,7 @@ Projects let you skip most of the paste workflow. Create a project, add these fi
 - `companion.md` (your filled-in identity file)
 - Your project brief (if you have one)
 
-The Companion loads your context automatically at the start of every conversation. For returning sessions, still paste your PROJECT.md to restore where you left off — project knowledge does not carry session-level continuity on its own.
+The Companion loads your context automatically at the start of every conversation. No paste needed as long as your knowledge files are current. After each session, re-upload your updated `companion-state.md` to keep the project knowledge in sync. If you skip that step, paste your PROJECT.md at the start of the next session instead.
 ### Step 3: Maintain your project files
 
 Keep your project files organized the same way as the Claude Code version:
