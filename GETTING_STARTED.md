@@ -8,6 +8,24 @@ entities: [ESF]
 
 # Getting Started: Install to First AI Session
 
+## First 10 Minutes (Checklist)
+
+1. Run the installer in your project directory:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+   ```
+2. Choose your platform when prompted. Claude Code gives the full experience.
+3. Open Claude Code: `claude`
+4. Run onboarding: `/esf-onboarding` (about 5 minutes)
+5. **Stop here.** Close Claude Code.
+6. Read your project brief on your own. Write down what you already know and what you are uncertain about. No AI.
+7. Write your Position Statement in `projects/[context]/position-statements/[project-name].md`. Rough is fine.
+8. Open Claude Code again and tell the Companion what you are working on. Phase 3 begins.
+
+**The gate:** If you open Claude Code without a Position Statement, the Companion will stop and ask you to write one. That is not an error. It is the point.
+
+---
+
 This walkthrough follows a first-time user from the moment they receive the Companion URL to the end of their first AI-assisted session. Every screen, prompt, and decision point is shown.
 
 If you want to see the full ESF process across an entire project (all five phases, Build Practice, Records of Resistance, Five Questions, disclosure), read `WALKTHROUGH.md` after this.

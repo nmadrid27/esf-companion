@@ -6,46 +6,13 @@ No institution, course, or program required. If you use AI to write, research, d
 
 ---
 
-## Understanding ESF
-
-New to the framework? Start here:
-
-- **[Essentials](docs/essentials.md)** — The three core practices in under two minutes
-- **[What Is ESF?](docs/what-is-esf.md)** — How the framework works, where it came from, and why it is tool-agnostic
-
----
-
-## What This Is
-
-Five practices, applied before, during, and after AI-assisted work:
-
-1. **Position Statement** — Write down your direction before AI enters. What is your stance? What matters most? What will you not compromise on? This anchors the session so AI assists your thinking rather than replacing it.
-
-2. **Five Questions** — At every decision point, ask: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest? If any answer is no, stop and fix it.
-
-3. **Records of Resistance** — When you reject, revise, or override an AI suggestion, write down what you changed and why. This builds a record of your judgment, not just the AI's output.
-
-4. **AI Use Log** — Track what AI contributed to each piece of work: tool used, what you asked, what it produced, what you kept, what you changed.
-
-5. **Disclosure** — State honestly what AI contributed and what you contributed. Match the level of detail to the audience and stakes.
-
----
-
-## Who This Is For
-
-- Writers, researchers, and journalists working with AI drafting tools
-- Designers using generative AI in their creative process
-- Developers using AI coding assistants
-- Consultants producing client deliverables with AI support
-- Anyone who needs to answer: "Is this actually my work?"
-
----
-
 ## Quick Start
 
-**[WALKTHROUGH.md](WALKTHROUGH.md)** is the single guide for the complete process: install, onboarding, all five phases, and worked examples. Start there.
+**Just installed?** Open **[START_HERE.md](START_HERE.md)** — it covers what got installed, your next 3 steps, and what success looks like.
 
-See **[examples/](examples/)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements across design, writing, research, and consulting contexts.
+**[WALKTHROUGH.md](WALKTHROUGH.md)** is the complete guide: install, onboarding, all five phases, and worked examples.
+
+See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements across design, writing, research, and consulting contexts.
 
 ### Which path should I use?
 
@@ -118,6 +85,41 @@ claude
 
 ---
 
+## Who This Is For
+
+- Writers, researchers, and journalists working with AI drafting tools
+- Designers using generative AI in their creative process
+- Developers using AI coding assistants
+- Consultants producing client deliverables with AI support
+- Anyone who needs to answer: "Is this actually my work?"
+
+---
+
+## What This Is
+
+Five practices, applied before, during, and after AI-assisted work:
+
+1. **Position Statement** — Write your direction before AI enters. What is your stance? What matters most? What will you not compromise on? This anchors the session so AI assists your thinking rather than replacing it.
+
+2. **Five Questions** — At every decision point, ask: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest? If any answer is no, stop and fix it.
+
+3. **Records of Resistance** — When you reject, revise, or override an AI suggestion, write down what you changed and why. This builds a record of your judgment, not just the AI's output.
+
+4. **AI Use Log** — Track what AI contributed to each piece of work: tool used, what you asked, what it produced, what you kept, what you changed.
+
+5. **Disclosure** — State honestly what AI contributed and what you contributed. Match the level of detail to the audience and stakes.
+
+---
+
+## Understanding ESF
+
+New to the framework?
+
+- **[Essentials](docs/essentials.md)** — The three core practices in under two minutes
+- **[What Is ESF?](docs/what-is-esf.md)** — How the framework works, where it came from, and why it is tool-agnostic
+
+---
+
 ## FAQ
 
 **Do I need Claude Code?** No. ESF Companion works with any AI tool. Claude Code gives you the richest experience (drift detection, session memory, skills). Claude.ai, ChatGPT, and Gemini get the core process via the companion prompt. Claude.ai Projects adds persistent context without the paste workflow.
@@ -161,6 +163,13 @@ your-project/
 ├── .claude/                          ← Claude Code configuration (optional)
 │   ├── agents/
 │   │   └── esf-companion.md         ← AI companion identity
+│   ├── skills/
+│   │   ├── esf-onboarding/          ← Setup wizard
+│   │   ├── esf-project/             ← Five-phase workflow
+│   │   ├── esf-git/                 ← Commit discipline
+│   │   ├── esf-verify/              ← Source verification
+│   │   ├── esf-update/              ← Self-update
+│   │   └── esf-cognitive/           ← Cognitive techniques
 │   └── reference/
 │       └── esf-guide.md             ← Framework reference
 ├── templates/                        ← Blank templates for each practice
@@ -168,10 +177,12 @@ your-project/
 │   ├── esf-companion.md             ← Paste-anywhere system prompt
 │   └── companion.md                 ← Compact companion prompt
 ├── projects/
+│   ├── _esf/
+│   │   └── companion-state.md       ← Your identity and active contexts
 │   └── [your-project]/
-│       ├── position-statement.md     ← Your direction (write this first)
+│       ├── position-statements/      ← Your direction (write this first)
 │       ├── records-of-resistance/    ← Your decisions about AI output
-│       ├── ai-use-log.md            ← What AI contributed
+│       ├── ai-use-logs/             ← What AI contributed
 │       └── work/                     ← Your deliverables
 └── WORKFLOW.md                       ← Process diagram
 ```

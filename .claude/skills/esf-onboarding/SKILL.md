@@ -47,19 +47,29 @@ If they do full setup after quick start, carry the project information forward i
 
 ---
 
-### Step 2: Who Are You
+### Step 2: What Are You Working On
 
-Ask one open question:
+Ask one question:
 
-> "Tell me about yourself and what you do."
+> "What are you working on?"
 
-From their answer, infer: role (student, professional, educator, independent creator), discipline or domain, and the kind of work they do with AI. Do not ask follow-up categorizing questions. Confirm your understanding:
+From their answer, infer role using these signals:
+
+| Signal in response | Inferred role |
+|---|---|
+| Course name, instructor name, assignment, project brief | Student |
+| "a brief for my students," "a course I'm designing," syllabus, curriculum | Educator |
+| Client, deliverable, consulting, professional project | Professional |
+| Personal project, independent work, no institutional context | Independent creator |
+| Vague or no context | Ask one follow-up: "Is this for a course, a job, or your own project?" |
+
+Confirm your inference:
 
 > "So you're [inference about role and context]. Does that sound right?"
 
-If they give a name in their answer, use it. If not, ask: "What should I call you?" Do not ask separately for full name, degree program, and organization — collect what they offer and confirm.
+If they gave their name, use it. If not, ask: "What should I call you?" Do not ask for full name, degree program, and organization separately — take what they offer.
 
-Also collect: current period (quarter, semester, year, or however they track time). Ask simply: "What period are we in? Quarter, semester, whatever makes sense for you."
+Also collect current period if not evident from their answer. Ask simply: "What period are we in? Quarter, semester, whatever makes sense for you."
 
 **What not to do:**
 - Do not ask "are you a student or faculty?"
@@ -74,13 +84,27 @@ Also collect: current period (quarter, semester, year, or however they track tim
 
 If the user is not an educator, skip this step entirely and proceed to Step 3.
 
-If the user is an educator, introduce both sides of the Companion before collecting contexts. Also note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. We will cover the basics during setup, but that document has everything you need to configure a course from scratch. When your course is running, you can also run a cohort homogenization analysis to surface patterns across your students' Position Statements — see `docs/cohort-analysis.md`."
+If the user is an educator, introduce both tracks before collecting contexts. Note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. That document has everything you need to configure a course from scratch. When your course is running, you can also run a cohort homogenization analysis to surface patterns across your students' Position Statements — see `docs/cohort-analysis.md`."
 
-> "ESF works two ways for educators. First, it is a thinking partner for your own work: curriculum development, assessment design, institutional writing. You use it the same way anyone does. Position Statement, drift detection, the full process.
+> "ESF works two ways for educators, and both matter equally.
 >
-> Second, you can author project briefs that configure the Companion for your students. The brief sets the requirements: whether a Position Statement is required, how many Records of Resistance, whether the Five Questions act as hard stops or observations. Your students install the Companion and it reads your brief to calibrate their experience.
+> **Track A: Your own work.** Curriculum development, research, institutional writing, grant applications — anything where you are doing intellectual work and using AI. You use the full five-phase process: Position Statement, drift detection, Records of Resistance, Five Questions, disclosure. The same process as anyone else.
+>
+> **Track B: Brief authoring for students.** You write project briefs that configure the Companion for your students. The brief controls whether a Position Statement is required, how many Records of Resistance, and whether the Five Questions act as hard stops or observations. Your students install the Companion and it reads your brief.
 >
 > We will set up both sides. First, your own contexts. Then, if you have courses where students will use the Companion, we will set those up too."
+
+**Position Statement granularity for educators (use this when the educator asks or when setting up their own work):**
+
+Educators writing for their own practice often ask what level to write Position Statements at. The answer depends on scope:
+
+| Scope | When to use |
+|---|---|
+| Program-level | Your pedagogical stance: what AI education should do, what you will not compromise on. Written once, updated rarely. Governs all course-level decisions. |
+| Course-level | Per course, per term. What this course is trying to do, what the AI role is. Updated if a course redesign changes direction. |
+| Brief-level | Only for distinct, submittable artifacts: a research paper, a grant proposal, an institutional document. |
+
+Ongoing maintenance work (editing session docs, updating supplements, reviewing student work) does not require a Position Statement. Tell the educator this directly if they ask.
 
 Then proceed to Step 3. The educator introduction shapes how contexts are collected: the user now understands that teaching contexts and personal work contexts are different and will be tagged accordingly.
 
@@ -278,16 +302,15 @@ Close with a concrete next action.
 
 **For educators with teaching contexts:**
 
-> "Setup complete. You have two tracks of next steps.
+> "Setup complete. Your immediate next step:
 >
-> **For your own work** (research, institutional writing): Close Claude Code, work through Phase 1 and Phase 2 on your own. When your Position Statement is saved, come back.
+> **Author your first course brief.** Add it to `projects/[course]/briefs/` using `templates/project-brief-template.md`. The frontmatter fields control what the Companion requires of your students.
 >
-> **For your courses:**
-> 1. Add project briefs for your students to `projects/[course]/briefs/`. Use `templates/project-brief-template.md` as your starting point. The frontmatter fields control what the Companion requires of your students.
-> 2. Decide how students will get their own Companion installs. See `docs/institutional-adoption.md` for options.
-> 3. Set your course minimums (Records of Resistance count, Position Statement requirements) in the briefs. These carry through to the student experience.
+> For distributing the Companion to students and setting course minimums, see `docs/institutional-adoption.md`.
 >
-> If you need to add a new course or project later, run `/esf-onboarding` again and say 'update.'"
+> For your own work, close Claude Code and write your Position Statement before your first AI session.
+>
+> To add a new course or project later, run `/esf-onboarding` again and say 'update.'"
 
 ---
 

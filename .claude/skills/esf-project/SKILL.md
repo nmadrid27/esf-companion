@@ -591,7 +591,9 @@ Read `projects/_esf/companion-state.md` from the current workspace for the user'
 - **Supported:** Standard gate enforcement. Direct tone. Check in at key moments but do not walk through every step.
 - **Independent:** Minimal interruption. The user runs their own process. Surface only significant drift. Challenge rather than scaffold.
 
-If no scaffolding level is set, default to Supported. Invoke the `esf-cognitive` skill for technique suggestions at phase transitions and when drift signals appear.
+If no scaffolding level is set, default to Supported — except when `companion-state.md` shows `role: educator` or `role: instructor`. In that case, default to Independent without inference. The educator path assumes prior familiarity with the process. If an educator is testing their own brief before distributing it to students, apply standard scaffolding inference from that Position Statement instead.
+
+Invoke the `esf-cognitive` skill for technique suggestions at phase transitions and when drift signals appear.
 
 If any read of `projects/_esf/companion-state.md` fails, stop immediately. Tell the user the workspace state file could not be resolved in this repository. Do not attempt alternate absolute paths. Do not run shell commands to search for another copy.
 
