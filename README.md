@@ -89,7 +89,6 @@ Available on Pro, Max, Team, and Enterprise plans.
 ### Path 4: Use with Claude Code (full experience)
 
 ```bash
-mkdir my-project && cd my-project && git init
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
