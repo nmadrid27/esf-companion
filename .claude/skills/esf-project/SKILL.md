@@ -182,7 +182,15 @@ The user answers in whatever form they can: fragments, spoken language, bullet p
 
 The ideas must be the user's. The structure is the Companion's contribution. This is articulation support, not content generation. If the user confirms, save the statement and proceed.
 
-**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `projects/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish. Confirm: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
+**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `projects/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish.
+
+**Project plan offer:** Before moving to the readability pass, offer a lightweight work map:
+
+> "I've saved your Position Statement. One optional step before we start exploring: do you want to sketch a quick project plan? It takes about 5 minutes — what you're making, a few milestones, and your open questions. It gives us a clearer target to direct toward. Want to do that now, or go straight to Explore?"
+
+If yes: fill in `templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `projects/[context]/project-plan.md`. Then proceed to the readability pass.
+
+If no: proceed directly to the readability pass confirmation: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
 
 ---
 
