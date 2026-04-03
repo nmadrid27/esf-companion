@@ -65,6 +65,22 @@ The Position Statement is the gate. Everything else follows from it.
 
 ---
 
+## Customizing the Companion
+
+**Silence mode** reduces how often the Companion speaks during a session. To turn it on, open `projects/_esf/companion-state.md` and set:
+
+```
+## Preferences
+
+- **silent_mode:** true
+```
+
+With silent mode on, the Companion suppresses proactive prompts, phase announcements, drift observations for low-significance moments, and unprompted check-ins. It still enforces the Position Statement gate, Five Questions, and disclosure requirement. Those cannot be silenced.
+
+**If you are a student:** Silent mode is accepted, but a warning will appear once per session noting that blocking checkpoints remain active. If your instructor's brief requires full scaffolding, silent mode will be overridden automatically.
+
+---
+
 ## Reference links
 
 - **[WALKTHROUGH.md](WALKTHROUGH.md)** — Complete guide: onboarding, all five phases, worked examples

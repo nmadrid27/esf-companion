@@ -14,20 +14,34 @@ No institution, course, or program required. If you use AI to write, research, d
 
 See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)** for filled-in Position Statements, Records of Resistance, and Disclosure Statements across design, writing, research, and consulting contexts.
 
-### Which path should I use?
+### Which setup is right for me?
+
+**Three questions:**
+
+1. Do you use the command line (Terminal or bash)? No → go to 2. Yes → go to 3.
+2. Do you want the AI to follow the ESF process automatically in chat? No → Path 1 (templates only). Yes → Path 2 (conversation tool).
+3. Do you want drift detection, session memory, and `/` commands? Yes → Path 4 (Claude Code). Not sure → Path 1 or Path 2 first.
 
 | | **Templates only** | **Claude.ai / ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
 |---|---|---|---|---|
 | **What you get** | Markdown files to fill in | AI follows ESF process via custom instructions. Claude.ai Projects adds persistent file context. | AI reads ESF files from your computer | Full agent with drift detection, skills, and session memory |
-| **Requirements** | None | Any AI chat tool. Claude.ai Projects requires a free or paid Claude.ai account. | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
-| **Install** | Download ZIP | Download ZIP or run installer | Download ZIP | Run installer |
-| **Best for** | Trying ESF on one project | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
+| **Requirements** | None | Any AI chat tool | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
+| **Install** | None | Download ZIP or run installer | Download ZIP | Run installer |
+| **Best for** | Any tool, any folder, no setup | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
+
+**Not sure where to start?** Path 1 is the zero-install option. No terminal, no account, no install script. Download two files, open one, fill it in.
 
 ### Path 1: Download and use the templates (no install needed)
 
-1. Click the green **Code** button at the top of this page, then **Download ZIP**
-2. Unzip and open `templates/`
-3. Copy `position-statement.md` into your project folder and fill it in before opening any AI tool
+**Minimum viable setup — two files:**
+
+1. Download `templates/position-statement.md` and `templates/record-of-resistance.md` from the [templates folder](https://github.com/nmadrid27/esf-companion/tree/main/templates)
+2. Copy `position-statement.md` into your current project folder
+3. Fill it in before opening any AI tool
+
+That is a complete ESF setup for one project. No folder structure required. Works in any text editor, on any AI tool, in any repo.
+
+**Full templates folder (when you want more):**
 
 ```
 templates/
@@ -37,6 +51,14 @@ templates/
 ├── five-questions-checklist.md ← Run at decision points and before submission
 └── disclosure-statement.md     ← Add to finished work
 ```
+
+**Drift detection on Path 1:** Without Claude Code, drift detection is self-directed. Before each session, reread your Position Statement and ask: is the work still heading where I said it should? The Companion cannot run this check automatically without Claude Code — but your Position Statement gives you the anchor to run it yourself. That is intentional: the practice is the point, not the automation.
+
+**To download the full repo instead:**
+
+1. Click the green **Code** button at the top of this page, then **Download ZIP**
+2. Unzip and open `templates/`
+3. Copy any template into your project folder and fill it in
 
 **Start here:** Copy `position-statement.md` into your project folder and fill it in before opening any AI tool.
 
@@ -217,6 +239,12 @@ The templates use generic language. Adapt them:
 | Code | "My architecture is X, optimized for Y" | Rejected implementations, rewritten algorithms, overridden patterns |
 | Research | "My hypothesis is X, grounded in Y" | Rejected interpretations, revised analyses, challenged claims |
 | Consulting | "My recommendation is X, based on Y" | Rejected framings, revised conclusions, removed unsupported claims |
+
+---
+
+## Using ESF in any folder or tool
+
+The Companion works in any folder structure, on any AI tool, with no required install. For a full breakdown of what works at each setup level — including how drift detection works without Claude Code and what the onboarding steps require — see [Portability: What Works Where](docs/portability.md).
 
 ---
 

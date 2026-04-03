@@ -31,6 +31,10 @@ Use this format for each context:
 - **Last session:** none yet
 - **Scaffolding level:** not yet set
 
+## Preferences
+
+- **silent_mode:** false
+
 ## Growth Record
 
 None yet.

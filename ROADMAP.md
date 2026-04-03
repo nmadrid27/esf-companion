@@ -592,3 +592,34 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 **Planned:**
 - Local visual dashboard (browser-based project cards, phase progress, growth arc) [ROADMAP]
 - Educator dashboard or progress visibility (opt-in by student) [ROADMAP]
+
+### v1.2: Invocation Model [ROADMAP]
+
+**Recommended default:** Explicit `/` commands. This is already the interface. The v1.2 work does not change default behavior — it clarifies the model, documents the tradeoffs, and adds two lightweight opt-in enhancements.
+
+**Session-start hook (opt-in, v1.2):** A Claude Code `SessionStart` hook reads `companion-state.md` when present and presents a brief orientation: current project, current phase, last session summary. The Companion feels present at session start without requiring the user to invoke it. One line in `settings.json`; documented in install instructions.
+
+**Pre-commit hook (opt-in, v1.2):** Runs a quick drift check before git commits. Useful for students who commit frequently but do not always remember to check in. Configurable; off by default.
+
+**`@` invocation syntax:** Not applicable in Claude Code. `@` references files in Claude Code's interface (`@README.md`), not commands. For Claude.ai Projects or conversation-platform integrations, `@esf-companion` may be usable — this falls under the MCP concept (post-v1.2 work).
+
+**Always-on/ambient:** Not recommended as default. Conflicts with non-ESF work in the same Claude Code session. Too much noise for educator and professional users who use Claude Code for multiple purposes.
+
+**By user type:**
+
+| User | Recommended model | Rationale |
+|---|---|---|
+| Student | `/` commands + opt-in pre-commit hook | Instructor can specify exact commands; hook adds a reminder without extra friction |
+| Educator | `/` commands + opt-in session-start hook | Owns their workflow; session-start hook surfaces context without interrupting non-ESF work |
+| Professional | `/` commands only | Maximum control; hooks are available but default-off |
+
+**Events worth triggering (hook candidates):**
+
+| Event | Hook type | Companion behavior |
+|---|---|---|
+| Session start | `SessionStart` (Claude Code) | Read state file, present orientation summary |
+| Git commit | Pre-commit (Claude Code) | Drift check: do changes show movement away from Position Statement? |
+| New position-statement file | File watch (MCP, future) | Offer readability pass |
+| New file in `briefs/` | File watch (MCP, future) | Surface onboarding prompt for that project |
+
+Session-start and pre-commit hooks are achievable with existing Claude Code infrastructure. File-watch events require MCP (post-v1.2).
