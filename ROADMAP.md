@@ -12,25 +12,31 @@ The full Claude Code experience: five-phase workflow, drift detection, Position 
 
 Multi-platform support: install with a `--platform` flag targeting Claude Code, Claude.ai, ChatGPT, Gemini, or Codex CLI. Platform-specific config files included: `chatgpt-instructions.md`, `GEMINI.md`, `.codex/AGENTS.md`.
 
-Platform migration: migrate/fresh/cancel options when switching platforms. Portable PROJECT.md generated for conversation-platform users.
+Platform migration: migrate/fresh/cancel options when switching platforms. Portable PROJECT.md generated for conversation-platform users at session end.
 
 Accessibility additions: checkpoint saves for mid-session pauses, thread tracking for concurrent project aspects, structured alternatives to open-ended Socratic questions.
 
 Growth Record with development tracking across projects (companion-state.md Growth Record section, populated at project completion).
 
-Educator course configs: `courses/` folder documented for optional course-level ESF requirement templates.
-
 ## What Is Shipped (v3)
 
 Framework Evolution Protocol: users can propose revisions to the ESF process, document deliberate deviations, and build a personal version of ESF. Evolutions are recorded in `projects/_esf/evolution-log.md` and applied going forward. See `.claude/reference/evolution-protocol.md`.
 
-Cohort homogenization detection: opt-in educator tool that analyzes a cohort's Position Statements for shared vocabulary, direction overlap, and concept space gaps. See `docs/cohort-analysis.md`.
+Cohort homogenization detection: opt-in educator tool that analyzes a cohort's Position Statements for shared vocabulary, direction overlap, and concept space gaps. This is prompt-guided: the educator collects Position Statements and asks the Companion to run the analysis. No automated workflow or dedicated skill. See `docs/cohort-analysis.md`.
+
+## Partial (shipped but not complete)
+
+Scaffolding modes: Guided, Supported, and Independent levels are implemented. Automatic inference from the Position Statement is functional. Proactive level adjustment (pushing back when a user selects Independent but shows persistent unacknowledged drift) is not yet implemented.
+
+Brief-driven guidance: Drop-a-file path is complete. "Paste or describe" and "Build from scratch" paths are partially implemented — the Companion handles them conversationally but does not auto-generate and save a formatted brief file.
+
+Conversation-platform context restoration: PROJECT.md is generated at session end for manual paste. Initial-session auto-generation (so returning users do not need to paste manually) is not yet built.
 
 ## What Is Planned (still coming)
 
-A local visual dashboard: a browser-based interface that renders your project cards, phase progress, cross-project themes, and growth arc from the same local files the CLI Companion writes. No new app. The CLI remains the primary surface; the dashboard makes your accumulated work visible at a glance.
+A local visual dashboard: a browser-based interface that renders project cards, phase progress, cross-project themes, and growth arc from the same local files the CLI Companion writes. No new app. The CLI remains the primary surface; the dashboard makes accumulated work visible at a glance.
 
-Full conversation-platform context restoration (PROJECT.md auto-generation and paste-back workflow for initial session setup, not just session end).
+Full conversation-platform context restoration for initial session setup (auto-generation, not just session-end generation).
 
 ---
 

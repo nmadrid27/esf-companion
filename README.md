@@ -31,12 +31,14 @@ See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)*
 
 ```
 templates/
-├── position-statement.md      ← Fill out before each AI session
-├── record-of-resistance.md    ← One per decision to reject/revise AI output
-├── ai-use-log.md              ← One per project or document
-├── five-questions-checklist.md ← Run at each review point
-└── disclosure-statement.md    ← Add to finished deliverables
+├── position-statement.md       ← Write this before AI enters. Every project.
+├── record-of-resistance.md     ← One per decision to reject or revise AI output
+├── ai-use-log.md               ← One per project: what AI contributed
+├── five-questions-checklist.md ← Run at decision points and before submission
+└── disclosure-statement.md     ← Add to finished work
 ```
+
+**Start here:** Copy `position-statement.md` into your project folder and fill it in before opening any AI tool.
 
 ### Path 2: Use with Claude.ai, ChatGPT, Gemini, or any conversation tool
 
@@ -51,6 +53,8 @@ curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/instal
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
 **Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session — no manual paste needed as long as you re-upload `companion-state.md` after each session.
+
+**Next step:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
 
 ### Path 3: Use with Claude Cowork (no terminal needed)
 
@@ -83,6 +87,8 @@ claude
 
 **Already have work in this directory?** The installer adds ESF files alongside your existing files. It will not modify or overwrite your work. See [Using ESF with Existing Work](docs/existing-work.md).
 
+**Next step:** Run `claude`, then `/esf-onboarding`. Close Claude Code after onboarding and write your Position Statement before your first AI session.
+
 ---
 
 ## Who This Is For
@@ -97,17 +103,28 @@ claude
 
 ## What This Is
 
-Five practices, applied before, during, and after AI-assisted work:
+Three stages. Five practices.
 
-1. **Position Statement** — Write your direction before AI enters. What is your stance? What matters most? What will you not compromise on? This anchors the session so AI assists your thinking rather than replacing it.
+**Before AI enters your project:**
 
-2. **Five Questions** — At every decision point, ask: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest? If any answer is no, stop and fix it.
+- **Position Statement** — Write your direction: your stance, what matters most, what you will not compromise on. This is the gate. AI does not see your project until this exists.
 
-3. **Records of Resistance** — When you reject, revise, or override an AI suggestion, write down what you changed and why. This builds a record of your judgment, not just the AI's output.
+**While working with AI:**
 
-4. **AI Use Log** — Track what AI contributed to each piece of work: tool used, what you asked, what it produced, what you kept, what you changed.
+- **Records of Resistance** — Each time you reject or revise an AI suggestion, write what you changed and why. One file per decision.
+- **AI Use Log** — Track what AI contributed: tool used, what you asked, what it produced, what you kept, what you changed.
+- **Five Questions** — At every decision point: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest?
 
-5. **Disclosure** — State honestly what AI contributed and what you contributed. Match the level of detail to the audience and stakes.
+**Before you submit:**
+
+- **Five Questions** — Run the final check. If any answer is no, stop and fix it.
+- **Disclosure** — State honestly what AI contributed and what you contributed. Match detail to audience and stakes.
+
+---
+
+## Just want to start with one thing?
+
+Download `templates/position-statement.md`, fill it in before your next AI session, and stop there. That single step changes the dynamic. Add the other practices when they feel useful.
 
 ---
 

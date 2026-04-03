@@ -212,7 +212,7 @@ Write your own briefs. The Companion works the same way with self-authored brief
 ---
 
 For quick setup after install, see [START_HERE.md](START_HERE.md).
-For filled examples of Position Statements, Records of Resistance, and Disclosures, see [examples/](examples/).
+For filled examples of Position Statements, Records of Resistance, and Disclosures, see [examples](https://github.com/nmadrid27/esf-companion/tree/main/examples).
 
 ---
 
