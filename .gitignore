@@ -9,3 +9,9 @@ node_modules/
 .env.local
 .obsidian/
 .smart-env/
+
+# Syncthing temp files
+.syncthing.*.tmp
+
+# ESF session buffer (ephemeral, not versioned)
+.session-buffer.md
