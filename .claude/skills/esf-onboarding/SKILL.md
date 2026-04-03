@@ -201,7 +201,10 @@ Confirm your inference:
 
 If they gave their name, use it. If not, ask: "What should I call you?" Do not ask for full name, degree program, and organization separately — take what they offer.
 
-Also collect current period if not evident from their answer. Ask simply: "What period are we in? Quarter, semester, whatever makes sense for you."
+Also collect current period if not evident from their answer. Ask in a way that matches their role:
+
+- **Student or educator:** "What period are we in — quarter, semester, whatever your program uses?"
+- **Independent creator or professional:** Skip the period question. Use the current month and year if accessible, or leave the field blank. Do not ask about quarters or semesters.
 
 **What not to do:**
 - Do not ask "are you a student or faculty?"
