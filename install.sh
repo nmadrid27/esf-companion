@@ -73,6 +73,60 @@ if [ -d ".claude/agents" ] && [ -f ".claude/agents/esf-companion.md" ]; then
   fi
 fi
 
+# Determine install directory
+if [ "$FORCE" != true ]; then
+  echo ""
+  # Detect whether the current directory has substantive content
+  # (anything beyond .git, .gitignore, or a lone .DS_Store)
+  CURRENT_HAS_FILES=false
+  if [ -n "$(ls -A 2>/dev/null | grep -vE '^(\.git|\.gitignore|\.DS_Store)$')" ]; then
+    CURRENT_HAS_FILES=true
+  fi
+
+  if [ "$CURRENT_HAS_FILES" = true ]; then
+    echo "Your current folder already has files:"
+    echo "  $(pwd)"
+    echo ""
+    echo "  1) Install here (add ESF files alongside existing work)"
+    echo "  2) Create a new folder"
+    echo ""
+    read -r -p "Choose [1/2]: " DIR_CHOICE </dev/tty
+    [ -z "$DIR_CHOICE" ] && DIR_CHOICE="1"
+  else
+    echo "Where should ESF Companion be installed?"
+    echo ""
+    echo "  1) Current folder: $(pwd)"
+    echo "  2) Create a new folder  [default: esf-companion]"
+    echo ""
+    read -r -p "Choose [1/2] (default: 2): " DIR_CHOICE </dev/tty
+    [ -z "$DIR_CHOICE" ] && DIR_CHOICE="2"
+  fi
+
+  if [ "$DIR_CHOICE" = "2" ]; then
+    echo ""
+    read -r -p "Folder name [esf-companion]: " NEW_FOLDER </dev/tty
+    [ -z "$NEW_FOLDER" ] && NEW_FOLDER="esf-companion"
+    # Sanitize: lowercase, hyphens, alphanumeric only
+    NEW_FOLDER=$(echo "$NEW_FOLDER" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
+    if [ -z "$NEW_FOLDER" ]; then
+      NEW_FOLDER="esf-companion"
+    fi
+    if [ -d "$NEW_FOLDER" ] && [ -n "$(ls -A "$NEW_FOLDER" 2>/dev/null)" ]; then
+      echo -e "${YELLOW}Warning: '$NEW_FOLDER' already exists and is not empty.${NC}"
+      read -r -p "Install into it anyway? (y/N): " CONFIRM_DIR </dev/tty
+      if [[ ! "$CONFIRM_DIR" =~ ^[Yy]$ ]]; then
+        echo "Installation cancelled."
+        exit 0
+      fi
+    fi
+    mkdir -p "$NEW_FOLDER"
+    cd "$NEW_FOLDER"
+    echo -e "  ${GREEN}Installing into: $(pwd)${NC}"
+  else
+    echo -e "  ${GREEN}Installing into current folder: $(pwd)${NC}"
+  fi
+fi
+
 # Check for git repo
 if [ ! -d ".git" ]; then
   if [ "$FORCE" = true ]; then
@@ -376,26 +430,6 @@ if [ "$SAMPLE" = true ]; then
     -o projects/build-course/position-statements/responsive-system.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/records-of-resistance/ror-01.md" \
     -o projects/build-course/records-of-resistance/ror-01.md
-fi
-
-# Create a project folder if not already in one
-if [ ! -f "README.md" ] && [ ! -f "WORKFLOW.md" ]; then
-  echo ""
-  echo -e "${CYAN}Let's set up your project folder.${NC}"
-  echo ""
-  read -r -p "Project name (e.g., portfolio-redesign, client-rebrand, thesis): " PROJECT_NAME </dev/tty
-  if [ -n "$PROJECT_NAME" ]; then
-    # Sanitize: lowercase, replace spaces with hyphens
-    FOLDER_NAME=$(echo "$PROJECT_NAME" | tr '[:upper:]' '[:lower:]' | tr ' ' '-' | tr -cd 'a-z0-9-')
-    mkdir -p "$FOLDER_NAME"
-    # Move installed files into the project folder
-    for item in .claude prompts templates WORKFLOW.md; do
-      [ -e "$item" ] && mv "$item" "$FOLDER_NAME/" 2>/dev/null
-    done
-    cd "$FOLDER_NAME"
-    echo -e "  ${GREEN}Created project folder: $FOLDER_NAME/${NC}"
-    echo "  Installed files are inside this folder."
-  fi
 fi
 
 # Auto-commit only Companion files if in a git repo (do not stage unrelated work)
