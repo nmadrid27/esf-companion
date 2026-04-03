@@ -112,7 +112,8 @@ ai-work/
 │   │   ├── esf-project/
 │   │   ├── esf-git/
 │   │   ├── esf-verify/
-│   │   └── esf-update/
+│   │   ├── esf-update/
+│   │   └── esf-cognitive/
 │   ├── reference/
 │   │   ├── esf-guide.md
 │   │   └── disclosure-protocol.md

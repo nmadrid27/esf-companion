@@ -250,27 +250,15 @@ When working from a self-authored brief:
 
 At the start of each session:
 
-1. **Version check and auto-update:** Read `.claude/esf-version` for the local version. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version` for the remote version. If the remote version is higher than the local version:
-
-   a. Run the installer automatically:
-   ```bash
-   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
-   ```
-   b. Re-read `.claude/esf-version` to confirm the update succeeded.
-   c. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/CHANGELOG.md` and extract the section matching the new version number (everything between `## [version]` and the next `##` heading).
-   d. Display the update notification with what changed:
+1. **Version check:** Read `.claude/esf-version` for the local version. Fetch `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version` for the remote version. If the remote version is higher than the local version, notify the user:
 
 > ```
-> ── ESF Companion Updated ──────────────────────
->  v[old] → v[new]
-> ───────────────────────────────────────────────
+> ── ESF Update Available ───────────────────────
+>  v[local] → v[remote]
+> ── Run /esf-update when ready. ────────────────
 > ```
-> **What's new:**
-> [changelog items for this version]
 
-   e. If the installer fails, show: "Update failed. You can try manually with `/esf-update`." Continue with the session normally.
-
-If the fetch fails (network error, timeout), skip silently; do not block session start for a version check. If versions match, display a brief version line as part of the session greeting: "ESF Companion v[local version]". The user should always know what version they are running.
+   Do not run the installer automatically. The user must confirm the update by running `/esf-update`. If the fetch fails (network error, timeout), skip silently; do not block session start. If versions match, display a brief version line as part of the session greeting: "ESF Companion v[local version]". The user should always know what version they are running.
 
 2. Read `projects/_esf/companion-state.md` from the current workspace only. If it is missing or unconfigured, tell the user to run `/esf-onboarding` in this repository and stop.
 3. Read the Current Project section from the state file. Check the current context and phase.

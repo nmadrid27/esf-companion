@@ -79,12 +79,12 @@ Write a **Position Statement** with three elements:
 
    > *Example:* "Must include at least two primary sources I found myself. Must address the counterargument about economic factors. Must not use sources I cannot access and verify."
 
-The Position Statement should take 5–10 minutes. Those minutes are where the learning happens. If you find you cannot write it (you do not know what your position is, or you have not read enough to have one), that is the most valuable information the exercise can produce. It tells you to go back to Inquire.
+The Position Statement should take 5 to 10 minutes. Those minutes are where the learning happens. If you find you cannot write it (you do not know what your position is, or you have not read enough to have one), that is the most valuable information the exercise can produce. It tells you to go back to Inquire.
 
 Write the Position Statement offline, without AI assistance. This means not asking an AI tool to help you think through your position, suggest a structure, or prompt you with questions.
 Even well-intentioned AI questions introduce framing before you form your own position. Asking AI "What should I be thinking about?" still yields an AI-shaped position.
 
-**Accessibility exception:** If you cannot write due to a processing barrier, learning difference, or preference for verbal expression, conversational drafting is available. Tell the AI you need articulation support. It will ask you three questions: What are you making? What matters most? What will you not compromise on? Answer in whatever form you can — fragments, spoken language, bullet points. The AI structures your answers into a Position Statement draft, reads it back, and asks if it sounds like you. The ideas must be yours; the structure is the AI's contribution. This is articulation support, not content generation.
+**Accessibility exception:** If you cannot write due to a processing barrier, learning difference, or preference for verbal expression, conversational drafting is available. Tell the AI you need articulation support. It will ask you three questions: What are you making? What matters most? What will you not compromise on? Answer in whatever form you can: fragments, spoken language, bullet points. The AI structures your answers into a Position Statement draft, reads it back, and asks if it sounds like you. The ideas must be yours; the structure is the AI's contribution. This is articulation support, not content generation.
 
 Your Position Statement does not need to be polished. Rough outlines, bullet points, fragments, and incomplete sentences are all acceptable. All three elements must still be present: your stance, what matters most, and what you will not compromise on. Rough form is fine; missing elements are not. What matters is that it captures your direction, not that it reads well. When you bring the Position Statement into Phase 3, the AI's first action will be a readability pass: cleaning up grammar and sentence structure without changing your ideas. You will review the cleaned version and confirm it still says what you meant before any exploration begins.
 
@@ -329,7 +329,7 @@ Process artifacts are the visible evidence of your thinking. They document not j
 
 ### What to Track
 
-For each significant AI interaction during Phases 3–5:
+For each significant AI interaction during Phases 3 to 5:
 
 1. **What did I ask the AI to do?** (Specific, not vague.)
 2. **What did the AI produce?** (Brief summary.)
@@ -348,7 +348,7 @@ Records of resistance are evidence that you were thinking, not just approving.
 At the end of each project:
 
 - **Position evolution:** How did my Position Statement hold up? Where did it evolve, and why?
-- **Key decisions:** What were the 2–3 most important choices I made during Explore and Make?
+- **Key decisions:** What were the 2 to 3 most important choices I made during Explore and Make?
 - **What I learned:** What did this project teach me that I would not have learned without AI?
 - **What I would change:** If I did this project again, what would I do differently?
 - **Honest assessment:** Where was I most tempted to accept AI output uncritically, and what does that tell me about my developing practice?

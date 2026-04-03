@@ -124,4 +124,4 @@ Cohort analysis is not about enforcing originality. It is about making visible a
 
 The goal is collective epistemic diversity: the cohort produces a richer body of work when its members are genuinely exploring different directions. Position Statements that look like each other suggest the exploration phase may not have happened yet.
 
-Surfacing this early — before Phase 4 (Make) — gives students the chance to diverge while there is still time to do so authentically.
+Surfacing this early, before Phase 4 (Make), gives students the chance to diverge while there is still time to do so authentically.

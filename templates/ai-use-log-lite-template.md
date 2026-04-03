@@ -3,9 +3,9 @@ title: "AI Use Log (Lite)"
 type: esf-template
 assignment: ""
 context: ""
-date: 2026-03-16
+date: ""
 engagement-level: ""
-status: complete
+status: ""
 ---
 
 # AI Use Log (Lite)

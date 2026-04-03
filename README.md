@@ -8,7 +8,7 @@ No institution, course, or program required. If you use AI to write, research, d
 
 ## Quick Start
 
-**Just installed?** Open **[START_HERE.md](START_HERE.md)** — it covers what got installed, your next 3 steps, and what success looks like.
+**Just installed?** Open **[START_HERE.md](START_HERE.md)**: it covers what got installed, your next 3 steps, and what success looks like.
 
 **[WALKTHROUGH.md](WALKTHROUGH.md)** is the complete guide: install, onboarding, all five phases, and worked examples.
 
@@ -18,9 +18,10 @@ See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)*
 
 **Three questions:**
 
-1. Do you use the command line (Terminal or bash)? No → go to 2. Yes → go to 3.
-2. Do you want the AI to follow the ESF process automatically in chat? No → Path 1 (templates only). Yes → Path 2 (conversation tool).
-3. Do you want drift detection, session memory, and `/` commands? Yes → Path 4 (Claude Code). Not sure → Path 1 or Path 2 first.
+1. Do you use the command line (Terminal or bash)? No → go to 2. Yes → go to 4.
+2. Do you have Claude Desktop (Pro+ plan)? Yes → Path 3 (Cowork). No → go to 3.
+3. Do you want the AI to follow the ESF process automatically in chat? No → Path 1 (templates only). Yes → Path 2 (conversation tool).
+4. Do you want drift detection, session memory, and `/` commands? Yes → Path 4 (Claude Code). Not sure → Path 1 or Path 2 first.
 
 | | **Templates only** | **Claude.ai / ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
 |---|---|---|---|---|
@@ -52,7 +53,7 @@ templates/
 └── disclosure-statement.md     ← Add to finished work
 ```
 
-**Drift detection on Path 1:** Without Claude Code, drift detection is self-directed. Before each session, reread your Position Statement and ask: is the work still heading where I said it should? The Companion cannot run this check automatically without Claude Code — but your Position Statement gives you the anchor to run it yourself. That is intentional: the practice is the point, not the automation.
+**Drift detection on Path 1:** Without Claude Code, drift detection is self-directed. Before each session, reread your Position Statement and ask: is the work still heading where I said it should? The Companion cannot run this check automatically without Claude Code, but your Position Statement gives you the anchor to run it yourself. That is intentional: the practice is the point, not the automation.
 
 **To download the full repo instead:**
 
@@ -74,7 +75,7 @@ curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/instal
 
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
-**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session — no manual paste needed as long as you re-upload `companion-state.md` after each session.
+**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session (no manual paste needed as long as you re-upload `companion-state.md` after each session).
 
 **Next step:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
 
@@ -108,7 +109,7 @@ claude
 
 **Already have work in this directory?** The installer adds ESF files alongside your existing files. It will not modify or overwrite your work. See [Using ESF with Existing Work](docs/existing-work.md).
 
-**Next step:** Run `claude`, then `/esf-onboarding`. Close Claude Code after onboarding and write your Position Statement before your first AI session.
+**Next step:** Run `claude`, then `/esf-onboarding`.
 
 ---
 
@@ -128,18 +129,18 @@ Three stages. Five practices.
 
 **Before AI enters your project:**
 
-- **Position Statement** — Write your direction: your stance, what matters most, what you will not compromise on. This is the gate. AI does not see your project until this exists.
+- **Position Statement:** Write your direction: your stance, what matters most, what you will not compromise on. This is the gate. AI does not see your project until this exists.
 
 **While working with AI:**
 
-- **Records of Resistance** — Each time you reject or revise an AI suggestion, write what you changed and why. One file per decision.
-- **AI Use Log** — Track what AI contributed: tool used, what you asked, what it produced, what you kept, what you changed.
-- **Five Questions** — At every decision point: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest?
+- **Records of Resistance:** Each time you reject or revise an AI suggestion, write what you changed and why. One file per decision.
+- **AI Use Log:** Track what AI contributed: tool used, what you asked, what it produced, what you kept, what you changed.
+- **Five Questions:** At every decision point: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest?
 
 **Before you submit:**
 
-- **Five Questions** — Run the final check. If any answer is no, stop and fix it.
-- **Disclosure** — State honestly what AI contributed and what you contributed. Match detail to audience and stakes.
+- **Five Questions:** Run the final check. If any answer is no, stop and fix it.
+- **Disclosure:** State honestly what AI contributed and what you contributed. Match detail to audience and stakes.
 
 ---
 

@@ -18,16 +18,16 @@ flowchart TD
 
     BRIEF(["📄 Project Brief\nfrom your instructor\n→ save to projects/briefs/"]):::artifact
 
-    subgraph HUMANONLY["  Phases 1–2 · Human Only · No AI  "]
+    subgraph HUMANONLY["  Phases 1 to 2 · Human Only · No AI  "]
         P1["1 · Inquire\nRead the brief carefully.\nAsk yourself:\n• What is this actually asking?\n• What do I already know?\n• What am I uncertain about?\n• What assumptions am I making?"]:::humanOnly
 
-        P2["2 · Position ✍️\nWrite your Position Statement, without AI.\n• What is my position or approach?\n• What matters most to me in this work?\n• What will I not compromise on?\n\n200–400 words · rough is fine\nsave to projects/[context]/position-statements/"]:::humanOnly
+        P2["2 · Position ✍️\nWrite your Position Statement, without AI.\n• What is my position or approach?\n• What matters most to me in this work?\n• What will I not compromise on?\n\n200 to 400 words · rough is fine\nsave to projects/[context]/position-statements/"]:::humanOnly
     end
 
     GATE{"Position Statement\nfile exists?"}:::gate
     BLOCKED["⛔ I can't help with this project yet.\n\nYou need a Position Statement first.\nThis is not a rule; it is the mechanism\nthat keeps your work yours.\n\nOnce you have one saved,\ncome back and we'll begin."]:::blocked
 
-    subgraph AIASSISTED["  Phases 3–4 · AI-Assisted · Position Statement is your anchor  "]
+    subgraph AIASSISTED["  Phases 3 to 4 · AI-Assisted · Position Statement is your anchor  "]
         P3["3 · Explore\nNow bring AI in as a thinking partner,\nnot a producer.\n\n• First: AI does a readability pass on\n  your Position Statement (you confirm)\n• Ask AI to generate alternatives\n• Ask AI to challenge your position\n• Ask AI to find relevant examples\n• Evaluate everything against\n  your Position Statement"]:::aiAssisted
 
         P4["4 · Make\nBuild the work product with AI assistance.\n\n• Check each section against your Position Statement\n• If AI departs from your position, decide consciously\n• Apply the Five Questions at each major section\n• Record of Resistance: document what you\n  kept · revised · rejected and why"]:::aiAssisted

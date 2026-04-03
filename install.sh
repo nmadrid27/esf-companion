@@ -225,6 +225,7 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
   fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
   fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/quick-start.md" prompts/quick-start.md
   fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
 
   echo "  Fetching templates..."
@@ -374,6 +375,7 @@ echo "  Fetching prompts..."
 fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
 fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
 fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/cowork.md" prompts/cowork.md
 fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
 
 # Download templates
@@ -391,11 +393,14 @@ fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/dis
 fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" templates/project-brief-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" templates/project-plan.md
 
 # Download reference files
 echo "  Fetching reference files..."
-curl -fsSL "$TOOLKIT_BASE/.claude/reference/esf-guide.md"   -o .claude/reference/esf-guide.md
+curl -fsSL "$TOOLKIT_BASE/.claude/reference/esf-guide.md"           -o .claude/reference/esf-guide.md
 curl -fsSL "$TOOLKIT_BASE/.claude/reference/disclosure-protocol.md" -o .claude/reference/disclosure-protocol.md
+curl -fsSL "$TOOLKIT_BASE/.claude/reference/evolution-protocol.md"  -o .claude/reference/evolution-protocol.md
 
 # Download workflow diagram and onboarding guide (skip if already exists)
 if [ ! -f "WORKFLOW.md" ]; then

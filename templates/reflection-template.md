@@ -3,9 +3,9 @@ title: "Reflection"
 type: esf-template
 assignment: ""
 context: ""
-date: 2026-03-02
+date: ""
 engagement-level: ""
-status: complete
+status: ""
 ---
 
 # Reflection
