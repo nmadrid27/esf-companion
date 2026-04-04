@@ -9,7 +9,7 @@
 #   --sample    Install pre-filled BUILD-level test data (Alex Rivera)
 #   --force     Skip all interactive prompts (for scripted installs)
 #   --platform  Set platform without prompting
-#               Values: claude, conversation, chatgpt, gemini, codex
+#               Values: claude, conversation, chatgpt, gemini, codex, cowork
 #
 # Examples:
 #   curl -fsSL ... | bash -s -- --force --platform claude
@@ -165,12 +165,12 @@ fi
 PLATFORM="claude"
 if [ -n "$PLATFORM_FLAG" ]; then
   case "$PLATFORM_FLAG" in
-    claude|conversation|chatgpt|gemini|codex)
+    claude|conversation|chatgpt|gemini|codex|cowork)
       PLATFORM="$PLATFORM_FLAG"
       echo "Platform: $PLATFORM (set via --platform flag)"
       ;;
     *)
-      echo -e "${RED}Error: --platform must be one of: claude, conversation, chatgpt, gemini, codex. Got: '$PLATFORM_FLAG'${NC}"
+      echo -e "${RED}Error: --platform must be one of: claude, conversation, chatgpt, gemini, codex, cowork. Got: '$PLATFORM_FLAG'${NC}"
       exit 1
       ;;
   esac
@@ -183,9 +183,10 @@ elif [ "$FORCE" != true ]; then
   echo "  3) ChatGPT"
   echo "  4) Gemini"
   echo "  5) Codex CLI"
-  echo "  6) Not sure yet"
+  echo "  6) Cowork (Claude desktop app)"
+  echo "  7) Not sure yet"
   echo ""
-  read -r -p "Choose [1-6]: " PLATFORM_CHOICE </dev/tty
+  read -r -p "Choose [1-7]: " PLATFORM_CHOICE </dev/tty
   case "$PLATFORM_CHOICE" in
     2)
       PLATFORM="conversation"
@@ -200,6 +201,9 @@ elif [ "$FORCE" != true ]; then
       PLATFORM="codex"
       ;;
     6)
+      PLATFORM="cowork"
+      ;;
+    7)
       PLATFORM="conversation"
       ;;
     *)
@@ -209,6 +213,46 @@ elif [ "$FORCE" != true ]; then
 fi
 
 echo "Installing..."
+
+# Cowork: download the .plugin file — no project-directory install needed
+if [ "$PLATFORM" = "cowork" ]; then
+  PLUGIN_URL="https://github.com/nmadrid27/esf-companion/releases/latest/download/esf-companion.plugin"
+  PLUGIN_DEST="esf-companion.plugin"
+
+  echo "  Downloading ESF Companion plugin for Cowork..."
+  if curl -fsSL "$PLUGIN_URL" -o "$PLUGIN_DEST"; then
+    echo ""
+    echo -e "${GREEN}ESF Companion plugin downloaded.${NC}"
+    echo ""
+    echo "──────────────────────────────────────"
+    echo -e "${CYAN}Next steps:${NC}"
+    echo ""
+    echo "  1. Open Cowork (Claude desktop app)."
+    echo ""
+    echo "  2. Open the plugin file:"
+    echo "     $(pwd)/$PLUGIN_DEST"
+    echo ""
+    echo "  3. Cowork will show a plugin preview. Click 'Install' to accept."
+    echo ""
+    echo "  4. Open the folder where you want to work (your project folder)."
+    echo ""
+    echo "  5. Run /esf-start to initialize your workspace."
+    echo ""
+    echo "  That's it. The plugin reads companion-state.md from your selected"
+    echo "  folder and carries state across sessions."
+    echo "──────────────────────────────────────"
+    echo ""
+  else
+    echo ""
+    echo -e "${RED}Download failed.${NC}"
+    echo ""
+    echo "The plugin file may not be published yet, or you may be offline."
+    echo "You can also download it manually from:"
+    echo "  https://github.com/nmadrid27/esf-companion/releases"
+    echo ""
+  fi
+  exit 0
+fi
 
 # Conversation-mode platforms: claude.ai, chatgpt, gemini, codex, or generic conversation
 if [ "$PLATFORM" != "claude" ]; then
