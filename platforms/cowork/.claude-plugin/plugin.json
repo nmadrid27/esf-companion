@@ -1,0 +1,9 @@
+{
+  "name": "esf-companion",
+  "version": "0.3.0",
+  "description": "ESF Companion: an extended thinking partner for AI-assisted creative work",
+  "author": {
+    "name": "Nathan Madrid"
+  },
+  "homepage": "https://github.com/nmadrid27/esf-companion"
+}
