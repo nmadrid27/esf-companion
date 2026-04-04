@@ -5,6 +5,8 @@ allowed-tools: Read, Write, Edit, Glob
 
 Run end-of-session synthesis: save the session log, update PROJECT.md, and clear the session buffer.
 
+**All files are written to the user's selected folder.** Every Write, Edit, and Glob call targets paths relative to the workspace root (the folder the user selected in Cowork). Never write to temporary or sandbox paths.
+
 ## Step 1: Read the Session Buffer
 
 Glob for `projects/*/logs/.session-buffer.md` in the selected folder. Ignore any matches under `sample/`, `examples/`, or `templates/`.

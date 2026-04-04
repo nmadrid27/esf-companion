@@ -5,6 +5,8 @@ allowed-tools: Read, Write, Glob
 
 Read a project brief, extract milestones and deliverables, set up a milestone tracker, and orient the user to their first action. Works with any brief format: course assignments, client scopes, research proposals, personal project specs, or freeform descriptions.
 
+**All files are created in the user's selected folder.** Every Write, Edit, and Glob call targets paths relative to the workspace root (the folder the user selected in Cowork). Never write to temporary or sandbox paths.
+
 ## Step 1: Find or Receive the Brief
 
 **First, read `companion-state.md`** using a two-pass shallow glob: `companion-state.md` at root, then `*/companion-state.md` one level deep. Ignore matches under `sample/`, `examples/`, or `templates/`. Extract the current project name, context, and brief path (if set).

@@ -5,6 +5,8 @@ allowed-tools: Read, Write, Glob
 
 Initialize or resume an ESF Companion session. Follow this sequence exactly.
 
+**All files are created in the user's selected folder.** Every Write, Edit, and Glob call targets paths relative to the workspace root (the folder the user selected in Cowork). Never write to temporary or sandbox paths.
+
 ## Step 1: Check for companion-state.md
 
 Search for `companion-state.md` in two passes — shallow first to avoid matching sample or template files nested inside repos:
