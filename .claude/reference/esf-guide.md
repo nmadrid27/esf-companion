@@ -196,7 +196,7 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 ├─────────────────────────────────────────────────────────┤
 │  PHASE 5: REFLECT (Human Evaluates)                     │
 │  Document kept/revised/rejected and why                 │
-│  Write disclosure, complete reflection                  │
+│  Write reflection, then disclosure                      │
 │                                                         │
 │  GATE: Can I defend every part of this?                 │
 └─────────────────────────────────────────────────────────┘
