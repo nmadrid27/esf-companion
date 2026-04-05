@@ -157,12 +157,12 @@ If no brief was loaded during setup, add a note about `/esf-brief`:
 
 > "You're set up for [project name]. If you have a project brief (assignment, scope doc, spec, or similar), run `/esf-brief` to load it and set up milestone tracking. Otherwise, you can skip that step.
 >
-> Phase 1 — Inquire — is yours alone. That means closing this tool and working offline: notebook, blank doc, or just your thoughts. Write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
+> Phase 1 — Inquire — is yours alone. Work offline: notebook, blank doc, or just your thoughts. Write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
 >
 > Come back when you've written something down and run `/esf-start` again. I'll pick up from there."
 
 If a brief was already loaded in Step 3:
 
-> "You're set up for [project name] and your brief is loaded. Phase 1 — Inquire — is yours alone. Close this tool and work offline: write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
+> "You're set up for [project name] and your brief is loaded. Phase 1 — Inquire — is yours alone. Work offline: write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
 >
 > Come back when you've written something down and run `/esf-start` again. I'll pick up from there."
