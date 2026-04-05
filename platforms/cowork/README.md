@@ -14,7 +14,7 @@ The ESF Companion works through five phases:
 2. **Position** — Human only. You write a Position Statement before AI enters.
 3. **Explore** — AI as thinking partner. Expands, challenges, and pressure-tests your thinking.
 4. **Make** — AI as drafting support. Builds with you, anchored to your Position Statement.
-5. **Reflect** — AI as review partner. Five Questions, disclosure, and session synthesis.
+5. **Reflect** — AI as review partner. Five Questions, reflection, disclosure, and session synthesis.
 
 Drift detection runs continuously. When your work moves away from your stated position — or when you start accepting AI output without evaluation — the Companion surfaces it as a question, not a command. You decide what to do.
 
@@ -119,17 +119,18 @@ After running `/esf-start`, your project folder will look like this:
 
 ```
 your-workspace/
-├── companion-state.md          # Your identity, active contexts, current project
-└── projects/
-    └── [project-name]/
-        ├── briefs/             # Project brief goes here
-        ├── position-statements/
-        ├── records-of-resistance/
-        ├── ai-use-logs/
-        ├── gate-records/
-        ├── reflections/
-        └── logs/               # Session logs and .session-buffer.md
-            └── PROJECT.md      # Current project state (one screen)
+├── projects/
+│   ├── _esf/
+│   │   └── companion-state.md  # Your identity, active contexts, current project
+│   └── [context]/
+│       ├── briefs/             # Project brief goes here
+│       ├── position-statements/
+│       ├── records-of-resistance/
+│       ├── ai-use-logs/
+│       ├── gate-records/
+│       ├── reflections/
+│       └── logs/               # Session logs and .session-buffer.md
+│           └── PROJECT.md      # Current project state (one screen)
 ```
 
 ---
