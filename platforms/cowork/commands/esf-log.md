@@ -82,7 +82,7 @@ Once the user confirms (or makes edits and confirms), save the log to:
 
 ## Step 4: Update PROJECT.md
 
-Write or update `projects/[project-name]/PROJECT.md`:
+Write or update `projects/[context]/PROJECT.md`:
 
 ```markdown
 # Project: [name]
@@ -96,7 +96,7 @@ Next: [what to work on next session — pulled from session log "Next session" s
 
 ## Step 5: Update companion-state.md
 
-**Read `companion-state.md` first** using a two-pass shallow glob: `companion-state.md` at root, then `*/companion-state.md` one level deep. Ignore matches under `sample/`, `examples/`, or `templates/`.
+**Read `projects/_esf/companion-state.md` first.** If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`.
 
 Then use the Edit tool to update only the Phase and Last session fields in the Current Project block. Do not rewrite the entire file. Set Phase to the current phase and Last session to today's date with a brief note from the session log's "What we worked on" section.
 

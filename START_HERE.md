@@ -33,8 +33,8 @@ WORKFLOW.md                       ← Visual process diagram
 **If you are on Claude Code:**
 
 1. Open Claude Code in your project directory: `claude`
-2. Run `/esf-onboarding` — takes about 5 minutes
-3. Close Claude Code after onboarding and write your Position Statement before your first AI session
+2. Run `/esf-onboarding` — it walks you through writing a Position Statement for your project and sets up your workspace
+3. If you wrote your Position Statement during onboarding, you can jump straight into Phase 3. Otherwise, write it offline and come back when it's ready
 
 **If you are on Claude.ai, ChatGPT, Gemini, or another conversation tool:**
 

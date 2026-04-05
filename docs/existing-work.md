@@ -26,10 +26,12 @@ Create a project folder and move your existing files in:
 
 ```
 projects/
-└── [your-project-name]/
-    ├── position-statement.md       ← Write this first (Step 1)
+└── [context]/
+    ├── position-statements/
+    │   └── [project-name].md       ← Write this first (Step 1)
     ├── records-of-resistance/      ← Create this folder (Step 3)
-    ├── ai-use-log.md               ← You will fill this in (Step 4)
+    ├── ai-use-logs/
+    │   └── [project-name]-ai-use-log.md  ← You will fill this in (Step 4)
     └── work/
         └── [your existing files]  ← Move existing drafts here
 ```

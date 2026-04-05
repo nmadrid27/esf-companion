@@ -215,7 +215,7 @@ Build Practice structures what happens inside Phase 4 (Make). Before you start b
 
 ### 1. Define
 
-Name each piece of your project. If you cannot name it clearly, you do not yet understand it well enough to direct it. Classify each piece by its epistemic weight:
+Name each piece of your project. If you cannot name it clearly, you do not yet understand it well enough to direct it. Classify each piece by its ownership level:
 
 | Weight | What It Means | Your Role |
 |--------|--------------|-----------|

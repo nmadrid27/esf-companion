@@ -13,6 +13,9 @@ five-questions: required
 # Minimum number of Records of Resistance the user must document.
 # Set to 0 or remove this field for no minimum.
 records-of-resistance-minimum: 3
+
+# Set to false to require full scaffolding (overrides student's silent_mode preference)
+# allow-silent-mode: true
 ---
 
 # [Project Title]

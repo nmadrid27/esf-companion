@@ -116,6 +116,18 @@ Next time you open the Companion, it picks up right here.
 
 ---
 
+## What Happens When You Skip Phase 2
+
+If you open the Companion without a Position Statement and ask for project help, it holds the gate:
+
+> "I can't help with this project yet. Before AI enters your process, you need a Position Statement — a record of your own direction, written without AI assistance. When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think."
+
+This is not punishment. It is the mechanism that keeps your thinking yours. Once you've written your position, even a rough one, you engage AI as a pressure-test on your thinking, not as a substitute for it.
+
+For a detailed first-time walkthrough showing every screen and prompt from install to Phase 3, see [GETTING_STARTED.md](GETTING_STARTED.md).
+
+---
+
 ## The Full Process
 
 Five phases. The first two happen offline (without AI). The last three happen with the Companion.
@@ -131,9 +143,9 @@ Write your Position Statement. Three elements:
 - **What matters most:** What qualities are non-negotiable?
 - **What you will not compromise:** The line AI will not cross.
 
-Save it to `projects/[name]/position-statements/`. It does not need to be polished. Rough is fine.
+Save it to `projects/[context]/position-statements/[project-name].md`. It does not need to be polished. Rough is fine.
 
-If you prefer to talk through your ideas rather than write, the Companion can help you articulate your position through conversation when you open Phase 3. You answer questions in your own words; the Companion structures them.
+If you'd rather talk it through than write, tell the Companion when you open Phase 3. It will ask you three questions, draft from your answers, and read it back for you to confirm. Your ideas, its structure.
 
 ### Phase 3: Explore (with AI)
 
@@ -198,7 +210,7 @@ Tell the Companion. It creates a new project folder. Each project has its own Po
 Tell the Companion. It saves your current statement as v1 and helps you write a new one. The pivot is documented with your reasoning. Position Statement evolution is a feature, not a failure.
 
 **"I want less interruption today."**
-Say "less interruption today." The Companion scales back to essential drift flags only. No proactive check-ins, no friction questions. Just the baseline monitoring.
+Say "less interruption today." The Companion scales back to essential drift flags only. No proactive check-ins, no challenge prompts. Just the baseline monitoring.
 
 **"I am stuck."**
 Tell the Companion. It offers a cognitive technique to help you break out of fixation: lateral thinking (approach the problem from an unrelated angle), perspective shift (describe the project as if explaining it to someone in a different field), constraint manipulation (add or remove a constraint and see what opens up), or analogical reasoning (find a parallel problem in a different domain and examine how it was solved). You choose whether to try one.
@@ -218,14 +230,10 @@ For filled examples of Position Statements, Records of Resistance, and Disclosur
 
 ## How It Works
 
-The ESF Companion is built on research from cognitive science, education, and AI ethics.
+The ESF Companion is built on research from cognitive science, education, and AI ethics. The short version:
 
-**Extended mind theory** (Clark & Chalmers, 1998): Your thinking can genuinely extend into tools, including AI, but only when you actively direct the tool's contributions. Passive acceptance is not extension; it is surrender. The Position Statement is how you actively direct.
-
-**Metacognitive demands** (Tankelevitch et al., 2024): AI output is fluent and polished, which makes it harder to evaluate critically. Your brain treats smooth output as trustworthy. The Companion counteracts this by flagging fluent output that you have not examined.
-
-**Cognitive friction** (Vendrell & Johnston, 2026): The productive struggle of working through problems is what builds understanding. AI bypasses that struggle. The Companion reintroduces friction deliberately: challenging your direction, surfacing what is missing, questioning whether the work is still yours.
+**AI output is so fluent that your brain treats it as trustworthy before you've evaluated it.** Writing your own position first gives you an anchor to evaluate against. The Companion then challenges your direction, surfaces what's missing, and questions whether the work is still yours — not to slow you down, but to keep you in the driver's seat.
 
 **The core insight:** AI is not the problem. Unexamined AI use is the problem. The Companion makes your AI use examined.
 
-For the full research foundation and product roadmap, see [ROADMAP.md](ROADMAP.md).
+For the research foundation (extended mind theory, metacognitive demands, cognitive friction research), see [docs/what-is-esf.md](docs/what-is-esf.md). For the product roadmap, see [ROADMAP.md](ROADMAP.md).

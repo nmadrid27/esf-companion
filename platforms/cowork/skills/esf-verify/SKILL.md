@@ -54,7 +54,7 @@ After verification, help the user fill in the AI Use Log's Verification table:
 | [claim] | Yes | [method] | [confirmed / inaccurate / not found] |
 ```
 
-The log lives at `projects/[course]/ai-use-logs/[project-name].md`. If it does not exist yet, create it automatically with this template header:
+The log lives at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`. If it does not exist yet, create it automatically with this template header:
 
 ```markdown
 ---

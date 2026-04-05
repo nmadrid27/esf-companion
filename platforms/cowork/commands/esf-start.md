@@ -9,13 +9,7 @@ Initialize or resume an ESF Companion session. Follow this sequence exactly.
 
 ## Step 1: Check for companion-state.md
 
-Search for `companion-state.md` in two passes — shallow first to avoid matching sample or template files nested inside repos:
-
-1. Glob `companion-state.md` — root of selected folder only.
-2. If not found, Glob `*/companion-state.md` — one level deep (direct subfolders).
-3. If still not found: go to Step 2 (first-time setup).
-
-If multiple matches are found, prefer the one closest to the root. Ignore any match whose path contains `sample/`, `examples/`, or `templates/`.
+Search for `projects/_esf/companion-state.md` in the selected folder. If not found, also check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore any match whose path contains `sample/`, `examples/`, or `templates/`.
 
 **If companion-state.md exists:**
 Read it. Extract: user name/role, active contexts (courses or projects), current project name, current phase, and last session date. Then use AskUserQuestion with preview cards:
@@ -35,11 +29,11 @@ Go to Step 2 (first-time setup).
 
 ## Step 2: First-Time Setup (New Users Only)
 
-Greet the user and explain what the ESF Companion does in two sentences:
+Greet the user and lead with a hands-on demonstration:
 
-> "The ESF Companion is a thinking partner for AI-assisted creative work. It helps you stay the author of your own thinking by working through five phases — and by watching for drift between what you said you wanted to make and what you're actually making."
-
-Ask one open question: "Tell me a bit about yourself and what you're working on."
+> "Welcome to the ESF Companion. Here's the core idea: **you write a short Position Statement before AI enters your project.** Then the Companion watches for drift between what you said and where the work is heading.
+>
+> Let me show you how it works. **Tell me about a project you're working on** — something where you're using or planning to use AI."
 
 From their answer, infer:
 - **Role:** student / educator / professional / independent creator
@@ -47,19 +41,21 @@ From their answer, infer:
 - **Context:** course name, project type, or client work
 - **Current period:** quarter, semester, or date range
 
-Confirm your read: "So you're [inferred description] — does that sound right?"
+Walk them through writing a Position Statement using three questions: "What are you making?", "What matters most to you about this project?", "What should AI not touch?" Draft from their answers, read it back, confirm it sounds like them.
 
-Then use AskUserQuestion to ask about scaffolding level with preview cards showing what each level means in practice:
+Then explain what the statement does:
+
+> "That's your Position Statement. When we work together, I'll challenge your thinking and push on assumptions — but this statement is the anchor. If the work drifts from what you said here, I'll flag it and you decide what to do."
+
+Then ask about scaffolding level using AskUserQuestion with preview cards:
 
 Question: "How much guidance do you want as you work?"
-- **Guided** — preview: "Full phase-by-phase walkthrough. I'll prompt you at every transition, explain each gate, and offer cognitive techniques between phases. Best for your first few projects or if you're new to ESF."
-- **Supported** — preview: "Check-ins at key moments. I'll surface drift and run the Five Questions, but won't narrate every step. Good for users who know the phases and want less hand-holding."
-- **Independent** — preview: "Minimal interruption. I'll flag significant drift and respond when you ask, but stay out of the way otherwise. For experienced users who own the process themselves."
+- **Guided** — preview: "Full phase-by-phase walkthrough. I'll prompt you at every transition and offer thinking exercises between phases. Best for your first few projects."
+- **Supported** — preview: "Check-ins at key moments. I'll surface drift and run ownership checks, but won't narrate every step."
+- **Independent** — preview: "Minimal interruption. I'll flag significant drift and respond when you ask, but stay out of the way otherwise."
 
-Then ask: "Are you working on something specific right now, or are you setting up for upcoming work?"
-
-If they have a project ready: go to Step 3.
-If they are setting up: create `companion-state.md` with their identity and an empty Current Project block (see template below), confirm it is saved, and tell them to run `/esf-start` again when they are ready to begin a project.
+If they have a project (which they should, from the demo): go to Step 3. Carry the Position Statement and project info forward.
+If they are just setting up: create `projects/_esf/companion-state.md` with their identity and an empty Current Project block, confirm it is saved, and tell them to run `/esf-start` again when they are ready.
 
 ---
 
@@ -77,7 +73,7 @@ Ask:
 3. "What's your deadline or key milestone?"
 4. "Where is the line for AI on this project — what tasks do you want to keep human-only?"
 
-Generate a minimal brief in markdown, present it, and ask: "Does this capture it? I'll save it to `projects/[name]/briefs/[project-name]-brief.md`."
+Generate a minimal brief in markdown, present it, and ask: "Does this capture it? I'll save it to `projects/[context]/briefs/[project-name]-brief.md`."
 
 ---
 
@@ -86,21 +82,23 @@ Generate a minimal brief in markdown, present it, and ask: "Does this capture it
 Create the following folders if they do not exist:
 
 ```
-projects/[project-name]/
-├── briefs/
-├── position-statements/
-├── records-of-resistance/
-├── ai-use-logs/
-├── gate-records/
-├── reflections/
-└── logs/
+projects/
+├── _esf/
+├── [project-name]/
+│   ├── briefs/
+│   ├── position-statements/
+│   ├── records-of-resistance/
+│   ├── ai-use-logs/
+│   ├── gate-records/
+│   ├── reflections/
+│   └── logs/
 ```
 
 ---
 
 ## Step 5: Update companion-state.md
 
-Write or update `companion-state.md` with the current project and set Phase to "Inquire":
+Write or update `projects/_esf/companion-state.md` with the current project and set Phase to "Inquire". Use `templates/companion-state-template.md` as the starting structure:
 
 ```markdown
 ---
@@ -108,14 +106,15 @@ type: companion-state
 last-updated: [today's date]
 ---
 
+# ESF Companion State
+
 ## Identity
 
 - **Name:** [name]
-- **Role:** [student / educator / professional / independent creator]
-- **Discipline:** [field]
-- **Period:** [current quarter or date range]
-- **Scaffolding level:** [Guided / Supported / Independent]
-- **Silent mode:** false
+- **Preferred name:** [preferred name]
+- **Role or program:** [student / educator / professional / independent creator]
+- **Discipline or focus:** [field]
+- **Current period:** [current quarter or date range]
 
 ## Active Contexts
 
@@ -123,12 +122,21 @@ last-updated: [today's date]
 
 ## Current Project
 
-- **Name:** [project name]
 - **Context:** [course or project context]
-- **Brief:** `projects/[name]/briefs/[brief-file].md`
-- **Position Statement:** `projects/[name]/position-statements/[project-name].md`
+- **Project name:** [project name]
+- **Brief location:** `projects/[context]/briefs/[brief-file].md`
+- **Position Statement:** `projects/[context]/position-statements/[project-name].md`
 - **Phase:** Inquire
 - **Last session:** [today's date] — Project initialized.
+- **Scaffolding level:** [Guided / Supported / Independent]
+
+## Preferences
+
+- **silent_mode:** false
+
+## Growth Record
+
+None yet.
 ```
 
 ---

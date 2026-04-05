@@ -23,7 +23,7 @@ The ESF Companion is framework-agnostic. The `.claude/` directory is the Claude 
 
 **New users:** Open `quick-start.md`, fill in your name, discipline, project, and current phase. Paste the whole document as your first message.
 
-**Returning users:** Open `companion.md` and fill in every `[PLACEHOLDER]` with your information. Save it in your project folder so the AI can find it. This is your persistent identity file. It tells the AI who you are, what courses you are in, and what project you are currently working on.
+**Returning users:** Open `companion.md` and fill in every `[PLACEHOLDER]` with your information. Save it in your project folder so the AI can find it. This is your persistent identity file. It tells the AI who you are, what contexts you are working in, and what project you are currently working on.
 
 ### Step 2: Start a session
 

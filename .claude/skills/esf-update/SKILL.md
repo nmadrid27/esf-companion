@@ -16,6 +16,7 @@ Check whether a newer version of the ESF Companion is available and offer to ins
    - If versions match, tell the user: "Your Companion is up to date (v[local])."
 4. If the user confirms the update, run:
    ```bash
-   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash -s -- --force --platform claude
    ```
+   The `--force` flag skips interactive prompts (install location, platform choice, overwrite confirmation) that are unnecessary during an update. The `--platform claude` flag ensures the full Claude Code install path runs.
 5. After the installer completes, re-read `.claude/esf-version` and confirm the update succeeded.

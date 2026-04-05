@@ -8,7 +8,7 @@ phase: ""
 
 # Session Log
 
-**Course:** [course]
+**Context:** [context]
 **Project:** [project]
 **Date:** [date]
 **Phase at start:** [phase]

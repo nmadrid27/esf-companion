@@ -34,7 +34,7 @@ All Companion commands use `/` syntax in Claude Code. You call the tool when you
 |---|---|
 | `/esf-onboarding` | First install, or when starting a new project or context |
 | `/esf-project` | Start of any AI work session — runs the five-phase workflow |
-| `/esf-git` | Before committing — frames the commit as an epistemic artifact |
+| `/esf-git` | Before committing — frames the commit as a thinking artifact |
 | `/esf-verify` | When AI produces a factual claim, source, or data you need to check |
 | `/esf-update` | Check for Companion updates and install the latest version |
 
@@ -272,13 +272,15 @@ The Companion checks for a Position Statement file at `projects/discover-course/
 >
 > To proceed, write your Position Statement first. When it's done, save it to `projects/discover-course/position-statements/tool-audit.md` and return here.
 
-If Jordan tries a follow-up question ("Can you at least help me understand the brief?"), the Companion holds:
+If Jordan tries a follow-up question ("Can you at least help me understand the brief?"), the Companion explains why:
 
-> I can't help with this, not even with how to approach it. The moment I suggest what to think about or how to structure it, your position becomes a response to my framing rather than your own thinking. That's exactly what the Position Statement is designed to prevent.
+> If I suggest what to think about or how to structure it, your position becomes a response to my framing rather than your own thinking. That's the whole reason the Position Statement comes first.
 >
-> Close this tool and write it offline. It doesn't need to be polished. It just needs to be yours.
+> You can write it offline, or say "talk it through" and I'll ask you three questions to help you articulate your own direction. Either way, the ideas need to be yours.
 
-The gate holds. Jordan closes Claude Code, writes the Position Statement, and returns.
+If Jordan doesn't want to write offline, there's a second option: "Talk it through." The Companion asks three questions — What are you making? What matters most? What will you not compromise? — and drafts from Jordan's answers. The ideas are still Jordan's. The structure is the Companion's contribution.
+
+The gate holds either way. Jordan writes the Position Statement (offline or via conversation) and returns.
 
 ---
 
@@ -410,6 +412,6 @@ The Position Statement exists and has been confirmed. The workspace state file r
 
 ---
 
-*Epistemic Stewardship Framework, Companion*
+*ESF Companion*
 *Getting Started: Install to First AI Session*
 *Based on a DISCOVER-level project: Tool Audit*

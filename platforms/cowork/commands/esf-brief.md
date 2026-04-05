@@ -9,7 +9,7 @@ Read a project brief, extract milestones and deliverables, set up a milestone tr
 
 ## Step 1: Find or Receive the Brief
 
-**First, read `companion-state.md`** using a two-pass shallow glob: `companion-state.md` at root, then `*/companion-state.md` one level deep. Ignore matches under `sample/`, `examples/`, or `templates/`. Extract the current project name, context, and brief path (if set).
+**First, read `projects/_esf/companion-state.md`.** If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`. Extract the current project name, context, and brief path (if set).
 
 **Then look for briefs using the known project path.** If `companion-state.md` has a brief path, check that specific file. If it has a project name but no brief path, check `projects/[project-name]/briefs/` directly. Only fall back to `projects/*/briefs/*.md` if no project context is available.
 
