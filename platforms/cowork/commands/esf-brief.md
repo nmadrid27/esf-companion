@@ -140,7 +140,7 @@ Update the Current Project block with the brief path and any extracted ESF requi
 
 Based on the current phase in `companion-state.md`:
 
-- **Inquire or Position:** "Your brief is loaded and milestones are set. Phase 1 is still yours alone — close this tool and work through your initial thinking offline. Come back when your Position Statement is ready."
+- **Inquire or Position:** "Your brief is loaded and milestones are set. Phase 1 is still yours alone — work through your initial thinking offline. Come back when your Position Statement is ready."
 - **Explore or later:** "Brief loaded. Your current phase is [phase]. Ready to continue?" Then invoke `esf-project` and proceed.
 
 Present the brief file via `mcp__cowork__present_files` so the user has it as a clickable card for reference.
