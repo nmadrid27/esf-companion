@@ -84,7 +84,7 @@ Create the following folders if they do not exist:
 ```
 projects/
 ├── _esf/
-├── [project-name]/
+├── [context]/
 │   ├── briefs/
 │   ├── position-statements/
 │   ├── records-of-resistance/
