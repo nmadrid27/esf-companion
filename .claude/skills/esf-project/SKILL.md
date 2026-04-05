@@ -428,11 +428,15 @@ Help the user document the process and evaluate the outcome against their origin
 - "What would you do differently on the next project?"
 - "Name 3 moments where you made a deliberate choice to keep, revise, or reject AI output. What was your reasoning each time?"
 
-**Disclosure generation:** The Companion drafts the disclosure candidate from accumulated session data: session buffer, AI Use Log entries, Records of Resistance files, and Position Statement (including any versioned revisions). User review, editing, and explicit approval are mandatory before the disclosure is saved.
+**Reflection:** Offer the user the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `projects/[context]/reflections/[project-name]-reflection.md`.
+
+**Reflection editing:** The same readability pass is available for the user's reflection writing. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
+
+**Disclosure generation:** After the user's reflection is complete, draft the disclosure candidate from accumulated session data: session buffer, AI Use Log entries, Records of Resistance files, and Position Statement (including any versioned revisions). User review, editing, and explicit approval are mandatory before the disclosure is saved.
 
 Draft the disclosure at two moments:
 1. **Milestone checkpoints:** If the brief defines milestones, offer a draft at each one.
-2. **Project close (Phase 5):** Always offer a draft here.
+2. **Project close (Phase 5):** Always offer a draft here, after reflection.
 
 The draft should specify: which tasks AI assisted with (high / medium / low contribution), which tasks remained fully human, and whether the final work reflects the original Position Statement or substantially adopted AI framing.
 
@@ -450,10 +454,6 @@ The disclosure should specify:
 - Which tasks AI assisted with (high / medium / low contribution)
 - Which tasks remained fully human
 - Whether the final work reflects their original position or substantially adopted AI framing
-
-**Reflection:** After the disclosure is saved, offer the user the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `projects/[context]/reflections/[project-name]-reflection.md`.
-
-**Reflection editing:** The same readability pass is available for the user's reflection writing. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
 
 **Final gate:** "Can you defend every part of this project to your instructor without referencing what the AI suggested?"
 

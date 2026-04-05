@@ -42,6 +42,11 @@ make_git_repo() {
   git init -q -b main
   git config user.email "smoke@test.local"
   git config user.name "Smoke Test"
+  git config commit.gpgsign false
+  # Seed with an initial commit so git log/show work
+  touch .gitkeep
+  git add .gitkeep
+  git commit -q -m "init" 2>/dev/null || true
 }
 
 # ────────────────────────────────────────────────────────────────
@@ -74,7 +79,7 @@ assert "Phase 2 conversational drafting in esf-project" \
   "$(grep -q 'Conversational drafting\|Talk it through' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 assert "Phase 1 redirect includes inquiry questions in esf-project" \
-  "$(grep -A5 'Phase 1 is yours alone' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
+  "$(grep -A5 'Phase 1' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
       grep -q 'What is this project asking' && echo 0 || echo 1)"
 assert "Position Statement spec includes non-negotiable in esf-project" \
   "$(grep -A10 'What a Position Statement Contains' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
@@ -84,13 +89,37 @@ assert "esf-cognitive defines trigger detection guidance" \
     grep -q 'count consecutive AI suggestions' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && \
     grep -q 'rapid agreement' "$REPO_ROOT/.claude/skills/esf-cognitive/SKILL.md" && echo 0 || echo 1)"
 
-# Disclosure contract: Companion drafts, user approves (checked against source)
-assert "Disclosure: Companion drafts candidate"        \
-  "$(grep -q 'The Companion drafts the disclosure candidate' \
+# Disclosure contract: AI drafts, user approves (checked against source)
+assert "Disclosure: AI drafts candidate"               \
+  "$(grep -q 'draft the disclosure candidate' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 assert "Disclosure: approval mandatory"                \
   "$(grep -q 'explicit approval\|explicitly approves' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
+
+# Phase 5 sequence: reflection before disclosure
+assert "Phase 5: reflection appears before disclosure in esf-project" \
+  "$(awk '/\*\*Reflection:\*\*/{r=NR} /\*\*Disclosure generation:\*\*/{d=NR} END{print (r<d)?"0":"1"}' \
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md")"
+
+# No jargon in user-facing files
+assert "No 'epistemic development' in esf-companion agent" \
+  "$(grep -q 'epistemic development' \
+      "$REPO_ROOT/.claude/agents/esf-companion.md" && echo 1 || echo 0)"
+assert "No 'Accessibility exception' in esf-project" \
+  "$(grep -q 'Accessibility exception' \
+      "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 1 || echo 0)"
+
+# Conversational drafting is first-class (not labeled as exception)
+assert "Conversational drafting not labeled as exception in prompts" \
+  "$(grep -q 'Accessibility exception' \
+      "$REPO_ROOT/prompts/esf-companion.md" && echo 1 || echo 0)"
+
+# Build Practice present in esf-project
+assert "Build Practice Define/Order/Check in esf-project" \
+  "$(grep -q 'Step 1: Define' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && \
+    grep -q 'Step 2: Order' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && \
+    grep -q 'Step 3: Check' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 
 # ────────────────────────────────────────────────────────────────
 echo ""
@@ -139,7 +168,7 @@ echo ""
 echo "Test 3: Onboarding can complete without course data"
 
 assert "Universal identity question present"           \
-  "$(grep -q 'Tell me about yourself' \
+  "$(grep -q 'Tell me about a project' \
       "$REPO_ROOT/.claude/skills/esf-onboarding/SKILL.md" && echo 0 || echo 1)"
 
 assert "No dead courses/ yaml fallback"                \
@@ -148,7 +177,59 @@ assert "No dead courses/ yaml fallback"                \
 
 # ────────────────────────────────────────────────────────────────
 echo ""
-echo "Test 4: Piped-stdin guard on setup-repo.sh"
+echo "Test 4: Cowork plugin parity"
+
+COWORK_SKILL="$REPO_ROOT/platforms/cowork/skills/esf-project/SKILL.md"
+COWORK_START="$REPO_ROOT/platforms/cowork/commands/esf-start.md"
+COWORK_README="$REPO_ROOT/platforms/cowork/README.md"
+
+# Build Practice present in Cowork
+assert "Cowork: Build Practice Define/Order/Check present" \
+  "$(grep -q 'Step 1: Define' "$COWORK_SKILL" && \
+    grep -q 'Step 2: Order' "$COWORK_SKILL" && \
+    grep -q 'Step 3: Check' "$COWORK_SKILL" && echo 0 || echo 1)"
+
+# Build Environment section present
+assert "Cowork: Build Environment section present" \
+  "$(grep -q 'Build Environment' "$COWORK_SKILL" && echo 0 || echo 1)"
+
+# Project Scope has Intent section
+assert "Cowork: Project Scope includes Intent" \
+  "$(grep -q '## Intent' "$COWORK_SKILL" && echo 0 || echo 1)"
+
+# Thread Tracking present
+assert "Cowork: Thread Tracking present" \
+  "$(grep -q 'Thread Tracking' "$COWORK_SKILL" && echo 0 || echo 1)"
+
+# Phase 5 sequence: reflection before disclosure
+assert "Cowork: reflection before disclosure" \
+  "$(awk '/\*\*Reflection:\*\*/{r=NR} /\*\*Disclosure generation:\*\*/{d=NR} END{print (r<d)?"0":"1"}' \
+      "$COWORK_SKILL")"
+
+# No "close this tool" in Cowork files
+assert "Cowork: no 'close this tool' in SKILL" \
+  "$(grep -q 'close this tool\|Close this tool' "$COWORK_SKILL" && echo 1 || echo 0)"
+assert "Cowork: no 'close this tool' in esf-start" \
+  "$(grep -q 'close this tool\|Close this tool\|closing this tool' "$COWORK_START" && echo 1 || echo 0)"
+
+# Folder structure uses [context] not [project-name]
+assert "Cowork: esf-start uses [context] path" \
+  "$(grep -A2 'Set Up Folder' "$COWORK_START" | grep -q 'project-name' && echo 1 || echo 0)"
+assert "Cowork: README uses [context] path" \
+  "$(grep 'briefs/' "$COWORK_README" | head -1 | grep -q 'project-name' && echo 1 || echo 0)"
+
+# No jargon in Cowork
+assert "Cowork: no 'Accessibility exception' in SKILL" \
+  "$(grep -q 'Accessibility exception' "$COWORK_SKILL" && echo 1 || echo 0)"
+
+# Disclosure: AI drafts in Cowork too
+assert "Cowork: Disclosure AI-drafted with user review" \
+  "$(grep -q 'draft the disclosure candidate' "$COWORK_SKILL" && \
+    grep -q 'explicit.*approval\|explicitly approves' "$COWORK_SKILL" && echo 0 || echo 1)"
+
+# ────────────────────────────────────────────────────────────────
+echo ""
+echo "Test 5: Piped-stdin guard on setup-repo.sh"
 
 SETUP_SH="$REPO_ROOT/setup-repo.sh"
 GUARD_OUTPUT=$(echo "" | bash "$SETUP_SH" 2>&1 || true)

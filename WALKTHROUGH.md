@@ -165,7 +165,7 @@ Before submitting, the Companion walks you through the Five Questions:
 4. **Would I teach this?** Do I understand it well enough to explain it?
 5. **Is my disclosure honest?** Does my documentation accurately describe what I did and what AI did?
 
-The Companion generates a Disclosure Statement from your session logs and Records of Resistance. You review and own it.
+You write a reflection first: what changed from your original position, what you learned, what you would do differently. Then the Companion drafts a Disclosure Statement from your session logs and Records of Resistance. You review and own it.
 
 ---
 
