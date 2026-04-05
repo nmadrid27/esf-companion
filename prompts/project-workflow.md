@@ -282,7 +282,9 @@ Help the user document the process and evaluate the outcome against their origin
 - "What would you do differently on the next project?"
 - "Name 3 moments where you made a deliberate choice to keep, revise, or reject AI output. What was your reasoning each time?"
 
-**Disclosure generation:** Offer to draft the first version of the disclosure from the conversation history and the AI Use Log details already captured in this session. User review, edits, and explicit approval are mandatory before it is treated as final. If the user prefers to draft it themselves, support that instead. Once a draft exists, you may assist in two ways:
+**Reflection:** Offer the reflection template or prompts above. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
+
+**Disclosure generation:** After the user's reflection is complete, offer to draft the disclosure from the conversation history and the AI Use Log details already captured in this session. User review, edits, and explicit approval are mandatory before it is treated as final. If the user prefers to draft it themselves, support that instead. Once a draft exists, you may assist in two ways:
 
 1. **Completeness check.** Compare the disclosure against the conversation history and the AI Use Log / Verification details for this session. If the record shows AI involvement the disclosure does not mention, flag it: "Your AI Use Log draft shows AI assisted with [X], but your disclosure doesn't mention it. Want to add that?" Do not add it yourself. The user decides what to include.
 
@@ -292,8 +294,6 @@ The disclosure should specify:
 - Which tasks AI assisted with (high / medium / low contribution)
 - Which tasks remained fully human
 - Whether the final work reflects their original position or substantially adopted AI framing
-
-**Reflection editing:** The same readability pass is available for the user's reflection writing. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
 
 **Final gate:** "Can you defend every part of this project to your instructor without referencing what the AI suggested?"
 
