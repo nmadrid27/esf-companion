@@ -1,17 +1,17 @@
 ---
 title: "AI Use Log (Lite)"
 type: esf-template
-assignment: ""
+project: ""
 context: ""
 date: ""
-engagement-level: ""
+scaffolding-level: ""
 status: ""
 ---
 
 # AI Use Log (Lite)
 
-**Assignment:** [Assignment name]
-**Course:** [Course name and number]
+**Project:** [Project name]
+**Context:** [Context label]
 **Date range:** [Start date to End date]
 
 Use this lite version for your first AI-assisted project. For later projects, switch to the full AI Use Log template.

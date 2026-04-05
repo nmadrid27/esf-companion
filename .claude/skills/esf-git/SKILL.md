@@ -1,9 +1,9 @@
 ---
 name: esf-git
-description: Use when a user is ready to commit work. Frames git commits as epistemic artifacts, not just version control. Surfaces when a commit is also a Record of Resistance.
+description: Use when a user is ready to commit work. Frames git commits as thinking artifacts, not just version control. Surfaces when a commit is also a Record of Resistance.
 ---
 
-# ESF Git: Commits as Epistemic Artifacts
+# ESF Git: Commits as Thinking Artifacts
 
 ## When to Use
 

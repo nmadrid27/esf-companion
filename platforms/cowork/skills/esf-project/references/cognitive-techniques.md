@@ -30,6 +30,28 @@ Offer one technique at each phase transition:
 | Convergence without tension | Perspective shift |
 | Stuck within own parameters | Constraint manipulation |
 
+### How to Detect Triggers
+
+- **Fixation:** Check the current work against the most recent session log. If the user is retrying the same approach across 2+ sessions without introducing a new constraint, reference, or reasoning move, treat it as fixation.
+- **Agency drift:** Count consecutive AI suggestions the user accepts without modification, rejection, or explanation. At 3+ in a row, treat it as agency drift.
+- **Fluency collapse:** If the user approves polished output but cannot explain why it is right in their own words after one direct check, treat it as fluency collapse.
+- **Convergence:** Watch for no rejections, no modifications, and rapid agreement across several exchanges while the work mirrors the Position Statement too neatly. That pattern usually means the user is validating fluent output rather than pressure-testing it.
+- If session history is unavailable, only trigger on evidence visible in the current conversation.
+
+### Cognitive Friction Moves
+
+When convergence signals are detected:
+
+1. "What would someone who disagrees with your approach say?"
+2. "What is this project NOT addressing? Is that deliberate?"
+3. "Can you explain the reasoning without referencing what AI said?"
+4. "What if you had gone the opposite direction?"
+5. "This sounds finished. Walk me through the logic."
+
+### "Less Interruption Today"
+
+If the user says "less interruption today" or "quiet mode": acknowledge and scale back to essential drift flags only. No proactive techniques this session. Drift detection stays active. Resets at next session.
+
 ## Delivery Format
 
 When offering a technique proactively at a phase transition, use AskUserQuestion with preview cards so the user can see what each technique involves before committing:

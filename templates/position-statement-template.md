@@ -7,7 +7,7 @@ date: ""
 
 # Position Statement
 
-**Course:**
+**Context:**
 **Project:**
 **Date:** (Write this BEFORE any AI use for this project.)
 

@@ -1,19 +1,19 @@
 ---
 title: "AI Use Log"
 type: esf-template
-assignment: ""
+project: ""
 context: ""
 date: ""
-engagement-level: ""
+scaffolding-level: ""
 status: ""
 ---
 
 # AI Use Log
 
-**Assignment:** [Assignment name]
-**Course:** [Course name and number]
+**Project:** [Project name]
+**Context:** [Context label]
 **Date range:** [Start date to End date]
-**Engagement Level:** [Discovery / Guided Use / Independent Use / Critical Partnership]
+**Scaffolding Level:** [Guided / Supported / Independent]
 
 ---
 
@@ -230,4 +230,4 @@ status: ""
 
 *Epistemic Stewardship Framework, AI Use Log Template*
 *Use for assignments where you want to track your AI collaboration process in detail.*
-*Recommended for Engagement Level 3 (Independent Use) and above.*
+*Recommended for the Supported and Independent scaffolding levels.*

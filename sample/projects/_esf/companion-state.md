@@ -28,6 +28,10 @@ This file holds mutable local state for the Claude Code workflow.
 - **Last session:** none yet
 - **Scaffolding level:** Independent
 
+## Preferences
+
+- **silent_mode:** false
+
 ## Growth Record
 
 None yet.

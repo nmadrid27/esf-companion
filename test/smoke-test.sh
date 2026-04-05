@@ -69,9 +69,9 @@ assert "git commit created"                            "$(git log --oneline | gr
 assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
 assert "esf-cognitive in git commit"                   "$(git show --name-only HEAD | grep -q 'esf-cognitive' && echo 0 || echo 1)"
 
-# Phase 2 accessibility exception: conversational drafting exception present
-assert "Phase 2 accessibility exception in esf-project" \
-  "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
+# Phase 2 conversational drafting option present
+assert "Phase 2 conversational drafting in esf-project" \
+  "$(grep -q 'Conversational drafting\|Talk it through' \
       "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" && echo 0 || echo 1)"
 assert "Phase 1 redirect includes inquiry questions in esf-project" \
   "$(grep -A5 'Phase 1 is yours alone' "$REPO_ROOT/.claude/skills/esf-project/SKILL.md" | \
@@ -109,9 +109,9 @@ assert "START_HERE.md present"                         "$([ -f START_HERE.md ] &
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
 assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
 
-# Phase 2 accessibility exception: present in conversation prompt
-assert "Phase 2 accessibility exception in project-workflow" \
-  "$(grep -q 'Conversational drafting\|accessibility\|processing barrier\|articulation support' \
+# Phase 2 conversational drafting option present in conversation prompt
+assert "Phase 2 conversational drafting in project-workflow" \
+  "$(grep -q 'Conversational drafting\|Talk it through' \
       "$REPO_ROOT/prompts/project-workflow.md" && echo 0 || echo 1)"
 assert "Phase 1 redirect includes inquiry questions in project-workflow" \
   "$(grep -A5 'Phase 1 is yours alone' "$REPO_ROOT/prompts/project-workflow.md" | \

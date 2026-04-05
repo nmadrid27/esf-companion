@@ -282,6 +282,11 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
   fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" templates/project-plan.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" templates/project-scope-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
 
   if [ ! -f "WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
@@ -439,6 +444,7 @@ fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/ses
 fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" templates/project-brief-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" templates/project-plan.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" templates/project-scope-template.md
 
 # Download reference files
 echo "  Fetching reference files..."
@@ -477,8 +483,10 @@ if [ "$SAMPLE" = true ]; then
     -o projects/build-course/briefs/p2-responsive-system.md
   curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/position-statements/responsive-system.md" \
     -o projects/build-course/position-statements/responsive-system.md
-  curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/records-of-resistance/ror-01.md" \
-    -o projects/build-course/records-of-resistance/ror-01.md
+  curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/records-of-resistance/responsive-system-ror-01.md" \
+    -o projects/build-course/records-of-resistance/responsive-system-ror-01.md
+  curl -fsSL "$TOOLKIT_BASE/sample/projects/build-course/records-of-resistance/responsive-system-ror-02.md" \
+    -o projects/build-course/records-of-resistance/responsive-system-ror-02.md
 fi
 
 # Auto-commit only Companion files if in a git repo (do not stage unrelated work)

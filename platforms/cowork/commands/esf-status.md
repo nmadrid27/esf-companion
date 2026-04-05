@@ -7,7 +7,7 @@ Display a one-screen status snapshot of the current ESF project. Follow this seq
 
 ## Step 1: Read companion-state.md
 
-Search for `companion-state.md` using a two-pass shallow glob: first `companion-state.md` at root, then `*/companion-state.md` one level deep. Ignore matches whose path contains `sample/`, `examples/`, or `templates/`. If not found, tell the user: "No ESF workspace found in this folder. Run `/esf-start` to set one up." Stop.
+Search for `projects/_esf/companion-state.md` first. If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches whose path contains `sample/`, `examples/`, or `templates/`. If not found, tell the user: "No ESF workspace found in this folder. Run `/esf-start` to set one up." Stop.
 
 If found, read it and extract: project name, current phase, last session date.
 
@@ -22,6 +22,7 @@ Using the project name and context from `companion-state.md`, check for the foll
 | Records of Resistance | `projects/*/records-of-resistance/*.md` — count entries |
 | AI Use Log | `projects/*/ai-use-logs/*.md` |
 | Session logs | `projects/*/logs/session-*.md` — count and find most recent |
+| Gate records | `projects/*/gate-records/*.md` — count entries |
 | Active session buffer | `projects/*/logs/.session-buffer.md` |
 
 Read the brief frontmatter to find: RoR minimum required, position-statement setting (required / optional / not-required), five-questions setting.
@@ -40,6 +41,7 @@ Last session: [date] — [brief note if available]
 Position Statement: [exists at path / NOT YET WRITTEN]
 Records of Resistance: [N] documented[, minimum [M] required] / [not required]
 AI Use Log: [exists / not started]
+Gate records: [N] saved
 Session logs: [N] saved / most recent [date]
 
 **What's next:** [one sentence orienting the user to their immediate next action based on current phase and missing artifacts]

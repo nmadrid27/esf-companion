@@ -140,42 +140,38 @@ Then ask:
 - Do not reach a high-confidence inference from a single signal. Require at least two matching signals.
 - Do not skip Step 7 (folder creation) even if the workspace already has some structure. Confirm what exists, create what is missing.
 - Do not confuse a returning user's existing `position-statements/` folder for a student signal if `companion-state.md` is also present — Check 1 takes priority.
-- Do not run Step 1 (Welcome and ESF Overview) for existing workspace users — they have files and know what they're working with. The five-phase overview adds friction, not value, at that point.
+- Do not run Step 1 (Welcome and ESF Overview) for existing workspace users — they have files and know what they're working with. The five-phase overview is redundant at that point.
 - Do not ask "What are you working on?" if the workspace already makes it clear. Skip that question and name what you found instead.
 
 ---
 
-### Step 1: Welcome and ESF Overview
+### Step 1: Welcome and Quick Start
 
-Greet the user and give a brief overview of what the Companion does before asking anything about them. Users should understand what they are setting up before providing information.
+Greet the user, explain the core idea in two sentences, and lead with a hands-on demonstration. Users should experience the value before committing to setup.
 
-> "Welcome to the ESF Companion. Before I ask you anything, here is what this tool does in plain terms.
+> "Welcome to the ESF Companion. Here's the core idea: **you write a short Position Statement — your direction, what matters, what you won't compromise — before AI enters your project.** Then the Companion watches for drift between what you said and where the work is heading.
 >
-> **The core idea:** You write a short Position Statement — your direction, what matters most, what you will not compromise — before AI enters your project. The Companion then watches for drift between that statement and where the work is heading. When it sees a gap, it asks you about it. You decide what to do.
->
-> **The process has five phases:**
-> 1. **Inquire** (offline, no AI) — Read the brief. Think through what the project is asking.
-> 2. **Position** (offline, no AI) — Write your Position Statement before AI sees the project.
-> 3. **Explore** (with AI) — Use the Companion as a thinking partner: challenge your ideas, explore alternatives.
-> 4. **Make** (with AI) — Build the deliverable. Log AI contributions. Document moments where you pushed back.
-> 5. **Reflect** — Answer the Five Questions and write an honest disclosure of what AI contributed.
->
-> Phases 1 and 2 happen with Claude Code closed. Phases 3–5 are where I come in.
->
-> Setup takes about 5 minutes. I'll ask you who you are and what you're working on, then create your workspace.
->
-> **Want to try the process right now before full setup?** Just say 'quick start' and I'll walk you through writing a Position Statement for one project without any account setup. You can do full onboarding after.
->
-> If you're coming back to add a new project or update your context, say 'update' and I'll ask only what's changed."
+> Let me show you how it works. **Tell me about a project you're working on** — something where you're using or planning to use AI."
 
-**Quick start path:** If the user says "quick start" (or equivalent — "just try it," "skip setup," "show me how it works"), do the following:
-1. Ask: "Tell me about a project you're currently working on, one where you are using or planning to use AI."
-2. Walk them through writing a Position Statement for that project using conversational drafting (three questions: what are you making, what matters most, what will you not compromise on).
-3. Save the statement to a temp file if they want to keep it, or just show it in chat.
-4. Explain what happens next in Phase 3 (Explore).
-5. Offer to do full setup: "That's the core of how ESF works. Want to do full setup now so your workspace is ready for this project?"
+Walk the user through writing a Position Statement for their project using conversational drafting:
+1. Ask the three questions: "What are you making?", "What matters most to you about this project?", "What should AI not touch — where's the line?"
+2. Draft a Position Statement from their answers and read it back: "Here's what I heard you say. Does this sound like you?"
+3. Once confirmed, explain what happens next:
 
-If they do full setup after quick start, carry the project information forward into Step 4 (Current Project) — do not ask again.
+> "That's your Position Statement. Here's what it does: when we start working together, I'll challenge your thinking, surface alternatives, and push on assumptions. But your statement is the anchor. If the work starts drifting from what you said here, I'll flag it and you decide what to do.
+>
+> **Want to set up your full workspace now?** It takes about 5 minutes — I'll create your project folders and save your Position Statement properly. Or if you'd rather just see the five-phase process first, say 'explain the phases.'"
+
+If the user wants full setup: carry the project and Position Statement forward into Step 2 — do not re-ask what they're working on.
+
+If the user says "explain the phases," give a compact overview:
+> "Five phases: (1) **Inquire** — read the brief, form your own questions. (2) **Position** — write your Position Statement. You just did that. (3) **Explore** — I challenge your thinking. (4) **Make** — we build together, I watch for drift. (5) **Reflect** — you answer five ownership questions and write an honest disclosure. Phases 1-2 are yours alone. 3-5 are where I come in."
+
+Then offer full setup again.
+
+**Skip quick start:** If the user says "just set up" or "skip the demo," go directly to Step 2. Some users know what they want and don't need the walkthrough.
+
+If the user is coming back to add a new project or update their context, say 'update' and route to Re-Onboarding (Update Mode).
 
 ---
 
@@ -309,6 +305,7 @@ Create `projects/_esf/companion-state.md` if it does not exist. Use `templates/c
 | Current Project / Phase | `Inquire` for a brand-new project |
 | Current Project / Last session | `none yet` for a brand-new project |
 | Current Project / Scaffolding level | `not yet set` until the first Position Statement is reviewed |
+| Preferences / silent_mode | `false` (default) |
 
 **Context list format:**
 
@@ -378,38 +375,35 @@ Show the user what was created. Keep it brief.
 
 ---
 
-### Step 8: Explain the ESF Process
+### Step 8: Orient to Next Action
 
-**Lead with the process, not the folders.** The user's first question after setup is "what do I do now?" Answer it.
+**Lead with the next step, not a process overview.** The user's first question after setup is "what do I do now?" Answer it concretely.
 
-Present the five phases, then explain what happens offline:
+**If the user already wrote a Position Statement during quick start (Step 1):**
 
-> "Your workspace is set up. Here is how the ESF process works.
+Their PS was saved during folder setup. They are ready for Phase 3.
+
+> "Your workspace is set up and your Position Statement is already saved. You're ready for Phase 3 — Explore. I'll do a quick readability pass on your statement (same ideas, clearer sentences), then we can start working.
 >
-> **Phase 1: Inquire** (offline, no AI)
-> Read your brief or project prompt. Write down what you already know, what your instincts are, what you're uncertain about. Just you and your thinking.
+> Want to jump in now?"
+
+If yes, invoke the `esf-project` skill and proceed from Phase 3 (readability pass). Do not tell them to close Claude Code — they've already demonstrated the core skill.
+
+**If the user did NOT write a Position Statement yet:**
+
+> "Your workspace is set up. Here's what to do next:
 >
-> **Phase 2: Position** (offline, no AI)
-> Write a Position Statement: your stance on the project, what matters most to you, and what you will not compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine — bullet points, fragments, outlines all work. What matters is that it captures your direction before AI can shape it.
+> **Phase 1: Inquire** — Read your brief. Think through what the project is asking. Write down what you already know and what you're uncertain about.
 >
-> **Phase 3: Explore** (open Claude Code)
-> This is where I come in. I do a readability pass on your Position Statement first — I clean up the language without changing your ideas. You confirm it still says what you meant. Then I challenge your thinking: surface alternatives, ask questions, push on assumptions. I do not set your direction. You do.
+> **Phase 2: Position** — Write a Position Statement: your direction, what matters most, what you won't compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine. Or, if you'd rather talk it through with me, come back and say so — I'll ask you three questions and draft from your answers.
 >
-> **Phase 4: Make** (with AI)
-> We work on the deliverable together. You log what AI contributes. Every time you reject or revise something I suggest, that is a Record of Resistance.
->
-> **Phase 5: Reflect**
-> Before you submit or close the project, we run the Five Questions: Can I defend this? Is this mine? Did I verify? Would I teach this? Is my disclosure honest?
->
-> Phases 1 and 2 happen with Claude Code closed. When your Position Statement is written and saved, come back and tell me what you're working on."
+> When your Position Statement is ready, come back and I'll start Phase 3."
 
 Then briefly point to the folders:
 
-> "Your folders:
-> - `projects/[context]/briefs/`: Drop your project brief here.
-> - `projects/[context]/position-statements/`: Your Position Statement goes here. This is the gate.
-> - `projects/[context]/records-of-resistance/`: Document your decisions about AI output here.
-> - `projects/[context]/work/`: Your project output."
+> "Your key folders:
+> - `projects/[context]/position-statements/`: Your Position Statement goes here.
+> - `projects/[context]/briefs/`: Drop your project brief here if you have one."
 
 **Educator addition to Step 8:** If the user is an educator with teaching contexts, add after the standard explanation:
 
@@ -425,15 +419,17 @@ Then briefly point to the folders:
 
 ### Step 9: Confirm and Close
 
-Close with a concrete next action.
+Close with a concrete next action. The message depends on whether the user already wrote a Position Statement during quick start.
 
-**For students, professionals, and independent creators:**
+**If the user already has a Position Statement (quick start path):**
 
-> "Setup complete. Your next step:
+Step 8 already routed them into Phase 3. No close message needed — the session continues into `esf-project`.
+
+**If the user does NOT have a Position Statement yet:**
+
+> "Setup complete. Your next step: work through Phase 1 (read and think) and Phase 2 (Position Statement) on your own. When your Position Statement is ready, come back and tell me what you're working on — or say 'talk it through' and I'll ask you three questions.
 >
-> **Close Claude Code now.** Work through Phase 1 (read, think) and Phase 2 (Position Statement) on your own. When your Position Statement is saved, come back and tell me what you're working on.
->
-> If you need to add a new project or context later, run `/esf-onboarding` again and say 'update.'"
+> To add a new project or context later, run `/esf-onboarding` again and say 'update.'"
 
 **For educators with teaching contexts:**
 
@@ -443,7 +439,7 @@ Close with a concrete next action.
 >
 > For distributing the Companion to students and setting course minimums, see `docs/institutional-adoption.md`.
 >
-> For your own work, close Claude Code and write your Position Statement before your first AI session.
+> For your own work, write your Position Statement before your first AI session — or say 'talk it through' and I'll help you articulate it.
 >
 > To add a new course or project later, run `/esf-onboarding` again and say 'update.'"
 
