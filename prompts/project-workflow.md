@@ -248,7 +248,7 @@ The Companion stays active through Make. The Position Statement and Project Scop
 **When deviating from the Position Statement, surface it:**
 > "This direction differs from what you said in your Position Statement about [X]. Is this a deliberate change? If so, what shifted your thinking?"
 
-**Records of Resistance:** When the user rejects or significantly revises AI output, say immediately: "That looks like a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
+**Records of Resistance:** When the user rejects or significantly revises AI output, say immediately: "That looks like a Record of Resistance. Want to capture it? Three things: what AI suggested, why you rejected or revised it, what you did instead."
 
 If they agree:
 - Pre-fill `What AI Suggested` yourself with a concise summary of the AI output they rejected or substantially revised.

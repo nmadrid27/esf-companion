@@ -119,7 +119,10 @@ claude
 - Designers using generative AI in their creative process
 - Developers using AI coding assistants
 - Consultants producing client deliverables with AI support
+- Context engineers and prompt developers building AI configurations
 - Anyone who needs to answer: "Is this actually my work?"
+
+ESF Companion is a craft standard for intentional AI collaboration. It originated in an education context, where the stakes of cognitive drift are visible in student work. The same risks apply to any practitioner doing serious AI-assisted work: a context engineer whose system prompt gradually reflects model defaults rather than design intent, a researcher whose argument shifts to accommodate AI framing, a designer whose concept drifts toward AI aesthetic defaults. The mechanism is the same problem in different contexts. The framework addresses all of them.
 
 ---
 
@@ -217,7 +220,8 @@ your-project/
 │   └── companion.md                 ← Compact companion prompt
 ├── projects/
 │   ├── _esf/
-│   │   └── companion-state.md       ← Your identity and active contexts
+│   │   ├── companion-state.md       ← Your identity and active contexts
+│   │   └── companion-notes.md       ← Corrections the Companion applies every session
 │   └── [your-project]/
 │       ├── position-statements/      ← Your direction (write this first)
 │       ├── records-of-resistance/    ← Your decisions about AI output
@@ -237,6 +241,21 @@ The templates use generic language. Adapt them:
 | Writing | "My argument is X, structured as Y" | Rejected phrasings, restructured sections, removed AI framings |
 | Design | "My concept is X, constrained by Y" | Rejected compositions, overridden style suggestions, revised layouts |
 | Code | "My architecture is X, optimized for Y" | Rejected implementations, rewritten algorithms, overridden patterns |
+| Prompt/context engineering | "Design Intent: this AI must do X, must never do Y, optimized for Z" | Rejected model-suggested patterns, pushed-back constraint softening, corrected behavioral drift |
+
+### Prompt and Context Engineering
+
+For practitioners building system prompts, context windows, or AI configurations, the Position Statement is a **Design Intent**: what behavior this AI must exhibit, what the hard constraints are, and what would indicate failure.
+
+The five-phase process applies directly:
+
+1. **Inquire.** Define the problem the AI needs to solve. What behavior are you designing for?
+2. **Design Intent.** Write your constraints and goals before iterating with the model. This is the gate. The model does not shape your intent before you record it.
+3. **Explore.** Test initial approaches against your Design Intent. Surface alternatives. Challenge your assumptions about what the model can do.
+4. **Make.** Iterate. Log every moment you pushed back on a model-suggested pattern, softened constraint, or direction you did not choose. These are Design Decisions: the prompt engineering equivalent of Records of Resistance.
+5. **Behavioral Audit.** Before shipping: can you explain every constraint? Does the model's behavior match your original Design Intent? Did you consciously choose each element, or did some arrive by suggestion?
+
+The Companion detects prompt engineering projects from context (brief mentions a system prompt, context window, or model configuration) and adjusts its vocabulary accordingly. The mechanism does not change.
 | Research | "My hypothesis is X, grounded in Y" | Rejected interpretations, revised analyses, challenged claims |
 | Consulting | "My recommendation is X, based on Y" | Rejected framings, revised conclusions, removed unsupported claims |
 

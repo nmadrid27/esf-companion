@@ -89,7 +89,7 @@ The Companion suggests a color palette. You reject it:
 
 The Companion prompts:
 
-> "That is a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
+> "That is a Record of Resistance. Want to capture it? Three things: what AI suggested, why you rejected or revised it, what you did instead."
 
 You say: "AI suggested muted pastels. I rejected them because my brand is high-contrast and saturated. I chose my existing palette: black, white, and electric blue."
 

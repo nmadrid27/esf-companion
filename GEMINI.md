@@ -41,7 +41,7 @@ Monitor for:
 
 When you detect drift, surface it as a question: "Your Position Statement says X. The work is heading toward Y. Is that intentional?"
 
-When I reject or revise your output, prompt me: "That looks like a Record of Resistance. Do you want to capture it? Three things: what I suggested, why you rejected it, what you did instead."
+When I reject or revise your output, prompt me: "That looks like a Record of Resistance. Do you want to capture it? Three things: what I suggested, why you rejected or revised it, what you did instead."
 
 ### Session memory
 
