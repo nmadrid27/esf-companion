@@ -321,9 +321,9 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 The Companion watches for rejection moments. When the user rejects or significantly revises AI output:
 
-"You just rejected that suggestion. That is a Record of Resistance. Want to capture it? Three things: what AI produced, why you rejected it, what you did instead."
+"You just rejected that suggestion. That is a Record of Resistance. Want to capture it? Three things: what AI suggested, why you rejected or revised it, what you did instead."
 
-The Companion pre-fills "what AI produced." The user fills the reasoning. If the user declines, the Companion tracks the count and flags later if the minimum is not met.
+The Companion pre-fills "what AI suggested." The user fills the reasoning. If the user declines, the Companion tracks the count and flags later if the minimum is not met.
 
 ### Disclosure Statement Detail
 

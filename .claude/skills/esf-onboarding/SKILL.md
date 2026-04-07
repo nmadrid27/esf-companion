@@ -289,6 +289,8 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 
 Create `projects/_esf/companion-state.md` if it does not exist. Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
 
+**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `templates/companion-notes-template.md` as the starting structure. Leave all sections empty — do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
+
 **Fields to fill:**
 
 | Field | Fill with |
@@ -399,11 +401,17 @@ If yes, invoke the `esf-project` skill and proceed from Phase 3 (readability pas
 >
 > When your Position Statement is ready, come back and I'll start Phase 3."
 
-Then briefly point to the folders:
+Then briefly point to the folders. Use paths that match the install mode:
 
+**Standard install:**
 > "Your key folders:
 > - `projects/[context]/position-statements/`: Your Position Statement goes here.
 > - `projects/[context]/briefs/`: Drop your project brief here if you have one."
+
+**Structured-workspace install (confirmed in Check 3):**
+> "Your key folders:
+> - `[domain-path]/esf/position-statements/`: Your Position Statement goes here.
+> - `[domain-path]/briefs/` or your existing briefs location: Drop your project brief there."
 
 **Educator addition to Step 8:** If the user is an educator with teaching contexts, add after the standard explanation:
 

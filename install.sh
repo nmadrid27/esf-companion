@@ -280,6 +280,7 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
   fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" templates/companion-notes-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
   fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
   fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
@@ -435,6 +436,7 @@ fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-u
 fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" templates/ai-use-log-lite-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
 fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" templates/companion-notes-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
 fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md

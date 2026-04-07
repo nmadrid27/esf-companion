@@ -28,11 +28,13 @@ Use this format for each context:
 - **Brief location:** `projects/[context]/briefs/[brief-file]`
 - **Position Statement:** `projects/[context]/position-statements/[project-name].md`
 - **Phase:** Inquire
+- **Project type:** not set
 - **Last session:** none yet
 - **Scaffolding level:** not yet set
 
 ## Preferences
 
+<!-- companion-notes.md lives in the same directory as this file. See templates/companion-notes-template.md. -->
 - **silent_mode:** false
 
 ## Growth Record

@@ -49,6 +49,8 @@ Drift detection runs continuously. When your work moves away from your stated po
 
 That's it. The plugin reads `companion-state.md` from your selected folder to carry state across sessions. If the file doesn't exist, `/esf-start` creates it during onboarding.
 
+**Note on full onboarding:** The complete ESF Companion onboarding (structured-workspace detection, companion-notes setup, position-statement draft from existing content) runs via the Claude Code path (`/esf-onboarding`), not this plugin. If you are setting up a new workspace from scratch, run onboarding in Claude Code first. The `companion-state.md` and `companion-notes.md` files that onboarding creates carry over automatically when you open the same folder in Cowork.
+
 **No environment variables or external services required.** All state lives in markdown files in your selected folder.
 
 ---
