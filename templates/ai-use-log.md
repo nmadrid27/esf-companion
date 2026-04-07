@@ -9,7 +9,7 @@ One log per project or document. Update it as you work.
 
 ## Sessions
 
-### Session 1 — [Date]
+### Session 1: [Date]
 
 | Field | Detail |
 |-------|--------|
@@ -27,7 +27,7 @@ One log per project or document. Update it as you work.
 |---|---|---|
 |   |   |   |
 
-### Session 2 — [Date]
+### Session 2: [Date]
 
 [Copy the table above for each session]
 

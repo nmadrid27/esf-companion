@@ -1,4 +1,4 @@
-# ESF Companion — Cowork Guide
+# ESF Companion: Cowork Guide
 
 This file is for Claude Desktop Cowork users. It maps verbal phrases to the ESF Companion behaviors that Claude Code users invoke with `/` commands. Read this once so you know what to say.
 
@@ -34,7 +34,7 @@ Paste your Position Statement and Claude saves it, runs a readability pass, and 
 
 > "Let's explore" / "Challenge my thinking"
 
-Opens the Explore phase. Claude pressure-tests your position, offers alternatives, and surfaces tensions — one thread at a time.
+Opens the Explore phase. Claude pressure-tests your position, offers alternatives, and surfaces tensions, one thread at a time.
 
 > "Let's build" / "I'm ready to make"
 
@@ -89,4 +89,4 @@ Claude generates your AI Use Log draft, presents the session log for review, sav
 | Session memory | Manual (companion-state.md) | Automatic |
 | File creation | Claude creates files for you | Claude creates files for you |
 
-Everything in Cowork works — it just uses natural language instead of commands.
+Everything in Cowork works; it just uses natural language instead of commands.

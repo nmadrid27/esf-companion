@@ -1,6 +1,6 @@
 # Cohort Homogenization Detection
 
-An opt-in feature for educators who want to identify when a group's thinking is converging toward similar directions — and surface that pattern before it becomes invisible.
+An opt-in feature for educators who want to identify when a group's thinking is converging toward similar directions, and surface that pattern before it becomes invisible.
 
 ---
 
@@ -50,7 +50,7 @@ Paste the collected statements and ask the Companion:
 The Companion produces a cohort report structured as:
 
 ```
-## Cohort Analysis: [brief name] — [date]
+## Cohort Analysis: [brief name] ([date])
 
 ### Participation
 [N] of [total] students contributed.
@@ -77,7 +77,7 @@ The report does not name individual students unless the educator wants attributi
 
 The most productive use of cohort analysis is a brief class discussion before students reach Phase 3 (Explore). Surface the overlap pattern without assigning blame:
 
-> "I ran a quick analysis of your Position Statements. I noticed several of you are using similar framing around [X]. That might be fine — it might reflect something real about the brief. But I want to flag it before we start exploring. If your direction sounds like several others in the room, consider what you're not exploring."
+> "I ran a quick analysis of your Position Statements. I noticed several of you are using similar framing around [X]. That might be fine; it might reflect something real about the brief. But I want to flag it before we start exploring. If your direction sounds like several others in the room, consider what you're not exploring."
 
 This is not a call to change direction. It is a call to notice the pattern.
 

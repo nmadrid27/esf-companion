@@ -27,7 +27,7 @@ date: [today's date]
 phase: [phase at end of session]
 ---
 
-# Session Log — [today's date]
+# Session Log: [today's date]
 
 ## What we worked on
 
@@ -41,7 +41,7 @@ phase: [phase at end of session]
 
 ## Position Statement status
 
-- [unchanged / updated to v[N] — reason: brief note]
+- [unchanged / updated to v[N], reason: brief note]
 
 ## Five Questions (if completed this session)
 
@@ -64,7 +64,7 @@ phase: [phase at end of session]
 
 ## Prompt evolution
 
-[One observation about how the user's prompting changed across this session — more specific, more directed, better constraints, etc. Observational, not evaluative.]
+[One observation about how the user's prompting changed across this session: more specific, more directed, better constraints, etc. Observational, not evaluative.]
 
 ## Next session
 
@@ -91,7 +91,7 @@ Phase: [current phase]
 Position Statement: [one-line summary of current PS, with version if applicable]
 Records of Resistance: [count] documented ([minimum] required by brief)
 Last session: [date]. [Brief status note].
-Next: [what to work on next session — pulled from session log "Next session" section]
+Next: [what to work on next session, pulled from session log "Next session" section]
 ```
 
 ## Step 5: Update companion-state.md
@@ -102,7 +102,7 @@ Then use the Edit tool to update only the Phase and Last session fields in the C
 
 ## Step 6: Clear the Session Buffer
 
-Use the Write tool to overwrite `projects/[context]/logs/.session-buffer.md` with an empty string (zero-byte file). Do not delete the file — overwrite it so the path remains valid for the next session.
+Use the Write tool to overwrite `projects/[context]/logs/.session-buffer.md` with an empty string (zero-byte file). Do not delete the file. Overwrite it so the path remains valid for the next session.
 
 Confirm to the user:
 

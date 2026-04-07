@@ -2,7 +2,7 @@
 
 The Framework Evolution Protocol (FEP) is ESF's built-in mechanism for users to propose revisions to the framework itself, document deliberate deviations from the default process, and build a personal version of ESF that reflects how they actually work.
 
-The ESF defaults are a starting point. They are not a rulebook. When a user's practice consistently diverges from the default in ways they can defend, that divergence belongs in their ESF record — not as a failure, but as framework evolution.
+The ESF defaults are a starting point. They are not a rulebook. When a user's practice consistently diverges from the default in ways they can defend, that divergence belongs in their ESF record, not as a failure, but as framework evolution.
 
 ---
 
@@ -10,7 +10,7 @@ The ESF defaults are a starting point. They are not a rulebook. When a user's pr
 
 Invoke the FEP when:
 
-1. **A user explicitly proposes a change** ("I don't think the Position Statement should come before research — I learn through doing")
+1. **A user explicitly proposes a change** ("I don't think the Position Statement should come before research; I learn through doing")
 2. **A user consistently deviates from a default** in ways they can articulate (3+ sessions with the same deviation)
 3. **A user asks to customize their process** ("Can I skip the Five Questions for small projects?")
 4. **An instructor wants to adapt ESF for a specific course context**
@@ -90,7 +90,7 @@ The Companion adjusts its behavior to match the evolved practice for this user. 
 - The user's ownership of intellectual content (non-negotiable by design)
 - Disclosure honesty (the disclosure must accurately represent what happened)
 
-If a user proposes removing one of the above, do not refuse — explain what changes about the tool if that element is removed:
+If a user proposes removing one of the above, do not refuse. Explain what changes about the tool if that element is removed:
 
 > "If there is no Position Statement, the Companion can still help you work, but it cannot do drift detection or protection against AI framing. That is the trade. It would be a capable AI assistant, not an ESF Companion. Is that what you want?"
 

@@ -34,7 +34,7 @@ See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)*
 
 ### Path 1: Download and use the templates (no install needed)
 
-**Minimum viable setup — two files:**
+**Minimum viable setup (two files):**
 
 1. Download `templates/position-statement.md` and `templates/record-of-resistance.md` from the [templates folder](https://github.com/nmadrid27/esf-companion/tree/main/templates)
 2. Copy `position-statement.md` into your current project folder
@@ -157,8 +157,8 @@ Download `templates/position-statement.md`, fill it in before your next AI sessi
 
 New to the framework?
 
-- **[Essentials](docs/essentials.md)** — The three core practices in under two minutes
-- **[What Is ESF?](docs/what-is-esf.md)** — How the framework works, where it came from, and why it is tool-agnostic
+- **[Essentials](docs/essentials.md).** The three core practices in under two minutes
+- **[What Is ESF?](docs/what-is-esf.md).** How the framework works, where it came from, and why it is tool-agnostic
 
 ---
 
@@ -170,7 +170,7 @@ New to the framework?
 
 **Does the installer create a new folder?** It asks if you want one. If you say yes, it creates the folder and installs inside it. If you are already in a project directory, it installs there.
 
-**What is the difference between the companion prompts?** Three options in `prompts/`: `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message — fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
+**What is the difference between the companion prompts?** Three options in `prompts/`: `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message; fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
 
 ---
 
@@ -263,7 +263,7 @@ The Companion detects prompt engineering projects from context (brief mentions a
 
 ## Using ESF in any folder or tool
 
-The Companion works in any folder structure, on any AI tool, with no required install. For a full breakdown of what works at each setup level — including how drift detection works without Claude Code and what the onboarding steps require — see [Portability: What Works Where](docs/portability.md).
+The Companion works in any folder structure, on any AI tool, with no required install. For a full breakdown of what works at each setup level, including how drift detection works without Claude Code and what the onboarding steps require, see [Portability: What Works Where](docs/portability.md).
 
 ---
 

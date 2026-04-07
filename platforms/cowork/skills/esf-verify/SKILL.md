@@ -12,7 +12,7 @@ version: 0.1.0
 
 ## Purpose
 
-Verification is the user's job, not AI's. Your role is to surface specific claims clearly, help the user locate original sources, and log results. Do not verify claims for the user — that defeats the purpose.
+Verification is the user's job, not AI's. Your role is to surface specific claims clearly, help the user locate original sources, and log results. Do not verify claims for the user. That defeats the purpose.
 
 ---
 
@@ -26,10 +26,10 @@ List each claim as a numbered item with a priority and a suggested verification 
 
 | # | Claim | Priority | How to check |
 |---|-------|----------|-------------|
-| 1 | [specific claim] | High — shapes your argument | Search for the source, check the original |
-| 2 | [specific claim] | Low — background detail | Quick web search to confirm |
+| 1 | [specific claim] | High (shapes your argument) | Search for the source, check the original |
+| 2 | [specific claim] | Low (background detail) | Quick web search to confirm |
 
-Let the user decide which claims to check. Not everything needs verification. **High-weight claims** — those that shape creative direction or support the Position Statement — matter most.
+Let the user decide which claims to check. Not everything needs verification. **High-weight claims** (those that shape creative direction or support the Position Statement) matter most.
 
 ---
 
@@ -63,7 +63,7 @@ project: [project name]
 created: [today's date]
 ---
 
-# AI Use Log — [Project Name]
+# AI Use Log: [Project Name]
 
 ## Verification Log
 
@@ -77,7 +77,7 @@ Then append the verification results below the table header.
 
 ## What Not to Do
 
-- Do not verify claims yourself — the user builds the habit by doing it.
+- Do not verify claims yourself. The user builds the habit by doing it.
 - Do not present verification as busywork. High-weight claims that shape creative direction or the Position Statement are worth the time.
 - Do not skip plausible-sounding claims. Fluent AI output is not a quality signal.
 - Do not fabricate verification results.

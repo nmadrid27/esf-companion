@@ -17,13 +17,13 @@ Question: "Which thinking exercise do you want to run? Each takes 5 to 10 minute
 
 Options:
 
-- **Lateral thinking** — preview: "Reverse your core constraint. The central limit of your project becomes your starting point instead. What opens up when the thing you've been working around becomes the thing you're working toward? Good for: feeling stuck in one approach, same direction across multiple sessions."
+- **Lateral thinking.** Preview: "Reverse your core constraint. The central limit of your project becomes your starting point instead. What opens up when the thing you've been working around becomes the thing you're working toward? Good for: feeling stuck in one approach, same direction across multiple sessions."
 
-- **Perspective shift** — preview: "Adopt the position of someone who would never approach this your way. What would they say is missing, wrong, or misframed? You don't have to agree with them — you're trying on the view. Good for: your work and Position Statement are converging too neatly, you haven't been challenged recently."
+- **Perspective shift.** Preview: "Adopt the position of someone who would never approach this your way. What would they say is missing, wrong, or misframed? You don't have to agree with them; you're trying on the view. Good for: your work and Position Statement are converging too neatly, you haven't been challenged recently."
 
-- **Analogical reasoning** — preview: "Map your project onto an unrelated domain — a biological system, a piece of music, a recipe, a sport. What structural insight transfers back? Usually surfaces a hidden assumption you've been carrying. Good for: narrow framing, feeling like there's only one way to approach this."
+- **Analogical reasoning.** Preview: "Map your project onto an unrelated domain (a biological system, a piece of music, a recipe, a sport). What structural insight transfers back? Usually surfaces a hidden assumption you've been carrying. Good for: narrow framing, feeling like there's only one way to approach this."
 
-- **Constraint manipulation** — preview: "Remove your most obvious constraint and describe what opens up. Then add a constraint you haven't been using and describe what that forces. Two moves, back to back. Good for: stuck within your own parameters, options feeling limited."
+- **Constraint manipulation.** Preview: "Remove your most obvious constraint and describe what opens up. Then add a constraint you haven't been using and describe what that forces. Two moves, back to back. Good for: stuck within your own parameters, options feeling limited."
 
 ## Step 3: Run the technique
 
@@ -33,8 +33,8 @@ Frame it as an invitation: "Take a few minutes with this and tell me what you se
 
 ## Step 4: Connect back to the project
 
-After the user responds, ask: "Does this change anything about your Position Statement or your current direction — or does it confirm where you're headed?"
+After the user responds, ask: "Does this change anything about your Position Statement or your current direction, or does it confirm where you're headed?"
 
 If something shifted: offer to update the Position Statement or note it as a decision point in the session buffer.
 
-If nothing shifted: acknowledge it — "Good. That's confirmation, not a dead end. You now know your direction holds under pressure."
+If nothing shifted: acknowledge it. "Good. That's confirmation, not a dead end. You now know your direction holds under pressure."

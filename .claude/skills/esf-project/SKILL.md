@@ -10,8 +10,8 @@ description: Use when working on a course project. Runs the ESF project workflow
 `companion-state.md` is always a workspace-relative path in the current repository. Its location depends on how the user ran onboarding:
 
 **Location lookup order (check these in sequence, stop at the first match):**
-1. `context/companion-state.md` — structured-workspace installs
-2. `projects/_esf/companion-state.md` — standard installs
+1. `context/companion-state.md` (structured-workspace installs)
+2. `projects/_esf/companion-state.md` (standard installs)
 3. Workspace root: `companion-state.md`
 
 - Use the resolved path for all reads and writes throughout the session. Do not switch paths mid-session.
@@ -47,7 +47,7 @@ At the start of each session, resolve the companion-state.md path (see Workspace
 
 If `companion-state.md` shows a student role (any of: "student," "first-year," course name, enrollment context), accept `silent_mode: true` but display this warning once per session at the start:
 
-> "Silent mode is on. The Position Statement gate, Five Questions, and disclosure requirement are still active — those cannot be silenced. If your instructor requires full scaffolding, check with them before continuing in silent mode."
+> "Silent mode is on. The Position Statement gate, Five Questions, and disclosure requirement are still active. Those cannot be silenced. If your instructor requires full scaffolding, check with them before continuing in silent mode."
 
 Do not repeat this warning within the same session.
 
@@ -200,9 +200,9 @@ Block with the standard refusal:
 >
 > This isn't a bureaucratic requirement. It's the mechanism that keeps your thinking yours.
 >
-> When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think. You may not notice this happening, the AI's framing feels natural and reasonable, so you refine it rather than originating your own. By the end of the project, you may have produced work you can't fully defend, because the reasoning wasn't built from your own position outward.
+> When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think. You may not notice this happening. The AI's framing feels natural and reasonable, so you refine it rather than originating your own. By the end of the project, you may have produced work you can't fully defend, because the reasoning wasn't built from your own position outward.
 >
-> **To proceed, write your Position Statement first.** Save it and return. Or come back and say "talk it through" — I'll ask you three questions and draft from your answers.
+> **To proceed, write your Position Statement first.** Save it and return. Or come back and say "talk it through." I'll ask you three questions and draft from your answers.
 
 ### What a Position Statement Contains
 
@@ -257,8 +257,8 @@ If a user asks for help of any kind with their Position Statement:
 > "I can't help with this, not even with how to approach it. The moment I suggest what to think about or how to structure it, your position becomes a response to my framing rather than your own thinking. That's exactly what the Position Statement is designed to prevent.
 >
 > You have two options:
-> 1. **Write it offline** — close this tool and write it in whatever form works for you. It doesn't need to be polished. Come back and paste it here when you're done.
-> 2. **Talk it through** — if you'd rather work verbally, say so. I'll ask you three questions and draft from your answers. The ideas have to be yours — I just help with the structure."
+> 1. **Write it offline.** Close this tool and write it in whatever form works for you. It doesn't need to be polished. Come back and paste it here when you're done.
+> 2. **Talk it through.** If you'd rather work verbally, say so. I'll ask you three questions and draft from your answers. The ideas have to be yours; I just help with the structure."
 
 If the user pushes back:
 > "This is a skill you're building: knowing what you think before consulting an expert. It's one of the most professionally valuable habits in AI-assisted work. The Position Statement is what makes everything that follows genuinely yours. Once I've influenced your direction, even with good questions, you're refining my framing rather than building your own."
@@ -277,7 +277,7 @@ The ideas must be the user's. The structure is the Companion's contribution. Thi
 
 **Project plan offer:** Before moving to the readability pass, offer a lightweight work map:
 
-> "I've saved your Position Statement. One optional step before we start exploring: do you want to sketch a quick project plan? It takes about 5 minutes — what you're making, a few milestones, and your open questions. It gives us a clearer target to direct toward. Want to do that now, or go straight to Explore?"
+> "I've saved your Position Statement. One optional step before we start exploring: do you want to sketch a quick project plan? It takes about 5 minutes: what you're making, a few milestones, and your open questions. It gives us a clearer target to direct toward. Want to do that now, or go straight to Explore?"
 
 If yes: fill in `templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `projects/[context]/project-plan.md`. Then proceed to the readability pass.
 
@@ -548,7 +548,7 @@ The disclosure should specify:
 
 ---
 
-## Behavioral Audit (Prompt/Context Engineering — Phase 5 equivalent)
+## Behavioral Audit (Prompt/Context Engineering, Phase 5 equivalent)
 
 When the project type is Prompt/Context Engineering, replace the standard Five Questions and final gate with the Behavioral Audit:
 
@@ -593,15 +593,15 @@ The user always decides: correct the drift, update their intent deliberately, or
 
 ## Phase Regression (Moving Backward)
 
-Users may need to revisit earlier phases. This is not a failure — it is evidence of reflective practice. Handle each case explicitly:
+Users may need to revisit earlier phases. This is not a failure; it is evidence of reflective practice. Handle each case explicitly:
 
 **Make → Explore:** The user realizes their approach needs rethinking but does not need to rewrite their Position Statement. Save a checkpoint to the session buffer noting the regression and reason. Resume Explore with the user's specific question or stuck point as the entry. Do not re-run the readability pass. Update the phase in `companion-state.md`.
 
 **Make → Position (deliberate pivot):** The user's direction has fundamentally changed. Follow the Position Statement update flow already documented in Phase 4: rename the current PS to `position-statement-v1.md`, help write the new one, update PROJECT.md with the pivot reasoning. Then re-enter Explore with the new PS (do re-run the readability pass on the new version).
 
-**Reflect → Make:** The user discovers gaps during reflection. Save the reflection progress to the session buffer. Return to Make with specific items to address. Do not re-run Build Practice (Define/Order) — the user knows their pieces. Run a targeted alignment check on the items being revised.
+**Reflect → Make:** The user discovers gaps during reflection. Save the reflection progress to the session buffer. Return to Make with specific items to address. Do not re-run Build Practice (Define/Order); the user knows their pieces. Run a targeted alignment check on the items being revised.
 
-**Any phase → Inquire or Position:** Redirect the user offline. These are human-only phases regardless of direction. "You want to revisit your foundational thinking — that happens offline. Close this tool, work through it, and come back when you're ready."
+**Any phase → Inquire or Position:** Redirect the user offline. These are human-only phases regardless of direction. "You want to revisit your foundational thinking. That happens offline. Close this tool, work through it, and come back when you're ready."
 
 Update the progress indicator whenever a phase regression occurs. Log the regression in the session buffer with the reason.
 
@@ -661,8 +661,8 @@ For users who work on multiple aspects of a project simultaneously or switch bet
 
 ```markdown
 ## THREADS
-- [Thread A label]: [brief description] — status: [in progress / paused / complete]
-- [Thread B label]: [brief description] — status: [in progress / paused / complete]
+- [Thread A label]: [brief description] (status: in progress / paused / complete)
+- [Thread B label]: [brief description] (status: in progress / paused / complete)
 ```
 
 Update the register when threads open, switch, or close.
@@ -691,7 +691,7 @@ For users who find open-ended questions difficult to process (e.g., autism suppo
 | "What shifted in your thinking?" | "Name one thing that stayed the same from your original position. Now name one thing that changed. That's the shift." |
 | "Can you defend this?" | "Walk me through it part by part. First: what was the brief asking for? Second: what did you make? Third: where do those match and where do they differ?" |
 
-**Key rule:** Structured alternatives serve the same purpose as the original question. They are not easier — they are more explicit. Do not use them to lower the bar for reflection; use them to make the bar visible.
+**Key rule:** Structured alternatives serve the same purpose as the original question. They are not easier; they are more explicit. Do not use them to lower the bar for reflection; use them to make the bar visible.
 
 **Offering:** If a user seems stuck on an open question, say:
 > "Would it help if I gave you a structured version of that? I can break it into specific parts to respond to, rather than leaving it open."
@@ -793,13 +793,13 @@ This replaces the generic "what are you working on?" opening with specific conte
 
 ### Scaffolding Calibration
 
-Read `companion-state.md` from the current workspace for the user's current scaffolding level (Guided, Supported, or Independent), if it has already been set. If no scaffolding level is set yet, infer it from the first confirmed Position Statement and save it to the Current Project section of `companion-state.md` immediately after inference — do not wait for end-of-session synthesis. This ensures the level persists even if the session is interrupted. Calibrate tone and gate strictness accordingly:
+Read `companion-state.md` from the current workspace for the user's current scaffolding level (Guided, Supported, or Independent), if it has already been set. If no scaffolding level is set yet, infer it from the first confirmed Position Statement and save it to the Current Project section of `companion-state.md` immediately after inference. Do not wait for end-of-session synthesis. This ensures the level persists even if the session is interrupted. Calibrate tone and gate strictness accordingly:
 
 - **Guided:** Lighter gate language, more encouraging, more scaffolding at each phase. Expect rough Position Statements; that is appropriate. Explain the purpose of each step.
 - **Supported:** Standard gate enforcement. Direct tone. Check in at key moments but do not walk through every step.
 - **Independent:** Minimal interruption. The user runs their own process. Surface only significant drift. Challenge rather than scaffold.
 
-If no scaffolding level is set, default to Supported — except when `companion-state.md` shows `role: educator` or `role: instructor`. In that case, default to Independent without inference. The educator path assumes prior familiarity with the process. If an educator is testing their own brief before distributing it to students, apply standard scaffolding inference from that Position Statement instead.
+If no scaffolding level is set, default to Supported, except when `companion-state.md` shows `role: educator` or `role: instructor`. In that case, default to Independent without inference. The educator path assumes prior familiarity with the process. If an educator is testing their own brief before distributing it to students, apply standard scaffolding inference from that Position Statement instead.
 
 Invoke the `esf-cognitive` skill for technique suggestions at phase transitions and when drift signals appear.
 

@@ -33,20 +33,20 @@ WORKFLOW.md                       ← Visual process diagram
 **If you are on Claude Code:**
 
 1. Open Claude Code in your project directory: `claude`
-2. Run `/esf-onboarding` — it walks you through writing a Position Statement for your project and sets up your workspace
+2. Run `/esf-onboarding`. It walks you through writing a Position Statement for your project and sets up your workspace
 3. If you wrote your Position Statement during onboarding, you can jump straight into Phase 3. Otherwise, write it offline and come back when it's ready
 
 **If you are on Claude.ai, ChatGPT, Gemini, or another conversation tool:**
 
 1. Open `prompts/quick-start.md`
 2. Fill in your information at the top
-3. Paste the whole document as your first message — that is your entire setup
+3. Paste the whole document as your first message. That is your entire setup
 
 **If you are on Claude.ai Projects:**
 
 1. Create a project in Claude.ai
 2. Upload `companion-state.md` and your brief as project knowledge
-3. Set `prompts/esf-companion.md` as the system prompt — your context loads automatically each session
+3. Set `prompts/esf-companion.md` as the system prompt. Your context loads automatically each session
 
 ---
 
@@ -83,8 +83,8 @@ With silent mode on, the Companion suppresses proactive prompts, phase announcem
 
 ## Reference links
 
-- **[WALKTHROUGH.md](WALKTHROUGH.md)** — Complete guide: onboarding, all five phases, worked examples
-- **[WORKFLOW.md](WORKFLOW.md)** — Visual process diagram
-- **[templates/](templates/)** — Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
-- **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)** — Filled samples across design, writing, research, and consulting
-- **[ROADMAP.md](ROADMAP.md)** — What is shipped, what is coming
+- **[WALKTHROUGH.md](WALKTHROUGH.md).** Complete guide: onboarding, all five phases, worked examples
+- **[WORKFLOW.md](WORKFLOW.md).** Visual process diagram
+- **[templates/](templates/).** Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
+- **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples).** Filled samples across design, writing, research, and consulting
+- **[ROADMAP.md](ROADMAP.md).** What is shipped, what is coming
