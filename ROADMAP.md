@@ -4,7 +4,7 @@ What is built, what is coming next, and what is planned for later.
 
 ---
 
-## What Is Shipped (v1 — current)
+## What Is Shipped (v1, current)
 
 The full Claude Code experience: five-phase workflow, drift detection, Position Statement gate, Records of Resistance, AI Use Log, Disclosure Statement, session memory, cognitive techniques, progress indicator, auto-update on session start. Universal onboarding with educator path. Brief-driven guidance with frontmatter field control. Conversation-platform prompts for ChatGPT, Gemini, and other tools.
 
@@ -28,7 +28,7 @@ Cohort homogenization detection: opt-in educator tool that analyzes a cohort's P
 
 Scaffolding modes: Guided, Supported, and Independent levels are implemented. Automatic inference from the Position Statement is functional. Proactive level adjustment (pushing back when a user selects Independent but shows persistent unacknowledged drift) is not yet implemented.
 
-Brief-driven guidance: Drop-a-file path is complete. "Paste or describe" and "Build from scratch" paths are partially implemented — the Companion handles them conversationally but does not auto-generate and save a formatted brief file.
+Brief-driven guidance: Drop-a-file path is complete. "Paste or describe" and "Build from scratch" paths are partially implemented: the Companion handles them conversationally but does not auto-generate and save a formatted brief file.
 
 Conversation-platform context restoration: PROJECT.md is generated at session end for manual paste. Initial-session auto-generation (so returning users do not need to paste manually) is not yet built.
 
@@ -575,11 +575,11 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 - Accessibility: checkpoint saves, thread tracking, structured Socratic alternatives [SHIPPED]
 - Growth Record with development tracking (appended to companion-state.md at project close) [SHIPPED]
 - Educator course configs folder documented [SHIPPED]
-- Identity recalibration (every 3 projects) — offered at project completion [SHIPPED]
-- Educator brief-authoring walkthrough — in esf-onboarding educator path [SHIPPED]
+- Identity recalibration (every 3 projects), offered at project completion [SHIPPED]
+- Educator brief-authoring walkthrough, in esf-onboarding educator path [SHIPPED]
 
 **Partial (deferred to dashboard):**
-- Full conversation-platform context restoration for initial session setup [PARTIAL — session end generates PROJECT.md; first-session auto-generation not yet built]
+- Full conversation-platform context restoration for initial session setup [PARTIAL: session end generates PROJECT.md; first-session auto-generation not yet built]
 
 ### v3: Framework Evolution + Collective Features [SHIPPED]
 
@@ -595,13 +595,13 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 ### v1.2: Invocation Model [ROADMAP]
 
-**Recommended default:** Explicit `/` commands. This is already the interface. The v1.2 work does not change default behavior — it clarifies the model, documents the tradeoffs, and adds two lightweight opt-in enhancements.
+**Recommended default:** Explicit `/` commands. This is already the interface. The v1.2 work does not change default behavior; it clarifies the model, documents the tradeoffs, and adds two lightweight opt-in enhancements.
 
 **Session-start hook (opt-in, v1.2):** A Claude Code `SessionStart` hook reads `companion-state.md` when present and presents a brief orientation: current project, current phase, last session summary. The Companion feels present at session start without requiring the user to invoke it. One line in `settings.json`; documented in install instructions.
 
 **Pre-commit hook (opt-in, v1.2):** Runs a quick drift check before git commits. Useful for students who commit frequently but do not always remember to check in. Configurable; off by default.
 
-**`@` invocation syntax:** Not applicable in Claude Code. `@` references files in Claude Code's interface (`@README.md`), not commands. For Claude.ai Projects or conversation-platform integrations, `@esf-companion` may be usable — this falls under the MCP concept (post-v1.2 work).
+**`@` invocation syntax:** Not applicable in Claude Code. `@` references files in Claude Code's interface (`@README.md`), not commands. For Claude.ai Projects or conversation-platform integrations, `@esf-companion` may be usable. This falls under the MCP concept (post-v1.2 work).
 
 **Always-on/ambient:** Not recommended as default. Conflicts with non-ESF work in the same Claude Code session. Too much noise for educator and professional users who use Claude Code for multiple purposes.
 

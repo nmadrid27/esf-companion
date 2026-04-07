@@ -120,7 +120,7 @@ Next time you open the Companion, it picks up right here.
 
 If you open the Companion without a Position Statement and ask for project help, it holds the gate:
 
-> "I can't help with this project yet. Before AI enters your process, you need a Position Statement — a record of your own direction, written without AI assistance. When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think."
+> "I can't help with this project yet. Before AI enters your process, you need a Position Statement: a record of your own direction, written without AI assistance. When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think."
 
 This is not punishment. It is the mechanism that keeps your thinking yours. Once you've written your position, even a rough one, you engage AI as a pressure-test on your thinking, not as a substitute for it.
 
@@ -232,7 +232,7 @@ For filled examples of Position Statements, Records of Resistance, and Disclosur
 
 The ESF Companion is built on research from cognitive science, education, and AI ethics. The short version:
 
-**AI output is so fluent that your brain treats it as trustworthy before you've evaluated it.** Writing your own position first gives you an anchor to evaluate against. The Companion then challenges your direction, surfaces what's missing, and questions whether the work is still yours — not to slow you down, but to keep you in the driver's seat.
+**AI output is so fluent that your brain treats it as trustworthy before you've evaluated it.** Writing your own position first gives you an anchor to evaluate against. The Companion then challenges your direction, surfaces what's missing, and questions whether the work is still yours, not to slow you down, but to keep you in the driver's seat.
 
 **The core insight:** AI is not the problem. Unexamined AI use is the problem. The Companion makes your AI use examined.
 

@@ -24,7 +24,7 @@ ESF Companion is designed to work across any AI tool and any folder structure. T
 | Disclosure Statement | Manual (fill in template) | AI drafts from session | AI drafts from session logs |
 | Drift detection | Self-directed (reread PS each session) | Prompt-guided (ask "am I drifting?") | Automatic (reads PS, flags gaps) |
 | Session memory | None | Manual paste or Projects upload | Automatic (`companion-state.md`, session logs) |
-| Phase gates | Self-enforced | AI asks but cannot block | Enforced — Companion stops until gate is cleared |
+| Phase gates | Self-enforced | AI asks but cannot block | Enforced (Companion stops until gate is cleared) |
 | Scaffolding levels | Not applicable | Not applicable | Guided / Supported / Independent |
 | Cognitive techniques | Not applicable | Available on request | Proactive + reactive cadence |
 | Educator brief config | Not applicable | Partially (manually described) | Full frontmatter control |

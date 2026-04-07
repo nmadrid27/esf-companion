@@ -40,7 +40,7 @@ The ESF Companion is framework-agnostic. The `.claude/` directory is the Claude 
 Now: I want to work on [project name].
 ```
 
-*Returning to a project:* Paste `PROJECT.md` first, then paste `project-workflow.md`. PROJECT.md is the portable context object the Companion generates at the end of each session — it carries your phase, position summary, Records of Resistance count, and next step.
+*Returning to a project:* Paste `PROJECT.md` first, then paste `project-workflow.md`. PROJECT.md is the portable context object the Companion generates at the end of each session; it carries your phase, position summary, Records of Resistance count, and next step.
 
 ```
 [paste PROJECT.md from your last session]

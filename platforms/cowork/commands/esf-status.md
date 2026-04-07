@@ -19,10 +19,10 @@ Using the project name and context from `companion-state.md`, check for the foll
 |----------|-------|
 | Project brief | `projects/*/briefs/*.md` |
 | Position Statement | `projects/*/position-statements/*.md` |
-| Records of Resistance | `projects/*/records-of-resistance/*.md` — count entries |
+| Records of Resistance | `projects/*/records-of-resistance/*.md` (count entries) |
 | AI Use Log | `projects/*/ai-use-logs/*.md` |
-| Session logs | `projects/*/logs/session-*.md` — count and find most recent |
-| Gate records | `projects/*/gate-records/*.md` — count entries |
+| Session logs | `projects/*/logs/session-*.md` (count and find most recent) |
+| Gate records | `projects/*/gate-records/*.md` (count entries) |
 | Active session buffer | `projects/*/logs/.session-buffer.md` |
 
 Read the brief frontmatter to find: RoR minimum required, position-statement setting (required / optional / not-required), five-questions setting.
@@ -33,10 +33,10 @@ Present in this format:
 
 ---
 
-**ESF Status — [Project Name]**
+**ESF Status: [Project Name]**
 
 Phase: [current phase] ([phase number]/5)
-Last session: [date] — [brief note if available]
+Last session: [date] ([brief note if available])
 
 Position Statement: [exists at path / NOT YET WRITTEN]
 Records of Resistance: [N] documented[, minimum [M] required] / [not required]

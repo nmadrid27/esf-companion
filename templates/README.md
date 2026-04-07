@@ -2,7 +2,7 @@
 
 Blank forms for each ESF practice. Use the version that matches your situation.
 
-The **default** template for each artifact is the simple version — no frontmatter, works anywhere. Institutional variants add YAML frontmatter for course workflows.
+The **default** template for each artifact is the simple version: no frontmatter, works anywhere. Institutional variants add YAML frontmatter for course workflows.
 
 ---
 

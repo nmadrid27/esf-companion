@@ -14,7 +14,7 @@ A catch-up Position Statement has three parts:
 - **Where I am now.** What has shifted? What do I still believe? What has the work changed my thinking about?
 - **What I will not compromise.** Looking at the work so far, what must survive in the final version?
 
-This takes ten to fifteen minutes. It is more valuable than it sounds. Writing it down often reveals that your position has drifted during the work — which is exactly what you need to know before continuing.
+This takes ten to fifteen minutes. It is more valuable than it sounds. Writing it down often reveals that your position has drifted during the work, which is exactly what you need to know before continuing.
 
 Use `templates/position-statement.md` as your starting format.
 

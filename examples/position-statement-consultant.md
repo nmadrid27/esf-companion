@@ -7,7 +7,7 @@ date: "2026-03-15"
 
 # Position Statement
 
-**Project:** Market Entry Analysis — Latam Expansion
+**Project:** Market Entry Analysis, Latam Expansion
 **Date:** 2026-03-15 (Written before any AI use on this project.)
 **Discipline:** Management consulting
 
@@ -15,7 +15,7 @@ date: "2026-03-15"
 
 ## Element 1: My Stance
 
-I have done the preliminary research. The client's product has clear traction in B2B SaaS in the US mid-market. The instinct in this engagement will be to recommend Brazil first — it is the obvious entry point, highest GDP, most developed tech ecosystem. I am skeptical. The regulatory complexity and the currency volatility make it a harder first market than it looks on paper. My working hypothesis is that Colombia or Chile is the stronger initial beachhead: lower risk, cleaner regulatory environment, closer to the client's current operational model.
+I have done the preliminary research. The client's product has clear traction in B2B SaaS in the US mid-market. The instinct in this engagement will be to recommend Brazil first. It is the obvious entry point, highest GDP, most developed tech ecosystem. I am skeptical. The regulatory complexity and the currency volatility make it a harder first market than it looks on paper. My working hypothesis is that Colombia or Chile is the stronger initial beachhead: lower risk, cleaner regulatory environment, closer to the client's current operational model.
 
 I am going into this analysis to test that hypothesis, not to confirm it.
 
@@ -31,7 +31,7 @@ The client has asked for a "bold" recommendation. Bold does not mean reckless. I
 
 ## Element 3: What I Will Not Compromise
 
-AI can help me synthesize secondary research and structure the competitive landscape section. It cannot make the judgment call on market prioritization. That call requires integrating the regulatory environment, the client's operational capacity, and the risk tolerance of their board — none of which the AI has context for.
+AI can help me synthesize secondary research and structure the competitive landscape section. It cannot make the judgment call on market prioritization. That call requires integrating the regulatory environment, the client's operational capacity, and the risk tolerance of their board, none of which the AI has context for.
 
 I will not use AI-generated market sizing figures without independent verification. Hallucinated statistics in client deliverables are a career-ending problem.
 

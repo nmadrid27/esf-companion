@@ -28,13 +28,13 @@ entities: [ESF]
 
 ## How to Invoke the Companion
 
-All Companion commands use `/` syntax in Claude Code. You call the tool when you need it — it does not run unless you ask.
+All Companion commands use `/` syntax in Claude Code. You call the tool when you need it. It does not run unless you ask.
 
 | Command | When to use |
 |---|---|
 | `/esf-onboarding` | First install, or when starting a new project or context |
-| `/esf-project` | Start of any AI work session — runs the five-phase workflow |
-| `/esf-git` | Before committing — frames the commit as a thinking artifact |
+| `/esf-project` | Start of any AI work session (runs the five-phase workflow) |
+| `/esf-git` | Before committing (frames the commit as a thinking artifact) |
 | `/esf-verify` | When AI produces a factual claim, source, or data you need to check |
 | `/esf-update` | Check for Companion updates and install the latest version |
 
@@ -278,7 +278,7 @@ If Jordan tries a follow-up question ("Can you at least help me understand the b
 >
 > You can write it offline, or say "talk it through" and I'll ask you three questions to help you articulate your own direction. Either way, the ideas need to be yours.
 
-If Jordan doesn't want to write offline, there's a second option: "Talk it through." The Companion asks three questions — What are you making? What matters most? What will you not compromise? — and drafts from Jordan's answers. The ideas are still Jordan's. The structure is the Companion's contribution.
+If Jordan doesn't want to write offline, there's a second option: "Talk it through." The Companion asks three questions (What are you making? What matters most? What will you not compromise?) and drafts from Jordan's answers. The ideas are still Jordan's. The structure is the Companion's contribution.
 
 The gate holds either way. Jordan writes the Position Statement (offline or via conversation) and returns.
 

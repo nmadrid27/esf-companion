@@ -7,7 +7,7 @@ date: "2026-01-12"
 
 # Position Statement
 
-**Project:** Book Chapter 7 — Memory, Place, and the Unreliable Archive
+**Project:** Book Chapter 7: Memory, Place, and the Unreliable Archive
 **Date:** 2026-01-12 (Written before any AI use on this project.)
 **Discipline:** Narrative nonfiction / literary journalism
 
@@ -15,9 +15,9 @@ date: "2026-01-12"
 
 ## Element 1: My Stance
 
-This chapter is about my grandmother's house in Oaxaca, which was demolished in 2019. I have been avoiding writing it for two years because I am not sure what I am actually arguing. The easy version is an elegy — the house is gone, the family is dispersed, something has been lost. I do not want to write the easy version.
+This chapter is about my grandmother's house in Oaxaca, which was demolished in 2019. I have been avoiding writing it for two years because I am not sure what I am actually arguing. The easy version is an elegy: the house is gone, the family is dispersed, something has been lost. I do not want to write the easy version.
 
-My working position: the demolition did not destroy the archive, it revealed how incomplete the archive already was. I had constructed a memory of the house that was partly mine and partly inherited — stories my mother told, photographs from the 1970s I was not alive for. The house stood in for the continuity. Without it, I have to be honest about what I actually know versus what I assumed.
+My working position: the demolition did not destroy the archive, it revealed how incomplete the archive already was. I had constructed a memory of the house that was partly mine and partly inherited: stories my mother told, photographs from the 1970s I was not alive for. The house stood in for the continuity. Without it, I have to be honest about what I actually know versus what I assumed.
 
 This is a chapter about the difference between inherited memory and experienced memory.
 
@@ -25,7 +25,7 @@ This is a chapter about the difference between inherited memory and experienced 
 
 ## Element 2: What Matters Most
 
-The argument lives in the specific details I can verify against my own memory. Not the stories my mother told — those are hers. My details: the smell of the courtyard in August, the specific sound of the iron gate, the way the light hit the kitchen floor at 6am. If I lose those in favor of the family mythology, I lose the chapter.
+The argument lives in the specific details I can verify against my own memory. Not the stories my mother told; those are hers. My details: the smell of the courtyard in August, the specific sound of the iron gate, the way the light hit the kitchen floor at 6am. If I lose those in favor of the family mythology, I lose the chapter.
 
 The prose needs to be slower than my usual pace. This material resists efficiency.
 
@@ -50,7 +50,7 @@ AI can help me research the history of the neighborhood and check dates against 
 
 **Was the shift your decision, or did you follow AI's framing without questioning it?**
 
-> My decision. I sat with the Hirsch concept for a week before including it. The distinction between postmemory and memory is exactly the argument I was trying to make in plain language — finding the term helped me see the argument more clearly, but the argument was already there.
+> My decision. I sat with the Hirsch concept for a week before including it. The distinction between postmemory and memory is exactly the argument I was trying to make in plain language. Finding the term helped me see the argument more clearly, but the argument was already there.
 
 ---
 

@@ -19,10 +19,16 @@ Before greeting or asking any questions, scan the current working directory usin
 
 **Check 1: Returning user?**
 
-Look for `projects/_esf/companion-state.md`. If found:
-- Read the file. Extract name, role, active contexts, and current project if present.
+Search for `companion-state.md` in common locations, in this order:
+1. `context/companion-state.md`
+2. `projects/_esf/companion-state.md`
+3. Workspace root (`companion-state.md`)
+
+If found in any location:
+- Read the file. Note where it lives. This is the canonical state file path for this workspace.
+- Extract name, role, active contexts, and current project if present.
 - Greet the user by their preferred name if available.
-- Route to Re-Onboarding (Update Mode) — do not run the full flow.
+- Route to Re-Onboarding (Update Mode). Do not run the full flow.
 - Do not ask any identity questions. Ask only what has changed.
 
 **Check 2: Role signals (new user, no state file)?**
@@ -36,9 +42,9 @@ Scan filenames and directory names only. Do not read file contents.
 | Any two of: `syllabus` in a filename, `session-doc` in a filename, `briefs/` directory with files addressed to students | Educator | Medium |
 | `position-statements/` folder already exists | Student or returning user | Medium |
 | `projects/*/briefs/` folder with one or more files | Student (brief was authored by an instructor) | Medium |
-| No matching signals | Unknown — proceed to Step 1 normally |
+| No matching signals | Unknown (proceed to Step 1 normally) |
 
-**High confidence — skip identity:**
+**High confidence (skip identity):**
 
 Do not run Step 1 or Step 2. Instead, confirm the inference directly:
 
@@ -51,7 +57,7 @@ If confirmed:
 If not confirmed:
 - Acknowledge the mismatch, run Step 1 and Step 2 normally.
 
-**Medium confidence — pre-fill and confirm:**
+**Medium confidence (pre-fill and confirm):**
 
 Run Step 1, but open Step 2 with the inference rather than asking from scratch:
 
@@ -63,13 +69,13 @@ If confirmed, skip any identity fields the workspace already answered. Proceed t
 
 **Check 3: Project files present?**
 
-After Checks 1 and 2, scan for substantive project files — files that represent actual work in progress, not ESF framework scaffolding. Look for: documents, briefs, notes, design files, code files, notebooks. Exclude: `_esf/`, `.claude/`, standard ESF context folders from a prior onboarding, and the Companion's own template files.
+After Checks 1 and 2, scan for substantive project files (files that represent actual work in progress, not ESF framework scaffolding). Look for: documents, briefs, notes, design files, code files, notebooks. Exclude: `_esf/`, `.claude/`, standard ESF context folders from a prior onboarding, and the Companion's own template files.
 
 | What you find | Branch |
 |---|---|
-| No substantive files | New workspace — offer to create structure |
-| Files present, not inside an ESF context folder | Existing workspace — surface what is there |
-| Files present, inside `projects/[context]/work/` | Returning user mid-project — skip to mid-process check |
+| No substantive files | New workspace (offer to create structure) |
+| Files present, not inside an ESF context folder | Existing workspace (surface what is there) |
+| Files present, inside `projects/[context]/work/` | Returning user mid-project (skip to mid-process check) |
 
 **New workspace branch:**
 
@@ -81,17 +87,36 @@ Then proceed to Step 1 (Welcome) → Step 2 (What are you working on?).
 
 **Existing workspace branch:**
 
-If substantive files are present and the user is not a returning user (Check 1 was negative), do not run Step 1 or Step 2. Instead:
+If substantive files are present and the user is not a returning user (Check 1 was negative), first check for structured-workspace signals before asking any questions.
+
+**Structured-workspace signals:**
+- 5 or more top-level directories
+- A coordination layer directory (`context/`, `_state/`, or similar) containing state or workflow files (e.g., `TASKS.md`, `current-state.md`, `DECISION_LOG.md`)
+- Role-based or domain-named directories (e.g., `Teaching/`, `Admin/`, `Writing/`, `_entities/`)
+
+If two or more signals are present, the workspace is a **structured workspace**. Do not ask "which project do you want to start with?" The structure already answers that. Instead, surface what you found and offer a work-adjacent install:
+
+> "Your workspace looks like it already has an organizational structure. I can see [brief description of what was found, e.g., 'Teaching, Admin, and Writing directories with a context/ coordination layer']. The default ESF setup creates a `projects/` folder hierarchy, but that would duplicate your existing structure.
+>
+> I can install work-adjacent instead: Position Statements and Records of Resistance go inside the relevant existing folders, and your companion state file goes in your coordination layer. Everything lives where the work already lives.
+>
+> Does that work for you?"
+
+If confirmed: proceed to Steps 2–9 with structured-workspace install mode active. Steps 5 and 7 will use work-adjacent paths.
+
+If not confirmed: fall through to the standard existing workspace branch below.
+
+**Standard existing workspace branch (no structured-workspace signals detected, or user declined):**
 
 > "I can see some files here. Which project or folder do you want to start with?"
 
-Wait for their response. Then offer the Position Statement — one sentence only, no five-phase overview yet:
+Wait for their response. Then offer the Position Statement. One sentence only, no five-phase overview yet:
 
 > "Would you like to add a Position Statement to this project? A Position Statement captures your direction before AI can shape it: what you're making, what matters most, and what you will not give up."
 
 Then ask where they are:
 
-> "Where are you in this project — just starting, already working, or almost done?"
+> "Where are you in this project: just starting, already working, or almost done?"
 
 Route based on their answer:
 
@@ -102,25 +127,41 @@ Route based on their answer:
 
 **Mid-process path:**
 
-User is already working on the project. Skip the full onboarding flow. Catch up instead:
+User is already working on the project. Skip the full onboarding flow. Catch up instead.
 
-> "No problem. Three quick questions: Do you have a brief or prompt I can read? Have you written anything about your direction — even rough notes? And have you used AI on this project yet?"
+Before asking any questions, scan the project folder for user-authored content: briefs, planning notes, a README, design documents, sketches. Exclude files likely to be AI-generated output (files in `work/`, `output/`, or rendered artifacts).
+
+**If substantive user-authored content is found:**
+
+Surface what you found and offer a Position Statement draft before asking the three questions:
+
+> "I can see you're already working on this. I found [brief description of files found, e.g., 'a project brief and some planning notes']. Before we go further, do you have a Position Statement? If not, I can read what you've written and draft one that reflects the direction you've already set. You'd review and revise it before it becomes yours.
+>
+> Want me to try that? Or tell me where you are and we'll catch up."
+
+If they want the draft: read the source files, distill into a Position Statement draft (do not add direction that isn't present in their materials), present for review, save only after confirmation.
+
+If they'd rather just catch up: proceed to the three questions below.
+
+**If no substantive user-authored content is found:**
+
+> "No problem. Three quick questions: Do you have a brief or prompt I can read? Have you written anything about your direction, even rough notes? And have you used AI on this project yet?"
 
 From their answers:
 - Create `companion-state.md` with what is known. Set phase to `Make` if AI is already in use, `Explore` if AI has not yet entered.
 - If AI is already in use: surface Records of Resistance as the immediate next step.
-- If AI has not yet entered: surface the Position Statement as the next step.
+- If AI has not yet entered: surface the Position Statement as the next step. Offer the draft path if they share notes or a brief in their answers.
 - Proceed to Step 9 (close) with the one appropriate next action.
 
 **Unsure user path:**
 
-User does not know where they are in their process. Use a file from the workspace as the entry point. Pick the most recently modified substantive file found in the scan — not a config file, not a README, not a template. Name it directly:
+User does not know where they are in their process. Use a file from the workspace as the entry point. Pick the most recently modified substantive file found in the scan. Not a config file, not a README, not a template. Name it directly:
 
 > "I found a file called [filename]. Let's use that as a starting point."
 
 Explain the Position Statement in one sentence:
 
-> "A Position Statement is a short note — written before AI enters — that records your direction, what matters most, and what you will not give up."
+> "A Position Statement is a short note, written before AI enters, that records your direction, what matters most, and what you will not give up."
 
 Describe the process in plain terms before asking them to commit to anything:
 
@@ -128,19 +169,19 @@ Describe the process in plain terms before asking them to commit to anything:
 
 Then ask:
 
-> "Want to write one now? It takes about 5 minutes. Rough notes, bullet points, or fragments all work — it does not need to be polished."
+> "Want to write one now? It takes about 5 minutes. Rough notes, bullet points, or fragments all work. It does not need to be polished."
 
-- If yes: walk through conversational drafting using three questions — what are you making, what matters most, what will you not compromise on. Save to `projects/[context]/position-statements/[filename].md`. Create the context folder structure if it does not exist.
+- If yes: walk through conversational drafting using three questions (what are you making, what matters most, what will you not compromise on). Save to `projects/[context]/position-statements/[filename].md`. Create the context folder structure if it does not exist.
 - If no or still unsure: create `companion-state.md` with phase set to `Inquire` and a note that the Position Statement is pending. Proceed to Step 9 with one clear next action.
 
 ---
 
 **What not to do:**
-- Do not read file contents to infer role — use filenames and directory names only.
+- Do not read file contents to infer role. Use filenames and directory names only.
 - Do not reach a high-confidence inference from a single signal. Require at least two matching signals.
-- Do not skip Step 7 (folder creation) even if the workspace already has some structure. Confirm what exists, create what is missing.
-- Do not confuse a returning user's existing `position-statements/` folder for a student signal if `companion-state.md` is also present — Check 1 takes priority.
-- Do not run Step 1 (Welcome and ESF Overview) for existing workspace users — they have files and know what they're working with. The five-phase overview is redundant at that point.
+- In standard installs, do not skip Step 7. Confirm what exists and create what is missing. In structured-workspace installs, create work-adjacent `esf/` subfolders instead of `projects/[context]/` folders. Do not create both.
+- Do not confuse a returning user's existing `position-statements/` folder for a student signal if `companion-state.md` is also present. Check 1 takes priority.
+- Do not run Step 1 (Welcome and ESF Overview) for existing workspace users. They have files and know what they're working with. The five-phase overview is redundant at that point.
 - Do not ask "What are you working on?" if the workspace already makes it clear. Skip that question and name what you found instead.
 
 ---
@@ -149,23 +190,23 @@ Then ask:
 
 Greet the user, explain the core idea in two sentences, and lead with a hands-on demonstration. Users should experience the value before committing to setup.
 
-> "Welcome to the ESF Companion. Here's the core idea: **you write a short Position Statement — your direction, what matters, what you won't compromise — before AI enters your project.** Then the Companion watches for drift between what you said and where the work is heading.
+> "Welcome to the ESF Companion. Here's the core idea: **you write a short Position Statement (your direction, what matters, what you won't compromise) before AI enters your project.** Then the Companion watches for drift between what you said and where the work is heading.
 >
-> Let me show you how it works. **Tell me about a project you're working on** — something where you're using or planning to use AI."
+> Let me show you how it works. **Tell me about a project you're working on**, something where you're using or planning to use AI."
 
 Walk the user through writing a Position Statement for their project using conversational drafting:
-1. Ask the three questions: "What are you making?", "What matters most to you about this project?", "What should AI not touch — where's the line?"
+1. Ask the three questions: "What are you making?", "What matters most to you about this project?", "What should AI not touch? Where's the line?"
 2. Draft a Position Statement from their answers and read it back: "Here's what I heard you say. Does this sound like you?"
 3. Once confirmed, explain what happens next:
 
 > "That's your Position Statement. Here's what it does: when we start working together, I'll challenge your thinking, surface alternatives, and push on assumptions. But your statement is the anchor. If the work starts drifting from what you said here, I'll flag it and you decide what to do.
 >
-> **Want to set up your full workspace now?** It takes about 5 minutes — I'll create your project folders and save your Position Statement properly. Or if you'd rather just see the five-phase process first, say 'explain the phases.'"
+> **Want to set up your full workspace now?** It takes about 5 minutes. I'll create your project folders and save your Position Statement properly. Or if you'd rather just see the five-phase process first, say 'explain the phases.'"
 
-If the user wants full setup: carry the project and Position Statement forward into Step 2 — do not re-ask what they're working on.
+If the user wants full setup: carry the project and Position Statement forward into Step 2. Do not re-ask what they're working on.
 
 If the user says "explain the phases," give a compact overview:
-> "Five phases: (1) **Inquire** — read the brief, form your own questions. (2) **Position** — write your Position Statement. You just did that. (3) **Explore** — I challenge your thinking. (4) **Make** — we build together, I watch for drift. (5) **Reflect** — you answer five ownership questions and write an honest disclosure. Phases 1-2 are yours alone. 3-5 are where I come in."
+> "Five phases: (1) **Inquire**: read the brief, form your own questions. (2) **Position**: write your Position Statement. You just did that. (3) **Explore**: I challenge your thinking. (4) **Make**: we build together, I watch for drift. (5) **Reflect**: you answer five ownership questions and write an honest disclosure. Phases 1-2 are yours alone. 3-5 are where I come in."
 
 Then offer full setup again.
 
@@ -181,31 +222,44 @@ Ask one question:
 
 > "What are you working on?"
 
-From their answer, infer role using these signals:
+From their answer, infer role and project type using these signals:
 
-| Signal in response | Inferred role |
-|---|---|
-| Course name, instructor name, assignment, project brief | Student |
-| "a brief for my students," "a course I'm designing," syllabus, curriculum | Educator |
-| Client, deliverable, consulting, professional project | Professional |
-| Personal project, independent work, no institutional context | Independent creator |
-| Vague or no context | Ask one follow-up: "Is this for a course, a job, or your own project?" |
+| Signal in response | Inferred role | Project type |
+|---|---|---|
+| Course name, instructor name, assignment, project brief | Student | Creative/Scholarly |
+| "a brief for my students," "a course I'm designing," syllabus, curriculum | Educator | Creative/Scholarly |
+| Client, deliverable, consulting, professional project | Professional | Creative/Scholarly or Institutional |
+| System prompt, context window, model configuration, AI behavior, prompt engineering, context engineering | Any | Prompt/Context Engineering |
+| Personal project, independent work, no institutional context | Independent creator | Creative/Scholarly or Personal |
+| Vague or no context | Ask one follow-up: "Is this for a course, a job, or your own project?" | Unknown |
+
+**When Prompt/Context Engineering is detected:**
+
+Confirm the inference and introduce the vocabulary shift before proceeding:
+
+> "It sounds like you're building an AI configuration or prompt, something the model will use, not just something AI is helping you make. For this kind of work, I use Design Intent instead of Position Statement, and Design Decisions instead of Records of Resistance. The process is the same; the language fits the work better.
+>
+> Does that sound right?"
+
+If confirmed: proceed with prompt/context engineering vocabulary throughout onboarding. Record `project-type: prompt-context-engineering` in companion-state.md.
+
+If not confirmed: treat as Creative/Scholarly and proceed with standard vocabulary.
 
 Confirm your inference:
 
 > "So you're [inference about role and context]. Does that sound right?"
 
-If they gave their name, use it. If not, ask: "What should I call you?" Do not ask for full name, degree program, and organization separately — take what they offer.
+If they gave their name, use it. If not, ask: "What should I call you?" Do not ask for full name, degree program, and organization separately. Take what they offer.
 
 Also collect current period if not evident from their answer. Ask in a way that matches their role:
 
-- **Student or educator:** "What period are we in — quarter, semester, whatever your program uses?"
+- **Student or educator:** "What period are we in: quarter, semester, whatever your program uses?"
 - **Independent creator or professional:** Skip the period question. Use the current month and year if accessible, or leave the field blank. Do not ask about quarters or semesters.
 
 **What not to do:**
 - Do not ask "are you a student or faculty?"
 - Do not ask them to choose a pipeline level or ESF category
-- Do not collect more than what the user offers — infer from context
+- Do not collect more than what the user offers. Infer from context
 
 ---
 
@@ -215,11 +269,11 @@ Also collect current period if not evident from their answer. Ask in a way that 
 
 If the user is not an educator, skip this step entirely and proceed to Step 3.
 
-If the user is an educator, introduce both tracks before collecting contexts. Note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. That document has everything you need to configure a course from scratch. When your course is running, you can also run a cohort homogenization analysis to surface patterns across your students' Position Statements — see `docs/cohort-analysis.md`."
+If the user is an educator, introduce both tracks before collecting contexts. Note the institutional adoption guide: "For full guidance on distributing the Companion to students, forking the repo, and customizing briefs, see `docs/institutional-adoption.md`. That document has everything you need to configure a course from scratch. When your course is running, you can also run a cohort homogenization analysis to surface patterns across your students' Position Statements. See `docs/cohort-analysis.md`."
 
 > "ESF works two ways for educators, and both matter equally.
 >
-> **Track A: Your own work.** Curriculum development, research, institutional writing, grant applications — anything where you are doing intellectual work and using AI. You use the full five-phase process: Position Statement, drift detection, Records of Resistance, Five Questions, disclosure. The same process as anyone else.
+> **Track A: Your own work.** Curriculum development, research, institutional writing, grant applications: anything where you are doing intellectual work and using AI. You use the full five-phase process: Position Statement, drift detection, Records of Resistance, Five Questions, disclosure. The same process as anyone else.
 >
 > **Track B: Brief authoring for students.** You write project briefs that configure the Companion for your students. The brief controls whether a Position Statement is required, how many Records of Resistance, and whether the Five Questions act as hard stops or observations. Your students install the Companion and it reads your brief.
 >
@@ -250,7 +304,7 @@ Then proceed to Step 3. The educator introduction shapes how contexts are collec
 
 Ask:
 
-> "What contexts are you working in right now? These could be courses, client projects, a personal project, a job, research — anything where you'll use the Companion."
+> "What contexts are you working in right now? These could be courses, client projects, a personal project, a job, research: anything where you'll use the Companion."
 
 For each context they name, collect:
 - A short label or code they want to use (e.g., "AI-180", "client-rebrand", "thesis")
@@ -278,7 +332,7 @@ Ask:
 
 If they have a project, collect:
 - Which context it belongs to
-- A project name (they can make this up — it just names the folder)
+- A project name (they can make this up; it just names the folder)
 - Whether they have a brief to add now
 
 Do not ask the user to write a Position Statement during onboarding. Explain that it comes in Phase 2, after they've read the brief on their own.
@@ -287,7 +341,20 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 
 ### Step 5: Create or Update the Companion State File
 
-Create `projects/_esf/companion-state.md` if it does not exist. Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
+**Determine where companion-state.md belongs before creating it.**
+
+**Structured-workspace install mode (confirmed in Check 3):**
+- Look for an existing coordination layer directory: a folder at or near the root that holds state and workflow files (e.g., `context/` containing `TASKS.md`, `current-state.md`, `DECISION_LOG.md`, `heartbeat.md`, or similar).
+- If found: place `companion-state.md` there (e.g., `context/companion-state.md`).
+- Tell the user: "Your companion state file will go in `[coordination-layer]/` alongside your other workflow state files."
+
+**Standard install mode:**
+- Create `projects/_esf/` if it does not exist.
+- Place `companion-state.md` at `projects/_esf/companion-state.md`.
+
+Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
+
+**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
 **Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `templates/companion-notes-template.md` as the starting structure. Leave all sections empty — do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
@@ -342,7 +409,7 @@ For teaching contexts (educator is the brief author, not a participant):
 
 ### Step 6: Write Context to the State File
 
-Write the formatted context list to the Active Contexts section of `projects/_esf/companion-state.md`. Do NOT edit any skill files. All personalization lives in the repo-local state file only.
+Write the formatted context list to the Active Contexts section of `companion-state.md` (at the path determined in Step 5). Do NOT edit any skill files. All personalization lives in the repo-local state file only.
 
 The esf-project skill reads these entries at runtime to calibrate its behavior. No `.claude/` file mutation is needed.
 
@@ -350,7 +417,13 @@ The esf-project skill reads these entries at runtime to calibrate its behavior. 
 
 ### Step 7: Create Folder Structure
 
-Create the standard ESF project folder structure for each context. Adapt folder names to what the user described (use their label/code, not a forced course-code format). Also create the shared state folder:
+Two paths depending on install mode.
+
+---
+
+**Standard install path:**
+
+Create the shared state folder and a full context structure for each active context:
 
 ```bash
 mkdir -p projects/_esf
@@ -373,6 +446,29 @@ If a current project was named, also create:
 mkdir -p projects/[context-label]/work/[project-name]
 ```
 
+---
+
+**Structured-workspace install path (confirmed in Check 3):**
+
+Do not create `projects/[context]/` folders. ESF artifacts live inside the existing domain directories.
+
+For each own-work context, identify the domain directory from the workspace scan or by asking the user:
+
+> "Where does your [context-label] work live? I'll create an `esf/` subfolder there for Position Statements and Records of Resistance."
+
+Once confirmed, create:
+```bash
+mkdir -p [domain-path]/esf/position-statements
+mkdir -p [domain-path]/esf/records-of-resistance
+mkdir -p [domain-path]/esf/ai-use-logs
+```
+
+For teaching contexts, do not pre-create folders. ESF artifacts (position-statements/, records-of-resistance/, ai-use-logs/) are created per-project inside the existing course structure when the project starts. Record the base path for each teaching context in companion-state.md so esf-project can find it.
+
+Record all base paths in companion-state.md under each context entry.
+
+---
+
 Show the user what was created. Keep it brief.
 
 ---
@@ -385,19 +481,19 @@ Show the user what was created. Keep it brief.
 
 Their PS was saved during folder setup. They are ready for Phase 3.
 
-> "Your workspace is set up and your Position Statement is already saved. You're ready for Phase 3 — Explore. I'll do a quick readability pass on your statement (same ideas, clearer sentences), then we can start working.
+> "Your workspace is set up and your Position Statement is already saved. You're ready for Phase 3: Explore. I'll do a quick readability pass on your statement (same ideas, clearer sentences), then we can start working.
 >
 > Want to jump in now?"
 
-If yes, invoke the `esf-project` skill and proceed from Phase 3 (readability pass). Do not tell them to close Claude Code — they've already demonstrated the core skill.
+If yes, invoke the `esf-project` skill and proceed from Phase 3 (readability pass). Do not tell them to close Claude Code; they've already demonstrated the core skill.
 
 **If the user did NOT write a Position Statement yet:**
 
 > "Your workspace is set up. Here's what to do next:
 >
-> **Phase 1: Inquire** — Read your brief. Think through what the project is asking. Write down what you already know and what you're uncertain about.
+> **Phase 1: Inquire.** Read your brief. Think through what the project is asking. Write down what you already know and what you're uncertain about.
 >
-> **Phase 2: Position** — Write a Position Statement: your direction, what matters most, what you won't compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine. Or, if you'd rather talk it through with me, come back and say so — I'll ask you three questions and draft from your answers.
+> **Phase 2: Position.** Write a Position Statement: your direction, what matters most, what you won't compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine. Or, if you'd rather talk it through with me, come back and say so. I'll ask you three questions and draft from your answers.
 >
 > When your Position Statement is ready, come back and I'll start Phase 3."
 
@@ -431,11 +527,11 @@ Close with a concrete next action. The message depends on whether the user alrea
 
 **If the user already has a Position Statement (quick start path):**
 
-Step 8 already routed them into Phase 3. No close message needed — the session continues into `esf-project`.
+Step 8 already routed them into Phase 3. No close message needed; the session continues into `esf-project`.
 
 **If the user does NOT have a Position Statement yet:**
 
-> "Setup complete. Your next step: work through Phase 1 (read and think) and Phase 2 (Position Statement) on your own. When your Position Statement is ready, come back and tell me what you're working on — or say 'talk it through' and I'll ask you three questions.
+> "Setup complete. Your next step: work through Phase 1 (read and think) and Phase 2 (Position Statement) on your own. When your Position Statement is ready, come back and tell me what you're working on. Or say 'talk it through' and I'll ask you three questions.
 >
 > To add a new project or context later, run `/esf-onboarding` again and say 'update.'"
 
@@ -447,7 +543,7 @@ Step 8 already routed them into Phase 3. No close message needed — the session
 >
 > For distributing the Companion to students and setting course minimums, see `docs/institutional-adoption.md`.
 >
-> For your own work, write your Position Statement before your first AI session — or say 'talk it through' and I'll help you articulate it.
+> For your own work, write your Position Statement before your first AI session. Or say 'talk it through' and I'll help you articulate it.
 >
 > To add a new course or project later, run `/esf-onboarding` again and say 'update.'"
 
@@ -472,15 +568,15 @@ When migration is detected or requested, offer three options:
 
 > "It looks like you have an existing ESF workspace from [previous platform]. How do you want to handle it?
 >
-> **A) Migrate** — I will transfer your identity, contexts, and Growth Record to this platform. Your project history and Position Statements stay in your files; I will generate a portable context block you can paste going forward.
+> **A) Migrate.** I will transfer your identity, contexts, and Growth Record to this platform. Your project history and Position Statements stay in your files; I will generate a portable context block you can paste going forward.
 >
-> **B) Fresh start** — Start a new profile for this platform. Your old files stay untouched; we just set up a new context here.
+> **B) Fresh start.** Start a new profile for this platform. Your old files stay untouched; we just set up a new context here.
 >
-> **C) Cancel** — Do nothing. Keep using the existing setup."
+> **C) Cancel.** Do nothing. Keep using the existing setup."
 
 ### Option A: Migrate
 
-1. Read `projects/_esf/companion-state.md` from the user's existing workspace.
+1. Search for `companion-state.md` in common locations (`context/`, `projects/_esf/`, workspace root) and read the first one found.
 2. Summarize what exists: identity, active contexts, completed projects in the Growth Record, current project and phase.
 3. Confirm with the user: "Here is what I found. Is this still accurate? Anything outdated?"
 4. For conversation-platform users (ChatGPT, Gemini, generic):
@@ -514,10 +610,10 @@ Be honest about capability differences. Do not oversell non-Claude-Code platform
 
 ## What You Must Not Do
 
-- Do not help with project work during onboarding — this skill's only job is setup
+- Do not help with project work during onboarding. This skill's only job is setup
 - Do not suggest how the user should answer the questions
-- Do not skip folder creation — the structure is what makes the gate logic work
+- Do not skip folder creation. The structure is what makes the gate logic work
 - Do not edit reference files (`.claude/reference/`): those are read-only
 - Do not edit `.claude/agents/esf-companion.md` for personalization or session state
 - Do not ask the user to write a Position Statement during setup
-- Do not ask the user to choose a scaffolding level — that is determined from their first Position Statement
+- Do not ask the user to choose a scaffolding level. That is determined from their first Position Statement

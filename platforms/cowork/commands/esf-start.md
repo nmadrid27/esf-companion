@@ -15,8 +15,8 @@ Search for `projects/_esf/companion-state.md` in the selected folder. If not fou
 Read it. Extract: user name/role, active contexts (courses or projects), current project name, current phase, and last session date. Then use AskUserQuestion with preview cards:
 
 Question: "Welcome back, [name]. What would you like to do?"
-- **Continue [project name]** — preview: "Phase [N]: [phase name]. Last session: [date] — [brief note]. [List the immediate next action based on current phase, e.g. 'Ready to move into Explore — your Position Statement is saved.']"
-- **Start a new project** — preview: "Set up a new project from scratch. I'll ask about your brief, create the folder structure, and get you oriented to Phase 1."
+- **Continue [project name].** Preview: "Phase [N]: [phase name]. Last session: [date] ([brief note]). [List the immediate next action based on current phase, e.g. 'Ready to move into Explore. Your Position Statement is saved.']"
+- **Start a new project.** Preview: "Set up a new project from scratch. I'll ask about your brief, create the folder structure, and get you oriented to Phase 1."
 
 If the user wants to continue: invoke the `esf-project` skill and proceed from the current phase.
 
@@ -33,7 +33,7 @@ Greet the user and lead with a hands-on demonstration:
 
 > "Welcome to the ESF Companion. Here's the core idea: **you write a short Position Statement before AI enters your project.** Then the Companion watches for drift between what you said and where the work is heading.
 >
-> Let me show you how it works. **Tell me about a project you're working on** — something where you're using or planning to use AI."
+> Let me show you how it works. **Tell me about a project you're working on**, something where you're using or planning to use AI."
 
 From their answer, infer:
 - **Role:** student / educator / professional / independent creator
@@ -45,14 +45,14 @@ Walk them through writing a Position Statement using three questions: "What are 
 
 Then explain what the statement does:
 
-> "That's your Position Statement. When we work together, I'll challenge your thinking and push on assumptions — but this statement is the anchor. If the work drifts from what you said here, I'll flag it and you decide what to do."
+> "That's your Position Statement. When we work together, I'll challenge your thinking and push on assumptions, but this statement is the anchor. If the work drifts from what you said here, I'll flag it and you decide what to do."
 
 Then ask about scaffolding level using AskUserQuestion with preview cards:
 
 Question: "How much guidance do you want as you work?"
-- **Guided** — preview: "Full phase-by-phase walkthrough. I'll prompt you at every transition and offer thinking exercises between phases. Best for your first few projects."
-- **Supported** — preview: "Check-ins at key moments. I'll surface drift and run ownership checks, but won't narrate every step."
-- **Independent** — preview: "Minimal interruption. I'll flag significant drift and respond when you ask, but stay out of the way otherwise."
+- **Guided.** Preview: "Full phase-by-phase walkthrough. I'll prompt you at every transition and offer thinking exercises between phases. Best for your first few projects."
+- **Supported.** Preview: "Check-ins at key moments. I'll surface drift and run ownership checks, but won't narrate every step."
+- **Independent.** Preview: "Minimal interruption. I'll flag significant drift and respond when you ask, but stay out of the way otherwise."
 
 If they have a project (which they should, from the demo): go to Step 3. Carry the Position Statement and project info forward.
 If they are just setting up: create `projects/_esf/companion-state.md` with their identity and an empty Current Project block, confirm it is saved, and tell them to run `/esf-start` again when they are ready.
@@ -71,7 +71,7 @@ Ask:
 1. "What are you making?"
 2. "What does done look like? What are the deliverables?"
 3. "What's your deadline or key milestone?"
-4. "Where is the line for AI on this project — what tasks do you want to keep human-only?"
+4. "Where is the line for AI on this project? What tasks do you want to keep human-only?"
 
 Generate a minimal brief in markdown, present it, and ask: "Does this capture it? I'll save it to `projects/[context]/briefs/[project-name]-brief.md`."
 
@@ -127,7 +127,7 @@ last-updated: [today's date]
 - **Brief location:** `projects/[context]/briefs/[brief-file].md`
 - **Position Statement:** `projects/[context]/position-statements/[project-name].md`
 - **Phase:** Inquire
-- **Last session:** [today's date] — Project initialized.
+- **Last session:** [today's date] (Project initialized).
 - **Scaffolding level:** [Guided / Supported / Independent]
 
 ## Preferences
@@ -157,12 +157,12 @@ If no brief was loaded during setup, add a note about `/esf-brief`:
 
 > "You're set up for [project name]. If you have a project brief (assignment, scope doc, spec, or similar), run `/esf-brief` to load it and set up milestone tracking. Otherwise, you can skip that step.
 >
-> Phase 1 — Inquire — is yours alone. Work offline: notebook, blank doc, or just your thoughts. Write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
+> Phase 1 (Inquire) is yours alone. Work offline: notebook, blank doc, or just your thoughts. Write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
 >
 > Come back when you've written something down and run `/esf-start` again. I'll pick up from there."
 
 If a brief was already loaded in Step 3:
 
-> "You're set up for [project name] and your brief is loaded. Phase 1 — Inquire — is yours alone. Work offline: write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
+> "You're set up for [project name] and your brief is loaded. Phase 1 (Inquire) is yours alone. Work offline: write out what you already know, what you're uncertain about, and your first instinct. No AI yet.
 >
 > Come back when you've written something down and run `/esf-start` again. I'll pick up from there."

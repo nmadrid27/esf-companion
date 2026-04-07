@@ -1,6 +1,6 @@
 # ESF Companion Plugin
 
-An extended thinking partner for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence — your position before AI engagement — and monitoring for drift throughout.
+An extended thinking partner for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence: your position before AI engagement, then monitoring for drift throughout.
 
 Built on the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-companion).
 
@@ -10,13 +10,13 @@ Built on the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-
 
 The ESF Companion works through five phases:
 
-1. **Inquire** — Human only. No AI. You work out what you already know and think.
-2. **Position** — Human only. You write a Position Statement before AI enters.
-3. **Explore** — AI as thinking partner. Expands, challenges, and pressure-tests your thinking.
-4. **Make** — AI as drafting support. Builds with you, anchored to your Position Statement.
-5. **Reflect** — AI as review partner. Five Questions, reflection, disclosure, and session synthesis.
+1. **Inquire.** Human only. No AI. You work out what you already know and think.
+2. **Position.** Human only. You write a Position Statement before AI enters.
+3. **Explore.** AI as thinking partner. Expands, challenges, and pressure-tests your thinking.
+4. **Make.** AI as drafting support. Builds with you, anchored to your Position Statement.
+5. **Reflect.** AI as review partner. Five Questions, reflection, disclosure, and session synthesis.
 
-Drift detection runs continuously. When your work moves away from your stated position — or when you start accepting AI output without evaluation — the Companion surfaces it as a question, not a command. You decide what to do.
+Drift detection runs continuously. When your work moves away from your stated position, or when you start accepting AI output without evaluation, the Companion surfaces it as a question, not a command. You decide what to do.
 
 ---
 
@@ -152,7 +152,7 @@ ai-use: permitted-after-position
 ---
 ```
 
-**Unstructured briefs** — client scopes, research proposals, personal specs — work too. The plugin reads the prose, extracts deliverables and timeline, and asks you about anything it can't infer.
+**Unstructured briefs** (client scopes, research proposals, personal specs) work too. The plugin reads the prose, extracts deliverables and timeline, and asks you about anything it can't infer.
 
 **No brief at all** is fine. Run `/esf-brief` and answer 4 questions. The plugin generates a minimal brief you can edit.
 

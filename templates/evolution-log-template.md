@@ -7,7 +7,7 @@ date: ""
 # ESF Evolution Log
 
 This file records how your ESF practice has diverged from the defaults, and why.
-Each entry is a deliberate, reasoned adaptation — not an exception, but a documented part of how you work.
+Each entry is a deliberate, reasoned adaptation, not an exception, but a documented part of how you work.
 
 The Companion reads this file and adjusts its behavior to match your active entries.
 
@@ -33,7 +33,7 @@ You can also write entries directly using the format below.
 ---
 -->
 
-<!-- Example entry — delete before use:
+<!-- Example entry (delete before use):
 
 ## Evolution Entry 2026-04-01
 

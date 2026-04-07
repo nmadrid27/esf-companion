@@ -4,9 +4,9 @@ project: [project name]
 
 # ESF Requirement Fields
 # Each field accepts three values:
-#   required     — The Companion enforces this as a hard gate. The user must complete it before proceeding.
-#   optional     — The Companion offers it but does not block progress if skipped.
-#   not-required — The Companion skips it entirely. No prompts, no gates.
+#   required:     The Companion enforces this as a hard gate. The user must complete it before proceeding.
+#   optional:     The Companion offers it but does not block progress if skipped.
+#   not-required: The Companion skips it entirely. No prompts, no gates.
 position-statement: required
 five-questions: required
 

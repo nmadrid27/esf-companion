@@ -34,11 +34,11 @@ Read the full file. Extract in this order:
 3. **Milestones or timeline**: Any dates, phases, sprints, checkpoints, or due dates. Look for sections labeled Timeline, Milestones, Schedule, Phases, or any table with dates.
 4. **AI boundaries**: Any stated policy on AI use. Look for sections labeled AI Use, AI Policy, Collaboration Policy, or Tools.
 5. **Success criteria**: How the work will be evaluated. Look for sections labeled Grading, Assessment, Evaluation, Done Criteria, or Acceptance Criteria.
-6. **ESF requirements**: Position Statement, Records of Resistance, Five Questions — either by name or by equivalent language (Design Intent = Position Statement, "document AI decisions" = Records of Resistance, self-assessment questions = Five Questions).
+6. **ESF requirements**: Position Statement, Records of Resistance, Five Questions, either by name or by equivalent language (Design Intent = Position Statement, "document AI decisions" = Records of Resistance, self-assessment questions = Five Questions).
 
 If the brief has no frontmatter, infer ESF settings from the prose. If no ESF language exists at all, default all fields to `optional`.
 
-**If no brief file — build one conversationally:**
+**If no brief file, build one conversationally:**
 
 Ask 4 questions (use AskUserQuestion or conversational flow depending on complexity):
 
@@ -140,7 +140,7 @@ Update the Current Project block with the brief path and any extracted ESF requi
 
 Based on the current phase in `companion-state.md`:
 
-- **Inquire or Position:** "Your brief is loaded and milestones are set. Phase 1 is still yours alone — work through your initial thinking offline. Come back when your Position Statement is ready."
+- **Inquire or Position:** "Your brief is loaded and milestones are set. Phase 1 is still yours alone. Work through your initial thinking offline. Come back when your Position Statement is ready."
 - **Explore or later:** "Brief loaded. Your current phase is [phase]. Ready to continue?" Then invoke `esf-project` and proceed.
 
 Present the brief file via `mcp__cowork__present_files` so the user has it as a clickable card for reference.
