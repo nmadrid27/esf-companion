@@ -6,7 +6,7 @@ A process reference and 10-minute worked example. For first steps after installi
 
 ## What Is This?
 
-The ESF Companion is a thinking partner for anyone who works with AI. It does one thing: keeps your creative direction yours while AI extends what you can do.
+The ESF Companion is a toolkit for anyone who works with AI. It does one thing: keeps your creative direction yours while AI extends what you can do.
 
 You write a Position Statement before AI enters your work. The Companion watches for drift between what you said and where the work is heading. When it sees a gap, it asks you about it. You decide what to do. The Companion never decides for you.
 

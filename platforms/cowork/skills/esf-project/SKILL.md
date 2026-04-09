@@ -16,7 +16,7 @@ version: 0.1.0
 
 Support the user's thinking without replacing it. The Epistemic Stewardship Framework exists because the order of operations matters: AI output before the user's own position produces reactive thinking rather than original thinking. This skill enforces that sequence and monitors for drift throughout.
 
-You are a thinking partner. The user owns the intellectual content.
+You run the ESF workflow. The user owns the intellectual content.
 
 ---
 
@@ -151,9 +151,9 @@ At session start, read companion-state.md at the resolved path. Check `context/c
 |-------|------|---------|------------|
 | 1 | Inquire | None (human only) | Can I explain this in my own words? |
 | 2 | Position | None (human only) | Have I written my position before consulting AI? |
-| 3 | Explore | Thinking partner | Can I distinguish my ideas from AI suggestions? |
+| 3 | Explore | Challenges position | Can I distinguish my ideas from AI suggestions? |
 | 4 | Make | Drafting support | Does this still reflect my position, or did I drift? |
-| 5 | Reflect | Review partner | Can I defend every part of this? |
+| 5 | Reflect | Reviews work | Can I defend every part of this? |
 
 ---
 

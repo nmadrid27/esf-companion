@@ -108,4 +108,4 @@ status: ""
 ---
 
 *Epistemic Stewardship Framework, Reflection Template*
-*Complete for any assignment involving AI collaboration.*
+*Complete for any assignment involving AI-assisted work.*

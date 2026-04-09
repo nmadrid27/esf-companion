@@ -1,6 +1,6 @@
 # ESF Companion
 
-An extended thinking partner that helps you direct AI from a position you can defend.
+A toolkit for directing AI from a position you can defend.
 
 No institution, course, or program required. If you use AI to write, research, design, code, or create, the ESF Companion gives you a repeatable process for keeping the work genuinely yours.
 
@@ -122,7 +122,7 @@ claude
 - Context engineers and prompt developers building AI configurations
 - Anyone who needs to answer: "Is this actually my work?"
 
-ESF Companion is a craft standard for intentional AI collaboration. It originated in an education context, where the stakes of cognitive drift are visible in student work. The same risks apply to any practitioner doing serious AI-assisted work: a context engineer whose system prompt gradually reflects model defaults rather than design intent, a researcher whose argument shifts to accommodate AI framing, a designer whose concept drifts toward AI aesthetic defaults. The mechanism is the same problem in different contexts. The framework addresses all of them.
+ESF Companion is a craft standard for directed AI use. It originated in an education context, where the stakes of cognitive drift are visible in student work. The same risks apply to any practitioner doing serious AI-assisted work: a context engineer whose system prompt gradually reflects model defaults rather than design intent, a researcher whose argument shifts to accommodate AI framing, a designer whose concept drifts toward AI aesthetic defaults. The mechanism is the same problem in different contexts. The framework addresses all of them.
 
 ---
 
@@ -183,8 +183,8 @@ New to the framework?
 2. POSITION    Write your Position Statement: your stance, what
                matters most, what you will not compromise on. No AI.
        ↓
-3. EXPLORE     Bring AI in as a thinking partner. It challenges
-               your position, surfaces alternatives, asks questions.
+3. EXPLORE     Bring AI in to challenge your position. It surfaces
+               alternatives, asks questions, pushes on blind spots.
                It does not originate direction.
        ↓
 4. MAKE        Work with AI on the deliverable. Log AI contributions.

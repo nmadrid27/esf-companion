@@ -16,10 +16,10 @@ This guide exists because you face a new problem that no previous generation of 
 
 The Epistemic Stewardship Framework (ESF) gives you a process for using AI that keeps the intellectual work yours. Not by restricting what tools you can use, but by structuring *when* and *how* you use them so that your thinking stays at the center.
 
-Here is the core insight: **you must know what you think before the AI tells you what to think.** The user process builds in that sequence. You articulate your understanding, stake out your position, and *then* bring AI into the conversation as a thinking partner.
+Here is the core insight: **you must know what you think before the AI tells you what to think.** The user process builds in that sequence. You articulate your understanding, stake out your position, and *then* bring AI into the conversation to challenge your position.
 If you skip that sequence, the AI fills the vacuum with plausible content, and you learn to approve rather than to think.
 
-This guide introduces a five-phase process (Inquire, Position, Explore, Make, Reflect) and four engagement levels that develop your capacity to work with AI as an intellectual partner. The goal is not less AI use or more AI use. The goal is *better* AI use: the kind where you can defend every claim, explain every choice, and honestly describe what you contributed and what the AI contributed.
+This guide introduces a five-phase process (Inquire, Position, Explore, Make, Reflect) and four engagement levels that develop your capacity to direct AI in your intellectual work. The goal is not less AI use or more AI use. The goal is *better* AI use: the kind where you can defend every claim, explain every choice, and honestly describe what you contributed and what the AI contributed.
 
 That skill, epistemic stewardship, is what your future employers, collaborators, and audiences will expect from you. Not whether you used AI, but whether you used it well.
 
@@ -94,9 +94,9 @@ Your Position Statement does not need to be polished. Rough outlines, bullet poi
 
 ### Phase 3: Explore
 
-**What you do:** Now bring AI into the conversation. Use it as a thinking partner: to generate options, challenge your assumptions, surface perspectives you had not considered, and pressure-test your position.
+**What you do:** Now bring AI into the conversation. Use it to generate options, challenge your assumptions, surface perspectives you had not considered, and pressure-test your position.
 
-**Why this matters:** This is where AI is genuinely valuable. Not as a drafting machine, but as an intellectual sparring partner.
+**Why this matters:** This is where AI is genuinely valuable. Not as a drafting machine, but as a pressure test on your thinking.
 With your Position Statement as an anchor, you can engage AI output critically, measuring it against your stated priorities, not accepting it as the default.
 
 **First step: readability pass.** When you paste your Position Statement, the AI will reformat it for readability before doing anything else. This means fixing grammar, spelling, and sentence flow without adding ideas or arguments you did not include. If something in your draft is unclear, the AI will flag it rather than fill in the gap. You review the cleaned version and confirm it still says what you meant. This confirmed version becomes your working Position Statement for the rest of the project. The intellectual content stays yours; the AI just makes it easier to read.
@@ -208,11 +208,11 @@ The Reflect phase asks you to look back at the full trajectory, from your initia
 
 The five-phase process is the same at every level. What changes is how much support you get at each gate and how much independence you exercise.
 
-> **Naming note:** Some course contexts use shorthand labels (DISCOVER, THINK, BUILD, DESIGN) to refer to these levels. The mapping is: DISCOVER = Discovery, THINK = Guided Use, BUILD = Independent Use, DESIGN = Critical Partnership.
+> **Naming note:** Some course contexts use shorthand labels (DISCOVER, THINK, BUILD, DESIGN) to refer to these levels. The mapping is: DISCOVER = Discovery, THINK = Guided Use, BUILD = Independent Use, DESIGN = Epistemic Stewardship.
 
 > **Note on evidence base:** The four engagement levels and their readiness indicators are theoretically grounded in research on scaffolded learning, Socratic inquiry, and metacognitive development. They have not yet been empirically validated against actual user progression data. The thresholds, readiness indicators, and level descriptions reflect the framework author's professional judgment and pedagogical experience, not measured outcomes. Treat the levels as a useful developmental map, not a tested diagnostic instrument. As ESF is applied in more courses and contexts, these levels will be revised based on observed user development.
 
-If you are in a structured AI curriculum, these levels correspond to the course stages in that sequence: Discovery (DISCOVER), Guided Use (THINK), Independent Use (BUILD), Critical Partnership (DESIGN).
+If you are in a structured AI curriculum, these levels correspond to the course stages in that sequence: Discovery (DISCOVER), Guided Use (THINK), Independent Use (BUILD), Epistemic Stewardship (DESIGN).
 
 ### Level 1: Discovery
 
@@ -264,7 +264,7 @@ If you are in a structured AI curriculum, these levels correspond to the course 
 
 ---
 
-### Level 4: Critical Partnership
+### Level 4: Epistemic Stewardship
 
 **What it looks like:** You are a full epistemic steward. You can run the five-phase process across complex, high-stakes projects. You can design gates for your own work and for others'. You can defend your work, articulate your methodology, teach your approach, and critically evaluate AI-assisted work (your own and others').
 
@@ -279,7 +279,7 @@ If you are in a structured AI curriculum, these levels correspond to the course 
 | 1 | Discovery | Instructor scaffolds all gates | Can articulate AI strengths/weaknesses, write Position Statement without template |
 | 2 | Guided Use | Instructor designs gates into assignments | Consistent genuine Position Statements, consistent "yes" on Five Questions |
 | 3 | Independent Use | Self-assessed gates with peer review | Can explain methodology to a peer, produce evaluable process record |
-| 4 | Critical Partnership | Creates and evaluates own gates | Can defend work publicly, design gates for novel contexts |
+| 4 | Epistemic Stewardship | Creates and evaluates own gates | Can defend work publicly, design gates for novel contexts |
 
 ---
 
@@ -427,7 +427,7 @@ Add the Position Statement to your process. Three sentences: what is my position
 **If you want to develop a systematic practice:**
 Run the full five-phase process for one assignment. Track your process artifacts: what you asked, what you kept, what you rejected, and why. Write the reflection at the end.
 
-**If you are already confident in your AI collaboration:**
+**If you are already confident in your AI-assisted work:**
 Apply the five phases with full rigor to your next high-stakes assignment. Pay particular attention to Phase 5 (Reflect). The patterns in your records of resistance reveal the edges of your practice.
 
 The goal is not perfection. The goal is honest, evolving practice: the kind where you can look at your work and say, with confidence, "this is mine."

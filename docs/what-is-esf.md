@@ -64,8 +64,8 @@ The ESF Companion uses a single five-phase workflow:
        |
 2. POSITION    Write your Position Statement. No AI yet.
        |
-3. EXPLORE     Bring AI in as a thinking partner.
-               It challenges your position, surfaces alternatives.
+3. EXPLORE     Bring AI in to challenge your position.
+               It surfaces alternatives and asks questions.
                It does not originate direction.
        |
 4. MAKE        Work with AI on the deliverable.

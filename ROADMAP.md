@@ -47,7 +47,7 @@ Full conversation-platform context restoration for initial session setup (auto-g
 # ESF Companion: Product Requirements Document
 
 **Product name:** ESF Companion
-**One-line description:** An extended thinking partner that helps you direct AI from a position you can defend.
+**One-line description:** A toolkit for directing AI from a position you can defend.
 **Date:** 2026-03-24
 **Author:** Nathan Madrid, with Claude (AI collaboration)
 **Status:** Draft, pending review
@@ -82,7 +82,7 @@ Items marked [v3] are roadmap features outside current scope.
 
 ### Core Problem
 
-AI collaboration creates two risks most users cannot detect on their own: cognitive fixation (locking onto AI outputs as defaults) and cognitive drift (gradually surrendering creative direction without noticing). Current tools treat AI as a productivity problem. ESF Companion treats it as a thinking problem.
+Working with AI creates two risks most users cannot detect on their own: cognitive fixation (locking onto AI outputs as defaults) and cognitive drift (gradually surrendering creative direction without noticing). Current tools treat AI as a productivity problem. ESF Companion treats it as a thinking problem.
 
 ### Core Mechanism
 
@@ -110,7 +110,7 @@ One loop. Every user, every project, every session.
 
 1. **Position.** Before AI enters, the user writes their stance: what they are making, what matters most, what they will not compromise. This is the anchor.
 
-2. **Work.** The user works with AI. The Companion supports the work: answering questions, generating alternatives, challenging assumptions. It is a thinking partner, not a gatekeeper.
+2. **Work.** The user works with AI. The Companion supports the work: answering questions, generating alternatives, challenging assumptions. It scaffolds the work. It does not gate it.
 
 3. **Monitor.** The Companion watches for two kinds of drift:
    - **Direction drift:** the work is moving away from the stated position.
@@ -347,7 +347,7 @@ The Companion extracts:
 
 User-facing: "stance, what matters most, what I will not compromise."
 Companion's internal extraction: "direction, priority, boundary."
-Course-specific alias: "Design Intent" (AI 201).
+Project-type alias: "Design Intent" (prompt/context engineering projects; see Project Type Detection in the agent).
 
 ### Key Behaviors
 
@@ -542,9 +542,9 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 ## 15. Version Roadmap
 
-### v1: Claude Code + Applied AI Students [SHIPPED]
+### v1: Claude Code + Instructor Briefs [SHIPPED]
 
-**Audience:** Students with instructor briefs on Claude Code.
+**Audience:** Users with instructor or self-authored project briefs on Claude Code.
 
 **Shipped:**
 - Five-phase workflow (esf-project skill, production-ready) [SHIPPED]

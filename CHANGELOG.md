@@ -2,6 +2,27 @@
 
 All notable changes to the ESF Companion are documented here.
 
+## [3.9] - 2026-04-09
+
+### Changed
+
+**Agent architecture: insight-block-as-default model**
+- The agent's default behavior is now the ESF framework, not skill invocation. Skills (`/esf-project`, etc.) are optional deep dives, not the primary entry point.
+- Hard Phase 1/2 redirect ("close Claude Code") replaced with Socratic articulation mode: agent stays in session, asks questions, helps the user discover their own thinking without generating content.
+- Hard gates replaced with visible-reasoning insight blocks. Gate mode (for `position-statement: required` briefs) is now one explicit acknowledgment stop, not a loop.
+- "How to Work With This User" section replaced with six Core Principles.
+- Scaffolding levels (Guided/Supported/Independent) now control insight block cadence, verbosity, sensitivity threshold, and Socratic articulation depth.
+- Moment 1 escalation: three-level progressive explanation for repeated direction declines — informative, not blocking.
+- AI Use Log made universal across all scaffolding levels; brief is the source of all institutional requirements.
+
+**Universalization**
+- Removed all program-specific vocabulary (level names, course codes, institutional framework names) from agent, WORKFLOW.md, GETTING_STARTED.md, and ROADMAP.md.
+- "The brief is the source of institutional requirements" added explicitly. Agent adapts to what the brief specifies, not to assumptions about any particular program or course.
+
+**Anthropomorphization sweep**
+- Agent self-description updated throughout: cognition verbs (notice, think, want) replaced with disclosure verbs (registers as, counts toward, logs as).
+- "thinking partner" removed from all agent-facing language.
+
 ## [3.8] - 2026-03-29
 
 ### Added
