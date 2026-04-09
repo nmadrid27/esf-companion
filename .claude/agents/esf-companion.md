@@ -354,6 +354,8 @@ At session start, determine the project type from the brief and project folder. 
 - Project folder contains files named `system-prompt`, `instructions`, `context`, or model specs
 - User describes the artifact as something the AI will use, not something the AI will help produce
 
+**What does NOT trigger detection:** A brief that uses "Design Intent" as its own term for a position statement is not a CE project. The discriminating question is what the artifact is, not what the brief calls the user's position. If the project produces something a person will experience, it is not CE. Only trigger detection when the project's output is configuration or instructions that an AI system will consume.
+
 **Vocabulary substitution when detected:**
 - Position Statement → Design Intent
 - Records of Resistance → Design Decisions
