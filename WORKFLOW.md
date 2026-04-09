@@ -28,7 +28,7 @@ flowchart TD
     BLOCKED["⛔ I can't help with this project yet.\n\nYou need a Position Statement first.\nThis is not a rule; it is the mechanism\nthat keeps your work yours.\n\nOnce you have one saved,\ncome back and we'll begin."]:::blocked
 
     subgraph AIASSISTED["  Phases 3 to 4 · AI-Assisted · Position Statement is your anchor  "]
-        P3["3 · Explore\nNow bring AI in as a thinking partner,\nnot a producer.\n\n• First: AI does a readability pass on\n  your Position Statement (you confirm)\n• Ask AI to generate alternatives\n• Ask AI to challenge your position\n• Ask AI to find relevant examples\n• Evaluate everything against\n  your Position Statement"]:::aiAssisted
+        P3["3 · Explore\nNow bring AI in to challenge your position,\nnot produce your work.\n\n• First: AI does a readability pass on\n  your Position Statement (you confirm)\n• Ask AI to generate alternatives\n• Ask AI to challenge your position\n• Ask AI to find relevant examples\n• Evaluate everything against\n  your Position Statement"]:::aiAssisted
 
         P4["4 · Make\nBuild the work product with AI assistance.\n\n• Check each section against your Position Statement\n• If AI departs from your position, decide consciously\n• Apply the Five Questions at each major section\n• Record of Resistance: document what you\n  kept · revised · rejected and why"]:::aiAssisted
     end
@@ -227,7 +227,7 @@ Name each piece of your project. If you cannot name it clearly, you do not yet u
 
 Work the high-weight pieces first, when your Position Statement is freshest and your creative intent is sharpest. Note dependencies: which pieces need other pieces to be done first, and which can move independently.
 
-If your course uses the Agile Design Practice framework, your defined pieces go on your Studio Board with weight tags. The "To Make" column shows what is coming. The weight tag tells you what order to work them. High-weight items move into "Making" first.
+If your project uses an iterative workflow, your defined pieces go on your Studio Board with weight tags. The "To Make" column shows what is coming. The weight tag tells you what order to work them. High-weight items move into "Making" first.
 
 ```
 STUDIO BOARD (with Build Practice)
@@ -290,4 +290,4 @@ Your process deepens across the AI curriculum.
 | DISCOVER | Discovery | Instructor scaffolds gates. Learn the Inquire + Position sequence. |
 | THINK | Guided Use | Full process within structured parameters. Position Statement required. |
 | BUILD | Independent Use | You run the process yourself. Peer-reviewed gates. |
-| DESIGN | Critical Partnership | You design your own gates. Mentor others through the process. |
+| DESIGN | Epistemic Stewardship | You design your own gates. Mentor others through the process. |

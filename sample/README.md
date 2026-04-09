@@ -33,7 +33,7 @@ claude
 
 Try: "I want to keep working on my responsive system. I'm in the Explore phase and need to think through my shader implementation."
 
-The Companion will load Alex's context, check for the Position Statement (it exists), confirm the phase, and engage as a thinking partner from there.
+The Companion will load Alex's context, check for the Position Statement (it exists), confirm the phase, and enter the Explore workflow from there.
 
 ---
 

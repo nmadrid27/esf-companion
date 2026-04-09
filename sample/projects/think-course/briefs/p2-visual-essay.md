@@ -40,6 +40,6 @@ Projects will be assessed on:
 
 ## Notes
 
-Tool selection is yours. You are not required to use any specific software, medium, or AI tool. AI may be used as a research tool, a brainstorming partner, or a compositional reference. AI-generated images may serve as reference material but may not appear as final artwork without substantial transformation.
+Tool selection is yours. You are not required to use any specific software, medium, or AI tool. AI may be used as a research tool, for exploration, or as a compositional reference. AI-generated images may serve as reference material but may not appear as final artwork without substantial transformation.
 
 Your Position Statement is due before you begin working with AI on this project. Write it first. It anchors everything that follows.

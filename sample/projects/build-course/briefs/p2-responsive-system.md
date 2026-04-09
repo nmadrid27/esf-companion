@@ -42,4 +42,4 @@ Projects will be assessed on:
 
 Tool selection is yours. You are not required to use any specific library, framework, or language. If you are uncertain whether a tool is appropriate, your responsibility is to research it and make a case, not to ask for permission.
 
-AI tools may be used as research subjects and thinking partners throughout the project. They may not originate your Design Intent or make core technical decisions on your behalf without documentation.
+AI tools may be used as research subjects and for exploration throughout the project. They may not originate your Design Intent or make core technical decisions on your behalf without documentation.

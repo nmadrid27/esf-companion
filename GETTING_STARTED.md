@@ -316,7 +316,7 @@ Jordan reads it. It does. They confirm.
 
 ### Step 2: Challenge
 
-Now the Companion shifts to its thinking-partner role. It pushes back on Jordan's position:
+Now the Companion moves into the challenge step. It pushes back on Jordan's position:
 
 > You said you want to test a tool for motion or timing because it's "closer to what I'd actually use." Two questions:
 >
@@ -408,7 +408,7 @@ The Position Statement exists and has been confirmed. The workspace state file r
 
 5. **Verification is prompted, not assumed.** When the Companion presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the user's initiative.
 
-6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The Companion calibrates its tone and support level to the user's position in the sequence. By BUILD and DESIGN levels, users are expected to drive the process with less scaffolding.
+6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The Companion calibrates its tone and support level to the user's position in the sequence. At more advanced scaffolding levels, users are expected to drive the process with less scaffolding.
 
 ---
 

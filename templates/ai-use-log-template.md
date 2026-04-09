@@ -210,7 +210,7 @@ status: ""
 **Percentage substantially revised:** [ ]%
 **Percentage rejected:** [ ]%
 
-**What does this tell me about my current AI collaboration practice?**
+**What does this tell me about my current AI-assisted work practice?**
 
 >
 
@@ -229,5 +229,5 @@ status: ""
 ---
 
 *Epistemic Stewardship Framework, AI Use Log Template*
-*Use for assignments where you want to track your AI collaboration process in detail.*
+*Use for assignments where you want to track your AI-assisted work process in detail.*
 *Recommended for the Supported and Independent scaffolding levels.*

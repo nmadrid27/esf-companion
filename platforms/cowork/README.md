@@ -1,6 +1,6 @@
 # ESF Companion Plugin
 
-An extended thinking partner for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence: your position before AI engagement, then monitoring for drift throughout.
+A toolkit for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence: your position before AI engagement, then monitoring for drift throughout.
 
 Built on the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-companion).
 
@@ -12,9 +12,9 @@ The ESF Companion works through five phases:
 
 1. **Inquire.** Human only. No AI. You work out what you already know and think.
 2. **Position.** Human only. You write a Position Statement before AI enters.
-3. **Explore.** AI as thinking partner. Expands, challenges, and pressure-tests your thinking.
+3. **Explore.** AI challenges your position. Expands, probes, and pressure-tests your thinking.
 4. **Make.** AI as drafting support. Builds with you, anchored to your Position Statement.
-5. **Reflect.** AI as review partner. Five Questions, reflection, disclosure, and session synthesis.
+5. **Reflect.** AI reviews the work. Five Questions, reflection, disclosure, and session synthesis.
 
 Drift detection runs continuously. When your work moves away from your stated position, or when you start accepting AI output without evaluation, the Companion surfaces it as a question, not a command. You decide what to do.
 

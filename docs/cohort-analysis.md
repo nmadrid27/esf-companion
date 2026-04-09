@@ -120,7 +120,7 @@ Cohort analysis involves student data. Follow these principles:
 
 ## Relationship to ESF's epistemic goals
 
-Cohort analysis is not about enforcing originality. It is about making visible a pattern that AI collaboration creates structurally. A cohort with high homogenization has not failed; it has encountered a predictable effect of using similar tools on similar problems.
+Cohort analysis is not about enforcing originality. It is about making visible a pattern that AI-assisted work creates structurally. A cohort with high homogenization has not failed; it has encountered a predictable effect of using similar tools on similar problems.
 
 The goal is collective epistemic diversity: the cohort produces a richer body of work when its members are genuinely exploring different directions. Position Statements that look like each other suggest the exploration phase may not have happened yet.
 
