@@ -408,7 +408,7 @@ The Position Statement exists and has been confirmed. The workspace state file r
 
 5. **Verification is prompted, not assumed.** When the Companion presented research, it immediately told Jordan to verify before incorporating. The habit of checking is built into the workflow, not left to the user's initiative.
 
-6. **DISCOVER level means more scaffolding.** Jordan got more explanation at each step than Maya (THINK level) would. The Companion calibrates its tone and support level to the user's position in the sequence. At more advanced scaffolding levels, users are expected to drive the process with less scaffolding.
+6. **Scaffolding level shapes the experience.** Jordan got more explanation at each step than a more experienced user would. The Companion calibrates its tone and support level based on the user's scaffolding level. At more advanced scaffolding levels, users are expected to drive the process with less scaffolding.
 
 ---
 
