@@ -24,6 +24,8 @@ One command:
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
+**On Windows?** Run this from Git Bash (included with [Git for Windows](https://gitforwindows.org/)) or from a WSL terminal. See [Windows Installation](README.md#windows-installation) for full details.
+
 The installer asks what AI tool you use (Claude Code, Claude.ai, ChatGPT, or other) and sets up accordingly.
 
 **What got installed:**
