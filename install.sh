@@ -22,6 +22,7 @@ set -e
 
 SAMPLE=false
 FORCE=false
+AMBIENT=true
 PLATFORM_FLAG=""
 PLATFORM_NEXT=false
 for arg in "$@"; do
@@ -238,8 +239,24 @@ if [ "$PLATFORM" = "cowork" ]; then
     echo ""
     echo "  5. Run /esf-start to initialize your workspace."
     echo ""
-    echo "  That's it. The plugin reads companion-state.md from your selected"
-    echo "  folder and carries state across sessions."
+    echo "  The plugin reads companion-state.md from your selected folder"
+    echo "  and carries state across sessions."
+    echo ""
+    echo "──────────────────────────────────────"
+    echo -e "${CYAN}Want ESF to activate automatically every session?${NC}"
+    echo ""
+    echo "  Set up a Claude.ai Project:"
+    echo ""
+    echo "  1. Go to claude.ai and create a new Project."
+    echo ""
+    echo "  2. In Project Settings, paste the contents of:"
+    echo "     prompts/esf-companion.md"
+    echo "     into the system prompt field."
+    echo ""
+    echo "  3. Upload companion-state.md as a Project knowledge file."
+    echo ""
+    echo "  ESF will activate automatically at the start of every conversation"
+    echo "  in that Project, with your identity and context already loaded."
     echo "──────────────────────────────────────"
     echo ""
   else
@@ -395,6 +412,43 @@ if [ "$PLATFORM" != "claude" ]; then
 fi
 
 # Full Claude Code install
+
+# Ambient mode prompt
+if [ "$FORCE" != true ]; then
+  echo ""
+  echo "──────────────────────────────────────"
+  echo -e "${CYAN}How ESF Companion works${NC}"
+  echo ""
+  echo "  ESF Companion protects your intellectual ownership of AI-assisted work."
+  echo "  It does this through four moments in every session:"
+  echo ""
+  echo "    Direction check    Before drafting anything substantive, asks what"
+  echo "                       you are making so AI builds from your intent."
+  echo ""
+  echo "    Drift detection    Surfaces when your work has moved away from"
+  echo "                       your stated direction across two or more exchanges."
+  echo ""
+  echo "    Rejection capture  When you push back on an AI suggestion, offers"
+  echo "                       to log it as a Record of Resistance."
+  echo ""
+  echo "    Ownership check    Before you finalize anything, asks about specific"
+  echo "                       choices so you can speak to them confidently."
+  echo ""
+  echo "  These moments can run automatically or on demand:"
+  echo ""
+  echo "    Ambient  ESF activates at the start of every Claude Code session."
+  echo "             Recommended. You can turn it off later."
+  echo ""
+  echo "    Manual   You run /esf-project when you want ESF active."
+  echo "             Better if you only want ESF for specific projects."
+  echo ""
+  echo "──────────────────────────────────────"
+  read -r -p "Run ESF automatically every session? [Y/n]: " AMBIENT_CHOICE </dev/tty
+  if [[ ! "$AMBIENT_CHOICE" =~ ^[Nn]$ ]]; then
+    AMBIENT=true
+  fi
+fi
+
 # Create directory structure
 mkdir -p .claude/agents
 mkdir -p .claude/skills/esf-onboarding
@@ -460,6 +514,42 @@ if [ ! -f "WORKFLOW.md" ]; then
 fi
 fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
 
+# Write ambient activation block to CLAUDE.md if requested
+if [ "$AMBIENT" = true ]; then
+  ESF_SECTION_MARKER="## ESF Companion (Always On)"
+  if [ -f "CLAUDE.md" ] && grep -q "$ESF_SECTION_MARKER" CLAUDE.md 2>/dev/null; then
+    echo -e "  ${YELLOW}ESF ambient block already present in CLAUDE.md — skipping.${NC}"
+  else
+    if [ ! -f "CLAUDE.md" ]; then
+      echo "# CLAUDE.md" > CLAUDE.md
+      echo "" >> CLAUDE.md
+      echo "Project configuration for Claude Code." >> CLAUDE.md
+      echo "" >> CLAUDE.md
+    else
+      echo "" >> CLAUDE.md
+    fi
+    cat >> CLAUDE.md << 'ESF_AMBIENT_EOF'
+## ESF Companion (Always On)
+
+ESF Companion behaviors apply to every Claude Code session in this directory. At session start:
+
+1. Resolve companion-state.md: check context/companion-state.md first, then projects/_esf/companion-state.md, then workspace root. If not found, tell the user to run /esf-onboarding and stop.
+2. Read companion-notes.md (same location). Apply Active Corrections before any other behavior.
+3. Extract current project, phase, and scaffolding level from companion-state.md.
+4. If a current project is set, display the progress indicator.
+
+Throughout every session, apply the four key moments:
+- Direction (Moment 1): Before producing substantive content on a new project without a Position Statement, ask what the user is making.
+- Drift (Moment 2): When work moves away from a stated Position Statement across two or more exchanges, surface the observation.
+- Rejection capture (Moment 3): When the user pushes back on a suggestion substantially, offer to capture a Record of Resistance.
+- Ownership check (Moment 4): When the user signals they are wrapping up, ask about specific choices before finalizing.
+
+Full behavioral spec: .claude/agents/esf-companion.md.
+ESF_AMBIENT_EOF
+    echo -e "  ${GREEN}ESF ambient mode written to CLAUDE.md.${NC}"
+  fi
+fi
+
 # Ensure .session-buffer.md is gitignored (covers fresh and existing repos)
 touch .gitignore
 if ! grep -q '.session-buffer.md' .gitignore 2>/dev/null; then
@@ -495,6 +585,7 @@ fi
 if [ -d ".git" ]; then
   git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
+  [ -f CLAUDE.md ] && git add CLAUDE.md 2>/dev/null
 
   # Sample installs also create tracked demo project files.
   if [ "$SAMPLE" = true ] && [ -d "projects" ]; then
