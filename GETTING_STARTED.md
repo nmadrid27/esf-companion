@@ -14,6 +14,7 @@ entities: [ESF]
    ```bash
    curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
    ```
+   **On Windows?** Run this from Git Bash (included with [Git for Windows](https://gitforwindows.org/)) or from a WSL terminal. See [Windows Installation](README.md#windows-installation) for details.
 2. Choose your platform when prompted. Claude Code gives the full experience.
 3. Open Claude Code: `claude`
 4. Run onboarding: `/esf-onboarding` (about 5 minutes)
