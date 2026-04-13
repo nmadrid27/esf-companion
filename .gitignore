@@ -15,3 +15,6 @@ node_modules/
 
 # ESF session buffer (ephemeral, not versioned)
 .session-buffer.md
+
+# Cowork plugin binary — distributed via GitHub releases, not tracked in repo
+platforms/esf-companion.plugin
