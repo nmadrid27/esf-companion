@@ -75,9 +75,9 @@ The Position Statement is the gate. Everything else follows from it.
 - **silent_mode:** true
 ```
 
-With silent mode on, the Companion suppresses proactive prompts, phase announcements, drift observations for low-significance moments, and unprompted check-ins. It still enforces the Position Statement gate, Five Questions, and disclosure requirement. Those cannot be silenced.
+With silent mode on, the Companion suppresses proactive prompts, phase announcements, drift observations for low-significance moments, and unprompted check-ins. The Position Statement gate, Five Questions, and disclosure requirement remain active — silent mode reduces how often the Companion speaks, not which checkpoints it enforces.
 
-**If you are a student:** Silent mode is accepted, but a warning will appear once per session noting that blocking checkpoints remain active. If your instructor's brief requires full scaffolding, silent mode will be overridden automatically.
+**If you are a student:** Silent mode is accepted. If your instructor's brief specifies full scaffolding, that requirement takes precedence and silent mode will not apply for that project.
 
 ---
 

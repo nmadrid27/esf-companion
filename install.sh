@@ -224,6 +224,9 @@ if [ "$PLATFORM" = "cowork" ]; then
   if curl -fsSL "$PLUGIN_URL" -o "$PLUGIN_DEST"; then
     echo ""
     echo -e "${GREEN}ESF Companion plugin downloaded.${NC}"
+    echo -e "${YELLOW}Note: the plugin is versioned and released separately from this installer."
+    echo -e "If the plugin feels out of date, check for a newer release at:${NC}"
+    echo "  https://github.com/nmadrid27/esf-companion/releases"
     echo ""
     echo "──────────────────────────────────────"
     echo -e "${CYAN}Next steps:${NC}"
@@ -261,11 +264,17 @@ if [ "$PLATFORM" = "cowork" ]; then
     echo ""
   else
     echo ""
-    echo -e "${RED}Download failed.${NC}"
+    echo -e "${RED}Plugin download failed.${NC}"
     echo ""
-    echo "The plugin file may not be published yet, or you may be offline."
-    echo "You can also download it manually from:"
+    echo "The plugin is released separately from the installer and may not"
+    echo "be published yet, or you may be offline."
+    echo ""
+    echo "Download it manually when available:"
     echo "  https://github.com/nmadrid27/esf-companion/releases"
+    echo ""
+    echo "In the meantime, you can use the conversation platform path instead:"
+    echo "  Re-run and choose option 2 (Claude.ai) for a full-featured experience"
+    echo "  without installing a plugin."
     echo ""
   fi
   exit 0
