@@ -26,7 +26,7 @@ See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)*
 | | **Templates only** | **Claude.ai / ChatGPT / Gemini** | **Claude Cowork** | **Claude Code** |
 |---|---|---|---|---|
 | **What you get** | Markdown files to fill in | AI follows ESF process via custom instructions. Claude.ai Projects adds persistent file context. | AI reads ESF files from your computer | Full agent with drift detection, skills, and session memory |
-| **Requirements** | None | Any AI chat tool | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` |
+| **Requirements** | None | Any AI chat tool | Claude Desktop (Pro+) | Claude Code CLI, `bash`, `curl`, `git` (see [Windows instructions](#windows-installation)) |
 | **Install** | None | Download ZIP or run installer | Download ZIP | Run installer |
 | **Best for** | Any tool, any folder, no setup | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
 
@@ -110,6 +110,60 @@ claude
 **Already have work in this directory?** The installer adds ESF files alongside your existing files. It will not modify or overwrite your work. See [Using ESF with Existing Work](docs/existing-work.md).
 
 **Next step:** Run `claude`, then `/esf-onboarding`.
+
+### Windows Installation
+
+The installer requires `bash`, which is not built into Windows. There are three ways to run it.
+
+**Option A: Git Bash (recommended for most users)**
+
+[Git for Windows](https://gitforwindows.org/) includes Git Bash, a terminal that supports `bash`, `curl`, and `git` out of the box.
+
+1. Install [Git for Windows](https://gitforwindows.org/) if you have not already
+2. Open **Git Bash** (search for it in the Start menu)
+3. Navigate to your project folder:
+   ```bash
+   cd /c/Users/YourName/projects/my-project
+   ```
+4. Run the installer:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+   ```
+
+Everything else works the same as on macOS or Linux.
+
+**Option B: WSL (Windows Subsystem for Linux)**
+
+If you already use WSL, run the installer from your WSL terminal. Your Windows files are accessible at `/mnt/c/`.
+
+1. Open your WSL terminal (Ubuntu, Debian, etc.)
+2. Navigate to your project folder:
+   ```bash
+   cd /mnt/c/Users/YourName/projects/my-project
+   ```
+3. Run the installer:
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
+   ```
+
+**Option C: Download manually (no terminal needed)**
+
+If you do not want to use a terminal at all, use Path 1 (templates only) or Path 2 (conversation tool):
+
+1. Click the green **Code** button at the top of this page, then **Download ZIP**
+2. Unzip into your project folder
+3. For conversation tools: open `prompts/quick-start.md`, fill in your info, and paste into your AI tool
+4. For templates only: copy `templates/position-statement.md` into your project and fill it in
+
+**Using Claude Code on Windows:**
+
+Claude Code runs on Windows via WSL. To set it up:
+
+1. Install WSL if you have not already: open PowerShell as Administrator and run `wsl --install`
+2. Install Claude Code inside WSL following the [Claude Code documentation](https://docs.anthropic.com/en/docs/claude-code/overview)
+3. Navigate to your project folder and run `claude`
+
+Claude Code on the web (claude.ai/code) and Claude Code in VS Code or JetBrains IDEs work on Windows natively without WSL. If you use one of those, run the installer from Git Bash (Option A) to set up the ESF files, then use Claude Code from your IDE or browser.
 
 ---
 
