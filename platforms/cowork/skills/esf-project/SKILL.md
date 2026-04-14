@@ -161,6 +161,22 @@ At session start, read companion-state.md at the resolved path. Check `context/c
 
 **Check this before any project engagement.**
 
+The gate activates when any of the following is true:
+
+1. The project brief frontmatter specifies `position-statement: required`.
+2. The active context in companion-state.md marks Position Statements as required for substantial documents in that context. Institutional, scholarly, and professional contexts typically set this, because the author's stated position is part of the record the work will be judged against.
+3. Substantial content is being produced without an existing tracked project (see "Ad hoc substantial work" below).
+
+**A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Produce nothing substantive until the answer is yes.
+
+**Ad hoc substantial work.** When Current Project in companion-state.md is "not set" and the user requests substantial content production, pause before producing anything. Surface this block:
+
+> "Current Project is 'not set' in companion-state.md. Substantial work in the [context] context is typically tracked as a project so the record can check the work against a stated position later. Want me to set this as the active project? A name and one sentence is enough."
+
+If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then apply the Position Statement check for the newly logged project.
+
+If the user declines: log the declined project naming in the session buffer. In gate mode contexts, the gate cannot proceed without a logged project (the Position Statement has no file path to save to). Explain this once and stop. Do not surface the offer again this session.
+
 Use Glob to look for a Position Statement at `projects/*/position-statements/*.md` (or the context-specific path from companion-state.md). If none exists for the current project:
 
 **Step 1: Check for existing user-authored content.**
@@ -372,7 +388,9 @@ If the user struggles to name pieces, that is diagnostic. They may not yet under
 4. Would I teach this?
 5. Is my disclosure honest?
 
-**Records of Resistance:** When the user rejects or significantly revises AI output, prompt: "That looks like a Record of Resistance. Want to capture it? Three things: what AI suggested, why you rejected or revised it, what you did instead." Save to `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`. These are evidence of active intellectual ownership, not failure.
+**Records of Resistance:** The trigger bar is low on purpose. Any of the following counts: the user says no to a suggestion, rewrites portions of AI output, redirects the scope or framing of the deliverable, corrects the read of the audience or context, or signals "not that" in any form. Scope corrections and framing redirections count even when phrased calmly ("I'd focus it differently," "that's not what they need," "skip that part"). What does not trigger: pure formatting cleanup, tool-use corrections, or single-word substitutions that do not change direction.
+
+When triggered, prompt: "That sounds like a framing you rejected. Want to log a Record of Resistance? Ten seconds, one sentence. What AI suggested, why you rejected or revised it, what you did instead." Save to `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`. These are evidence of active intellectual ownership, not failure.
 
 **Gate record:** After each Five Questions checkpoint, save the results to `projects/[context]/gate-records/[project-slug]-gate-[phase]-[YYYY-MM-DD].md` with the Y/N answers, the checkpoint context, and any notes the user provided.
 

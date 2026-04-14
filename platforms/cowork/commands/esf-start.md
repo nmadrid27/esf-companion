@@ -12,7 +12,13 @@ Initialize or resume an ESF Companion session. Follow this sequence exactly.
 Search for `projects/_esf/companion-state.md` in the selected folder. If not found, also check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore any match whose path contains `sample/`, `examples/`, or `templates/`.
 
 **If companion-state.md exists:**
-Read it. Extract: user name/role, active contexts (courses or projects), current project name, current phase, and last session date. Then use AskUserQuestion with preview cards:
+Read it. Extract: user name/role, active contexts (courses or projects), current project name, current phase, and last session date.
+
+Before any other output, surface the activation status line so the user can see the Companion initialized from real state, not from an assumption:
+
+`ESF Companion active. Project: [name or "not set"]. Context: [code or "none"]. Active corrections: [N from companion-notes.md].`
+
+Then use AskUserQuestion with preview cards:
 
 Question: "Welcome back, [name]. What would you like to do?"
 - **Continue [project name].** Preview: "Phase [N]: [phase name]. Last session: [date] ([brief note]). [List the immediate next action based on current phase, e.g. 'Ready to move into Explore. Your Position Statement is saved.']"
@@ -23,7 +29,17 @@ If the user wants to continue: invoke the `esf-project` skill and proceed from t
 If the user wants to start a new project: go to Step 3.
 
 **If companion-state.md does not exist:**
-Go to Step 2 (first-time setup).
+Surface this status line so the user can see exactly why first-time setup is running:
+
+`ESF Companion: companion-state.md not found. Starting first-time setup.`
+
+Then go to Step 2 (first-time setup).
+
+If companion-state.md is found at a lookup path but the read fails (permission, parse error), surface the failure explicitly and stop:
+
+`ESF Companion: found companion-state.md at [path] but could not read it ([error]). Resolve before proceeding.`
+
+Do not silently proceed in any of these failure cases.
 
 ---
 
