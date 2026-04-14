@@ -6,14 +6,11 @@
 # Exit 0: all assertions pass
 # Exit 1: one or more assertions failed
 #
-# Content assertions run against local source files (faster, no CDN lag).
-# Install assertions run against temp git repos (fresh installs).
-#
-# Known limitation: install.sh fetches from GitHub main, not the local
-# checkout. Content assertions use $REPO_ROOT to validate local source,
-# but the install path validates remote main. For pre-merge testing,
-# content assertions are the reliable gate; install assertions confirm
-# the installer script mechanics, not the content being installed.
+# Both the install path and the content assertions run against the local
+# checkout. install.sh is invoked with --source $REPO_ROOT, which switches
+# its fetch URLs to file:// pointing at the working tree, so the smoke test
+# is a reliable pre-merge gate for both installer mechanics and the content
+# being installed.
 
 set -e
 
@@ -60,7 +57,7 @@ echo "Test 1: Claude install (--force --platform claude)"
 
 CLAUDE_DIR="/tmp/esf-smoke-claude"
 make_git_repo "$CLAUDE_DIR"
-bash "$INSTALL_SH" --force --platform claude > /dev/null 2>&1
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
 EXIT=$?
 
 assert "install exits 0"                               "$EXIT"
@@ -127,7 +124,7 @@ echo "Test 2: Conversation install (--force --platform conversation)"
 
 CONV_DIR="/tmp/esf-smoke-conversation"
 make_git_repo "$CONV_DIR"
-bash "$INSTALL_SH" --force --platform conversation > /dev/null 2>&1
+bash "$INSTALL_SH" --force --platform conversation --source "$REPO_ROOT" > /dev/null 2>&1
 EXIT=$?
 
 assert "install exits 0"                               "$EXIT"

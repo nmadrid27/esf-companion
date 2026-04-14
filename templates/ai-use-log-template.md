@@ -41,7 +41,7 @@ status: ""
 
 >
 
-**What the AI produced:** (Brief summary)
+**What AI suggested:** (Brief summary)
 
 >
 
@@ -76,7 +76,7 @@ status: ""
 
 >
 
-**What the AI produced:** (Brief summary)
+**What AI suggested:** (Brief summary)
 
 >
 
@@ -111,7 +111,7 @@ status: ""
 
 >
 
-**What the AI produced:** (Brief summary)
+**What AI suggested:** (Brief summary)
 
 >
 
@@ -170,7 +170,7 @@ status: ""
 
 | Moment | AI Output | My Decision | Reasoning |
 |--------|-----------|-----------------|-----------|
-| *e.g., "During interaction 2, AI suggested reorganizing my argument structure"* | *Brief description of what AI produced* | *Keep / Revise / Reject* | *Why you made this choice, referencing your Position Statement* |
+| *e.g., "During interaction 2, AI suggested reorganizing my argument structure"* | *Brief description of what AI suggested* | *Keep / Revise / Reject* | *Why you made this choice, referencing your Position Statement* |
 | | | | |
 | | | | |
 | | | | |

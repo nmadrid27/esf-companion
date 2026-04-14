@@ -83,7 +83,7 @@ The most revealing evidence of your thinking is not what you accepted from AI; i
 Document it in `projects/[context]/records-of-resistance/`:
 
 ```
-AI suggested: [what the AI produced]
+AI suggested: [what AI suggested]
 I decided: [keep / revise / reject]
 Because: [your reasoning, referencing your Position Statement]
 ```

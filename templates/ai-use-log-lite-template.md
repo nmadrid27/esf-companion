@@ -38,7 +38,7 @@ Use this lite version for your first AI-assisted project. For later projects, sw
 
 >
 
-**What AI produced:** (Brief summary)
+**What AI suggested:** (Brief summary)
 
 >
 
@@ -63,7 +63,7 @@ Use this lite version for your first AI-assisted project. For later projects, sw
 
 >
 
-**What AI produced:**
+**What AI suggested:**
 
 >
 
