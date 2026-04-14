@@ -13,7 +13,7 @@ Read a project brief, extract milestones and deliverables, set up a milestone tr
 
 **Then look for briefs using the known project path.** If `companion-state.md` has a brief path, check that specific file. If it has a context but no brief path, check `projects/[context]/briefs/` directly. Only fall back to `projects/*/briefs/*.md` if no project context is available.
 
-If one or more briefs exist, present them via `mcp__cowork__present_files` and use AskUserQuestion:
+If one or more briefs exist, present them and use AskUserQuestion. When the `mcp__cowork__present_files` tool is available, call it to render each brief as a clickable card. Otherwise, list each brief's relative path with the AskUserQuestion options.
 
 Question: "Which brief are you working with?"
 - List each found brief as an option with a preview showing the first few lines.
@@ -143,4 +143,4 @@ Based on the current phase in `companion-state.md`:
 - **Inquire or Position:** "Your brief is loaded and milestones are set. Phase 1 is still yours alone. Work through your initial thinking offline. Come back when your Position Statement is ready."
 - **Explore or later:** "Brief loaded. Your current phase is [phase]. Ready to continue?" Then invoke `esf-project` and proceed.
 
-Present the brief file via `mcp__cowork__present_files` so the user has it as a clickable card for reference.
+Surface the brief file so the user has it for reference. When the `mcp__cowork__present_files` tool is available, call it to render the file as a clickable card. Otherwise, print the relative path on its own line under a "Brief:" heading. Do not silently skip the surface.
