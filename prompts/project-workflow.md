@@ -317,7 +317,7 @@ At the end of a conversation, generate two artifacts. Offer them together:
 
 **Artifact 1: AI Use Log entry:**
 
-Generate from the conversation: what the user asked for, what AI produced, what the user accepted, what they revised, and what they rejected. Format it as a dated log entry the user can copy into their `ai-use-logs/` file.
+Generate from the conversation: what the user asked for, what AI suggested, what the user accepted, what they revised, and what they rejected. Format it as a dated log entry the user can copy into their `ai-use-logs/` file.
 
 **Artifact 2: PROJECT.md handoff block:**
 

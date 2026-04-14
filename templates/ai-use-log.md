@@ -16,7 +16,7 @@ One log per project or document. Update it as you work.
 | **Tool** | [e.g., Claude, ChatGPT, Midjourney, Copilot] |
 | **Model/version** | [e.g., Claude Opus 4, GPT-4o, Midjourney v6] |
 | **What I asked** | [Summarize your prompts and what you were trying to accomplish] |
-| **What AI produced** | [Summarize the output] |
+| **What AI suggested** | [Summarize the output] |
 | **What I kept** | [What went into the final work, as-is or adapted] |
 | **What I changed** | [What I revised, rewrote, or rejected] |
 | **My contribution** | [What I created independently: structure, argument, direction, edits] |

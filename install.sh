@@ -6,13 +6,21 @@
 #   curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 #
 # Options:
-#   --sample    Install pre-filled BUILD-level test data (Alex Rivera)
-#   --force     Skip all interactive prompts (for scripted installs)
-#   --platform  Set platform without prompting
-#               Values: claude, conversation, chatgpt, gemini, codex, cowork
+#   --sample       Install pre-filled BUILD-level test data (Alex Rivera)
+#   --force        Skip all interactive prompts (for scripted installs).
+#                  Ambient mode is ON by default under --force; pair with
+#                  --no-ambient to install in manual mode.
+#   --no-ambient   Install without the always-on ambient CLAUDE.md block.
+#                  Use /esf-project manually when you want ESF active.
+#   --platform     Set platform without prompting
+#                  Values: claude, conversation, chatgpt, gemini, codex, cowork
+#   --source       Install from a local directory instead of the GitHub CDN.
+#                  Pass an absolute path to a checkout of this repo. Used by
+#                  the smoke test for pre-merge validation of local content.
 #
 # Examples:
 #   curl -fsSL ... | bash -s -- --force --platform claude
+#   curl -fsSL ... | bash -s -- --force --no-ambient --platform claude
 #   curl -fsSL ... | bash -s -- --force --platform chatgpt
 #   curl -fsSL ... | bash -s -- --force --platform gemini
 #   curl -fsSL ... | bash -s -- --force --platform codex
@@ -25,22 +33,42 @@ FORCE=false
 AMBIENT=true
 PLATFORM_FLAG=""
 PLATFORM_NEXT=false
+SOURCE_DIR=""
+SOURCE_NEXT=false
 for arg in "$@"; do
   if [ "$PLATFORM_NEXT" = true ]; then
     PLATFORM_FLAG="$arg"
     PLATFORM_NEXT=false
+  elif [ "$SOURCE_NEXT" = true ]; then
+    SOURCE_DIR="$arg"
+    SOURCE_NEXT=false
   elif [ "$arg" = "--sample" ]; then
     SAMPLE=true
   elif [ "$arg" = "--force" ]; then
     FORCE=true
+  elif [ "$arg" = "--no-ambient" ]; then
+    AMBIENT=false
   elif [[ "$arg" == --platform=* ]]; then
     PLATFORM_FLAG="${arg#--platform=}"
   elif [ "$arg" = "--platform" ]; then
     PLATFORM_NEXT=true
+  elif [[ "$arg" == --source=* ]]; then
+    SOURCE_DIR="${arg#--source=}"
+  elif [ "$arg" = "--source" ]; then
+    SOURCE_NEXT=true
   fi
 done
 
-TOOLKIT_BASE="https://raw.githubusercontent.com/nmadrid27/esf-companion/main"
+if [ -n "$SOURCE_DIR" ]; then
+  if [ ! -d "$SOURCE_DIR" ]; then
+    echo "Error: --source path does not exist: $SOURCE_DIR" >&2
+    exit 1
+  fi
+  # curl supports file:// natively; reuse every existing fetch call unchanged.
+  TOOLKIT_BASE="file://$(cd "$SOURCE_DIR" && pwd)"
+else
+  TOOLKIT_BASE="https://raw.githubusercontent.com/nmadrid27/esf-companion/main"
+fi
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
@@ -453,7 +481,9 @@ if [ "$FORCE" != true ]; then
   echo ""
   echo "──────────────────────────────────────"
   read -r -p "Run ESF automatically every session? [Y/n]: " AMBIENT_CHOICE </dev/tty
-  if [[ ! "$AMBIENT_CHOICE" =~ ^[Nn]$ ]]; then
+  if [[ "$AMBIENT_CHOICE" =~ ^[Nn]$ ]]; then
+    AMBIENT=false
+  else
     AMBIENT=true
   fi
 fi

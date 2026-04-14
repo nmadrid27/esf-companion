@@ -19,7 +19,7 @@ ESF Companion is designed to work across any AI tool and any folder structure. T
 | Feature | Templates only | Conversation tool | Claude Code |
 |---|---|---|---|
 | Position Statement | Manual (fill in template) | AI prompts and saves | Automatic gate |
-| Records of Resistance | Manual (fill in template) | AI prompts | AI prompts, pre-fills "what AI produced" |
+| Records of Resistance | Manual (fill in template) | AI prompts | AI prompts, pre-fills "what AI suggested" |
 | Five Questions | Manual (fill in template) | AI guides | Gate enforced at milestones |
 | Disclosure Statement | Manual (fill in template) | AI drafts from session | AI drafts from session logs |
 | Drift detection | Self-directed (reread PS each session) | Prompt-guided (ask "am I drifting?") | Automatic (reads PS, flags gaps) |

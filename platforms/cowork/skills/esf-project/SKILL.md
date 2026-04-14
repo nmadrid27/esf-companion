@@ -50,7 +50,7 @@ Update the tracker whenever the phase changes. This gives the user a persistent 
 
 ## File Presentation
 
-Use `mcp__cowork__present_files` to surface key project files as clickable cards at these moments:
+Surface key project files at these moments so the user can open and read them as part of the step, not as an afterthought:
 
 | Moment | Present |
 |--------|---------|
@@ -59,7 +59,7 @@ Use `mcp__cowork__present_files` to surface key project files as clickable cards
 | Running Five Questions | Position Statement (reference for the ownership audit) |
 | End of Phase 5 (Reflect) | AI Use Log for disclosure completeness check |
 
-Present files immediately before the relevant action, not after. The user should be able to open and read the file as part of the step, not as an afterthought.
+**How to present:** When the `mcp__cowork__present_files` tool is available, call it to render the file as a clickable card immediately before the relevant action. When the tool is not available (any environment without the Cowork MCP server, including the Phase 1 Python prototype and CLI installs), fall back to printing the relative file path on its own line and a one-sentence note about why the file matters at this moment. Do not silently skip the surface; the action depends on the user being able to read the file.
 
 ---
 

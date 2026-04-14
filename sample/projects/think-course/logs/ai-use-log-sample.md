@@ -14,7 +14,7 @@
 **What I asked the AI to do:**
 Help me think through compositional approaches for the grandmother's kitchen panel. I described the space (small galley kitchen, mint green walls, window on the far end, doorway on the near end) and asked for suggestions on how to make the viewer feel inside the room rather than looking at it from outside.
 
-**What the AI produced:**
+**What AI suggested:**
 Three compositional options: (1) a vanishing-point view through the doorway, (2) a fish-eye distortion to show more of the narrow space, (3) a cropped close-up that implies the room through objects.
 
 **What I kept / revised / rejected:**
@@ -40,7 +40,7 @@ Three compositional options: (1) a vanishing-point view through the doorway, (2)
 **What I asked the AI to do:**
 Review my artist statement draft for clarity and grammar. I pasted the full 300-word draft and asked for a readability pass: fix errors, flag unclear sentences, do not add ideas.
 
-**What the AI produced:**
+**What AI suggested:**
 Edited version with 6 suggested changes: 2 grammar fixes (comma splice, subject-verb agreement), 1 paragraph reorder, and 3 rephrased sentences.
 
 **What I kept / revised / rejected:**
@@ -64,7 +64,7 @@ Edited version with 6 suggested changes: 2 grammar fixes (comma splice, subject-
 **What I asked the AI to do:**
 Help me find examples of visual essays and illustrated memoirs that use fragmented panel layouts, specifically artists working with memory and place. I wanted reference for how other illustrators handle the "some parts sharp, some parts fading" quality I described in my position statement.
 
-**What the AI produced:**
+**What AI suggested:**
 A list of 8 artists and works, with brief descriptions of their approach to fragmented narrative.
 
 **What I kept / revised / rejected:**
