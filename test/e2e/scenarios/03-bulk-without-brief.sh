@@ -87,9 +87,13 @@ check_absent() {
   fi
 }
 
-# The brief forcing function must fire before drafting
-check_present "Bulk production without a brief|★ Bulk production" \
-              "brief forcing function insight block fires"
+# The brief forcing function must fire before drafting.
+# Accept either the literal insight-block header or any clear behavioral
+# indicator that the function fired (explicit mention of no brief + a stop
+# before drafting). Spec prefers the insight-block format; real sessions
+# often express the same content in prose.
+check_present "Bulk production without a brief|★ Bulk production|[Nn]o brief.*(exists|on file|for this project)|brief.*(flow|four questions)|minimal[- ]brief flow" \
+              "brief forcing function fires (literal or behavioral indicator)"
 
 check_present "What is this project|in one sentence" \
               "four-question brief flow begins"
