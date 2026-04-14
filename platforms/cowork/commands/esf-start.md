@@ -1,11 +1,23 @@
 ---
 description: Initialize or resume an ESF project session
-allowed-tools: Read, Write, Glob
+allowed-tools: Read, Write, Glob, WebFetch
 ---
 
 Initialize or resume an ESF Companion session. Follow this sequence exactly.
 
 **All files are created in the user's selected folder.** Every Write, Edit, and Glob call targets paths relative to the workspace root (the folder the user selected in Cowork). Never write to temporary or sandbox paths.
+
+## Step 0: Version Check (Soft Nudge)
+
+The plugin version shipped with this command is `0.5.0`. Fetch the remote manifest from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/platforms/cowork/.claude-plugin/plugin.json` with WebFetch and read its `version` field.
+
+- If the remote version is higher than `0.5.0`: emit one line before proceeding — `Cowork plugin update available: v[remote] (you have v0.5.0). Run /plugin to update.` Do not block. Continue with Step 1.
+- If the remote version equals `0.5.0`: skip silently.
+- If the WebFetch fails (offline, rate limit, GitHub 5xx, parse error, any other failure): skip silently. The version check is a convenience, not a requirement.
+
+Do not offer to run the update yourself. Do not surface the notice more than once per session.
+
+---
 
 ## Step 1: Check for companion-state.md
 

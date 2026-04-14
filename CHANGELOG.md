@@ -14,6 +14,7 @@ All notable changes to the ESF Companion are documented here.
   - Cowork `esf-project` Position Statement Gate is context-aware: activates on brief frontmatter OR companion-state.md context-level requirement OR ad hoc substantial work without a logged project.
   - Cowork `esf-project` explicitly rejects "a clear task instruction satisfies the Position Statement requirement" as a rationalization. The gate stands even when the deliverable is obvious from the first message.
   - Cowork `esf-project` adds an ad hoc project logging offer when Current Project is "not set" and substantial content is requested, with a declined-path note in the session buffer.
+- Cowork plugin version check in `/esf-start`: on session start, fetches the remote `plugin.json` from GitHub main, compares to the version baked into the command, and emits a one-line notice if a newer version is available (`Cowork plugin update available: v[remote] (you have v0.5.0). Run /plugin to update.`). Fails silently on any fetch error. Does not block, does not auto-update. Mirrors the Claude Code agent's `.claude/esf-version` pattern.
 
 ## [3.10] - 2026-04-13
 
