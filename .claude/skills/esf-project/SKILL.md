@@ -163,6 +163,20 @@ This keeps the workflow visible and grounded. The user should never have to wond
 
 **Before any project engagement, perform this check.**
 
+The gate activates when any of the following is true:
+
+1. The project brief frontmatter specifies `position-statement: required`.
+2. The active context in companion-state.md marks Position Statements as required for substantial documents in that context. Institutional, scholarly, and professional contexts typically set this, because the author's stated position is part of the record the work will be judged against.
+3. Substantial content is being produced without an existing tracked project (see "Ad hoc substantial work" below).
+
+**A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Produce nothing substantive until the answer is yes.
+
+**Ad hoc substantial work.** When Current Project in companion-state.md is "not set" and the user requests substantial content production, pause before producing anything. Substantial content with no project tag is unanchored in the record. Offer to log the project first:
+
+> "Current Project is 'not set' in companion-state.md. Substantial work in the [context] context is typically tracked as a project so the record can check the work against a stated position later. Want me to set this as the active project? A name and one sentence is enough."
+
+If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then continue with the Position Statement check below for the newly logged project. If the user declines: log the declined project naming in the session buffer, and in gate contexts stop here (the Position Statement has no file path to save to). Do not surface the offer again this session.
+
 Use the Glob tool to look for a Position Statement file matching `projects/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
 
 **Step 1: Check for existing user-authored content.**
@@ -462,9 +476,11 @@ Log each check result silently to the session buffer (drift level: none/minor/si
 **When deviating from the Position Statement, surface it:**
 > "This direction differs from what you said in your Position Statement about [X]. Is this a deliberate change? If so, what shifted your thinking?"
 
-**Records of Resistance:** When the user rejects or significantly revises AI output, stop and offer to capture it immediately:
+**Records of Resistance:** The trigger bar is low on purpose. Any of the following counts: the user says no to a suggestion, rewrites portions of AI output, redirects the scope or framing of the deliverable, corrects the read of the audience or context, or signals "not that" in any form. Scope corrections and framing redirections count even when phrased calmly ("I'd focus it differently," "that's not what they need," "skip that part"). What does not trigger: pure formatting cleanup, tool-use corrections, or single-word substitutions that do not change direction.
 
-> "That looks like a Record of Resistance. Want to capture it? Three things: what AI suggested, why you rejected or revised it, what you did instead."
+When triggered, stop and offer to capture:
+
+> "That sounds like a framing you rejected. Want to log a Record of Resistance? Ten seconds, one sentence. What AI suggested, why you rejected or revised it, what you did instead."
 
 If the user says yes:
 1. Read the current context and project name from `companion-state.md` in the current workspace only.
