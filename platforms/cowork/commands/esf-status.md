@@ -46,7 +46,7 @@ Session logs: [N] saved / most recent [date]
 
 **What's next:** [one sentence orienting the user to their immediate next action based on current phase and missing artifacts]
 
-After displaying the snapshot, use `mcp__cowork__present_files` to surface the project brief and Position Statement (if they exist) as clickable cards so the user can quickly reference them.
+After displaying the snapshot, surface the project brief and Position Statement (if they exist) so the user can quickly reference them. When the `mcp__cowork__present_files` tool is available, call it to render each as a clickable card. Otherwise, print the relative path of each file on its own line under a "Reference:" heading. Do not silently skip the surface.
 
 ---
 

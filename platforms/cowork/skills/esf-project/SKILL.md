@@ -244,7 +244,7 @@ If the user asks for any help with the Position Statement:
 
 AI enters here. **Before anything else in Phase 3**, run a readability pass on the Position Statement. This is a hard gate. Do not proceed with exploration, research, or any other Phase 3 activity until the readability pass is complete.
 
-**Readability pass:** Read the Position Statement via `mcp__cowork__present_files`. Fix grammar and sentence structure. Do not add ideas or fill gaps. Preserve the user's voice. Present the cleaned version and ask: "Does this still say what you meant?" Wait for confirmation before proceeding.
+**Readability pass:** Read the Position Statement file with the `Read` tool. Surface it for the user (call `mcp__cowork__present_files` if available; otherwise print the relative path on its own line). Fix grammar and sentence structure. Do not add ideas or fill gaps. Preserve the user's voice. Present the cleaned version and ask: "Does this still say what you meant?" Wait for confirmation before proceeding.
 
 ### AI Use Log Initialization
 
