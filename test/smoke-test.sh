@@ -224,6 +224,26 @@ assert "Cowork: Disclosure AI-drafted with user review" \
   "$(grep -q 'draft the disclosure candidate' "$COWORK_SKILL" && \
     grep -q 'explicit.*approval\|explicitly approves' "$COWORK_SKILL" && echo 0 || echo 1)"
 
+# Version lockstep: plugin.json version must match the value baked into /esf-start
+# so the in-session version check doesn't emit spurious update notices.
+COWORK_MANIFEST="$REPO_ROOT/platforms/cowork/.claude-plugin/plugin.json"
+COWORK_VERSION=$(grep '"version"' "$COWORK_MANIFEST" | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+
+assert "Cowork: plugin.json has a parseable version"   \
+  "$([ -n "$COWORK_VERSION" ] && echo 0 || echo 1)"
+
+# The version should appear at least twice in esf-start.md Step 0:
+# once in "shipped with this command is `X.Y.Z`" and once in "(you have vX.Y.Z)".
+BAKED_COUNT=$(grep -c "\`${COWORK_VERSION}\`\|v${COWORK_VERSION}" "$COWORK_START")
+assert "Cowork: esf-start.md baked-in version matches plugin.json ($COWORK_VERSION)" \
+  "$([ "$BAKED_COUNT" -ge 2 ] && echo 0 || echo 1)"
+
+# CHANGELOG should mention the current Cowork plugin version somewhere.
+# Loose check: the version string appears in the file. Exact formatting is
+# freeform, so we don't assert section structure.
+assert "Cowork: CHANGELOG mentions plugin v$COWORK_VERSION" \
+  "$(grep -q "v${COWORK_VERSION}\|${COWORK_VERSION}" "$REPO_ROOT/CHANGELOG.md" && echo 0 || echo 1)"
+
 # ────────────────────────────────────────────────────────────────
 echo ""
 echo "Test 5: Piped-stdin guard on setup-repo.sh"
