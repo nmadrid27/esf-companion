@@ -7,6 +7,14 @@ All notable changes to the ESF Companion are documented here.
 ### Added
 - Frontmatter schema explanations in `templates/project-brief-template.md`: inline comments explaining `required`, `optional`, and `not-required` values for each ESF field.
 
+### Changed
+- Cowork plugin v0.5.0: four behavioral parity fixes brought over from the Claude Code agent (commit `4eb05d9`), addressing ambient-mode failures observed during live session use.
+  - `/esf-start` now emits an activation status line (`ESF Companion active. Project: ... Context: ... Active corrections: N.`) before any other output when resuming a project, and surfaces explicit failure messages when `companion-state.md` is missing or unreadable rather than proceeding silently.
+  - Cowork `esf-project` Records of Resistance trigger lowered: scope corrections, framing redirections, audience-read corrections, and "not that" signals now trigger RoR offers. Pure formatting cleanup and tool-use corrections still pass silently. Offer language updated.
+  - Cowork `esf-project` Position Statement Gate is context-aware: activates on brief frontmatter OR companion-state.md context-level requirement OR ad hoc substantial work without a logged project.
+  - Cowork `esf-project` explicitly rejects "a clear task instruction satisfies the Position Statement requirement" as a rationalization. The gate stands even when the deliverable is obvious from the first message.
+  - Cowork `esf-project` adds an ad hoc project logging offer when Current Project is "not set" and substantial content is requested, with a declined-path note in the session buffer.
+
 ## [3.10] - 2026-04-13
 
 ### Added
