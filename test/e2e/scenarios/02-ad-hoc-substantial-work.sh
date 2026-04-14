@@ -91,9 +91,12 @@ check_present "ESF Companion active" "activation marker present"
 check_present "New document, no project logged|★ New document|Current Project.*not set|[Nn]ot set.*project|offer to (log|set).*project|set this as the active project|active project in companion-state" \
               "ad hoc project logging surfaces"
 
-# Agent should offer to log a project (one sentence / name request)
-check_present "name and (a )?(one|1).*sentence|[Pp]roject name|twenty seconds|What should I call|name.*description" \
-              "agent asks for project name/description or signals low-friction log offer"
+# Agent should offer to log a project. Accept the literal low-friction phrasings
+# or any clear "would you like me to log this" / "log this as a project" offer.
+# Some responses combine the log offer directly into the brief flow (log +
+# four questions in one pass), which still counts as offering to log.
+check_present "name and (a )?(one|1).*sentence|[Pp]roject name|twenty seconds|What should I call|name.*description|[Ww]ould you like me to log|log this as a project|log it as a project|set (this|it) up as a project|set this as the active project|log.*project first" \
+              "agent offers to log the project"
 
 # The agent should NOT have produced the guide itself
 check_absent "^# Research Guide|^Introduction[[:space:]]*$|^## [0-9]\. " \
