@@ -513,6 +513,35 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/ski
 # Download version file
 curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version
 
+# Download and register the session-status hook
+echo "  Fetching hooks..."
+mkdir -p .claude/hooks
+curl -fsSL "$TOOLKIT_BASE/.claude/hooks/esf-session-status.sh" -o .claude/hooks/esf-session-status.sh
+chmod +x .claude/hooks/esf-session-status.sh
+
+# Wire the SessionStart hook into .claude/settings.json (project-level, committed to git).
+# Uses Python so the merge is safe regardless of existing settings.json content.
+python3 - << 'PY'
+import json, sys
+from pathlib import Path
+
+p = Path('.claude/settings.json')
+data = json.loads(p.read_text()) if p.exists() else {}
+
+hooks = data.setdefault('hooks', {})
+ss = hooks.setdefault('SessionStart', [])
+
+cmd = 'bash .claude/hooks/esf-session-status.sh'
+already = any(
+    any(h.get('command', '') == cmd for h in g.get('hooks', []))
+    for g in ss if isinstance(g, dict)
+)
+if not already:
+    ss.append({'hooks': [{'type': 'command', 'command': cmd, 'timeout': 10}]})
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2) + '\n')
+PY
+
 # Download prompts
 echo "  Fetching prompts..."
 fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
@@ -652,7 +681,8 @@ fi
 if [ -d ".git" ]; then
   git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
-  [ -f CLAUDE.md ] && git add CLAUDE.md 2>/dev/null
+  [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
+  [ -f .claude/settings.json ] && git add .claude/settings.json 2>/dev/null
 
   # Sample installs also create tracked demo project files.
   if [ "$SAMPLE" = true ] && [ -d "projects" ]; then
