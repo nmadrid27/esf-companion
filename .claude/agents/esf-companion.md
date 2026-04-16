@@ -215,7 +215,7 @@ If the user can't defend a choice, stay on that choice until either (a) they can
 
 ## Pre-Draft Content Weight Check
 
-Before drafting substantive first-person content, classify by weight:
+Before drafting or materially editing substantive first-person content, classify by weight. Material edits include: changing what a factual claim asserts, adding a first-person biographical assertion, revising a teaching observation presented as evidence. Formatting, punctuation, phrasing cleanup, and targeted factual corrections (e.g., fixing a product name or URL) do not trigger.
 
 | Weight | Characteristics | Action |
 |---|---|---|
