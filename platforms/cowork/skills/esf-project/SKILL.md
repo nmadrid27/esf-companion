@@ -157,15 +157,48 @@ At session start, read companion-state.md at the resolved path. Check `context/c
 
 ---
 
-## Position Statement Gate
+## Position Statement: Nudge Mode and Gate Mode
 
-**Check this before any project engagement.**
+Two modes govern how Position Statement absence is surfaced, depending on what the user is doing.
 
-The gate activates when any of the following is true:
+**PS lookup (both modes).** Read Current Project and Context from `companion-state.md`, then check `[context base-path]/esf/position-statements/[project-slug].md`. If that file exists, neither mode fires.
+
+**Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
+
+---
+
+### Nudge Mode (Phase 4 default)
+
+When the user is actively drafting or editing in Phase 4 (Make) and no Position Statement exists for the work, prepend a one-line nudge to the response:
+
+```
+[ESF: no Position Statement for [doc] — note one?]
+```
+
+No pause, no blocking refusal, no three-question prompt. The user can note a PS, decline, or ignore and keep working.
+
+**Fires on:**
+- The first Write or Edit to a document in a session.
+- Any structural edit: changes to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame.
+
+**Does not fire on:** Formatting, phrasing cleanup, typo or citation tidying, wikilink repair, frontmatter corrections.
+
+**Decline logic.** Max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session.
+
+**If the user responds with a PS:** save to the Position Statement path for the context, confirm briefly, and continue.
+
+---
+
+### Gate Mode
+
+**Check this before any project engagement in gate-mode contexts.**
+
+Gate mode activates when any of the following is true:
 
 1. The project brief frontmatter specifies `position-statement: required`.
 2. The active context in companion-state.md marks Position Statements as required for substantial documents in that context. Institutional, scholarly, and professional contexts typically set this, because the author's stated position is part of the record the work will be judged against.
 3. Substantial content is being produced without an existing tracked project (see "Ad hoc substantial work" below).
+4. A bulk production command fires ("draft all," "generate the set," "write the N posts," or any numeric-count + production verb) — bulk production triggers gate mode unconditionally, regardless of the context's default.
 
 **A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Produce nothing substantive until the answer is yes.
 
