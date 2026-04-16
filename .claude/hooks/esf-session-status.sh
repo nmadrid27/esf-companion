@@ -7,7 +7,9 @@
 # Follows the 3-location lookup: context/ → projects/_esf/ → workspace root.
 # Always exits 0 (fail-open — never interrupts the session).
 
-WORKSPACE="$(cd "${PWD}" 2>/dev/null && pwd -P || echo "${PWD}")"
+# Prefer CLAUDE_PROJECT_DIR (set by Claude Code for hooks) over PWD,
+# so the hook works even when the session was launched from a subdirectory.
+WORKSPACE="${CLAUDE_PROJECT_DIR:-${PWD}}"
 
 # 3-location lookup for companion-state.md
 COMPANION_STATE=""
@@ -32,15 +34,9 @@ CURRENT_PROJECT=$(grep -m1 '^\- \*\*Project name:\*\*' "$COMPANION_STATE" \
     | sed 's/- \*\*Project name:\*\* //' | sed 's/[[:space:]]*$//')
 CONTEXT=$(grep -m1 '^\- \*\*Context:\*\*' "$COMPANION_STATE" \
     | sed 's/- \*\*Context:\*\* //' | sed 's/[[:space:]]*$//')
-PHASE=$(grep -m1 '^\- \*\*Phase:\*\*' "$COMPANION_STATE" \
-    | sed 's/- \*\*Phase:\*\* //' | sed 's/[[:space:]]*$//')
-LAST_SESSION=$(grep -m1 '^\- \*\*Last session:\*\*' "$COMPANION_STATE" \
-    | sed 's/- \*\*Last session:\*\* //' | sed 's/[[:space:]]*$//')
 
 [ -z "$CURRENT_PROJECT" ] && CURRENT_PROJECT="not set"
 [ -z "$CONTEXT" ]         && CONTEXT="none"
-[ -z "$PHASE" ]           && PHASE="not set"
-[ -z "$LAST_SESSION" ]    && LAST_SESSION="none"
 
 # Count active corrections from companion-notes.md (skip HTML comment blocks)
 COMPANION_DIR="${COMPANION_STATE%/*}"
@@ -59,7 +55,28 @@ if [ -f "$NOTES_FILE" ]; then
     ' "$NOTES_FILE")
 fi
 
+# Session buffer path (spec: projects/[context]/logs/.session-buffer.md)
+SESSION_BUFFER="will create on first decision"
+if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
+    BUFFER_REL="projects/${CONTEXT}/logs/.session-buffer.md"
+    if [ -f "$WORKSPACE/$BUFFER_REL" ]; then
+        SESSION_BUFFER="$BUFFER_REL"
+    fi
+fi
+
+# Last session log (spec: most recent projects/[context]/logs/session-*.md)
+LAST_SESSION_LOG="none"
+if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
+    LOG_DIR="$WORKSPACE/projects/${CONTEXT}/logs"
+    if [ -d "$LOG_DIR" ]; then
+        LATEST=$(ls -1 "$LOG_DIR"/session-*.md 2>/dev/null | sort | tail -1)
+        if [ -n "$LATEST" ]; then
+            LAST_SESSION_LOG="projects/${CONTEXT}/logs/$(basename "$LATEST")"
+        fi
+    fi
+fi
+
 echo "" >&2
-echo "ESF Companion active. Project: ${CURRENT_PROJECT}. Context: ${CONTEXT}. Phase: ${PHASE}. Active corrections: ${ACTIVE_CORRECTIONS}. Last session: ${LAST_SESSION}." >&2
+echo "ESF Companion active. Project: ${CURRENT_PROJECT}. Context: ${CONTEXT}. Active corrections: ${ACTIVE_CORRECTIONS}. Session buffer: ${SESSION_BUFFER}. Last session log: ${LAST_SESSION_LOG}." >&2
 echo "" >&2
 exit 0
