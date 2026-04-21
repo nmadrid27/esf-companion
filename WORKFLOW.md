@@ -16,10 +16,10 @@ flowchart TD
     classDef artifact fill:#f3e8ff,stroke:#9333ea,color:#3b0764
     classDef blocked fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
 
-    BRIEF(["📄 Project Brief\nfrom your instructor\n→ save to projects/briefs/"]):::artifact
+    BRIEF(["📄 Project Brief\nyour own, or received\n→ save to projects/briefs/"]):::artifact
 
     subgraph HUMANONLY["  Phases 1 to 2 · Human Only · No AI  "]
-        P1["1 · Inquire\nRead the brief carefully.\nAsk yourself:\n• What is this actually asking?\n• What do I already know?\n• What am I uncertain about?\n• What assumptions am I making?"]:::humanOnly
+        P1["1 · Inquire\nUnderstand the problem.\nAsk yourself:\n• What is this actually asking?\n• What do I already know?\n• What am I uncertain about?\n• What assumptions am I making?"]:::humanOnly
 
         P2["2 · Position ✍️\nWrite your Position Statement, without AI.\n• What is my position or approach?\n• What matters most to me in this work?\n• What will I not compromise on?\n\n200 to 400 words · rough is fine\nsave to projects/[context]/position-statements/"]:::humanOnly
     end

@@ -296,6 +296,8 @@ The templates use generic language. Adapt them:
 | Design | "My concept is X, constrained by Y" | Rejected compositions, overridden style suggestions, revised layouts |
 | Code | "My architecture is X, optimized for Y" | Rejected implementations, rewritten algorithms, overridden patterns |
 | Prompt/context engineering | "Design Intent: this AI must do X, must never do Y, optimized for Z" | Rejected model-suggested patterns, pushed-back constraint softening, corrected behavioral drift |
+| Research | "My hypothesis is X, grounded in Y" | Rejected interpretations, revised analyses, challenged claims |
+| Consulting | "My recommendation is X, based on Y" | Rejected framings, revised conclusions, removed unsupported claims |
 
 ### Prompt and Context Engineering
 
@@ -310,8 +312,6 @@ The five-phase process applies directly:
 5. **Behavioral Audit.** Before shipping: can you explain every constraint? Does the model's behavior match your original Design Intent? Did you consciously choose each element, or did some arrive by suggestion?
 
 The Companion detects prompt engineering projects from context (brief mentions a system prompt, context window, or model configuration) and adjusts its vocabulary accordingly. The mechanism does not change.
-| Research | "My hypothesis is X, grounded in Y" | Rejected interpretations, revised analyses, challenged claims |
-| Consulting | "My recommendation is X, based on Y" | Rejected framings, revised conclusions, removed unsupported claims |
 
 ---
 
