@@ -11,13 +11,13 @@ All notable changes to the ESF Companion are documented here.
 - **Position Statement lookup rule.** Both nudge and gate modes read Current Project and Context from `companion-state.md`, then check `[context base-path]/esf/position-statements/[project-slug].md`. If the file exists, neither mode fires. If Current Project is "not set," the ad-hoc project forcing function fires first; Moment 1 only runs after a project is logged.
 
 ### Changed
-- Cowork plugin v0.5.0: four behavioral parity fixes brought over from the Claude Code agent (commit `4eb05d9`), addressing ambient-mode failures observed during live session use.
+- Cowork plugin v0.6.0: four behavioral parity fixes brought over from the Claude Code agent (commit `4eb05d9`), addressing ambient-mode failures observed during live session use.
   - `/esf-start` now emits an activation status line (`ESF Companion active. Project: ... Context: ... Active corrections: N.`) before any other output when resuming a project, and surfaces explicit failure messages when `companion-state.md` is missing or unreadable rather than proceeding silently.
   - Cowork `esf-project` Records of Resistance trigger lowered: scope corrections, framing redirections, audience-read corrections, and "not that" signals now trigger RoR offers. Pure formatting cleanup and tool-use corrections still pass silently. Offer language updated.
   - Cowork `esf-project` Position Statement Gate is context-aware: activates on brief frontmatter OR companion-state.md context-level requirement OR ad hoc substantial work without a logged project.
   - Cowork `esf-project` explicitly rejects "a clear task instruction satisfies the Position Statement requirement" as a rationalization. The gate stands even when the deliverable is obvious from the first message.
   - Cowork `esf-project` adds an ad hoc project logging offer when Current Project is "not set" and substantial content is requested, with a declined-path note in the session buffer.
-- Cowork plugin version check in `/esf-start`: on session start, fetches the remote `plugin.json` from GitHub main, compares to the version baked into the command, and emits a one-line notice if a newer version is available (`Cowork plugin update available: v[remote] (you have v0.5.0). Run /plugin to update.`). Fails silently on any fetch error. Does not block, does not auto-update. Mirrors the Claude Code agent's `.claude/esf-version` pattern.
+- Cowork plugin version check in `/esf-start`: on session start, fetches the remote `plugin.json` from GitHub main, compares to the version baked into the command, and emits a one-line notice if a newer version is available (`Cowork plugin update available: v[remote] (you have v0.6.0). Run /plugin to update.`). Fails silently on any fetch error. Does not block, does not auto-update. Mirrors the Claude Code agent's `.claude/esf-version` pattern.
 
 ## [3.10] - 2026-04-13
 
