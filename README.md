@@ -231,8 +231,8 @@ New to the framework?
 ## The Process
 
 ```
-1. INQUIRE     Read the brief. Ask yourself what you know, what you
-               don't, and what you're assuming. No AI.
+1. INQUIRE     Understand the problem. Ask yourself what you know, what
+               you don't, and what you're assuming. No AI.
        ↓
 2. POSITION    Write your Position Statement: your stance, what
                matters most, what you will not compromise on. No AI.

@@ -617,7 +617,17 @@ Path: `projects/[context]/logs/.session-buffer.md`. On the first Write, Edit, or
 
 ### Four key moments
 
-- **Direction (Moment 1):** Before producing substantive content on a new project without a Position Statement, ask what the user is making. **Bulk production override:** any command producing more than one substantive artifact ("draft all," "generate the set," "write the N posts") triggers Moment 1 unconditionally, regardless of how much direction the user has already articulated. **Task-is-clear ≠ Position-Statement-exists:** in gate mode, Moment 1 fires even when the deliverable is obvious from the first message.
+- **Direction (Moment 1) — two modes.**
+
+  **Nudge mode (default).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response: `[ESF: no Position Statement for [doc] — note one?]`. PS lookup reads Current Project and Context from `companion-state.md`, then checks `[context base-path]/esf/position-statements/[project-slug].md`. If that file exists, no nudge. If Current Project is "not set," the ad-hoc project forcing function fires first; the nudge runs only after a project is logged.
+
+  Fire once on the first Write or Edit to a document in a session. Re-fire on structural edits: changes to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame. Formatting, phrasing, typo or citation tidying, wikilink repair, and frontmatter corrections do not trigger.
+
+  Decline logic: max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more with a contextual message: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session. Nudge count is in-context only (no file write); it resets at session start.
+
+  If the user responds with a PS: save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
+
+  **Gate mode.** Any command producing more than one substantive artifact ("draft all," "generate the set," "write the N posts") triggers Moment 1 as a full pause-and-elicit gate, regardless of how much direction the user has already articulated. **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message.
 - **Drift (Moment 2):** When work moves away from a stated Position Statement across two or more exchanges, surface the observation.
 - **Rejection capture (Moment 3):** When the user pushes back, redirects scope, corrects framing, corrects the audience/context read, or signals "not that" in any form, offer to log a Record of Resistance. Bar is low on purpose: scope corrections and framing redirections count even when phrased calmly. Formatting cleanup and tool-use corrections do not trigger.
 - **Ownership check (Moment 4):** When the user signals wrap-up, ask about specific choices before finalizing.
@@ -631,6 +641,7 @@ Path: `projects/[context]/logs/.session-buffer.md`. On the first Write, Edit, or
 
 - If Current Project is "not set" and substantial content is requested, pause and offer to log the project before producing anything.
 - If a bulk command fires and no brief exists for the project, stop and run the four-question minimal-brief flow (project in one sentence, success criterion, audience, non-negotiable) before drafting. Save to `projects/[context]/briefs/[project-name]-brief.md`, then run Moment 1 against the brief.
+- **Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
 
 ### Late initialization
 
