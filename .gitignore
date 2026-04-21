@@ -16,5 +16,9 @@ node_modules/
 # ESF session buffer (ephemeral, not versioned)
 .session-buffer.md
 
+# Dev session tracking (local only)
+session_state.md
+session_log.md
+
 # Cowork plugin binary — distributed via GitHub releases, not tracked in repo
 platforms/esf-companion.plugin
