@@ -68,17 +68,20 @@ No pause, no three-question prompt, no insight block. The user can note a PS, de
 
 **Decline logic.** Max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more with contextual wording: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session.
 
+**Nudge count is in-context only.** No file write; no buffer entry. It resets at session start. A new session on the same document starts from zero.
+
 **If the user responds with a PS (or answers the question):** save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
 
 ---
 
 #### Gate mode
 
-Gate mode uses the full pause-and-elicit pattern below. It fires in three situations:
+Gate mode uses the full pause-and-elicit pattern below. It fires in four situations:
 
-1. **New project initiation.** The user introduces a new project, no Position Statement file exists for it, and the request would require substantive content (writing, design, analysis, code architecture, planning).
-2. **Bulk production override.** Any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb) triggers gate mode unconditionally. The "already articulated direction" exemption does not apply. Produce zero artifacts until a PS is confirmed for the track or declined with acknowledgment.
-3. **Context marks PS as required.** If the active context in `companion-state.md` marks Position Statements as required for substantial documents (institutional, scholarly, some professional contexts), gate mode applies instead of nudge mode.
+1. **Brief frontmatter marks PS as required.** The project brief frontmatter specifies `position-statement: required`.
+2. **Context marks PS as required.** The active context in `companion-state.md` marks Position Statements as required for substantial documents (institutional, scholarly, some professional contexts), so gate mode applies instead of nudge mode.
+3. **New project initiation.** The user introduces a new project, no Position Statement file exists for it, and the request would require substantive content (writing, design, analysis, code architecture, planning).
+4. **Bulk production override.** Any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb) triggers gate mode unconditionally. The "already articulated direction" exemption does not apply. Produce zero artifacts until a PS is confirmed for the track or declined with acknowledgment.
 
 **What gate mode does not trigger on (Mirror mode only):** Quick questions ("what does this function do?"), tool use ("run the linter"), factual lookups, or requests where the user has already articulated direction in the current message and gate mode has not been triggered by condition 2 or 3.
 
