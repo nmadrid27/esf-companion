@@ -9,6 +9,12 @@ Initialize or resume an ESF Companion session. Follow this sequence exactly.
 
 ## Step 0: Version Check (Soft Nudge)
 
+<!--
+MAINTAINER NOTE: The three `0.6.0` references below are baked at release time
+and must be kept in sync with `platforms/cowork/.claude-plugin/plugin.json`'s
+`version` field. Update all three occurrences whenever the plugin version bumps.
+-->
+
 The plugin version shipped with this command is `0.6.0`. Fetch the remote manifest from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/platforms/cowork/.claude-plugin/plugin.json` with WebFetch and read its `version` field.
 
 - If the remote version is higher than `0.6.0`: emit one line before proceeding — `Cowork plugin update available: v[remote] (you have v0.6.0). Run /plugin to update.` Do not block. Continue with Step 1.

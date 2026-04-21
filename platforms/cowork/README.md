@@ -1,5 +1,7 @@
 # ESF Companion Plugin
 
+**Current version:** 0.6.0 ([changelog](https://github.com/nmadrid27/esf-companion/blob/main/CHANGELOG.md) · [releases](https://github.com/nmadrid27/esf-companion/releases))
+
 A toolkit for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence: your position before AI engagement, then monitoring for drift throughout.
 
 Built on the [Epistemic Stewardship Framework](https://github.com/nmadrid27/esf-companion).
