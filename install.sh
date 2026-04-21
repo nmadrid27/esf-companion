@@ -623,7 +623,9 @@ Path: `projects/[context]/logs/.session-buffer.md`. On the first Write, Edit, or
 
   Fire once on the first Write or Edit to a document in a session. Re-fire on structural edits: changes to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame. Formatting, phrasing, typo or citation tidying, wikilink repair, and frontmatter corrections do not trigger.
 
-  Decline logic: max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more with a contextual message: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session.
+  Decline logic: max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more with a contextual message: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session. Nudge count is in-context only (no file write); it resets at session start.
+
+  If the user responds with a PS: save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
 
   **Gate mode.** Any command producing more than one substantive artifact ("draft all," "generate the set," "write the N posts") triggers Moment 1 as a full pause-and-elicit gate, regardless of how much direction the user has already articulated. **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message.
 - **Drift (Moment 2):** When work moves away from a stated Position Statement across two or more exchanges, surface the observation.

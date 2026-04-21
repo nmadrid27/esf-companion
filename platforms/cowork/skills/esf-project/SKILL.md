@@ -167,9 +167,9 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 ---
 
-### Nudge Mode (Phase 4 default)
+### Nudge Mode (default)
 
-When the user is actively drafting or editing in Phase 4 (Make) and no Position Statement exists for the work, prepend a one-line nudge to the response:
+When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
 
 ```
 [ESF: no Position Statement for [doc] — note one?]
@@ -185,7 +185,9 @@ No pause, no blocking refusal, no three-question prompt. The user can note a PS,
 
 **Decline logic.** Max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session.
 
-**If the user responds with a PS:** save to the Position Statement path for the context, confirm briefly, and continue.
+**Nudge count is in-context only.** No file write; no buffer entry. It resets at session start. A new session on the same document starts from zero.
+
+**If the user responds with a PS:** save to the Position Statement path for the context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
 
 ---
 

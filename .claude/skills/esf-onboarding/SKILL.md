@@ -206,7 +206,7 @@ Walk the user through writing a Position Statement for their project using conve
 If the user wants full setup: carry the project and Position Statement forward into Step 2. Do not re-ask what they're working on.
 
 If the user says "explain the phases," give a compact overview:
-> "Five phases: (1) **Inquire**: read the brief, form your own questions. (2) **Position**: write your Position Statement. You just did that. (3) **Explore**: I challenge your thinking. (4) **Make**: we build together, I watch for drift. (5) **Reflect**: you answer five ownership questions and write an honest disclosure. Phases 1-2 are yours alone. 3-5 are where I come in."
+> "Five phases: (1) **Inquire**: understand the problem, form your own questions. (2) **Position**: write your Position Statement. You just did that. (3) **Explore**: I challenge your thinking. (4) **Make**: we build together, I watch for drift. (5) **Reflect**: you answer five ownership questions and write an honest disclosure. Phases 1-2 are yours alone. 3-5 are where I come in."
 
 Then offer full setup again.
 
