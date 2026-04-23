@@ -20,7 +20,7 @@ Growth Record with development tracking across projects (companion-state.md Grow
 
 ## What Is Shipped (v3)
 
-Framework Evolution Protocol: users can propose revisions to the ESF process, document deliberate deviations, and build a personal version of ESF. Evolutions are recorded in `projects/_esf/evolution-log.md` and applied going forward. See `.claude/reference/evolution-protocol.md`.
+Framework Evolution Protocol: users can propose revisions to the ESF process, document deliberate deviations, and build a personal version of ESF. Evolutions are recorded in `esf/evolution-log.md` and applied going forward. See `.claude/reference/evolution-protocol.md`.
 
 Cohort homogenization detection: opt-in educator tool that analyzes a cohort's Position Statements for shared vocabulary, direction overlap, and concept space gaps. This is prompt-guided: the educator collects Position Statements and asks the Companion to run the analysis. No automated workflow or dedicated skill. See `docs/cohort-analysis.md`.
 
@@ -281,7 +281,7 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 
 | Layer | What it holds | Where it lives | Persistence | Status |
 |-------|-------------|---------------|-------------|--------|
-| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `projects/_esf/companion-state.md` | Permanent, updated during onboarding and at project completion | [SHIPPED] |
+| **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `esf/companion-state.md` | Permanent, updated during onboarding and at project completion | [SHIPPED] |
 | **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `projects/[name]/PROJECT.md` | Per project, updated each session | [SHIPPED] |
 | **Session memory** | Decisions made, techniques used, drift flagged | `projects/[name]/logs/session-YYYY-MM-DD.md` | Created each session | [SHIPPED] |
 

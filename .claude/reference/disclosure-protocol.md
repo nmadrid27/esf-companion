@@ -1,3 +1,10 @@
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Disclosure Protocol: Reference
 
 > *Note on framing:* This protocol uses academic language. In professional contexts, read "instructor" as "client, collaborator, or reviewer," and "grade" as "professional accountability." The standard is identical.
@@ -104,4 +111,4 @@ If your course requires Records of Resistance documentation, include a brief not
 
 > *Records of Resistance: [number] documented. Key moments: [brief description of 1–2 significant decisions where you revised or rejected AI output and why.]*
 
-The full Records of Resistance files live in `projects/[context]/records-of-resistance/` using one file per decision, for example: `projects/[context]/records-of-resistance/[project-slug]-ror-01.md`.
+The full Records of Resistance files live in `esf/[context]/records-of-resistance/` using one file per decision, for example: `esf/[context]/records-of-resistance/[project-slug]-ror-01.md`.

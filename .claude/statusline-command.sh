@@ -6,6 +6,9 @@
 # where multibyte UTF-8 characters (e.g. U+00B7 middle dot) corrupt the
 # preceding variable content in double-quoted string assignments.
 
+# Exit silently if this project has been moved or ESF was uninstalled.
+[ -f ".claude/esf-version" ] || exit 0
+
 input=$(cat)
 
 cwd=$(echo "$input" | jq -r '.workspace.current_dir // .cwd // ""')
@@ -30,10 +33,11 @@ parts=()
 [ -n "$branch" ]   && parts+=("[$branch]")
 
 # ESF Companion: read context + phase from companion-state.md.
-# Check context/companion-state.md first, then projects/_esf/companion-state.md.
+# Check esf/ first (current), then context/ and projects/_esf/ (legacy).
 base_dir="${cwd/#\~/$HOME}"
 companion_state=""
 for candidate in \
+    "$base_dir/esf/companion-state.md" \
     "$base_dir/context/companion-state.md" \
     "$base_dir/projects/_esf/companion-state.md"; do
     if [ -f "$candidate" ]; then

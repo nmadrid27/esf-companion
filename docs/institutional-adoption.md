@@ -4,7 +4,7 @@ If you teach at a university, college, or training program and want students to 
 
 ## 1. Add your course context to the workspace state
 
-Edit `projects/_esf/companion-state.md` to include your course information. Add a context entry like this:
+Edit `esf/companion-state.md` to include your course information. Add a context entry like this:
 
 ```markdown
 - your-course: [Course code and title]
@@ -51,7 +51,7 @@ your-course-repo/
         └── esf-companion.md     ← Static agent instructions
 ```
 
-In `projects/_esf/companion-state.md`, add:
+In `esf/companion-state.md`, add:
 
 ```markdown
 ## Project Briefs

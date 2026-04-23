@@ -272,15 +272,15 @@ your-project/
 ├── prompts/
 │   ├── esf-companion.md             ← Paste-anywhere system prompt
 │   └── companion.md                 ← Compact companion prompt
-├── projects/
-│   ├── _esf/
-│   │   ├── companion-state.md       ← Your identity and active contexts
-│   │   └── companion-notes.md       ← Corrections the Companion applies every session
-│   └── [your-project]/
+├── esf/
+│   ├── companion-state.md           ← Your identity and active contexts
+│   ├── companion-notes.md           ← Corrections the Companion applies every session
+│   └── [your-context]/
+│       ├── briefs/                   ← Project briefs
 │       ├── position-statements/      ← Your direction (write this first)
 │       ├── records-of-resistance/    ← Your decisions about AI output
 │       ├── ai-use-logs/             ← What AI contributed
-│       └── work/                     ← Your deliverables
+│       └── logs/                     ← Session logs
 └── WORKFLOW.md                       ← Process diagram
 ```
 

@@ -4,16 +4,17 @@
 # Reads companion-state.md and outputs the activation status line to stderr
 # so it appears in Claude's context before the first response.
 #
-# Follows the 3-location lookup: context/ → projects/_esf/ → workspace root.
+# Follows the 4-location lookup: esf/ → context/ → projects/_esf/ (legacy) → workspace root.
 # Always exits 0 (fail-open — never interrupts the session).
 
 # Prefer CLAUDE_PROJECT_DIR (set by Claude Code for hooks) over PWD,
 # so the hook works even when the session was launched from a subdirectory.
 WORKSPACE="${CLAUDE_PROJECT_DIR:-${PWD}}"
 
-# 3-location lookup for companion-state.md
+# 4-location lookup for companion-state.md
 COMPANION_STATE=""
 for candidate in \
+    "$WORKSPACE/esf/companion-state.md" \
     "$WORKSPACE/context/companion-state.md" \
     "$WORKSPACE/projects/_esf/companion-state.md" \
     "$WORKSPACE/companion-state.md"
@@ -55,23 +56,23 @@ if [ -f "$NOTES_FILE" ]; then
     ' "$NOTES_FILE")
 fi
 
-# Session buffer path (spec: projects/[context]/logs/.session-buffer.md)
+# Session buffer path (spec: esf/[context]/logs/.session-buffer.md)
 SESSION_BUFFER="will create on first decision"
 if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
-    BUFFER_REL="projects/${CONTEXT}/logs/.session-buffer.md"
+    BUFFER_REL="esf/${CONTEXT}/logs/.session-buffer.md"
     if [ -f "$WORKSPACE/$BUFFER_REL" ]; then
         SESSION_BUFFER="$BUFFER_REL"
     fi
 fi
 
-# Last session log (spec: most recent projects/[context]/logs/session-*.md)
+# Last session log (spec: most recent esf/[context]/logs/session-*.md)
 LAST_SESSION_LOG="none"
 if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
-    LOG_DIR="$WORKSPACE/projects/${CONTEXT}/logs"
+    LOG_DIR="$WORKSPACE/esf/${CONTEXT}/logs"
     if [ -d "$LOG_DIR" ]; then
         LATEST=$(ls -1 "$LOG_DIR"/session-*.md 2>/dev/null | sort | tail -1)
         if [ -n "$LATEST" ]; then
-            LAST_SESSION_LOG="projects/${CONTEXT}/logs/$(basename "$LATEST")"
+            LAST_SESSION_LOG="esf/${CONTEXT}/logs/$(basename "$LATEST")"
         fi
     fi
 fi
