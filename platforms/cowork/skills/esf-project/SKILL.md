@@ -1,12 +1,17 @@
 ---
 name: esf-project
 description: >
-  Use this skill when the user is working on a course project, creative project, or any
-  AI-assisted work within the Epistemic Stewardship Framework. Triggers for phrases like
-  "start my project," "work on my brief," "let's begin phase," "I wrote my position
-  statement," "help me explore," "let's make," "review my work," or when the user
-  explicitly invokes ESF phases. Also triggers when companion-state.md is present in
-  the selected folder and a project session is starting.
+  Ambient ESF workflow. Runs whenever the user is doing project work in a folder that
+  contains companion-state.md, so the Companion picks up state without the user
+  having to run /esf-start on every session. Triggers on: the first substantive
+  message of a session (any Write, Edit, or work-adjacent request — "draft,"
+  "edit," "review," "refine," "continue," "help me with this," "let's work on");
+  explicit phase phrases ("start my project," "work on my brief," "I wrote my
+  position statement," "let's explore," "let's make," "review my work"); and
+  session-close signals ("done for today," "wrap up," "save and close," "save this
+  session," 4+ substantive exchanges in Make or Reflect without a continuation
+  signal, 12+ substantive exchanges in any phase). If companion-state.md is absent,
+  defer to /esf-start for first-time setup.
 version: 0.1.0
 ---
 
@@ -566,7 +571,81 @@ Update the progress indicator whenever a phase regression occurs. Log the regres
 
 **Session start:** Check for the most recent session log in `projects/[context]/logs/`. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 
-**End of session:** When the user indicates they're done, run the session synthesis via `/esf-log`.
+**End of session.** Fire the wrap-up offer inline on any of:
+- User says "done for today," "wrap up," "save and close," "save this session," or an equivalent closure signal
+- 4+ substantive exchanges in Make or Reflect without a continuation signal
+- 12+ substantive exchanges in any phase
+
+Surface once, do not repeat more than every 8 exchanges, do not block:
+
+> "Ready to wrap up? I can generate the session log, update PROJECT.md, and clear the buffer. Say 'save and close,' or keep going and I'll ask again at the next natural break."
+
+**On user confirmation, run the synthesis inline** (do not defer to `/esf-log`):
+
+1. **Draft the AI Use Log update from buffer entries only.** Do not fabricate beyond what the buffer supports.
+2. **Generate the session log** at `projects/[context]/logs/session-[YYYY-MM-DD].md` using the template below. Include a "Next Session" section with 2–3 specific items pulled from where the user left off.
+3. **Show the full text of both drafts in chat.** Do not summarize. Ask: "Review and edit anything that's off. Say 'save' when it looks right."
+4. **Save on user confirm** (or with the user's edits) to the paths above.
+5. **Update `projects/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
+6. **Update `companion-state.md`** (Edit tool only — do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
+7. **Clear the session buffer.** Write an empty string (zero-byte file) to `projects/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
+8. **Confirm:** "Session logged and saved. Project state updated. See you next time."
+
+**Session log template:**
+
+```markdown
+---
+type: session-log
+project: [project name]
+date: [today's date]
+phase: [phase at end of session]
+---
+
+# Session Log: [today's date]
+
+## What we worked on
+
+[2–4 sentences summarizing the main activity: what phase, what was built or explored, what decisions were made]
+
+## Phase progress
+
+- Started this session: [phase at session start]
+- Ended this session: [phase at session end]
+- Phase gate cleared: [yes / no / not applicable]
+
+## Position Statement status
+
+- [unchanged / updated to v[N], reason: brief note]
+
+## Five Questions (if completed this session)
+
+| Question | Response |
+|----------|----------|
+| Can I defend this? | [Y / N / partial] |
+| Is this mine? | [Y / N / partial] |
+| Did I verify? | [Y / N / partial] |
+| Would I teach this? | [Y / N / partial] |
+| Is my disclosure honest? | [Y / N / partial] |
+
+## Records of Resistance this session
+
+- [count] documented
+- [Brief description of each, or "none this session"]
+
+## Drift observations
+
+- [none / minor: note / significant: note]
+
+## Prompt evolution
+
+[One observation about how the user's prompting changed across the session: more specific, more directed, better constraints. Observational, not evaluative.]
+
+## Next session
+
+- [2–3 specific items: what to work on, what to decide, what to finish]
+```
+
+`/esf-log` remains available as an explicit trigger for users who prefer the command; both paths run the same synthesis. In ambient mode, the skill fires the synthesis without requiring the command.
 
 ---
 
