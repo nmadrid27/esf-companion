@@ -582,10 +582,12 @@ Surface once, do not repeat more than every 8 exchanges, do not block:
 
 **On user confirmation, run the synthesis inline** (do not defer to `/esf-log`):
 
-1. **Draft the AI Use Log update from buffer entries only.** Do not fabricate beyond what the buffer supports.
+1. **Draft the AI Use Log update from buffer entries only.** Target the existing log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
 2. **Generate the session log** at `projects/[context]/logs/session-[YYYY-MM-DD].md` using the template below. Include a "Next Session" section with 2–3 specific items pulled from where the user left off.
 3. **Show the full text of both drafts in chat.** Do not summarize. Ask: "Review and edit anything that's off. Say 'save' when it looks right."
-4. **Save on user confirm** (or with the user's edits) to the paths above.
+4. **Save on user confirm** (or with the user's edits):
+   - Session log → `projects/[context]/logs/session-[YYYY-MM-DD].md`
+   - AI Use Log update → append to `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`
 5. **Update `projects/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
 6. **Update `companion-state.md`** (Edit tool only — do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
 7. **Clear the session buffer.** Write an empty string (zero-byte file) to `projects/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
