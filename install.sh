@@ -501,8 +501,11 @@ if [ "$FORCE" != true ]; then
   fi
 fi
 
-# Determine install scope
+# Determine install scope.
+# --force (CI/automation) defaults to project — no global ~/.claude/ writes.
+# Interactive defaults to user (prompted below).
 SCOPE="user"
+[ "$FORCE" = true ] && SCOPE="project"
 if [ -n "$SCOPE_FLAG" ]; then
   case "$SCOPE_FLAG" in
     project|user)
