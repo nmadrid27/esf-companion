@@ -114,13 +114,13 @@ Last session: 2026-03-24. Layout exploration. Rejected AI color palette.
 Next: Add hand-drawn elements to grid. Start project page template.
 ```
 
-Next time you run `/esf-project` (or paste your PROJECT.md on conversation tools), the Companion picks up right here.
+Next time you open Claude Code, the Companion picks up right here automatically (ambient install). On manual installs, run `/esf-project`. On conversation tools, paste your saved PROJECT.md.
 
 ---
 
 ## What Happens When You Skip Phase 2
 
-If you run `/esf-project` without a Position Statement (or start a conversation without one on conversation tools), it holds the gate:
+If you open Claude Code (or run `/esf-project` on a manual install, or start a conversation on conversation tools) without a Position Statement, it holds the gate:
 
 > "I can't help with this project yet. Before AI enters your process, you need a Position Statement: a record of your own direction, written without AI assistance. When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think."
 

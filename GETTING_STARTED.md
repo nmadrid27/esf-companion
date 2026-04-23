@@ -29,19 +29,21 @@ entities: [ESF]
 
 ## How to Invoke the Companion
 
-All Companion commands use `/` syntax in Claude Code. You call the tool when you need it. It does not run unless you ask.
+All Companion commands use `/` syntax in Claude Code.
 
 | Command | When to use |
 |---|---|
 | `/esf-onboarding` | First install, or when starting a new project or context |
-| `/esf-project` | Start of any AI work session (runs the five-phase workflow) |
+| `/esf-project` | Explicitly trigger the five-phase workflow (manual installs, or mid-session restart) |
 | `/esf-git` | Before committing (frames the commit as a thinking artifact) |
 | `/esf-verify` | When AI produces a factual claim, source, or data you need to check |
 | `/esf-update` | Check for Companion updates and install the latest version |
 
-**You do not need to remember all of these.** `/esf-project` is the one you will use most. The others are for specific moments.
+**Ambient vs. manual mode:**
 
-**The Companion does not listen passively.** It activates when you call it. Between calls, Claude Code behaves normally with no ESF behavior running.
+The default install writes an ambient block to `CLAUDE.md`. With ambient active, the Companion reads your workspace state and picks up your project automatically at the start of every Claude Code session — no `/esf-project` needed. Just open Claude Code and it is active.
+
+If you installed with `--no-ambient`, the Companion does not activate until you call it. Run `/esf-project` at the start of each session to load your context and enter the workflow.
 
 ---
 
