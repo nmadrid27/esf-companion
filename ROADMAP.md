@@ -282,8 +282,8 @@ In priority order: frontmatter fields, deliverables list, AI use policy, timelin
 | Layer | What it holds | Where it lives | Persistence | Status |
 |-------|-------------|---------------|-------------|--------|
 | **Identity** | Name, discipline, preferences, scaffolding baseline, growth record | `esf/companion-state.md` | Permanent, updated during onboarding and at project completion | [SHIPPED] |
-| **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `projects/[name]/PROJECT.md` | Per project, updated each session | [SHIPPED] |
-| **Session memory** | Decisions made, techniques used, drift flagged | `projects/[name]/logs/session-YYYY-MM-DD.md` | Created each session | [SHIPPED] |
+| **Project context** | Phase, Position Statement reference, RoR count, drift history, last session | `esf/[context]/PROJECT.md` | Per project, updated each session | [SHIPPED] |
+| **Session memory** | Decisions made, techniques used, drift flagged | `esf/[context]/logs/session-YYYY-MM-DD.md` | Created each session | [SHIPPED] |
 
 ### Session Start Protocol
 

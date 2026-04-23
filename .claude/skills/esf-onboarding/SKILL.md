@@ -187,7 +187,7 @@ Then ask:
 **What not to do:**
 - Do not read file contents to infer role. Use filenames and directory names only.
 - Do not reach a high-confidence inference from a single signal. Require at least two matching signals.
-- In standard installs, do not skip Step 7. Confirm what exists and create what is missing. In structured-workspace installs, create work-adjacent `esf/` subfolders instead of `esf/[context]/` folders. Do not create both.
+- In standard installs, do not skip Step 7. Confirm what exists and create what is missing. In structured-workspace installs, create work-adjacent `esf/` subfolders inside each domain directory instead of a top-level `esf/[context]/` tree. Do not create both.
 - Do not confuse a returning user's existing `position-statements/` folder for a student signal if `companion-state.md` is also present. Check 1 takes priority.
 - Do not run Step 1 (Welcome and ESF Overview) for existing workspace users. They have files and know what they're working with. The five-phase overview is redundant at that point.
 - Do not ask "What are you working on?" if the workspace already makes it clear. Skip that question and name what you found instead.
