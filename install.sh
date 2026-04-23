@@ -542,6 +542,29 @@ if not already:
     p.write_text(json.dumps(data, indent=2) + '\n')
 PY
 
+# Install ESF status line into the user's global Claude Code config
+echo "  Installing status line..."
+STATUSLINE_DEST="$HOME/.claude/statusline-command.sh"
+curl -fsSL "$TOOLKIT_BASE/.claude/statusline-command.sh" -o "$STATUSLINE_DEST"
+chmod +x "$STATUSLINE_DEST"
+
+# Wire statusLine into ~/.claude/settings.json without clobbering existing keys
+python3 - << 'PY'
+import json, os
+from pathlib import Path
+
+p = Path.home() / '.claude' / 'settings.json'
+data = json.loads(p.read_text()) if p.exists() else {}
+
+cmd = str(Path.home() / '.claude' / 'statusline-command.sh')
+new_entry = {'type': 'command', 'command': cmd}
+
+if data.get('statusLine') != new_entry:
+    data['statusLine'] = new_entry
+    p.parent.mkdir(parents=True, exist_ok=True)
+    p.write_text(json.dumps(data, indent=2) + '\n')
+PY
+
 # Download prompts
 echo "  Fetching prompts..."
 fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
