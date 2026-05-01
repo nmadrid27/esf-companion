@@ -25,8 +25,8 @@ Use this format for each context:
 
 - **Context:** not set
 - **Project name:** not set
-- **Brief location:** `projects/[context]/briefs/[brief-file]`
-- **Position Statement:** `projects/[context]/position-statements/[project-name].md`
+- **Brief location:** `esf/[context]/briefs/[brief-file]`
+- **Position Statement:** `esf/[context]/position-statements/[project-name].md`
 - **Phase:** Inquire
 - **Project type:** not set
 - **Last session:** none yet

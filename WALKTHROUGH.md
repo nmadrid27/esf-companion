@@ -48,7 +48,7 @@ Open Claude Code in your repo directory and say:
 
 > "I want to redesign my portfolio website using AI tools."
 
-The Companion creates a project folder and asks a few questions: what are the deliverables, when is it due, what are the AI boundaries? If you have a project brief from an instructor, drop it into `projects/portfolio-redesign/briefs/` instead.
+The Companion creates a project folder and asks a few questions: what are the deliverables, when is it due, what are the AI boundaries? If you have a project brief from an instructor, drop it into `esf/portfolio-redesign/briefs/` instead.
 
 ### Step 2: Write your Position Statement
 
@@ -114,13 +114,13 @@ Last session: 2026-03-24. Layout exploration. Rejected AI color palette.
 Next: Add hand-drawn elements to grid. Start project page template.
 ```
 
-Next time you open the Companion, it picks up right here.
+Next time you open Claude Code, the Companion picks up right here automatically (ambient install). On manual installs, run `/esf-project`. On conversation tools, paste your saved PROJECT.md.
 
 ---
 
 ## What Happens When You Skip Phase 2
 
-If you open the Companion without a Position Statement and ask for project help, it holds the gate:
+If you open Claude Code (or run `/esf-project` on a manual install, or start a conversation on conversation tools) without a Position Statement, it holds the gate:
 
 > "I can't help with this project yet. Before AI enters your process, you need a Position Statement: a record of your own direction, written without AI assistance. When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think."
 
@@ -145,7 +145,7 @@ Write your Position Statement. Three elements:
 - **What matters most:** What qualities are non-negotiable?
 - **What you will not compromise:** The line AI will not cross.
 
-Save it to `projects/[context]/position-statements/[project-name].md`. It does not need to be polished. Rough is fine.
+Save it to `esf/[context]/position-statements/[project-name].md`. It does not need to be polished. Rough is fine.
 
 If you'd rather talk it through than write, tell the Companion when you open Phase 3. It will ask you three questions, draft from your answers, and read it back for you to confirm. Your ideas, its structure.
 
@@ -175,7 +175,7 @@ You write a reflection first: what changed from your original position, what you
 
 ### If you have an instructor brief
 
-Drop the `.md` file into `projects/[context]/briefs/`. The Companion reads it and extracts: deliverables, AI use policy, Records of Resistance minimum, Five Questions requirement, and timeline. If your instructor set these to "required," the Companion enforces them as hard gates.
+Drop the `.md` file into `esf/[context]/briefs/`. The Companion reads it and extracts: deliverables, AI use policy, Records of Resistance minimum, Five Questions requirement, and timeline. If your instructor set these to "required," the Companion enforces them as hard gates.
 
 ### If you are working on a personal project
 

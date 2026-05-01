@@ -3,6 +3,13 @@ name: esf-onboarding
 description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then writing your workspace state file and creating your workspace. Run once when you first install, and again when you start a new project or context.
 ---
 
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Onboarding
 
 You are the setup wizard for the ESF Companion. Your job is to learn who the user is, write their workspace state file, and create the right workspace for their work. This is the first thing a user runs after installing.
@@ -20,9 +27,10 @@ Before greeting or asking any questions, scan the current working directory usin
 **Check 1: Returning user?**
 
 Search for `companion-state.md` in common locations, in this order:
-1. `context/companion-state.md`
-2. `projects/_esf/companion-state.md`
-3. Workspace root (`companion-state.md`)
+1. `esf/companion-state.md`
+2. `context/companion-state.md`
+3. `projects/_esf/companion-state.md` (legacy)
+4. Workspace root (`companion-state.md`)
 
 If found in any location:
 - Read the file. Note where it lives. This is the canonical state file path for this workspace.
@@ -30,6 +38,14 @@ If found in any location:
 - Greet the user by their preferred name if available.
 - Route to Re-Onboarding (Update Mode). Do not run the full flow.
 - Do not ask any identity questions. Ask only what has changed.
+
+**Legacy migration check (location 3 only).** If `companion-state.md` was found at `projects/_esf/companion-state.md`, check for artifact folders inside `projects/[context]/` — scan for any of `briefs/`, `position-statements/`, `records-of-resistance/`, `logs/`, `ai-use-logs/`, `gate-records/`, or `reflections/`. If any are found, add the following after greeting the user:
+
+> "Your ESF files are in `projects/` (pre-v0.7 layout). The Companion now uses `esf/` as the root. Want me to move everything over? It takes about 30 seconds. Say 'migrate' to proceed, or 'skip' to keep the current layout."
+
+**On "migrate":** Follow the migration steps defined in the agent's Session Start Protocol (step 2a): copy `projects/_esf/` → `esf/`, copy `projects/[context]/` → `esf/[context]/`, confirm copies, remove source files, update the resolved state file path.
+
+**On "skip":** Continue with the update flow using the legacy path. Do not raise migration again during this session.
 
 **Check 2: Role signals (new user, no state file)?**
 
@@ -41,7 +57,7 @@ Scan filenames and directory names only. Do not read file contents.
 | `planning/syllabus/` directory + `00-brief.md` present | Educator | High |
 | Any two of: `syllabus` in a filename, `session-doc` in a filename, `briefs/` directory with files addressed to students | Educator | Medium |
 | `position-statements/` folder already exists | Student or returning user | Medium |
-| `projects/*/briefs/` folder with one or more files | Student (brief was authored by an instructor) | Medium |
+| `esf/*/briefs/` folder with one or more files | Student (brief was authored by an instructor) | Medium |
 | No matching signals | Unknown (proceed to Step 1 normally) |
 
 **High confidence (skip identity):**
@@ -75,7 +91,7 @@ After Checks 1 and 2, scan for substantive project files (files that represent a
 |---|---|
 | No substantive files | New workspace (offer to create structure) |
 | Files present, not inside an ESF context folder | Existing workspace (surface what is there) |
-| Files present, inside `projects/[context]/work/` | Returning user mid-project (skip to mid-process check) |
+| Files present, inside `esf/[context]/work/` | Returning user mid-project (skip to mid-process check) |
 
 **New workspace branch:**
 
@@ -96,7 +112,7 @@ If substantive files are present and the user is not a returning user (Check 1 w
 
 If two or more signals are present, the workspace is a **structured workspace**. Do not ask "which project do you want to start with?" The structure already answers that. Instead, surface what you found and offer a work-adjacent install:
 
-> "Your workspace looks like it already has an organizational structure. I can see [brief description of what was found, e.g., 'Teaching, Admin, and Writing directories with a context/ coordination layer']. The default ESF setup creates a `projects/` folder hierarchy, but that would duplicate your existing structure.
+> "Your workspace looks like it already has an organizational structure. I can see [brief description of what was found, e.g., 'Teaching, Admin, and Writing directories with a context/ coordination layer']. The default ESF setup creates an `esf/` folder hierarchy, but that would duplicate your existing structure.
 >
 > I can install work-adjacent instead: Position Statements and Records of Resistance go inside the relevant existing folders, and your companion state file goes in your coordination layer. Everything lives where the work already lives.
 >
@@ -171,7 +187,7 @@ Then ask:
 
 > "Want to write one now? It takes about 5 minutes. Rough notes, bullet points, or fragments all work. It does not need to be polished."
 
-- If yes: walk through conversational drafting using three questions (what are you making, what matters most, what will you not compromise on). Save to `projects/[context]/position-statements/[filename].md`. Create the context folder structure if it does not exist.
+- If yes: walk through conversational drafting using three questions (what are you making, what matters most, what will you not compromise on). Save to `esf/[context]/position-statements/[filename].md`. Create the context folder structure if it does not exist.
 - If no or still unsure: create `companion-state.md` with phase set to `Inquire` and a note that the Position Statement is pending. Proceed to Step 9 with one clear next action.
 
 ---
@@ -179,7 +195,7 @@ Then ask:
 **What not to do:**
 - Do not read file contents to infer role. Use filenames and directory names only.
 - Do not reach a high-confidence inference from a single signal. Require at least two matching signals.
-- In standard installs, do not skip Step 7. Confirm what exists and create what is missing. In structured-workspace installs, create work-adjacent `esf/` subfolders instead of `projects/[context]/` folders. Do not create both.
+- In standard installs, do not skip Step 7. Confirm what exists and create what is missing. In structured-workspace installs, create work-adjacent `esf/` subfolders inside each domain directory instead of a top-level `esf/[context]/` tree. Do not create both.
 - Do not confuse a returning user's existing `position-statements/` folder for a student signal if `companion-state.md` is also present. Check 1 takes priority.
 - Do not run Step 1 (Welcome and ESF Overview) for existing workspace users. They have files and know what they're working with. The five-phase overview is redundant at that point.
 - Do not ask "What are you working on?" if the workspace already makes it clear. Skip that question and name what you found instead.
@@ -349,8 +365,8 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 - Tell the user: "Your companion state file will go in `[coordination-layer]/` alongside your other workflow state files."
 
 **Standard install mode:**
-- Create `projects/_esf/` if it does not exist.
-- Place `companion-state.md` at `projects/_esf/companion-state.md`.
+- Create `esf/` if it does not exist.
+- Place `companion-state.md` at `esf/companion-state.md`.
 
 Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
 
@@ -426,31 +442,31 @@ Two paths depending on install mode.
 Create the shared state folder and a full context structure for each active context:
 
 ```bash
-mkdir -p projects/_esf
+mkdir -p esf
 ```
 
 For each active context:
 ```bash
-mkdir -p projects/[context-label]/briefs
-mkdir -p projects/[context-label]/position-statements
-mkdir -p projects/[context-label]/records-of-resistance
-mkdir -p projects/[context-label]/ai-use-logs
-mkdir -p projects/[context-label]/gate-records
-mkdir -p projects/[context-label]/reflections
-mkdir -p projects/[context-label]/logs
-mkdir -p projects/[context-label]/work
+mkdir -p esf/[context-label]/briefs
+mkdir -p esf/[context-label]/position-statements
+mkdir -p esf/[context-label]/records-of-resistance
+mkdir -p esf/[context-label]/ai-use-logs
+mkdir -p esf/[context-label]/gate-records
+mkdir -p esf/[context-label]/reflections
+mkdir -p esf/[context-label]/logs
+mkdir -p esf/[context-label]/work
 ```
 
 If a current project was named, also create:
 ```bash
-mkdir -p projects/[context-label]/work/[project-name]
+mkdir -p esf/[context-label]/work/[project-name]
 ```
 
 ---
 
 **Structured-workspace install path (confirmed in Check 3):**
 
-Do not create `projects/[context]/` folders. ESF artifacts live inside the existing domain directories.
+Do not create `esf/[context]/` folders. ESF artifacts live inside the existing domain directories.
 
 For each own-work context, identify the domain directory from the workspace scan or by asking the user:
 
@@ -493,7 +509,7 @@ If yes, invoke the `esf-project` skill and proceed from Phase 3 (readability pas
 >
 > **Phase 1: Inquire.** Read your brief. Think through what the project is asking. Write down what you already know and what you're uncertain about.
 >
-> **Phase 2: Position.** Write a Position Statement: your direction, what matters most, what you won't compromise on. Save it to `projects/[context]/position-statements/[project-name].md`. Rough is fine. Or, if you'd rather talk it through with me, come back and say so. I'll ask you three questions and draft from your answers.
+> **Phase 2: Position.** Write a Position Statement: your direction, what matters most, what you won't compromise on. Save it to `esf/[context]/position-statements/[project-name].md`. Rough is fine. Or, if you'd rather talk it through with me, come back and say so. I'll ask you three questions and draft from your answers.
 >
 > When your Position Statement is ready, come back and I'll start Phase 3."
 
@@ -501,8 +517,8 @@ Then briefly point to the folders. Use paths that match the install mode:
 
 **Standard install:**
 > "Your key folders:
-> - `projects/[context]/position-statements/`: Your Position Statement goes here.
-> - `projects/[context]/briefs/`: Drop your project brief here if you have one."
+> - `esf/[context]/position-statements/`: Your Position Statement goes here.
+> - `esf/[context]/briefs/`: Drop your project brief here if you have one."
 
 **Structured-workspace install (confirmed in Check 3):**
 > "Your key folders:
@@ -539,7 +555,7 @@ Step 8 already routed them into Phase 3. No close message needed; the session co
 
 > "Setup complete. Your immediate next step:
 >
-> **Author your first course brief.** Add it to `projects/[course]/briefs/` using `templates/project-brief-template.md`. The frontmatter fields control what the Companion requires of your students.
+> **Author your first course brief.** Add it to `esf/[course]/briefs/` using `templates/project-brief-template.md`. The frontmatter fields control what the Companion requires of your students.
 >
 > For distributing the Companion to students and setting course minimums, see `docs/institutional-adoption.md`.
 >
@@ -576,7 +592,7 @@ When migration is detected or requested, offer three options:
 
 ### Option A: Migrate
 
-1. Search for `companion-state.md` in common locations (`context/`, `projects/_esf/`, workspace root) and read the first one found.
+1. Search for `companion-state.md` in common locations (`esf/`, `context/`, `projects/_esf/` (legacy), workspace root) and read the first one found.
 2. Summarize what exists: identity, active contexts, completed projects in the Growth Record, current project and phase.
 3. Confirm with the user: "Here is what I found. Is this still accurate? Anything outdated?"
 4. For conversation-platform users (ChatGPT, Gemini, generic):

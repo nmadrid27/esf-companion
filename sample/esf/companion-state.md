@@ -22,8 +22,8 @@ This file holds mutable local state for the Claude Code workflow.
 
 - **Context:** build-course
 - **Project name:** responsive-system
-- **Brief location:** `projects/build-course/briefs/p2-responsive-system.md`
-- **Position Statement:** `projects/build-course/position-statements/responsive-system.md`
+- **Brief location:** `esf/build-course/briefs/p2-responsive-system.md`
+- **Position Statement:** `esf/build-course/position-statements/responsive-system.md`
 - **Phase:** Explore
 - **Last session:** none yet
 - **Scaffolding level:** Independent

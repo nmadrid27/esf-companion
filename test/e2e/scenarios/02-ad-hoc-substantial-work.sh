@@ -25,8 +25,8 @@ bash "$REPO_ROOT/install.sh" --force --platform claude --source "$REPO_ROOT" > i
 }
 
 # Seed state: identity present, Current Project deliberately "not set"
-mkdir -p projects/_esf
-cat > projects/_esf/companion-state.md <<'EOF'
+mkdir -p esf
+cat > esf/companion-state.md <<'EOF'
 ---
 type: companion-state
 last-updated: 2026-04-14

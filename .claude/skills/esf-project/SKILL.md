@@ -3,6 +3,13 @@ name: esf-project
 description: Use when working on a course project. Runs the ESF project workflow: Inquire, Position, Explore, Make, Reflect, and enforces the Position Statement gate before AI engagement begins. Activate for any project work, ideation, drafting, or review within a course or personal context.
 ---
 
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Project Workflow
 
 ## Workspace State Path Discipline
@@ -10,9 +17,10 @@ description: Use when working on a course project. Runs the ESF project workflow
 `companion-state.md` is always a workspace-relative path in the current repository. Its location depends on how the user ran onboarding:
 
 **Location lookup order (check these in sequence, stop at the first match):**
-1. `context/companion-state.md` (structured-workspace installs)
-2. `projects/_esf/companion-state.md` (standard installs)
-3. Workspace root: `companion-state.md`
+1. `esf/companion-state.md` — current installs
+2. `context/companion-state.md` — legacy structured-workspace installs
+3. `projects/_esf/companion-state.md` — legacy pre-v0.7 installs
+4. Workspace root: `companion-state.md`
 
 - Use the resolved path for all reads and writes throughout the session. Do not switch paths mid-session.
 - Do not translate the resolved path into an absolute path (`~/...`, `/Users/...`).
@@ -177,7 +185,7 @@ The gate activates when any of the following is true:
 
 If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then continue with the Position Statement check below for the newly logged project. If the user declines: log the declined project naming in the session buffer, and in gate contexts stop here (the Position Statement has no file path to save to). Do not surface the offer again this session.
 
-Use the Glob tool to look for a Position Statement file matching `projects/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
+Use the Glob tool to look for a Position Statement file matching `esf/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
 
 **Step 1: Check for existing user-authored content.**
 
@@ -287,13 +295,13 @@ The user answers in whatever form they can: fragments, spoken language, bullet p
 
 The ideas must be the user's. The structure is the Companion's contribution. This is articulation support, not content generation. If the user confirms, save the statement and proceed.
 
-**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `projects/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish.
+**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `esf/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish.
 
 **Project plan offer:** Before moving to the readability pass, offer a lightweight work map:
 
 > "I've saved your Position Statement. One optional step before we start exploring: do you want to sketch a quick project plan? It takes about 5 minutes: what you're making, a few milestones, and your open questions. It gives us a clearer target to direct toward. Want to do that now, or go straight to Explore?"
 
-If yes: fill in `templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `projects/[context]/project-plan.md`. Then proceed to the readability pass.
+If yes: fill in `templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `esf/[context]/project-plan.md`. Then proceed to the readability pass.
 
 If no: proceed directly to the readability pass confirmation: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
 
@@ -325,9 +333,9 @@ Display the full cleaned Position Statement in chat so the user can read every w
 
 ### AI Use Log Initialization
 
-After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `projects/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
+After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `esf/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
 
-> "I've started your AI Use Log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`. This tracks what AI contributed and what you verified. I'll prompt you to update it at key moments."
+> "I've started your AI Use Log at `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`. This tracks what AI contributed and what you verified. I'll prompt you to update it at key moments."
 
 This ensures the log exists before the first verification prompt references it.
 
@@ -395,7 +403,7 @@ Display the full document in chat for the user to review:
 [Summary of the user's direction, with file path]
 ```
 
-The user must confirm the scope before building begins. Save the confirmed scope to `projects/[context]/project-scope-[project-slug].md`. The blank template is at `templates/project-scope-template.md`.
+The user must confirm the scope before building begins. Save the confirmed scope to `esf/[context]/project-scope-[project-slug].md`. The blank template is at `templates/project-scope-template.md`.
 
 The Companion adapts this structure to the project. A short personal project may only need Overview, Deliverables, and Boundaries. A complex build may need all sections. Do not force every project through the full template.
 
@@ -484,8 +492,8 @@ When triggered, stop and offer to capture:
 
 If the user says yes:
 1. Read the current context and project name from `companion-state.md` in the current workspace only.
-2. Derive `project-slug` from the project name and find the next record number by checking `projects/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
-3. Create `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
+2. Derive `project-slug` from the project name and find the next record number by checking `esf/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
+3. Create `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
 4. Pre-fill these fields yourself before asking the user to write anything:
    - frontmatter: `context`, `project`, `date`, `record-number`
    - header metadata: Course, Project, Date, Record #
@@ -503,7 +511,7 @@ For code-based projects, annotated commits can supplement a Record of Resistance
 
 ### Course-Specific Make Phase Requirements
 
-Read the Active Contexts section of `companion-state.md` in the current workspace for RoR requirements and any context-specific Make phase guidance. If the brief frontmatter specifies `records-of-resistance-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+Read the Active Contexts section of `companion-state.md` in the current workspace for RoR requirements and any context-specific Make phase guidance. If the brief frontmatter specifies `records-of-resistance-minimum`, enforce that count. Use the separate-file model above for every captured Record of Resistance: `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 ---
 
@@ -517,7 +525,7 @@ The Five Questions are the full ownership audit, deeper than the per-piece Check
 4. **Would I teach this?** Do I understand this well enough to explain it to someone else?
 5. **Is my disclosure honest?** Does my AI Use Log accurately describe what I did and what AI did?
 
-**Gate record:** After each Five Questions checkpoint, save the results to `projects/[context]/gate-records/[project-slug]-gate-[phase]-[YYYY-MM-DD].md` with the Y/N answers, the checkpoint context (which section or phase transition), and any notes the user provided. This makes gate decisions visible across sessions and supports the reflection in Phase 5.
+**Gate record:** After each Five Questions checkpoint, save the results to `esf/[context]/gate-records/[project-slug]-gate-[phase]-[YYYY-MM-DD].md` with the Y/N answers, the checkpoint context (which section or phase transition), and any notes the user provided. This makes gate decisions visible across sessions and supports the reflection in Phase 5.
 
 ---
 
@@ -533,7 +541,7 @@ Help the user document the process and evaluate the outcome against their origin
 - "What would you do differently on the next project?"
 - "Name 3 moments where you made a deliberate choice to keep, revise, or reject AI output. What was your reasoning each time?"
 
-**Reflection:** Offer the user the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `projects/[context]/reflections/[project-name]-reflection.md`.
+**Reflection:** Offer the user the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `esf/[context]/reflections/[project-name]-reflection.md`.
 
 **Reflection editing:** The same readability pass is available for the user's reflection writing. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
 
@@ -547,7 +555,7 @@ The draft should specify: which tasks AI assisted with (high / medium / low cont
 
 Flag discrepancies before the user reviews: "Your session log shows AI generated [X], but the draft does not mention it. Review and decide whether to include it."
 
-Present the draft and ask: "Does this accurately represent your process? Edit what is wrong, then confirm." Do not save the disclosure until the user explicitly approves it. Save the approved disclosure to `projects/[context]/reflections/[project-name]-disclosure.md`.
+Present the draft and ask: "Does this accurately represent your process? Edit what is wrong, then confirm." Do not save the disclosure until the user explicitly approves it. Save the approved disclosure to `esf/[context]/reflections/[project-name]-disclosure.md`.
 
 Once the user approves, assist with two optional passes:
 
@@ -651,7 +659,7 @@ A lightweight way to save progress mid-session without closing out the full sess
 
 **How to create a checkpoint:**
 
-Write a checkpoint block to the session buffer at `projects/[context]/logs/.session-buffer.md`:
+Write a checkpoint block to the session buffer at `esf/[context]/logs/.session-buffer.md`:
 
 ```markdown
 ## CHECKPOINT [timestamp]
@@ -729,19 +737,19 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 | ESF Moment | What to Write | Where |
 |---|---|---|
 | Position Statement gate clears (Phase 2 to 3) | PS path, date, project name, confirmation status | Update `companion-state.md` in the current workspace: Current Project section |
-| Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `projects/[context]/logs/.session-buffer.md` |
+| Five Questions at section end (Phase 4) | Y/N per question, which section | Append to session buffer: `esf/[context]/logs/.session-buffer.md` |
 | Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
 | Phase transition | New phase, what was completed | Update `companion-state.md` in the current workspace: Current Project phase field |
 
-**Session buffer format:** The file `projects/[context]/logs/.session-buffer.md` is a temporary working file. If it does not exist when the first gate interaction occurs, create it as an empty file before appending. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
+**Session buffer format:** The file `esf/[context]/logs/.session-buffer.md` is a temporary working file. If it does not exist when the first gate interaction occurs, create it as an empty file before appending. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
 For Records of Resistance, append a structured block with enough detail to reconstruct or validate the artifact later:
 
 ```markdown
 ## RoR
 status: saved
-file: projects/[context]/records-of-resistance/[project-slug]-ror-NN.md
+file: esf/[context]/records-of-resistance/[project-slug]-ror-NN.md
 ai_suggested: [brief summary]
 why: [user reasoning]
 did_instead: [user replacement action]
@@ -757,16 +765,16 @@ When the user indicates they are done working for the session (says "I'm done," 
 
 **Process:**
 
-1. Read the session buffer at `projects/[context]/logs/.session-buffer.md`
+1. Read the session buffer at `esf/[context]/logs/.session-buffer.md`
 2. Synthesize it into a session log entry using the template at `templates/session-log-template.md`
 3. Present it to the user:
 
 > "Here is your session log for today. Review it, edit anything that is off, and I will save it."
 
-4. After the user confirms (or edits), save to `projects/[context]/logs/session-YYYY-MM-DD.md`
+4. After the user confirms (or edits), save to `esf/[context]/logs/session-YYYY-MM-DD.md`
 5. Clear the session buffer by overwriting it with empty content, then re-read it to confirm it is empty before reporting success
 6. Update `companion-state.md` in the current workspace with the current phase, last activity date, and current scaffolding level if it changed during the session
-7. Generate or update `projects/[context]/PROJECT.md` with current state:
+7. Generate or update `esf/[context]/PROJECT.md` with current state:
 
 ```markdown
 # Project: [name]
@@ -799,7 +807,7 @@ When a project reaches Phase 5 (Reflect) and the user completes their final refl
 
 ### Session Start: Context Loading
 
-At the start of each session, check for the most recent session log in `projects/[context]/logs/`. If one exists, read its "Next Session" section and use it to orient:
+At the start of each session, check for the most recent session log in `esf/[context]/logs/`. If one exists, read its "Next Session" section and use it to orient:
 
 > "Last session you were in [phase], working on [what]. You noted you wanted to [next session items]. Want to pick up there?"
 
@@ -827,6 +835,6 @@ If any read of `companion-state.md` fails, stop immediately. Tell the user the w
 
 - `.claude/reference/esf-guide.md`: Full ESF guide
 - `.claude/reference/disclosure-protocol.md`: Disclosure templates
-- `projects/[context]/position-statements/`: User's Position Statements (gate artifact)
-- `projects/[context]/records-of-resistance/`: Records of Resistance
-- `projects/[context]/briefs/`: Project briefs
+- `esf/[context]/position-statements/`: User's Position Statements (gate artifact)
+- `esf/[context]/records-of-resistance/`: Records of Resistance
+- `esf/[context]/briefs/`: Project briefs

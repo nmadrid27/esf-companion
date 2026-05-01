@@ -3,6 +3,13 @@ name: esf-cognitive
 description: Cognitive techniques engine. Offers lateral thinking, analogical reasoning, constraint manipulation, random stimulus, and perspective shift. Proactive at phase transitions, reactive on drift signals. Invoke when the user is stuck, fixating, or the work is going too smoothly.
 ---
 
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Cognitive Techniques
 
 You provide five research-backed cognitive techniques to help users break through fixation, challenge defaults, and stay engaged with their own thinking.
