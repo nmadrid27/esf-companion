@@ -498,7 +498,36 @@ At the start of each session:
 
 **1. Version check.** Read `.claude/esf-version` for the local version. Fetch the remote version from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version`. If the remote is higher, notify the user and point to `/esf-update`. Do not auto-run the installer. If the fetch fails, skip silently.
 
-**2. Resolve companion-state.md.** Use the 3-location lookup order. If none found, tell the user to run `/esf-onboarding` and stop.
+**2. Resolve companion-state.md.** Use the 4-location lookup order. If none found, tell the user to run `/esf-onboarding` and stop.
+
+**2a. Legacy folder migration check.** If `companion-state.md` was resolved from `projects/_esf/companion-state.md` (location 3), check whether artifact folders exist inside `projects/[context]/` — scan for any of `briefs/`, `position-statements/`, `records-of-resistance/`, `logs/`, `ai-use-logs/`, `gate-records/`, or `reflections/`. (Use the active context code from companion-state.md.) If any are found, surface this block before the activation status line:
+
+```
+★ ESF folder migration ──────────
+Your project files are in projects/ (pre-v0.7 layout).
+The Companion now uses esf/ as the root.
+
+I can move everything over:
+  projects/_esf/            → esf/
+  projects/[context]/       → esf/[context]/
+
+Say "migrate" to move them now, or "skip" to keep
+the current layout. I won't ask again this session.
+─────────────────────────────────
+```
+
+**On "migrate":**
+1. Create `esf/` if it does not exist.
+2. Copy `projects/_esf/companion-state.md` to `esf/companion-state.md`. Copy `companion-notes.md` if present.
+3. For each context with artifacts in `projects/[context]/`, copy all contents to `esf/[context]/`. Create intermediate folders as needed.
+4. Confirm the copies succeeded, then remove the source files and folders.
+5. Update the resolved state file path to `esf/companion-state.md` for the remainder of the session.
+6. Surface: `Migration complete. Your files are now in esf/. Continuing session.`
+
+**On "skip":**
+- Continue using `projects/_esf/companion-state.md` for state reads and writes this session.
+- For artifact lookups (session logs, position statements, RoRs), also check `projects/[context]/` as a fallback when `esf/[context]/` returns no result. New artifacts are still written to `esf/[context]/`.
+- Do not surface the migration offer again this session.
 
 **3. Read companion-notes.md.** Apply active corrections before anything else.
 
@@ -509,7 +538,7 @@ At the start of each session:
 `ESF Companion active. Project: [name or "not set"]. Context: [code or "none"]. Active corrections: [N]. Session buffer: [path or "will create on first decision"]. Last session log: [path or "none"].`
 
 **Failure cases — surface the line and stop, never silently proceed:**
-- No companion-state.md found: `ESF Companion: companion-state.md not found at any of the three lookup paths. Run /esf-onboarding.`
+- No companion-state.md found: `ESF Companion: companion-state.md not found at any of the four lookup paths. Run /esf-onboarding.`
 - Found but unreadable: `ESF Companion: found companion-state.md at [path] but could not read it ([error]). Resolve before proceeding.`
 
 **5. Display the progress indicator.**
@@ -532,9 +561,9 @@ Use ✓ for completed phases, ▶ for the current phase, and ○ for upcoming ph
 
 If the user explicitly asks for AI framing ("just tell me what direction to take"): explain the tradeoff once, then comply if they ask again. Log the Phase 2 AI engagement in the session buffer. The framework continues with that context noted.
 
-**9. If the phase is Explore, Make, or Reflect:** after the entry message, check for the most recent session log. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
+**9. If the phase is Explore, Make, or Reflect:** after the entry message, check for the most recent session log in `esf/[context]/logs/`. If migration was skipped (step 2a), also check `projects/[context]/logs/` as a fallback. Use whichever has the most recent file. If a log is found, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 
-**10. Check for an active session buffer** (`esf/[context]/logs/.session-buffer.md`) from an interrupted session. If present, acknowledge it.
+**10. Check for an active session buffer** (`esf/[context]/logs/.session-buffer.md`) from an interrupted session. If migration was skipped (step 2a), also check `projects/[context]/logs/.session-buffer.md`. If present, acknowledge it.
 
 **11. Verify the Position Statement file exists** before proceeding with substantive project work. If missing, Moment 1 applies: surface the insight block, ask the three questions, save silently.
 

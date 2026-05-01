@@ -39,6 +39,14 @@ If found in any location:
 - Route to Re-Onboarding (Update Mode). Do not run the full flow.
 - Do not ask any identity questions. Ask only what has changed.
 
+**Legacy migration check (location 3 only).** If `companion-state.md` was found at `projects/_esf/companion-state.md`, check for artifact folders inside `projects/[context]/` — scan for any of `briefs/`, `position-statements/`, `records-of-resistance/`, `logs/`, `ai-use-logs/`, `gate-records/`, or `reflections/`. If any are found, add the following after greeting the user:
+
+> "Your ESF files are in `projects/` (pre-v0.7 layout). The Companion now uses `esf/` as the root. Want me to move everything over? It takes about 30 seconds. Say 'migrate' to proceed, or 'skip' to keep the current layout."
+
+**On "migrate":** Follow the migration steps defined in the agent's Session Start Protocol (step 2a): copy `projects/_esf/` → `esf/`, copy `projects/[context]/` → `esf/[context]/`, confirm copies, remove source files, update the resolved state file path.
+
+**On "skip":** Continue with the update flow using the legacy path. Do not raise migration again during this session.
+
 **Check 2: Role signals (new user, no state file)?**
 
 Scan filenames and directory names only. Do not read file contents.
