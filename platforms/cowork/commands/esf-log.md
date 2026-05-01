@@ -71,14 +71,18 @@ phase: [phase at end of session]
 - [2-3 specific items: what to work on, what to decide, what to finish]
 ```
 
-Present the draft to the user:
+Also draft an AI Use Log update from buffer entries only. Target the existing log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
 
-> "Here is your session log. Review it and edit anything that's off. I'll save it when you confirm."
+Present both drafts to the user:
+
+> "Here is your session log and AI Use Log update. Review them and edit anything that's off. I'll save them when you confirm."
 
 ## Step 3: Save After User Confirms
 
-Once the user confirms (or makes edits and confirms), save the log to:
-`projects/[context]/logs/session-[YYYY-MM-DD].md`
+Once the user confirms (or makes edits and confirms), save:
+
+- Session log → `projects/[context]/logs/session-[YYYY-MM-DD].md`
+- AI Use Log update → append to `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`
 
 ## Step 4: Update PROJECT.md
 
