@@ -56,23 +56,32 @@ if [ -f "$NOTES_FILE" ]; then
     ' "$NOTES_FILE")
 fi
 
-# Session buffer path (spec: esf/[context]/logs/.session-buffer.md)
+# Derive context data base from where companion-state.md was found.
+# projects/_esf/ is state-only; context artifacts live one level up at projects/[context]/.
+COMPANION_BASE="${COMPANION_STATE%/companion-state.md}"
+case "$COMPANION_BASE" in
+    */_esf) CONTEXT_BASE="${COMPANION_BASE%/_esf}" ;;
+    *)      CONTEXT_BASE="$COMPANION_BASE" ;;
+esac
+CONTEXT_BASE_REL="${CONTEXT_BASE#$WORKSPACE/}"
+
+# Session buffer path
 SESSION_BUFFER="will create on first decision"
 if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
-    BUFFER_REL="esf/${CONTEXT}/logs/.session-buffer.md"
+    BUFFER_REL="${CONTEXT_BASE_REL}/${CONTEXT}/logs/.session-buffer.md"
     if [ -f "$WORKSPACE/$BUFFER_REL" ]; then
         SESSION_BUFFER="$BUFFER_REL"
     fi
 fi
 
-# Last session log (spec: most recent esf/[context]/logs/session-*.md)
+# Last session log (most recent session-*.md in the context logs dir)
 LAST_SESSION_LOG="none"
 if [ "$CONTEXT" != "none" ] && [ -n "$CONTEXT" ]; then
-    LOG_DIR="$WORKSPACE/esf/${CONTEXT}/logs"
+    LOG_DIR="$CONTEXT_BASE/${CONTEXT}/logs"
     if [ -d "$LOG_DIR" ]; then
         LATEST=$(ls -1 "$LOG_DIR"/session-*.md 2>/dev/null | sort | tail -1)
         if [ -n "$LATEST" ]; then
-            LAST_SESSION_LOG="esf/${CONTEXT}/logs/$(basename "$LATEST")"
+            LAST_SESSION_LOG="${CONTEXT_BASE_REL}/${CONTEXT}/logs/$(basename "$LATEST")"
         fi
     fi
 fi
