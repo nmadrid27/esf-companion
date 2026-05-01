@@ -533,7 +533,7 @@ If the user explicitly asks for AI framing ("just tell me what direction to take
 
 **8. If the phase is Explore, Make, or Reflect:** check for the most recent session log. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 
-**9. Check for an active session buffer** (`projects/[context]/logs/.session-buffer.md`) from an interrupted session. If present, acknowledge it.
+**9. Check for an active session buffer** (`[context base-path]/logs/.session-buffer.md`) from an interrupted session. If present, acknowledge it.
 
 **10. Verify the Position Statement file exists** before proceeding with substantive project work. If missing, Moment 1 applies: surface the insight block, ask the three questions, save silently.
 
@@ -571,9 +571,11 @@ so the record can check the work against a stated position later.
 
 ## Session Buffer Maintenance
 
-Path: `projects/[context]/logs/.session-buffer.md`. Not optional.
+**Path resolution.** Throughout this file, `[context base-path]` means the `Base path:` value for the current context in companion-state.md's Active Contexts section. Read it on session start. Never substitute a hardcoded `projects/` directory — that path will be wrong for any context whose base path is not at vault root.
 
-**Creation.** On the first Write, Edit, or Moment trigger of a session, if the buffer file does not exist: create `projects/[context]/logs/` if missing, then write the file with this header and the "Session buffer:" status-line field switches to the concrete path.
+Path: `[context base-path]/logs/.session-buffer.md`. Not optional.
+
+**Creation.** On the first Write, Edit, or Moment trigger of a session, if the buffer file does not exist: create `[context base-path]/logs/` if missing, then write the file with this header and the "Session buffer:" status-line field switches to the concrete path.
 
 ```markdown
 # Session buffer: [project name] — [ISO date]
@@ -623,7 +625,7 @@ Surface once, do not repeat more than every 8 exchanges, do not block:
 ★ Ready to wrap up? ────────────
 Whenever you're ready, I can generate the session log and update
 the project state. Buffer for this session: [N] entries at
-`projects/[context]/logs/.session-buffer.md`.
+`[context base-path]/logs/.session-buffer.md`.
 Say "save and close," or keep going and I'll ask again at the next
 natural break.
 ─────────────────────────────────
@@ -631,7 +633,7 @@ natural break.
 
 **On session-end signal:**
 1. Generate AI Use Log draft from buffer entries only. Do not fabricate beyond what the buffer supports.
-2. Generate session log at `projects/[context]/logs/session-[ISO-date].md` with a "Next Session" section.
+2. Generate session log at `[context base-path]/logs/session-[ISO-date].md` with a "Next Session" section.
 3. Show full text of both; do not summarize.
 4. Save on user confirm (or user's edits if they revised).
 5. Update companion-state.md: phase, last session date, project state changes.
@@ -672,7 +674,7 @@ a stated target. Four questions to ground it:
 ─────────────────────────────────
 ```
 
-Ask four questions, generate a minimal brief, save to `projects/[context]/briefs/[project-name]-brief.md`:
+Ask four questions, generate a minimal brief, save to `[context base-path]/briefs/[project-name]-brief.md`:
 
 1. What is this project, in one sentence?
 2. What does done look like? Success criterion across the set?
@@ -741,19 +743,17 @@ Read companion-state.md for identity, active contexts, current project, and phas
 
 ## Referencing Project Materials
 
-When the user begins work on a project, check:
-1. `projects/[context]/briefs/` — is the project brief here?
-2. `projects/[context]/position-statements/` — does a Position Statement exist?
-3. `projects/[context]/records-of-resistance/` — are RoRs being tracked?
-4. `projects/[context]/ai-use-logs/` — is an AI Use Log started? AI Use Logs are valuable for any user at any level — they build the habit of reflecting on what AI contributed, what the user directed, and what the session record shows. Check the brief to determine whether one is formally required. If not required by the brief, offer it as a practice worth starting.
-5. `projects/[context]/gate-records/` — are gate records saved at phase transitions?
-6. `projects/[context]/reflections/` — has a reflection been completed?
+When the user begins work on a project, check (all paths relative to `[context base-path]`):
+1. `briefs/` — is the project brief here?
+2. `esf/position-statements/` — does a Position Statement exist?
+3. `esf/records-of-resistance/` — are RoRs being tracked?
+4. `esf/ai-use-logs/` — is an AI Use Log started? AI Use Logs are valuable for any user at any level — they build the habit of reflecting on what AI contributed, what the user directed, and what the session record shows. Check the brief to determine whether one is formally required. If not required by the brief, offer it as a practice worth starting.
+5. `esf/gate-records/` — are gate records saved at phase transitions?
+6. `esf/reflections/` — has a reflection been completed?
 
 If the brief is missing, surface an insight block inviting the user to drop one in. If the Position Statement is missing, Moment 1 applies.
 
 **The brief is the source of institutional requirements.** Do not infer level-based requirements from program vocabulary or course names. Read the brief and extract what it specifies — required artifacts, AI use policy, grading criteria, submission format. Different institutions, programs, and instructors will set different requirements. The agent adapts to what the brief says, not to assumptions about what a given level should require.
-
-In structured-workspace installs, these paths may be different. Use the work-adjacent paths from the context's install configuration.
 
 ---
 
