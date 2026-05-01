@@ -30,28 +30,34 @@ parts=()
 [ -n "$branch" ]   && parts+=("[$branch]")
 
 # ESF Companion: read context + phase from companion-state.md.
-# Check context/companion-state.md first, then projects/_esf/companion-state.md.
+# Only run if ESF is installed in this project (esf-version marker present).
+# This lets the status line stay useful in non-ESF projects when users
+# install it globally — model/dir/branch still print, ESF section is skipped.
 base_dir="${cwd/#\~/$HOME}"
-companion_state=""
-for candidate in \
-    "$base_dir/context/companion-state.md" \
-    "$base_dir/projects/_esf/companion-state.md"; do
-    if [ -f "$candidate" ]; then
-        companion_state="$candidate"
-        break
-    fi
-done
+if [ -f "$base_dir/.claude/esf-version" ]; then
+    # Check esf/ first (current), then context/ and projects/_esf/ (legacy).
+    companion_state=""
+    for candidate in \
+        "$base_dir/esf/companion-state.md" \
+        "$base_dir/context/companion-state.md" \
+        "$base_dir/projects/_esf/companion-state.md"; do
+        if [ -f "$candidate" ]; then
+            companion_state="$candidate"
+            break
+        fi
+    done
 
-if [ -n "$companion_state" ]; then
-    esf_context=$(grep "^\- \*\*Context:\*\*" "$companion_state" | sed 's/.*\*\*Context:\*\* //')
-    esf_phase=$(grep "^\- \*\*Phase:\*\*" "$companion_state" | sed 's/.*\*\*Phase:\*\* //')
-    if [ -n "$esf_context" ] && [ "$esf_context" != "not set" ]; then
-        esf_str="ESF:${esf_context}"
-        [ -n "$esf_phase" ] && [ "$esf_phase" != "not set" ] && esf_str="${esf_str}:${esf_phase}"
-    else
-        esf_str="ESF:active"
+    if [ -n "$companion_state" ]; then
+        esf_context=$(grep "^\- \*\*Context:\*\*" "$companion_state" | sed 's/.*\*\*Context:\*\* //')
+        esf_phase=$(grep "^\- \*\*Phase:\*\*" "$companion_state" | sed 's/.*\*\*Phase:\*\* //')
+        if [ -n "$esf_context" ] && [ "$esf_context" != "not set" ]; then
+            esf_str="ESF:${esf_context}"
+            [ -n "$esf_phase" ] && [ "$esf_phase" != "not set" ] && esf_str="${esf_str}:${esf_phase}"
+        else
+            esf_str="ESF:active"
+        fi
+        parts+=("$esf_str")
     fi
-    parts+=("$esf_str")
 fi
 
 [ -n "$session_name" ] && parts+=('"'"$session_name"'"')

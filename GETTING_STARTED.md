@@ -20,7 +20,7 @@ entities: [ESF]
 4. Run onboarding: `/esf-onboarding` (about 5 minutes)
 5. **Stop here.** Close Claude Code.
 6. Read your project brief on your own. Write down what you already know and what you are uncertain about. No AI.
-7. Write your Position Statement in `projects/[context]/position-statements/[project-name].md`. Rough is fine.
+7. Write your Position Statement in `esf/[context]/position-statements/[project-name].md`. Rough is fine.
 8. Open Claude Code again and tell the Companion what you are working on. Phase 3 begins.
 
 **The gate:** If you open Claude Code without a Position Statement, the Companion will stop and ask you to write one. That is not an error. It is the point.
@@ -29,19 +29,21 @@ entities: [ESF]
 
 ## How to Invoke the Companion
 
-All Companion commands use `/` syntax in Claude Code. You call the tool when you need it. It does not run unless you ask.
+All Companion commands use `/` syntax in Claude Code.
 
 | Command | When to use |
 |---|---|
 | `/esf-onboarding` | First install, or when starting a new project or context |
-| `/esf-project` | Start of any AI work session (runs the five-phase workflow) |
+| `/esf-project` | Explicitly trigger the five-phase workflow (manual installs, or mid-session restart) |
 | `/esf-git` | Before committing (frames the commit as a thinking artifact) |
 | `/esf-verify` | When AI produces a factual claim, source, or data you need to check |
 | `/esf-update` | Check for Companion updates and install the latest version |
 
-**You do not need to remember all of these.** `/esf-project` is the one you will use most. The others are for specific moments.
+**Ambient vs. manual mode:**
 
-**The Companion does not listen passively.** It activates when you call it. Between calls, Claude Code behaves normally with no ESF behavior running.
+The default install writes an ambient block to `CLAUDE.md`. With ambient active, the Companion reads your workspace state and picks up your project automatically at the start of every Claude Code session — no `/esf-project` needed. Just open Claude Code and it is active.
+
+If you installed with `--no-ambient`, the Companion does not activate until you call it. Run `/esf-project` at the start of each session to load your context and enter the workflow.
 
 ---
 
@@ -167,12 +169,12 @@ Then runs the onboarding skill:
 
 Behind the scenes, onboarding does three things:
 
-1. **Creates the workspace state file** (`projects/_esf/companion-state.md`): records Jordan Park, their contexts, current project, and starting phase.
+1. **Creates the workspace state file** (`esf/companion-state.md`): records Jordan Park, their contexts, current project, and starting phase.
 
 2. **Creates the folder structure:**
 
 ```
-projects/
+esf/
 └── discover-course/
     ├── briefs/
     ├── position-statements/
@@ -192,7 +194,7 @@ projects/
 > Read your project brief. Think about what it is asking. Write down what you already know, what your instincts are, what you're uncertain about. This is just you and your thinking.
 >
 > **Phase 2: Position** (offline, no AI)
-> Write a Position Statement: your stance on the project, what matters most to you, and what you will not compromise on. Save it to `projects/discover-course/position-statements/tool-audit.md`. It does not need to be polished. Bullet points, fragments, rough outlines: all fine. What matters is that it captures your direction before AI can shape it.
+> Write a Position Statement: your stance on the project, what matters most to you, and what you will not compromise on. Save it to `esf/discover-course/position-statements/tool-audit.md`. It does not need to be polished. Bullet points, fragments, rough outlines: all fine. What matters is that it captures your direction before AI can shape it.
 >
 > **Phase 3: Explore** (open Claude Code)
 > This is where I come in. My first step is a readability pass on your Position Statement: I clean up grammar and sentence structure without changing your ideas. You confirm it still says what you meant. Then I challenge your position: surface alternatives, ask questions, push on blind spots. I do not set direction. You do.
@@ -209,7 +211,7 @@ Then:
 
 > Setup complete. Here's your next step:
 >
-> **Close Claude Code now.** Work through Phase 1 (inquiry) and Phase 2 (Position Statement) on your own. When your Position Statement is saved to `projects/discover-course/position-statements/tool-audit.md`, come back and tell me what you're working on.
+> **Close Claude Code now.** Work through Phase 1 (inquiry) and Phase 2 (Position Statement) on your own. When your Position Statement is saved to `esf/discover-course/position-statements/tool-audit.md`, come back and tell me what you're working on.
 
 Jordan closes Claude Code. Total time: about 5 minutes.
 
@@ -237,7 +239,7 @@ No AI involved. This took about 15 minutes during a break between classes.
 
 ## Part 4: Phase 2, Position Statement (Offline)
 
-Jordan opens a text file at `projects/discover-course/position-statements/tool-audit.md` and writes:
+Jordan opens a text file at `esf/discover-course/position-statements/tool-audit.md` and writes:
 
 > **My position:** I want to evaluate an AI tool that's actually relevant to animation, not just image generation. Everyone in class will probably pick Midjourney or DALL-E. I want to test something for motion or timing.
 >
@@ -259,7 +261,7 @@ Jordan, eager to get started, opens Claude Code and says:
 
 > "Help me pick an AI tool for my Tool Audit project."
 
-The Companion checks for a Position Statement file at `projects/discover-course/position-statements/*.md`. None exists. It responds:
+The Companion checks for a Position Statement file at `esf/discover-course/position-statements/*.md`. None exists. It responds:
 
 > I can't help with this project yet, and here's why that matters.
 >
@@ -271,7 +273,7 @@ The Companion checks for a Position Statement file at `projects/discover-course/
 >
 > The Position Statement changes the dynamic. Once you've articulated your own stance, even a rough one, you engage AI as a pressure-test on your thinking, not as a substitute for it.
 >
-> To proceed, write your Position Statement first. When it's done, save it to `projects/discover-course/position-statements/tool-audit.md` and return here.
+> To proceed, write your Position Statement first. When it's done, save it to `esf/discover-course/position-statements/tool-audit.md` and return here.
 
 If Jordan tries a follow-up question ("Can you at least help me understand the brief?"), the Companion explains why:
 
@@ -376,7 +378,7 @@ ai-work/
 │   ├── skills/
 │   ├── reference/
 │   └── esf-version
-├── projects/
+├── esf/
 │   └── discover-course/
 │       ├── briefs/
 │       │   └── project-01-tool-audit.md

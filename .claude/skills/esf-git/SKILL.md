@@ -3,6 +3,13 @@ name: esf-git
 description: Use when a user is ready to commit work. Frames git commits as thinking artifacts, not just version control. Surfaces when a commit is also a Record of Resistance.
 ---
 
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Git: Commits as Thinking Artifacts
 
 ## When to Use

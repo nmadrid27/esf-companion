@@ -1,3 +1,10 @@
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # Framework Evolution Protocol
 
 The Framework Evolution Protocol (FEP) is ESF's built-in mechanism for users to propose revisions to the framework itself, document deliberate deviations from the default process, and build a personal version of ESF that reflects how they actually work.
@@ -46,7 +53,7 @@ Be honest about what the change gives up and what it gains. Do not advocate for 
 
 **Step 4: Record the evolution**
 
-If the user confirms the change, create an evolution log entry at `projects/_esf/evolution-log.md` (create if it does not exist). Use the template at `templates/evolution-log-template.md`:
+If the user confirms the change, create an evolution log entry at `esf/evolution-log.md` (create if it does not exist). Use the template at `templates/evolution-log-template.md`:
 
 ```markdown
 ## Evolution Entry [date]
@@ -62,7 +69,7 @@ If the user confirms the change, create an evolution log entry at `projects/_esf
 
 Update `companion-state.md` to reference the evolution log: add a line under the user's identity block:
 ```
-Framework Evolution: see projects/_esf/evolution-log.md
+Framework Evolution: see esf/evolution-log.md
 ```
 
 **Step 5: Apply going forward**

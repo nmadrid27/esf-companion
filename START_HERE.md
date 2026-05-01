@@ -18,6 +18,8 @@ prompts/                          ← System prompt for conversation tools
 WORKFLOW.md                       ← Visual process diagram
 ```
 
+The installer also creates an `esf/` folder to hold your project artifacts: position statements, records of resistance, session logs. These are yours — they document your decisions and don't affect your project files.
+
 **Conversation tool install (Claude.ai, ChatGPT, Gemini):**
 
 ```
@@ -67,7 +69,7 @@ The Position Statement is the gate. Everything else follows from it.
 
 ## Customizing the Companion
 
-**Silence mode** reduces how often the Companion speaks during a session. To turn it on, open `projects/_esf/companion-state.md` and set:
+**Silence mode** reduces how often the Companion speaks during a session. To turn it on, open `esf/companion-state.md` and set:
 
 ```
 ## Preferences
@@ -88,3 +90,11 @@ With silent mode on, the Companion suppresses proactive prompts, phase announcem
 - **[templates/](templates/).** Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
 - **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples).** Filled samples across design, writing, research, and consulting
 - **[ROADMAP.md](ROADMAP.md).** What is shipped, what is coming
+
+---
+
+## Moving or removing this project
+
+If you move or rename this folder, the status line in `~/.claude/settings.json` will point to the old path. Remove or update the `statusLine` entry to prevent Claude Code from throwing an error at the start of every session.
+
+If you are on a **project-scoped install** (you chose "project only" during install), no global files were written and no cleanup is needed.

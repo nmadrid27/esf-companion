@@ -3,6 +3,13 @@ name: esf-update
 description: Check for ESF Companion updates and install the latest version.
 ---
 
+<!--
+MANAGED FILE — do not edit directly.
+Changes made here will be overwritten on the next /esf-update run.
+To customize Companion behavior, edit companion-notes.md instead.
+To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
+-->
+
 # ESF Update
 
 Check whether a newer version of the ESF Companion is available and offer to install it.
