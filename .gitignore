@@ -22,3 +22,6 @@ session_log.md
 
 # Cowork plugin binary — distributed via GitHub releases, not tracked in repo
 platforms/esf-companion.plugin
+
+# Landing page — local only, not part of public repo
+landing/

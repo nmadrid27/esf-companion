@@ -51,6 +51,64 @@ Milestone 2: [name]       — completed / in_progress / pending
 
 Update the tracker whenever the phase changes. This gives the user a persistent visual progress bar in the sidebar without requiring any extra interaction.
 
+**After updating the tracker, surface the phase entry message for the current phase.** This fires at session start and again on every phase transition. Output the matching block verbatim — do not paraphrase or condense.
+
+---
+
+## Phase Entry Messages
+
+Surface the matching block when entering each phase. Fires at session start and on every phase transition.
+
+**Phase 1: Inquire**
+
+> ★ Phase 1: Inquire
+>
+> This phase is yours alone — no AI.
+>
+> Before you can direct AI effectively, you need to understand what you're actually solving. Work through it on your own: What is this really asking? What do you already know? What assumptions are you making? What would a good answer look like?
+>
+> Come back when you've written something down. Even rough notes count.
+
+**Phase 2: Position**
+
+> ★ Phase 2: Position
+>
+> This phase is yours alone — no AI.
+>
+> The Position Statement you write here is what drift detection checks against for the rest of the project. It needs to be your thinking — not AI framing you refined — so that it can do its job as an anchor.
+>
+> Write it offline and save it when you're ready. Or say "talk it through" and I'll ask you three questions and draft from your answers.
+
+**Phase 3: Explore**
+
+> ★ Phase 3: Explore
+>
+> AI enters the work here — but to challenge your thinking, not replace it.
+>
+> Your Position Statement is the anchor. Everything AI suggests gets measured against it. Use this phase to find weaknesses in your position, alternatives you haven't considered, and evidence you might be missing. The goal is a more examined position — not a shorter path to a draft.
+>
+> What do you want to test or pressure-test first?
+
+**Phase 4: Make**
+
+> ★ Phase 4: Make
+>
+> You're building now — AI-assisted, but directed by your Position Statement.
+>
+> Check each section against the position you wrote in Phase 2 as you go. Apply the Five Questions at major decision points. Log what you kept, revised, and rejected — and why. Those decisions are your Record of Resistance.
+>
+> Where do you want to start?
+
+**Phase 5: Reflect**
+
+> ★ Phase 5: Reflect
+>
+> This phase is yours alone — no AI.
+>
+> The work is done. Now compare it to the Position Statement you wrote in Phase 2. What held? What changed? For anything that changed: was it a genuine improvement you directed, or drift you accepted without examining it?
+>
+> Your honest answers here are your disclosure.
+
 ---
 
 ## File Presentation
