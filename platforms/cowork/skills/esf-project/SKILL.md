@@ -208,6 +208,67 @@ At session start, read companion-state.md at the resolved path. Check `context/c
 
 ---
 
+## Demo Mode
+
+Demo Mode activates when the active project is a sandboxed demo, identified by the `.esf-demo` manifest file. Demo Mode preserves all gates, prompts, and selection cards; it changes only pacing and trigger determinism so a user can experience a complete five-phase session in three to five minutes.
+
+### Detection
+
+At session start, after reading `companion-state.md` and applying Silent Mode, check for `[context base-path]/[project]/.esf-demo`. If the file exists, enter Demo Mode for the session.
+
+If the user is not in a project that has a manifest, Demo Mode does not activate, even if `demo_active: true` is set in `companion-state.md`. The manifest in the project folder is the source of truth.
+
+### Pacing
+
+When Demo Mode is active, apply these substitutions:
+
+| Standard behavior | Demo Mode behavior |
+|---|---|
+| Phase intros (paragraph-length context) | One-sentence phase intros |
+| Full Explore (multiple threads, paced one at a time) | One challenge thread derived from the planning note |
+| Verification prompt with `/esf-verify` walkthrough | Single example claim, brief log entry, no full walkthrough |
+| Project Scope section (full PRD draft) | Condensed scope (Overview, Deliverables, Boundaries only) |
+| Build Practice (user names pieces) | Pre-seeded pieces from the manifest, user confirms or modifies |
+| Five Questions at every section boundary | Five Questions once, at end of Phase 4 |
+| Reflection (full template) | One reflection prompt |
+| Phase transitions (AskUserQuestion confirmation) | Inline confirmation, no card |
+
+### Deterministic triggers
+
+In Demo Mode, fire these events on schedule rather than waiting for organic conditions:
+
+1. **Structural-edit re-fire selection card.** Fire once, after Build Practice is confirmed. Use the question text specified in the demo project manifest. Route the user's selection through the normal flow.
+
+2. **Drift detection prompt.** Fire once, at the midpoint of Phase 4 (after the user has worked on at least one piece). Use the prompt text specified in the manifest.
+
+3. **Records of Resistance prompt.** Fire when the user rejects or revises any AI output during the demo, same as production. No deterministic firing.
+
+### Sandbox boundary
+
+While Demo Mode is active, write only inside the demo project folder. If the user requests work that would write outside the sandbox (for example, "let's apply this to my actual thesis project"), pause and ask: "You are in a demo session. End the demo and switch to a real project, or finish the demo first?"
+
+### Disclosure at demo close
+
+At Phase 5 close, generate the disclosure draft normally. Save it to `[demo project]/reflections/cartography-disclosure.md`. The disclosure should accurately reflect that the demo was an accelerated session; do not pretend it was a normal-pace project. Add one line to the disclosure:
+
+```
+> This disclosure was generated during a guided demo session. Pacing and triggers were accelerated. The session is not a substitute for a full project run.
+```
+
+### Silent Mode interaction
+
+If `silent_mode: true` and `/esf-demo` was just invoked, run Demo Mode with full narration. The user explicitly requested the demo; that is consent to see scaffolding that silent mode would otherwise suppress.
+
+### End of demo
+
+After the disclosure is approved, tell the user:
+
+> "Demo complete. The disclosure draft is at `[demo project]/reflections/cartography-disclosure.md`. To clear the sandbox, run `/esf-demo --reset`. To turn this into a real project, copy the files out of `demo/` and register it as a new project in `companion-state.md`."
+
+Do not auto-reset. The user owns the decision to keep or clear.
+
+---
+
 ## The Five Phases
 
 | Phase | Name | AI Role | Human Gate |
@@ -232,7 +293,11 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 ### Nudge Mode (default)
 
-When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
+Two-tier behavior: a low-friction inline text nudge on first touch, and a higher-friction selection card on the structural-edit re-fire. Both tiers respect `silent_mode`.
+
+**Silent mode override.** If `silent_mode: true` in `companion-state.md`, suppress all Nudge Mode behavior. Do not print the inline text and do not call `AskUserQuestion`. The Position Statement gate in Gate Mode still applies regardless of `silent_mode`.
+
+**First touch (inline text nudge).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
 
 ```
 [ESF: no Position Statement for [doc] — note one?]
@@ -240,17 +305,46 @@ When producing substantive content and no Position Statement exists for the work
 
 No pause, no blocking refusal, no three-question prompt. The user can note a PS, decline, or ignore and keep working.
 
-**Fires on:**
-- The first Write or Edit to a document in a session.
-- Any structural edit: changes to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame.
+**First-touch trigger:** the first Write or Edit to a document in a session.
 
 **Does not fire on:** Formatting, phrasing cleanup, typo or citation tidying, wikilink repair, frontmatter corrections.
 
-**Decline logic.** Max two nudges per document per session. First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that doc. A structural edit re-fires once more: `[ESF: this edit changes [what] — still no Position Statement. Note one?]`. Second decline silences all nudges for that doc for the session.
+**Decline logic (first touch).** First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that document. The structural-edit re-fire (below) is a separate trigger and is not suppressed by a first-touch decline.
 
-**Nudge count is in-context only.** No file write; no buffer entry. It resets at session start. A new session on the same document starts from zero.
+**Structural-edit re-fire (selection card).** When the user makes a structural edit (a change to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame) and no Position Statement exists, call `AskUserQuestion` instead of printing inline text. Use this question shape:
 
-**If the user responds with a PS:** save to the Position Statement path for the context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
+- **question:** `"This edit changes [what changed]. Still no Position Statement on file for [doc]. How do you want to handle it?"`
+- **header:** `"ESF nudge"`
+- **multiSelect:** `false`
+- **options:**
+  1. **label:** `"Write one now (offline)"` — **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
+  2. **label:** `"Talk it through (3 questions)"` — **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
+  3. **label:** `"Skip for this document"` — **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
+  4. **label:** `"Skip for this session"` — **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
+
+**Routing the selection:**
+
+| User selection | Action |
+|---|---|
+| Write one now (offline) | Pause. Confirm: "I'll wait. Save your Position Statement to `[position-statements-path]/[project-slug].md` and tell me when it's saved." Do not produce any further substantive content until the user confirms. |
+| Talk it through (3 questions) | Run the conversational drafting flow defined in Phase 2 (three questions, draft from answers, user confirms). Save to the Position Statement path. |
+| Skip for this document | Silence all nudges for this document for the session. Continue. |
+| Skip for this session | Silence all nudges for the session. Gate Mode is unaffected. Continue. |
+
+**Re-fire ceiling.** Max one selection card per document per session. After the user makes a selection, do not re-fire the card on subsequent structural edits to the same document in the same session. The first-touch inline nudge is also silenced for that document after a card has fired.
+
+**Telemetry.** When the selection card fires and the user makes a selection, append a structured entry to `projects/[context]/logs/.session-buffer.md`:
+
+```markdown
+## NUDGE-SELECTION [ISO-8601 timestamp]
+Document: [relative path]
+Trigger: structural-edit-refire
+Selection: [exact label clicked]
+```
+
+This is the only Nudge Mode event written to the buffer. The first-touch inline nudge and its in-session count remain in-context only and are not persisted.
+
+**If the user responds with a PS** (via either the offline path or the talk-it-through path): save to the Position Statement path for the context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
 
 ---
 
@@ -539,6 +633,7 @@ When a project completes Phase 5 and the user finishes their final reflection, g
 - Total Records of Resistance
 - Position Statement drift pattern (did drift increase or decrease?)
 - Prompt evolution summary (one sentence)
+- Nudge selection distribution: [N write-now / N talk-through / N skip-doc / N skip-session]
 
 ---
 
@@ -626,6 +721,7 @@ Update the progress indicator whenever a phase regression occurs. Log the regres
 | Record of Resistance documented | RoR file path, status (saved/declined), AI output summary |
 | Drift check at phase gates | Drift level: none/minor/significant, what shifted |
 | Phase transition | New phase, what was completed |
+| Nudge selection card fires | NUDGE-SELECTION block: document path, trigger, exact selection label |
 
 **Session start:** Check for the most recent session log in `projects/[context]/logs/`. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 
