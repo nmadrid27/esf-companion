@@ -1,6 +1,6 @@
 # ESF Companion Plugin
 
-**Current version:** 0.6.0 ([changelog](https://github.com/nmadrid27/esf-companion/blob/main/CHANGELOG.md) · [releases](https://github.com/nmadrid27/esf-companion/releases))
+**Current version:** 0.7.0 ([changelog](https://github.com/nmadrid27/esf-companion/blob/main/CHANGELOG.md) · [releases](https://github.com/nmadrid27/esf-companion/releases))
 
 A toolkit for AI-assisted creative work. Helps students, educators, and professionals stay the author of their own thinking by enforcing the right sequence: your position before AI engagement, then monitoring for drift throughout.
 
@@ -19,6 +19,8 @@ The ESF Companion works through five phases:
 5. **Reflect.** AI reviews the work. Five Questions, reflection, disclosure, and session synthesis.
 
 Drift detection runs continuously. When your work moves away from your stated position, or when you start accepting AI output without evaluation, the Companion surfaces it as a question, not a command. You decide what to do.
+
+**Position Statement nudges (v0.7.0).** When you start substantive work without a Position Statement on file, the Companion uses a two-tier nudge. The first touch is a one-line inline reminder you can ignore, dismiss, or answer. If you make a structural edit (changing a claim, an attributed quote, a specific datum, or the document's argument) and still have no Position Statement, the Companion escalates to a selection card with four options: write one offline, talk it through in three questions, skip for this document, or skip for this session. `silent_mode: true` in `companion-state.md` suppresses both tiers; the Position Statement gate in Gate Mode still applies.
 
 ---
 
@@ -40,6 +42,7 @@ Drift detection runs continuously. When your work moves away from your stated po
 | `/esf-status` | One-screen snapshot: current phase, Position Statement status, Records of Resistance count vs. required minimum, session log history, and next action. |
 | `/esf-cognitive` | Run a cognitive technique on demand: lateral thinking, perspective shift, analogical reasoning, or constraint manipulation. Preview cards show what each technique involves before you commit. |
 | `/esf-log` | End-of-session synthesis. Reads the session buffer, generates a session log for your review, saves it, and updates PROJECT.md and companion-state.md. |
+| `/esf-demo` | Run a guided demo session on a sample studio project. Scaffolds a sandbox at `demo/critical-cartography/` and walks through all five phases at accelerated pace, exercising every gate, prompt, and selection card. Use `/esf-demo --reset` to clear the sandbox. |
 
 ---
 
