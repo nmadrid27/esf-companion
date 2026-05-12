@@ -74,7 +74,7 @@ done
 
 resolve_latest_tag() {
   local api_response
-  api_response=$(curl -fsSL https://api.github.com/repos/nmadrid27/esf-companion/tags 2>/dev/null) || return 1
+  api_response=$(curl -fsSL "https://api.github.com/repos/nmadrid27/esf-companion/tags?per_page=100" 2>/dev/null) || return 1
   local tag
   tag=$(echo "$api_response" | grep -oE '"name": *"companion-v[0-9]+\.[0-9]+\.[0-9]+"' | grep -oE 'companion-v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -1)
   if [ -z "$tag" ]; then

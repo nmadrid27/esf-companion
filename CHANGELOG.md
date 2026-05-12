@@ -4,7 +4,7 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
-## [companion-v0.7.0]
+## [companion-v0.7.0] - 2026-05-12
 
 ### Added
 - v0.7.0 hybrid Position Statement nudge ported to the Claude Code variant of `esf-project` (the Cowork plugin variant has carried this since the 2026-05-06 release). Selection card on structural-edit re-fire, four options, NUDGE-SELECTION telemetry to `.session-buffer.md`, Growth Snapshot distribution line.
