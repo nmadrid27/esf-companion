@@ -4,6 +4,17 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.7.0]
+
+### Added
+- v0.7.0 hybrid Position Statement nudge ported to the Claude Code variant of `esf-project` (the Cowork plugin variant has carried this since the 2026-05-06 release). Selection card on structural-edit re-fire, four options, NUDGE-SELECTION telemetry to `.session-buffer.md`, Growth Snapshot distribution line.
+
+### Changed
+- `/esf-update` and `install.sh` now pull from the latest `companion-vX.Y.Z` tag instead of `main`. The vault runtime now follows tagged releases rather than whatever happens to be on `main`. No action required by users; the transition is automatic on the next `/esf-update` run.
+
+### Notes
+- New tag namespace: `companion-vX.Y.Z`. Older `vX.Y.Z` and `cowork-vX.Y.Z` tags are retained but no longer matched by the release-resolution logic. They are kept for historical reference.
+
 ## [0.7.0] - 2026-05-06
 
 ### Added
