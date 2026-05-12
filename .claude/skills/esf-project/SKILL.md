@@ -175,8 +175,6 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 **Install hygiene.** All ESF artifacts for a context live in `esf/[context]/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
 
----
-
 ### Nudge Mode (default)
 
 Two-tier behavior: a low-friction inline text nudge on first touch, and a higher-friction selection card on the structural-edit re-fire. Both tiers respect `silent_mode`.
@@ -236,7 +234,7 @@ This is the only Nudge Mode event written to the buffer. The first-touch inline 
 
 ### Gate Mode
 
-**Before any project engagement, perform this check.**
+**Check this before any project engagement in gate-mode contexts.**
 
 The gate activates when any of the following is true:
 
