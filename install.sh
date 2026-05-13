@@ -72,6 +72,17 @@ for arg in "$@"; do
   fi
 done
 
+resolve_latest_tag() {
+  local api_response
+  api_response=$(curl -fsSL "https://api.github.com/repos/nmadrid27/esf-companion/tags?per_page=100" 2>/dev/null) || return 1
+  local tag
+  tag=$(echo "$api_response" | grep -oE '"name": *"companion-v[0-9]+\.[0-9]+\.[0-9]+"' | grep -oE 'companion-v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -1)
+  if [ -z "$tag" ]; then
+    return 1
+  fi
+  echo "$tag"
+}
+
 if [ -n "$SOURCE_DIR" ]; then
   if [ ! -d "$SOURCE_DIR" ]; then
     echo "Error: --source path does not exist: $SOURCE_DIR" >&2
@@ -79,8 +90,15 @@ if [ -n "$SOURCE_DIR" ]; then
   fi
   # curl supports file:// natively; reuse every existing fetch call unchanged.
   TOOLKIT_BASE="file://$(cd "$SOURCE_DIR" && pwd)"
+  SETUP_URL="file://$(cd "$SOURCE_DIR" && pwd)/setup-repo.sh"
 else
-  TOOLKIT_BASE="https://raw.githubusercontent.com/nmadrid27/esf-companion/main"
+  RESOLVED_TAG=$(resolve_latest_tag) || {
+    echo "Error: could not resolve latest release tag from GitHub API." >&2
+    echo "Try again later, or run installer with --source <path> against a local clone." >&2
+    exit 1
+  }
+  TOOLKIT_BASE="https://raw.githubusercontent.com/nmadrid27/esf-companion/${RESOLVED_TAG}"
+  SETUP_URL="https://raw.githubusercontent.com/nmadrid27/esf-companion/${RESOLVED_TAG}/setup-repo.sh"
 fi
 CYAN='\033[0;36m'
 GREEN='\033[0;32m'
@@ -184,7 +202,6 @@ if [ ! -d ".git" ]; then
     read -r -p "Choose [1/2/3]: " GIT_CHOICE </dev/tty
     case "$GIT_CHOICE" in
       1)
-        SETUP_URL="https://raw.githubusercontent.com/nmadrid27/esf-companion/main/setup-repo.sh"
         echo "Downloading setup script..."
         curl -fsSL "$SETUP_URL" -o /tmp/esf-setup-repo.sh
         echo "Running setup script..."

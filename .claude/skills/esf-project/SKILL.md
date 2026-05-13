@@ -167,9 +167,74 @@ This keeps the workflow visible and grounded. The user should never have to wond
 
 ---
 
-## Position Statement Gate: CHECK THIS FIRST
+## Position Statement: Nudge Mode and Gate Mode
 
-**Before any project engagement, perform this check.**
+Two modes govern how Position Statement absence is surfaced, depending on what the user is doing.
+
+**PS lookup (both modes).** Read Current Project and Context from `companion-state.md`, then check `esf/[context]/position-statements/[project-slug].md`. If that file exists, neither mode fires.
+
+**Install hygiene.** All ESF artifacts for a context live in `esf/[context]/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
+
+### Nudge Mode (default)
+
+Two-tier behavior: a low-friction inline text nudge on first touch, and a higher-friction selection card on the structural-edit re-fire. Both tiers respect `silent_mode`.
+
+**Silent mode override.** If `silent_mode: true` in `companion-state.md`, suppress all Nudge Mode behavior. Do not print the inline text and do not call `AskUserQuestion`. The Position Statement gate in Gate Mode still applies regardless of `silent_mode`.
+
+**First touch (inline text nudge).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
+
+```
+[ESF: no Position Statement for [doc] — note one?]
+```
+
+No pause, no blocking refusal, no three-question prompt. The user can note a PS, decline, or ignore and keep working.
+
+**First-touch trigger:** the first Write or Edit to a document in a session.
+
+**Does not fire on:** Formatting, phrasing cleanup, typo or citation tidying, wikilink repair, frontmatter corrections.
+
+**Decline logic (first touch).** First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that document. The structural-edit re-fire (below) is a separate trigger and is not suppressed by a first-touch decline.
+
+**Structural-edit re-fire (selection card).** When the user makes a structural edit (a change to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame) and no Position Statement exists, call `AskUserQuestion` instead of printing inline text. Use this question shape:
+
+- **question:** `"This edit changes [what changed]. Still no Position Statement on file for [doc]. How do you want to handle it?"`
+- **header:** `"ESF nudge"`
+- **multiSelect:** `false`
+- **options:**
+  1. **label:** `"Write one now (offline)"` — **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
+  2. **label:** `"Talk it through (3 questions)"` — **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
+  3. **label:** `"Skip for this document"` — **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
+  4. **label:** `"Skip for this session"` — **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
+
+**Routing the selection:**
+
+| User selection | Action |
+|---|---|
+| Write one now (offline) | Pause. Confirm: "I'll wait. Save your Position Statement to `esf/[context]/position-statements/[project-slug].md` and tell me when it's saved." Do not produce any further substantive content until the user confirms. |
+| Talk it through (3 questions) | Run the conversational drafting flow defined in Phase 2 (three questions, draft from answers, user confirms). Save to the Position Statement path. |
+| Skip for this document | Silence all nudges for this document for the session. Continue. |
+| Skip for this session | Silence all nudges for the session. Gate Mode is unaffected. Continue. |
+
+**Re-fire ceiling.** Max one selection card per document per session. After the user makes a selection, do not re-fire the card on subsequent structural edits to the same document in the same session. The first-touch inline nudge is also silenced for that document after a card has fired.
+
+**Telemetry.** When the selection card fires and the user makes a selection, append a structured entry to `esf/[context]/logs/.session-buffer.md`:
+
+```markdown
+## NUDGE-SELECTION [ISO-8601 timestamp]
+Document: [relative path]
+Trigger: structural-edit-refire
+Selection: [exact label clicked]
+```
+
+This is the only Nudge Mode event written to the buffer. The first-touch inline nudge and its in-session count remain in-context only and are not persisted.
+
+**If the user responds with a PS** (via either the offline path or the talk-it-through path): save to the Position Statement path for the context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
+
+---
+
+### Gate Mode
+
+**Check this before any project engagement in gate-mode contexts.**
 
 The gate activates when any of the following is true:
 
@@ -741,6 +806,7 @@ At each existing ESF checkpoint, the skill silently writes the user's responses 
 | Record of Resistance documented (Phase 4) | RoR file path, capture status (`saved` or `declined`), AI output summary, user reasoning, what they did instead | Append to session buffer |
 | Position Statement drift check (phase gates) | Drift level: none/minor/significant, what shifted | Append to session buffer |
 | Phase transition | New phase, what was completed | Update `companion-state.md` in the current workspace: Current Project phase field |
+| Nudge selection card fires | NUDGE-SELECTION block: document path, trigger, exact selection label | Append to session buffer |
 
 **Session buffer format:** The file `esf/[context]/logs/.session-buffer.md` is a temporary working file. If it does not exist when the first gate interaction occurs, create it as an empty file before appending. Append entries as they occur during the session. The dot-prefix keeps it hidden from casual browsing. It gets consumed by the end-of-session synthesis and cleared.
 
@@ -802,6 +868,7 @@ When a project reaches Phase 5 (Reflect) and the user completes their final refl
 - Total Records of Resistance
 - Position Statement drift pattern (did drift increase or decrease across sessions?)
 - Prompt evolution summary (one sentence: how did their prompting mature?)
+- Nudge selection distribution: [N write-now / N talk-through / N skip-doc / N skip-session]
 
 **Where to store:** Append to `companion-state.md` under the "Growth Record" section. Each completed project adds one entry. Over time, this builds a visible development arc without requiring writes inside `.claude/`.
 
