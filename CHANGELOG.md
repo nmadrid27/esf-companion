@@ -4,6 +4,15 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.7.2] - 2026-05-13
+
+### Fixed
+- **esf-verify Purpose vs Step 2 surface contradiction.** The Purpose section said "help the user locate original sources" while Step 2 said "Help the user locate the source. ... Do not locate it for them." The intended distinction (offer search terms and database names but do not retrieve and read sources yourself) was coherent on close reading but contradicted on the surface, which could weight an agent's behavior inconsistently. Reworded both: Purpose now reads "point the user toward where to find original sources"; Step 2 now reads "Point the user toward the source ... The user does the lookup; you don't retrieve the source yourself." Same mechanic, no surface contradiction. Applied to both Cowork plugin variant and Claude Code variant.
+
+### Notes
+- Closes the variant-consolidation follow-up surfaced during the v0.7.0 spec review on 2026-05-12. The Cowork-vs-Claude-Code "bulk production Gate Mode condition" gap remains deferred (different flavor of variant drift; needs more design work).
+- Docs-only change. No behavior change at the install or runtime level. Tagged so `/esf-update` carries the fix to users.
+
 ## [companion-v0.7.1] - 2026-05-13
 
 ### Fixed
