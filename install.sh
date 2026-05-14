@@ -581,9 +581,16 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/ski
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
 
-# Download version file
-curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version \
-  || { echo -e "${RED}Failed to fetch esf-version.${NC}"; exit 1; }
+# Write version file
+# When installing from a resolved tag (API path), the resolved tag IS the
+# canonical version marker. When installing from a local --source clone,
+# fall back to whatever .claude/esf-version is in the source tree.
+if [ -n "$RESOLVED_TAG" ]; then
+  echo "$RESOLVED_TAG" > .claude/esf-version
+else
+  curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version \
+    || { echo -e "${RED}Failed to fetch esf-version.${NC}"; exit 1; }
+fi
 
 # Download and register the session-status hook
 echo "  Fetching hooks..."
@@ -724,30 +731,20 @@ Every session. Full wording, insight blocks, scaffolding levels, and edge cases:
 
 ### Session buffer (mandatory)
 
-Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint).
+Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint). **Narration is not logging.** If the agent describes a Moment firing to the user, walks through what a Moment would catch, or acknowledges that one just fired, the agent must also write the buffer entry. Test-mode prompts ("test moment N," "walk me through Moment N") log as walkthrough firings with a `test: true` flag; see the agent file for the full event table.
 
 ### Four key moments
 
-- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc] — note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `[context base-path]/esf/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause — elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
+- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc] — note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `esf/[context]/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause — elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
 - **Drift (Moment 2).** When work moves away from a stated PS across two or more exchanges, surface the drift observation with the reference point visible.
-- **Rejection capture (Moment 3).** When the user pushes back, redirects scope, corrects framing, or signals "not that," offer to log a Record of Resistance. Bar is low: scope and framing redirections count. Formatting cleanup and tool-use corrections do not.
+- **Rejection capture (Moment 3).** When the user pushes back, redirects scope, corrects framing, corrects the audience read, or signals "not that," offer to log a Record of Resistance. Bar is low: scope and framing redirections count. Formatting cleanup and tool-use corrections do not.
 - **Ownership check (Moment 4).** When the user signals wrap-up, ask about specific choices before finalizing.
 
-  **Nudge mode (default).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response: `[ESF: no Position Statement for [doc] — note one?]`. PS lookup reads Current Project and Context from `companion-state.md`, then checks `esf/[context]/position-statements/[project-slug].md`. If that file exists, no nudge. If Current Project is "not set," the ad-hoc project forcing function fires first; the nudge runs only after a project is logged.
+### Position Statement gate modes
 
-### Pre-draft gates
+If the user responds with a PS, save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
 
-- **Content weight:** High-weight content (first-person biographical claims, teaching observations as evidence, specific factual claims, anything published under the user's name) — stop and ask whether the claim comes from specific sources, direct observation, or plausible construction. Do not draft biographical content from inference. Full weight table in agent file.
-- **Ready-status:** before draft → ready transition containing factual claims, surface each claim for verification. Hold status change on anything flagged as inference until verified or explicitly accepted.
-
-### Forcing functions
-
-  If the user responds with a PS: save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
-
-  **Gate mode.** Moment 1 fires as a full pause-and-elicit gate in four situations: (1) the project brief frontmatter specifies `position-statement: required`; (2) the active context in companion-state.md marks Position Statements as required for substantive documents (institutional, scholarly, some professional contexts); (3) the user introduces a new project with no Position Statement file and the request requires substantive content (writing, design, analysis, code architecture, planning); (4) any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb). **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message. Produce nothing substantive until a PS is confirmed for the track or declined with acknowledgment.
-- **Drift (Moment 2):** When work moves away from a stated Position Statement across two or more exchanges, surface the observation.
-- **Rejection capture (Moment 3):** When the user pushes back, redirects scope, corrects framing, corrects the audience/context read, or signals "not that" in any form, offer to log a Record of Resistance. Bar is low on purpose: scope corrections and framing redirections count even when phrased calmly. Formatting cleanup and tool-use corrections do not trigger.
-- **Ownership check (Moment 4):** When the user signals wrap-up, ask about specific choices before finalizing.
+**Gate mode.** Moment 1 fires as a full pause-and-elicit gate in four situations: (1) the project brief frontmatter specifies `position-statement: required`; (2) the active context in companion-state.md marks Position Statements as required for substantive documents (institutional, scholarly, some professional contexts); (3) the user introduces a new project with no Position Statement file and the request requires substantive content (writing, design, analysis, code architecture, planning); (4) any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb). **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message. Produce nothing substantive until a PS is confirmed for the track or declined with acknowledgment.
 
 ### Pre-draft and pre-ready gates
 
