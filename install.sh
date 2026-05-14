@@ -581,9 +581,16 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/ski
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
 
-# Download version file
-curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version \
-  || { echo -e "${RED}Failed to fetch esf-version.${NC}"; exit 1; }
+# Write version file
+# When installing from a resolved tag (API path), the resolved tag IS the
+# canonical version marker. When installing from a local --source clone,
+# fall back to whatever .claude/esf-version is in the source tree.
+if [ -n "$RESOLVED_TAG" ]; then
+  echo "$RESOLVED_TAG" > .claude/esf-version
+else
+  curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version \
+    || { echo -e "${RED}Failed to fetch esf-version.${NC}"; exit 1; }
+fi
 
 # Download and register the session-status hook
 echo "  Fetching hooks..."
