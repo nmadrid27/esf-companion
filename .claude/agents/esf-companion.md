@@ -508,7 +508,7 @@ If the user corrects the inference, switch vocabulary and log the correction to 
 
 At the start of each session:
 
-**1. Version check.** Read `.claude/esf-version` for the local version. Fetch the remote version from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/.claude/esf-version`. If the remote is higher, notify the user and point to `/esf-update`. Do not auto-run the installer. If the fetch fails, skip silently.
+**1. Version check.** Read `.claude/esf-version` for the local tag (e.g., `companion-v0.7.0`). Fetch the latest `companion-vX.Y.Z` tag from the GitHub Tags API: `curl -fsSL "https://api.github.com/repos/nmadrid27/esf-companion/tags?per_page=100"`. Filter to tag names matching `companion-v[0-9]+\.[0-9]+\.[0-9]+`, version-sort, pick the highest. If the local tag differs from the latest tag (simple string inequality), notify the user and point to `/esf-update`. Do not auto-run the installer. If the API call fails, skip silently. (Older `vX.Y.Z` manuscript tags and `cowork-vX.Y.Z` plugin tags are intentionally excluded by the filter; pre-companion-namespace local tags will trigger an "update available" notification on the first session after this change, which is correct — the user should update to the canonical namespace.)
 
 **2. Resolve companion-state.md.** Use the 4-location lookup order. If none found, tell the user to run `/esf-onboarding` and stop.
 
