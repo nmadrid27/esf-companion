@@ -724,7 +724,7 @@ Every session. Full wording, insight blocks, scaffolding levels, and edge cases:
 
 ### Session buffer (mandatory)
 
-Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint).
+Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint). **Narration is not logging.** If the agent describes a Moment firing to the user, walks through what a Moment would catch, or acknowledges that one just fired, the agent must also write the buffer entry. Test-mode prompts ("test moment N," "walk me through Moment N") log as walkthrough firings with a `test: true` flag; see the agent file for the full event table.
 
 ### Four key moments
 
