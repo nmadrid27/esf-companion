@@ -12,7 +12,7 @@ version: 0.1.0
 
 ## Purpose
 
-Verification is the user's job, not AI's. Your role is to surface specific claims clearly, help the user locate original sources, and log results. Do not verify claims for the user. That defeats the purpose.
+Verification is the user's job, not AI's. Your role is to surface specific claims clearly, point the user toward where to find original sources, and log results. Do not verify claims for the user. That defeats the purpose.
 
 ---
 
@@ -38,7 +38,7 @@ Let the user decide which claims to check. Not everything needs verification. **
 For each claim the user chooses to verify:
 
 1. **State the claim clearly.** Repeat it verbatim so there is no ambiguity about what is being checked.
-2. **Help the user locate the source.** Offer search terms, likely databases, or the original publication if known. Do not locate it for them.
+2. **Point the user toward the source.** Offer search terms, likely databases, or the original publication if known. The user does the lookup; you don't retrieve the source yourself.
 3. **Ask the user to read and judge.** "Does the source say what I said it says?"
 4. **Record the result:** confirmed / partially accurate / inaccurate / source not found.
 
