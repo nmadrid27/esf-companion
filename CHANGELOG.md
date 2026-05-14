@@ -4,6 +4,20 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.7.1] - 2026-05-13
+
+### Fixed
+- **Version check is now sound under the companion-vX.Y.Z namespace.** `.claude/esf-version` previously held the legacy `3.10` string (ESF Manuscript v3.x era). After the v0.7.0 namespace shift, a naive numeric or lexical comparison of `3.10` versus `0.7.0` would say "no update available" even when one was. New approach: `.claude/esf-version` holds the full tag string (e.g., `companion-v0.7.0`), and the version check (in `.claude/agents/esf-companion.md` and `.claude/skills/esf-update/SKILL.md`) compares it by string equality against the latest `companion-vX.Y.Z` tag resolved from the GitHub Tags API. Different string means update available. Same resolution code path as `install.sh`.
+- **install.sh writes the resolved tag to `.claude/esf-version` directly** on the API install path. The repo's `.claude/esf-version` becomes informational; the installed file always matches the tag that was actually installed. The `--source` path still curls the local file for smoke-test parity.
+
+### Changed
+- **install.sh ambient block deduplicated.** The block written to vault `CLAUDE.md` carried three internal duplications: an orphan Nudge mode paragraph repeating Direction (Moment 1), a Pre-draft gates section duplicated by a more detailed Pre-draft and pre-ready gates section, and a Forcing functions section that re-listed Drift, Rejection, and Ownership Moments already covered above. Net: ten lines removed, one canonical statement of each behavior. Renamed Forcing functions to Position Statement gate modes to reflect what actually lives in the section after dedup.
+- **Narration is not logging (ambient block clarification).** If the agent describes a Moment firing, walks through what a Moment would catch, or acknowledges that one just fired, the agent must also write the buffer entry. Test-mode prompts ("test moment N," "walk me through Moment N") log as walkthrough firings with a `test: true` flag.
+
+### Notes
+- Closes both Phase B follow-ups from the 2026-05-12 vault-repo separation work: the esf-version reconciliation and the install.sh ambient-block dedup.
+- No user action required. Next `/esf-update` run installs companion-v0.7.1; subsequent version checks will use the new comparison logic automatically.
+
 ## [companion-v0.7.0] - 2026-05-12
 
 ### Added
