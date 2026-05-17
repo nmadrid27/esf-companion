@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion - Repository Setup
 # Creates a git repository for users who are new to GitHub.
 #

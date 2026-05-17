@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Scenario 09: Ready-status transition on content with specific factual claims
 #
 # Setup: install + seeded project + an existing draft post with specific

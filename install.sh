@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion Installer
 # Installs the ESF Companion into your current directory.
 #

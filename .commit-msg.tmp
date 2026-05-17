@@ -1,0 +1,32 @@
+feat: dual-license repo (CC BY 4.0 content + MIT code)
+
+Split the existing single CC BY 4.0 license into a dual-license setup
+so the framework content stays openly remixable while the code is
+covered by a proper software license.
+
+LICENSE files:
+- LICENSE rewritten as a top-level explainer that defines which license
+  applies to which parts of the repository
+- LICENSE-CONTENT added (full CC BY 4.0 text, governs framework docs,
+  templates, prompts, examples, sample projects, skill definitions)
+- LICENSE-CODE added (full MIT text, governs installer scripts, hooks,
+  CI workflows, plugin manifests, and other software)
+
+SPDX headers:
+- All shell scripts now carry # SPDX-License-Identifier: MIT directly
+  under the shebang for automated license detection:
+  install.sh, setup-repo.sh, test/smoke-test.sh, test/e2e/run-e2e.sh,
+  test/e2e/scenarios/01-05-09*.sh, test/e2e/scenarios/02-03*.sh,
+  .claude/statusline-command.sh, .claude/hooks/esf-session-status.sh
+
+Metadata:
+- CITATION.cff updated to list both CC-BY-4.0 and MIT
+- CONTRIBUTING.md expanded with a contributor agreement explaining the
+  dual license split and the SPDX header convention for new code files
+- README.md adds a License section linking to LICENSE-CONTENT and
+  LICENSE-CODE; footer updated to reflect both licenses
+
+.gitignore:
+- Add launch/ (private outreach and review drafts)
+- Add .claude/settings.local.json (machine-specific settings)
+- Add .qwen/ (other AI tool local state)

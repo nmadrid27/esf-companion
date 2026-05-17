@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion session status — SessionStart hook.
 #
 # Reads companion-state.md and outputs the activation status line to stderr

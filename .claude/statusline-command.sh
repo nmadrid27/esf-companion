@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion status line for Claude Code
 # Shows: cwd, model, context %, git branch, ESF context/phase, rate limits
 #

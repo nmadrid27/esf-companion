@@ -47,7 +47,21 @@ All contributors are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md
 
 ## License
 
-Contributions are licensed under [CC BY 4.0](LICENSE), the same license as the Companion.
+The ESF Companion is released under a dual license. By submitting a contribution, you agree that it will be licensed under the same license that applies to the file or area you are contributing to:
+
+- **Content contributions** (framework material, documentation, templates, prompts, examples, sample projects, course materials, skill definitions) are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-CONTENT).
+- **Code contributions** (shell scripts, GitHub Actions, plugin manifests, configuration, web assets) are licensed under the [MIT License](LICENSE-CODE).
+
+See [LICENSE](LICENSE) for the full scope of each license and how to determine which applies to a given file. If your contribution touches both code and content, each file is governed by the license appropriate to its type.
+
+When adding a new shell script or other software file, please include the SPDX header on the line directly under the shebang:
+
+```
+#!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
+```
+
+If you do not want to release your contribution under these terms, please open an issue to discuss before submitting a pull request.
 
 ## Questions
 

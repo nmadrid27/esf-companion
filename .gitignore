@@ -25,3 +25,14 @@ platforms/esf-companion.plugin
 
 # Landing page — local only, not part of public repo
 landing/
+
+# Launch and outreach drafts — private working files (newsletter pitches,
+# site reviews, OER submission, LinkedIn drafts). Kept on disk for reference
+# but not committed to the public repo.
+launch/
+
+# Local Claude Code settings (machine-specific overrides)
+.claude/settings.local.json
+
+# Other AI tool local state
+.qwen/

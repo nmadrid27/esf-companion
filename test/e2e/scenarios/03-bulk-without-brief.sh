@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Scenario 03: Bulk production without a brief triggers the forcing function
 #
 # Setup: install + seeded companion-state.md, no brief file for the project
