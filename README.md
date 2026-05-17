@@ -335,6 +335,17 @@ For the complete walkthrough, see [WALKTHROUGH.md](WALKTHROUGH.md).
 
 ---
 
+## License
+
+ESF Companion is released under a dual license:
+
+- **Content** (framework, documentation, templates, prompts, examples, sample projects, course materials, skill definitions) is licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSE-CONTENT). You may share and adapt the material for any purpose, including commercial use, as long as you give appropriate credit.
+- **Code** (installer scripts, test harness, GitHub Actions, plugin manifests, web assets) is licensed under the [MIT License](LICENSE-CODE).
+
+See [LICENSE](LICENSE) for the full scope of each license and how to determine which applies to a given file. For academic citation, see [CITATION.cff](CITATION.cff).
+
+---
+
 *ESF Companion*
 *Nathan Madrid*
-*Licensed under CC BY 4.0*
+*Content: CC BY 4.0  |  Code: MIT*

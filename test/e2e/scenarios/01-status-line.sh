@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Scenario 01: Activation status line fires on the first exchange
 #
 # Setup: fresh install + seeded companion-state.md with a logged project

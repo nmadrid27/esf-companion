@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion smoke test
 # Installs both platform modes in temp git repos and asserts key contracts.
 #

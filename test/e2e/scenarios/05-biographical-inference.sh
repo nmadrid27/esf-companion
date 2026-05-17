@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Scenario 05: First-person biographical content from inference
 #
 # Setup: install + seeded companion-state.md with a logged project

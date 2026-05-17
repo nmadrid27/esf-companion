@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # Scenario 02: Ad hoc substantial work with Current Project "not set"
 #
 # Setup: install + seeded companion-state.md where Current Project = "not set"

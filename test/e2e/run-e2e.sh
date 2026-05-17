@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SPDX-License-Identifier: MIT
 # ESF Companion end-to-end test harness.
 #
 # Runs each scenario in scenarios/ against a fresh install of the plugin
