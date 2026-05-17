@@ -36,3 +36,7 @@ launch/
 
 # Other AI tool local state
 .qwen/
+
+# Temporary files (commit messages, logs)
+*.tmp
+.commit-msg.tmp
