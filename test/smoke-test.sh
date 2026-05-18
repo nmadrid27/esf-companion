@@ -260,8 +260,45 @@ assert "guard shows correct download command"          \
 
 # ────────────────────────────────────────────────────────────────
 echo ""
+echo "Test 6: Migration from legacy install footprint"
+
+MIGRATE_DIR="/tmp/esf-smoke-migrate"
+make_git_repo "$MIGRATE_DIR"
+
+# Simulate legacy v0.7.x install: scatter the old toolkit paths at root
+mkdir -p prompts templates
+echo "legacy prompt" > prompts/companion.md
+echo "legacy template" > templates/position-statement-template.md
+echo "legacy workflow" > WORKFLOW.md
+echo "legacy start" > START_HERE.md
+git add . && git commit -q -m "legacy install"
+
+# Run installer — migration should fire
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+
+assert "migration install exits 0"                     "$EXIT"
+assert "legacy prompts/ removed from root"             "$([ ! -d prompts ] && echo 0 || echo 1)"
+assert "legacy templates/ removed from root"           "$([ ! -d templates ] && echo 0 || echo 1)"
+assert "legacy WORKFLOW.md removed from root"          "$([ ! -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "legacy START_HERE.md removed from root"        "$([ ! -f START_HERE.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/companion.md present"      "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/templates/ populated"              "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/WORKFLOW.md present"               "$([ -f esf/toolkit/WORKFLOW.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/START_HERE.md present"             "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
+assert "migration snapshot directory exists"           "$(ls -d esf/.migration-snapshot-* 2>/dev/null | head -1 | grep -q . && echo 0 || echo 1)"
+
+# Idempotency: running again is a no-op
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+assert "second install run exits 0 (idempotent)"       "$EXIT"
+SNAPSHOT_COUNT=$(ls -d esf/.migration-snapshot-* 2>/dev/null | wc -l | tr -d ' ')
+assert "no duplicate snapshot on second run"           "$([ "$SNAPSHOT_COUNT" = "1" ] && echo 0 || echo 1)"
+
+# ────────────────────────────────────────────────────────────────
+echo ""
 echo "Cleanup"
-rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation
+rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation /tmp/esf-smoke-migrate
 echo "  Temp dirs removed"
 
 # ────────────────────────────────────────────────────────────────
