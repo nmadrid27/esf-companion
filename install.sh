@@ -838,7 +838,9 @@ fi
 if [ -d ".git" ]; then
   git add .claude/ esf/toolkit/ 2>/dev/null
   # Snapshot dir from migration, if present
-  ls -d esf/.migration-snapshot-* 2>/dev/null | head -1 | xargs -I{} git add {} 2>/dev/null
+  for d in esf/.migration-snapshot-*/; do
+    [ -d "$d" ] && git add "$d" 2>/dev/null
+  done
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
   [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
   [ -f .claude/settings.json ] && git add .claude/settings.json 2>/dev/null
