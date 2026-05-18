@@ -188,6 +188,35 @@ if [ "$FORCE" != true ]; then
   fi
 fi
 
+# ─── Migration: relocate legacy install footprint into esf/toolkit/ ────
+# Older Companion installs (≤ v0.7.x) scattered prompts/, templates/,
+# WORKFLOW.md, START_HERE.md, GEMINI.md, and chatgpt-instructions.md at
+# the project root. We now consolidate those under esf/toolkit/ so the
+# install drops a single visible folder. Detect legacy paths and move them.
+LEGACY_PATHS=()
+[ -d "prompts" ] && [ ! -d "esf/toolkit/prompts" ] && LEGACY_PATHS+=("prompts")
+[ -d "templates" ] && [ ! -d "esf/toolkit/templates" ] && LEGACY_PATHS+=("templates")
+[ -f "WORKFLOW.md" ] && [ ! -f "esf/toolkit/WORKFLOW.md" ] && LEGACY_PATHS+=("WORKFLOW.md")
+[ -f "START_HERE.md" ] && [ ! -f "esf/toolkit/START_HERE.md" ] && LEGACY_PATHS+=("START_HERE.md")
+[ -f "GEMINI.md" ] && [ ! -f "esf/toolkit/GEMINI.md" ] && LEGACY_PATHS+=("GEMINI.md")
+[ -f "chatgpt-instructions.md" ] && [ ! -f "esf/toolkit/chatgpt-instructions.md" ] && LEGACY_PATHS+=("chatgpt-instructions.md")
+
+if [ "${#LEGACY_PATHS[@]}" -gt 0 ]; then
+  MIGRATION_DATE=$(date +%Y-%m-%d)
+  SNAPSHOT_DIR="esf/.migration-snapshot-${MIGRATION_DATE}"
+  echo ""
+  echo -e "${YELLOW}Detected legacy Companion install layout. Migrating to esf/toolkit/...${NC}"
+  mkdir -p "$SNAPSHOT_DIR"
+  mkdir -p esf/toolkit
+  for p in "${LEGACY_PATHS[@]}"; do
+    cp -R "$p" "$SNAPSHOT_DIR/" 2>/dev/null || true
+    mv "$p" "esf/toolkit/$p"
+  done
+  echo -e "  ${GREEN}Migrated: ${LEGACY_PATHS[*]} → esf/toolkit/${NC}"
+  echo -e "  ${YELLOW}Snapshot for rollback: $SNAPSHOT_DIR${NC}"
+fi
+# ─── end migration ───
+
 # Check for git repo
 if [ ! -d ".git" ]; then
   if [ "$FORCE" = true ]; then
