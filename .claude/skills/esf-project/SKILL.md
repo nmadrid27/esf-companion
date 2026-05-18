@@ -366,7 +366,7 @@ The ideas must be the user's. The structure is the Companion's contribution. Thi
 
 > "I've saved your Position Statement. One optional step before we start exploring: do you want to sketch a quick project plan? It takes about 5 minutes: what you're making, a few milestones, and your open questions. It gives us a clearer target to direct toward. Want to do that now, or go straight to Explore?"
 
-If yes: fill in `templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `esf/[context]/project-plan.md`. Then proceed to the readability pass.
+If yes: fill in `esf/toolkit/templates/project-plan.md` collaboratively. Draw the milestones and open questions from what the user said during Phase 1 and 2. Save the completed plan to `esf/[context]/project-plan.md`. Then proceed to the readability pass.
 
 If no: proceed directly to the readability pass confirmation: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
 
@@ -398,7 +398,7 @@ Display the full cleaned Position Statement in chat so the user can read every w
 
 ### AI Use Log Initialization
 
-After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `esf/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
+After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `esf/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `esf/toolkit/templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
 
 > "I've started your AI Use Log at `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`. This tracks what AI contributed and what you verified. I'll prompt you to update it at key moments."
 
@@ -468,7 +468,7 @@ Display the full document in chat for the user to review:
 [Summary of the user's direction, with file path]
 ```
 
-The user must confirm the scope before building begins. Save the confirmed scope to `esf/[context]/project-scope-[project-slug].md`. The blank template is at `templates/project-scope-template.md`.
+The user must confirm the scope before building begins. Save the confirmed scope to `esf/[context]/project-scope-[project-slug].md`. The blank template is at `esf/toolkit/templates/project-scope-template.md`.
 
 The Companion adapts this structure to the project. A short personal project may only need Overview, Deliverables, and Boundaries. A complex build may need all sections. Do not force every project through the full template.
 
@@ -558,7 +558,7 @@ When triggered, stop and offer to capture:
 If the user says yes:
 1. Read the current context and project name from `companion-state.md` in the current workspace only.
 2. Derive `project-slug` from the project name and find the next record number by checking `esf/[context]/records-of-resistance/` for existing files matching `[project-slug]-ror-NN.md`.
-3. Create `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`.
+3. Create `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `esf/toolkit/templates/record-of-resistance-template.md`.
 4. Pre-fill these fields yourself before asking the user to write anything:
    - frontmatter: `context`, `project`, `date`, `record-number`
    - header metadata: Course, Project, Date, Record #
@@ -606,7 +606,7 @@ Help the user document the process and evaluate the outcome against their origin
 - "What would you do differently on the next project?"
 - "Name 3 moments where you made a deliberate choice to keep, revise, or reject AI output. What was your reasoning each time?"
 
-**Reflection:** Offer the user the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `esf/[context]/reflections/[project-name]-reflection.md`.
+**Reflection:** Offer the user the reflection template: "Want to write a project reflection? There's a template at `esf/toolkit/templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `esf/[context]/reflections/[project-name]-reflection.md`.
 
 **Reflection editing:** The same readability pass is available for the user's reflection writing. The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it: "You mentioned AI shaped your direction in Phase 3. Can you say more about what specifically changed and whether that was productive?"
 
@@ -832,7 +832,7 @@ When the user indicates they are done working for the session (says "I'm done," 
 **Process:**
 
 1. Read the session buffer at `esf/[context]/logs/.session-buffer.md`
-2. Synthesize it into a session log entry using the template at `templates/session-log-template.md`
+2. Synthesize it into a session log entry using the template at `esf/toolkit/templates/session-log-template.md`
 3. Present it to the user:
 
 > "Here is your session log for today. Review it, edit anything that is off, and I will save it."
