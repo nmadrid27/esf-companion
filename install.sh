@@ -587,8 +587,8 @@ mkdir -p .claude/agents
 mkdir -p .claude/skills/esf-onboarding
 mkdir -p .claude/skills/esf-project
 mkdir -p .claude/reference
-mkdir -p prompts
-mkdir -p templates
+mkdir -p esf/toolkit/prompts
+mkdir -p esf/toolkit/templates
 
 # Download the static agent. User-specific state now lives in esf/.
 echo "  Fetching agents..."
@@ -691,31 +691,31 @@ fi
 
 # Download prompts
 echo "  Fetching prompts..."
-fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/cowork.md" prompts/cowork.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/cowork.md" esf/toolkit/prompts/cowork.md
+fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" esf/toolkit/prompts/README.md
 
 # Download templates
 echo "  Fetching templates..."
-fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" templates/position-statement-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" templates/position-statement.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" templates/ai-use-log-lite-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
-fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" templates/companion-notes-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
-fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
-fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
-fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" templates/project-brief-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" templates/project-plan.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" templates/project-scope-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" esf/toolkit/templates/position-statement-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" esf/toolkit/templates/position-statement.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" esf/toolkit/templates/ai-use-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" esf/toolkit/templates/ai-use-log-lite-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" esf/toolkit/templates/ai-use-log.md
+fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" esf/toolkit/templates/companion-state-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" esf/toolkit/templates/companion-notes-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" esf/toolkit/templates/record-of-resistance-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" esf/toolkit/templates/record-of-resistance.md
+fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" esf/toolkit/templates/five-questions-checklist.md
+fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" esf/toolkit/templates/disclosure-statement.md
+fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" esf/toolkit/templates/session-log-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" esf/toolkit/templates/reflection-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" esf/toolkit/templates/project-brief-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
+fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
 
 # Download reference files
 echo "  Fetching reference files..."
@@ -727,10 +727,10 @@ curl -fsSL "$TOOLKIT_BASE/.claude/reference/evolution-protocol.md"  -o .claude/r
   || { echo -e "${RED}Failed to fetch evolution-protocol.md.${NC}"; exit 1; }
 
 # Download workflow diagram and onboarding guide (skip if already exists)
-if [ ! -f "WORKFLOW.md" ]; then
-  curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
+if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
+  curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
 fi
-fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
+fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" esf/toolkit/START_HERE.md
 
 # Write ambient activation block to CLAUDE.md if requested
 if [ "$AMBIENT" = true ]; then
@@ -834,7 +834,9 @@ fi
 
 # Auto-commit only Companion files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
-  git add .claude/ prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
+  git add .claude/ esf/toolkit/ 2>/dev/null
+  # Snapshot dir from migration, if present
+  ls -d esf/.migration-snapshot-* 2>/dev/null | head -1 | xargs -I{} git add {} 2>/dev/null
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
   [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
   [ -f .claude/settings.json ] && git add .claude/settings.json 2>/dev/null
@@ -860,6 +862,7 @@ echo ""
 echo -e "${GREEN}ESF Companion installed.${NC}"
 echo ""
 echo "  Installed to: $(pwd)"
+echo "  Toolkit files: $(pwd)/esf/toolkit/"
 echo ""
 echo "──────────────────────────────────────"
 echo -e "${CYAN}Next steps:${NC}"
@@ -882,7 +885,7 @@ else
   echo "  Onboarding takes about 5 minutes and sets up your identity,"
   echo "  project context, and folder structure."
   echo ""
-  echo "  For a quick overview, read START_HERE.md"
+  echo "  For a quick overview, read esf/toolkit/START_HERE.md"
   echo ""
   echo "  Starting a new project later? Re-run /esf-onboarding and say 'update'."
 fi
