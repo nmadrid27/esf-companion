@@ -63,6 +63,8 @@ templates/
 
 **Start here:** Copy `position-statement.md` into your project folder and fill it in before opening any AI tool.
 
+If you later run the installer, those same files are set up for you at `esf/toolkit/templates/`. The GitHub download path and the installed path differ on purpose: GitHub paths stay at the repo root so the no-install workflow has simple download URLs.
+
 ### Path 2: Use with Claude.ai, ChatGPT, Gemini, or any conversation tool
 
 Open `prompts/esf-companion.md`, copy the contents, and paste into your AI tool's custom instructions. The AI will follow the ESF process and ask for your Position Statement before helping with project work.
@@ -256,32 +258,25 @@ The Position Statement is the gate. Everything downstream depends on it. Without
 
 ```
 your-project/
-├── .claude/                          ← Claude Code configuration (optional)
-│   ├── agents/
-│   │   └── esf-companion.md         ← AI companion identity
-│   ├── skills/
-│   │   ├── esf-onboarding/          ← Setup wizard
-│   │   ├── esf-project/             ← Five-phase workflow
-│   │   ├── esf-git/                 ← Commit discipline
-│   │   ├── esf-verify/              ← Source verification
-│   │   ├── esf-update/              ← Self-update
-│   │   └── esf-cognitive/           ← Cognitive techniques
-│   └── reference/
-│       └── esf-guide.md             ← Framework reference
-├── templates/                        ← Blank templates for each practice
-├── prompts/
-│   ├── esf-companion.md             ← Paste-anywhere system prompt
-│   └── companion.md                 ← Compact companion prompt
-├── esf/
-│   ├── companion-state.md           ← Your identity and active contexts
-│   ├── companion-notes.md           ← Corrections the Companion applies every session
-│   └── [your-context]/
-│       ├── briefs/                   ← Project briefs
-│       ├── position-statements/      ← Your direction (write this first)
-│       ├── records-of-resistance/    ← Your decisions about AI output
-│       ├── ai-use-logs/             ← What AI contributed
-│       └── logs/                     ← Session logs
-└── WORKFLOW.md                       ← Process diagram
+├── .claude/                            ← Claude Code configuration
+│   ├── agents/esf-companion.md         ← AI companion identity
+│   ├── skills/                         ← Onboarding, project workflow, git, verify, update, cognitive
+│   └── reference/esf-guide.md          ← Framework reference
+├── CLAUDE.md                           ← Ambient activation block
+└── esf/
+    ├── companion-state.md              ← Your identity and active contexts
+    ├── companion-notes.md              ← Corrections the Companion applies every session
+    ├── toolkit/                        ← The Companion's own files
+    │   ├── prompts/                    ← Paste-anywhere system prompts
+    │   ├── templates/                  ← Blank templates for each practice
+    │   ├── WORKFLOW.md                 ← Process diagram
+    │   └── START_HERE.md               ← First-read overview
+    └── [your-context]/
+        ├── briefs/                     ← Project briefs
+        ├── position-statements/        ← Your direction (write this first)
+        ├── records-of-resistance/      ← Your decisions about AI output
+        ├── ai-use-logs/                ← What AI contributed
+        └── logs/                       ← Session logs
 ```
 
 ---

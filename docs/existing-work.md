@@ -16,7 +16,7 @@ A catch-up Position Statement has three parts:
 
 This takes ten to fifteen minutes. It is more valuable than it sounds. Writing it down often reveals that your position has drifted during the work, which is exactly what you need to know before continuing.
 
-Use `templates/position-statement.md` as your starting format.
+Use `esf/toolkit/templates/position-statement.md` as your starting format.
 
 ---
 
@@ -68,7 +68,7 @@ If you did not track AI contributions as you went, reconstruct what you can. Loo
 - What you asked the AI to do (even roughly)
 - What you kept versus what you rewrote significantly
 
-The AI Use Log (`templates/ai-use-log-template.md`, or `templates/ai-use-log-lite-template.md` for a simpler version) does not need to be perfect. An honest approximation is better than nothing and better than no disclosure at all.
+The AI Use Log (`esf/toolkit/templates/ai-use-log-template.md`, or `esf/toolkit/templates/ai-use-log-lite-template.md` for a simpler version) does not need to be perfect. An honest approximation is better than nothing and better than no disclosure at all.
 
 ---
 
