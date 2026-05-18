@@ -38,17 +38,17 @@ Drop your assignment briefs into a `briefs/` directory. Reference them in the wo
 
 ```
 your-course-repo/
-├── briefs/
-│   ├── project-1-brief.md
-│   └── project-2-brief.md
-├── templates/
-│   └── [ESF templates, unchanged or adapted]
-├── projects/
-│   └── _esf/
-│       └── companion-state.md   ← Holds your course context
-└── .claude/
-    └── agents/
-        └── esf-companion.md     ← Static agent instructions
+├── .claude/
+│   └── agents/
+│       └── esf-companion.md         ← Static agent instructions
+└── esf/
+    ├── companion-state.md           ← Holds your course context
+    ├── toolkit/
+    │   └── templates/               ← [ESF templates, unchanged or adapted]
+    └── your-course/
+        └── briefs/
+            ├── project-1-brief.md
+            └── project-2-brief.md
 ```
 
 In `esf/companion-state.md`, add:
@@ -66,7 +66,7 @@ the assignment's requirements.
 The generic disclosure template has three tiers (short, standard, detailed). For a course, you may want to specify which tier is required and where it goes:
 
 - Add a line to your syllabus: "All AI-assisted work must include a Standard Form disclosure statement."
-- Edit `templates/disclosure-statement.md` to include your course-specific fields (course code, project number, submission date).
+- Edit `esf/toolkit/templates/disclosure-statement.md` to include your course-specific fields (course code, project number, submission date).
 
 ## 5. Set up student distribution
 

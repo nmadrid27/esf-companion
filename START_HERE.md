@@ -10,22 +10,24 @@ You just installed the ESF Companion.
 
 ```
 .claude/
-├── agents/esf-companion.md       ← AI companion identity
-├── skills/                       ← Six skills (onboarding, project, git, verify, update, cognitive)
-└── reference/                    ← Framework guide and disclosure protocol
-templates/                        ← Blank forms for each ESF practice
-prompts/                          ← System prompt for conversation tools
-WORKFLOW.md                       ← Visual process diagram
+├── agents/esf-companion.md           ← AI companion identity
+├── skills/                           ← Six skills (onboarding, project, git, verify, update, cognitive)
+└── reference/                        ← Framework guide and disclosure protocol
+esf/toolkit/
+├── templates/                        ← Blank forms for each ESF practice
+├── prompts/                          ← System prompt for conversation tools
+└── WORKFLOW.md                       ← Visual process diagram
 ```
 
-The installer also creates an `esf/` folder to hold your project artifacts: position statements, records of resistance, session logs. These are yours — they document your decisions and don't affect your project files.
+The installer also creates an `esf/` folder to hold your project artifacts: position statements, records of resistance, session logs. These are yours; they document your decisions and don't affect your project files.
 
 **Conversation tool install (Claude.ai, ChatGPT, Gemini):**
 
 ```
-templates/                        ← Blank forms for each ESF practice
-prompts/                          ← System prompt and quick-start document
-WORKFLOW.md                       ← Visual process diagram
+esf/toolkit/
+├── templates/                        ← Blank forms for each ESF practice
+├── prompts/                          ← System prompt and quick-start document
+└── WORKFLOW.md                       ← Visual process diagram
 ```
 
 ---
@@ -40,7 +42,7 @@ WORKFLOW.md                       ← Visual process diagram
 
 **If you are on Claude.ai, ChatGPT, Gemini, or another conversation tool:**
 
-1. Open `prompts/quick-start.md`
+1. Open `esf/toolkit/prompts/quick-start.md`
 2. Fill in your information at the top
 3. Paste the whole document as your first message. That is your entire setup
 
@@ -48,7 +50,7 @@ WORKFLOW.md                       ← Visual process diagram
 
 1. Create a project in Claude.ai
 2. Upload `companion-state.md` and your brief as project knowledge
-3. Set `prompts/esf-companion.md` as the system prompt. Your context loads automatically each session
+3. Set `esf/toolkit/prompts/esf-companion.md` as the system prompt. Your context loads automatically each session
 
 ---
 
@@ -87,7 +89,7 @@ With silent mode on, the Companion suppresses proactive prompts, phase announcem
 
 - **[WALKTHROUGH.md](WALKTHROUGH.md).** Complete guide: onboarding, all five phases, worked examples
 - **[WORKFLOW.md](WORKFLOW.md).** Visual process diagram
-- **[templates/](templates/).** Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
+- **[esf/toolkit/templates/](templates/).** Blank forms: Position Statement, Record of Resistance, AI Use Log, Five Questions, Disclosure
 - **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples).** Filled samples across design, writing, research, and consulting
 - **[ROADMAP.md](ROADMAP.md).** What is shipped, what is coming
 

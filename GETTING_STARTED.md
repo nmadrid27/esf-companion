@@ -102,7 +102,7 @@ Next steps:
 ──────────────────────────────────────
 ```
 
-**What just happened:** The installer created a `.claude/` directory with agents, skills, and reference files; a `templates/` directory with blank ESF templates; a `prompts/` directory for non-Claude-Code users; and a `WORKFLOW.md` diagram. It did not touch Jordan's existing files.
+**What just happened:** The installer created a `.claude/` directory with agents, skills, and reference files, plus an `esf/toolkit/` directory holding blank ESF templates, prompt files for non-Claude-Code users, and a `WORKFLOW.md` diagram. It did not touch Jordan's existing files.
 
 **Their repo now:**
 
@@ -121,18 +121,20 @@ ai-work/
 │   │   ├── esf-guide.md
 │   │   └── disclosure-protocol.md
 │   └── esf-version
-├── prompts/
-│   ├── companion.md
-│   ├── project-workflow.md
-│   └── README.md
-├── templates/
-│   ├── position-statement-template.md
-│   ├── ai-use-log-template.md
-│   ├── record-of-resistance-template.md
-│   ├── session-log-template.md
-│   ├── reflection-template.md
-│   └── evolution-log-template.md
-└── WORKFLOW.md
+└── esf/
+    └── toolkit/
+        ├── prompts/
+        │   ├── companion.md
+        │   ├── project-workflow.md
+        │   └── README.md
+        ├── templates/
+        │   ├── position-statement-template.md
+        │   ├── ai-use-log-template.md
+        │   ├── record-of-resistance-template.md
+        │   ├── session-log-template.md
+        │   ├── reflection-template.md
+        │   └── evolution-log-template.md
+        └── WORKFLOW.md
 ```
 
 ---
@@ -378,21 +380,22 @@ ai-work/
 │   ├── skills/
 │   ├── reference/
 │   └── esf-version
-├── esf/
-│   └── discover-course/
-│       ├── briefs/
-│       │   └── project-01-tool-audit.md
-│       ├── position-statements/
-│       │   └── tool-audit.md        ← written offline, readability-passed
-│       ├── records-of-resistance/
-│       ├── ai-use-logs/
-│       ├── gate-records/
-│       ├── reflections/
-│       ├── logs/
-│       └── work/
-├── prompts/
-├── templates/
-└── WORKFLOW.md
+└── esf/
+    ├── toolkit/
+    │   ├── prompts/
+    │   ├── templates/
+    │   └── WORKFLOW.md
+    └── discover-course/
+        ├── briefs/
+        │   └── project-01-tool-audit.md
+        ├── position-statements/
+        │   └── tool-audit.md        ← written offline, readability-passed
+        ├── records-of-resistance/
+        ├── ai-use-logs/
+        ├── gate-records/
+        ├── reflections/
+        ├── logs/
+        └── work/
 ```
 
 The Position Statement exists and has been confirmed. The workspace state file records Jordan's current phase (Explore, transitioning to Make) and project context. When Jordan opens Claude Code next session, the Companion will read the session log and pick up where they left off.
