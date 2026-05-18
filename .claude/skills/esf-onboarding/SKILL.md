@@ -368,11 +368,11 @@ Do not ask the user to write a Position Statement during onboarding. Explain tha
 - Create `esf/` if it does not exist.
 - Place `companion-state.md` at `esf/companion-state.md`.
 
-Use `templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
+Use `esf/toolkit/templates/companion-state-template.md` as the starting structure. Then update that file with what was collected.
 
-**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
+**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
-**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `templates/companion-notes-template.md` as the starting structure. Leave all sections empty — do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
+**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty — do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
 **Fields to fill:**
 
@@ -529,7 +529,7 @@ Then briefly point to the folders. Use paths that match the install mode:
 
 > "For your teaching contexts, the process works differently. You are not the one writing Position Statements for your courses. Your students are. Your role is to set up the environment they work within:
 >
-> 1. **Author project briefs** with ESF requirements in the frontmatter. Use the template at `templates/project-brief-template.md` as a starting point. The brief controls whether Position Statements are required, how many Records of Resistance, and whether the Five Questions are enforced.
+> 1. **Author project briefs** with ESF requirements in the frontmatter. Use the template at `esf/toolkit/templates/project-brief-template.md` as a starting point. The brief controls whether Position Statements are required, how many Records of Resistance, and whether the Five Questions are enforced.
 > 2. **Set course minimums** in your companion state file. These carry into your briefs and into the Companion your students use.
 > 3. **Distribute the Companion** to your students. See `docs/institutional-adoption.md` for options: fork the repo, share an install command, or create a GitHub template.
 >
@@ -555,7 +555,7 @@ Step 8 already routed them into Phase 3. No close message needed; the session co
 
 > "Setup complete. Your immediate next step:
 >
-> **Author your first course brief.** Add it to `esf/[course]/briefs/` using `templates/project-brief-template.md`. The frontmatter fields control what the Companion requires of your students.
+> **Author your first course brief.** Add it to `esf/[course]/briefs/` using `esf/toolkit/templates/project-brief-template.md`. The frontmatter fields control what the Companion requires of your students.
 >
 > For distributing the Companion to students and setting course minimums, see `docs/institutional-adoption.md`.
 >

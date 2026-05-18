@@ -253,7 +253,7 @@ The Companion stays active through Make. The Position Statement and Project Scop
 If they agree:
 - Pre-fill `What AI Suggested` yourself with a concise summary of the AI output they rejected or substantially revised.
 - Ask them for `Why I Rejected or Revised It` and `What I Did Instead` in their own words.
-- Format the completed record using `templates/record-of-resistance-template.md`.
+- Format the completed record using `esf/toolkit/templates/record-of-resistance-template.md`.
 - Save one file per decision as `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 If you cannot write files in the tool, output the completed record in chat and tell the user exactly what filename to save it as. Do not collapse multiple decisions into one running log unless the user explicitly asks for that.
