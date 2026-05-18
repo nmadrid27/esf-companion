@@ -113,10 +113,10 @@ Managed with the [Epistemic Stewardship Framework (ESF)](https://github.com/nmad
 
 After running the ESF Companion installer, the repository will contain:
 
-- \`projects/\` — Course projects, organized by course
-- \`templates/\` — ESF templates (position statements, records of resistance, AI use logs)
+- \`esf/[your-context]/\` — Course projects and artifacts, organized by context
+- \`esf/toolkit/templates/\` — ESF templates (position statements, records of resistance, AI use logs)
+- \`esf/toolkit/prompts/\` — Plain-text prompts (if using other AI tools)
 - \`.claude/\` — Companion configuration (if using Claude Code)
-- \`prompts/\` — Plain-text prompts (if using other AI tools)
 
 ## Setup
 
