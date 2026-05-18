@@ -66,10 +66,10 @@ assert "esf-companion agent present"                   "$([ -f .claude/agents/es
 assert "esf-project skill present"                     "$([ -f .claude/skills/esf-project/SKILL.md ] && echo 0 || echo 1)"
 assert "esf-cognitive skill present"                   "$([ -f .claude/skills/esf-cognitive/SKILL.md ] && echo 0 || echo 1)"
 assert "esf-onboarding skill present"                  "$([ -f .claude/skills/esf-onboarding/SKILL.md ] && echo 0 || echo 1)"
-assert "START_HERE.md present"                         "$([ -f START_HERE.md ] && echo 0 || echo 1)"
-assert "WORKFLOW.md present"                           "$([ -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "START_HERE.md present in esf/toolkit"          "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
+assert "WORKFLOW.md present in esf/toolkit"            "$([ -f esf/toolkit/WORKFLOW.md ] && echo 0 || echo 1)"
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
-assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
+assert "esf/toolkit in git commit"                     "$(git show --name-only HEAD | grep -q 'esf/toolkit/' && echo 0 || echo 1)"
 assert "esf-cognitive in git commit"                   "$(git show --name-only HEAD | grep -q 'esf-cognitive' && echo 0 || echo 1)"
 
 # Phase 2 conversational drafting option present
@@ -129,12 +129,12 @@ bash "$INSTALL_SH" --force --platform conversation --source "$REPO_ROOT" > /dev/
 EXIT=$?
 
 assert "install exits 0"                               "$EXIT"
-assert "prompts/companion.md present"                  "$([ -f prompts/companion.md ] && echo 0 || echo 1)"
-assert "prompts/project-workflow.md present"           "$([ -f prompts/project-workflow.md ] && echo 0 || echo 1)"
-assert "templates/position-statement-template.md"      "$([ -f templates/position-statement-template.md ] && echo 0 || echo 1)"
-assert "START_HERE.md present"                         "$([ -f START_HERE.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/companion.md present"      "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/project-workflow.md"       "$([ -f esf/toolkit/prompts/project-workflow.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/templates/position-statement"      "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/START_HERE.md present"             "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
-assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
+assert "esf/toolkit in git commit"                     "$(git show --name-only HEAD | grep -q 'esf/toolkit/' && echo 0 || echo 1)"
 
 # Phase 2 conversational drafting option present in conversation prompt
 assert "Phase 2 conversational drafting in project-workflow" \
