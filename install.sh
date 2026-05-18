@@ -376,47 +376,47 @@ if [ "$PLATFORM" != "claude" ]; then
   fi
 
   # Base lightweight install (shared by all non-Claude-Code platforms)
-  mkdir -p prompts
-  mkdir -p templates
+  mkdir -p esf/toolkit/prompts
+  mkdir -p esf/toolkit/templates
 
   echo "  Fetching companion prompts..."
-  fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" prompts/companion.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" prompts/esf-companion.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" prompts/project-workflow.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/quick-start.md" prompts/quick-start.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" prompts/README.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/quick-start.md" esf/toolkit/prompts/quick-start.md
+  fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" esf/toolkit/prompts/README.md
 
   echo "  Fetching templates..."
-  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" templates/position-statement-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" templates/position-statement.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" templates/record-of-resistance-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" templates/record-of-resistance.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" templates/ai-use-log-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" templates/ai-use-log.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" templates/companion-state-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" templates/companion-notes-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" templates/five-questions-checklist.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" templates/disclosure-statement.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" templates/session-log-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" templates/reflection-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" templates/project-plan.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" templates/project-scope-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" templates/evolution-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" esf/toolkit/templates/position-statement-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" esf/toolkit/templates/position-statement.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" esf/toolkit/templates/record-of-resistance-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" esf/toolkit/templates/record-of-resistance.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" esf/toolkit/templates/ai-use-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" esf/toolkit/templates/ai-use-log.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" esf/toolkit/templates/companion-state-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" esf/toolkit/templates/companion-notes-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" esf/toolkit/templates/five-questions-checklist.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" esf/toolkit/templates/disclosure-statement.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" esf/toolkit/templates/session-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" esf/toolkit/templates/reflection-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
 
-  if [ ! -f "WORKFLOW.md" ]; then
-    curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o WORKFLOW.md
+  if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
+    curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
   fi
-  fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" START_HERE.md
+  fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" esf/toolkit/START_HERE.md
 
   # Platform-specific config file
   case "$PLATFORM" in
     chatgpt)
       echo "  Fetching ChatGPT custom instructions..."
-      fetch_if_missing "$TOOLKIT_BASE/chatgpt-instructions.md" chatgpt-instructions.md
+      fetch_if_missing "$TOOLKIT_BASE/chatgpt-instructions.md" esf/toolkit/chatgpt-instructions.md
       ;;
     gemini)
       echo "  Fetching Gemini system prompt..."
-      fetch_if_missing "$TOOLKIT_BASE/GEMINI.md" GEMINI.md
+      fetch_if_missing "$TOOLKIT_BASE/GEMINI.md" esf/toolkit/GEMINI.md
       ;;
     codex)
       echo "  Fetching Codex CLI agent config..."
@@ -427,11 +427,13 @@ if [ "$PLATFORM" != "claude" ]; then
 
   # Auto-commit if in a git repo
   if [ -d ".git" ]; then
-    git add prompts/ templates/ WORKFLOW.md START_HERE.md 2>/dev/null
+    git add esf/toolkit/ 2>/dev/null
     [ -f .gitignore ] && git add .gitignore 2>/dev/null
-    [ -f chatgpt-instructions.md ] && git add chatgpt-instructions.md 2>/dev/null
-    [ -f GEMINI.md ] && git add GEMINI.md 2>/dev/null
     [ -d .codex ] && git add .codex/ 2>/dev/null
+    # Snapshot dir from migration, if present
+    for d in esf/.migration-snapshot-*/; do
+      [ -d "$d" ] && git add "$d" 2>/dev/null
+    done
     git commit -m "Install ESF Companion ($PLATFORM)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
   fi
@@ -445,7 +447,7 @@ if [ "$PLATFORM" != "claude" ]; then
 
   case "$PLATFORM" in
     chatgpt)
-      echo "  1. Open chatgpt-instructions.md."
+      echo "  1. Open esf/toolkit/chatgpt-instructions.md."
       echo "     Copy Section 1 into ChatGPT Settings > Personalization >"
       echo "     Custom Instructions > 'What to know about you'."
       echo "     Copy Section 2 into 'How to respond'."
@@ -458,7 +460,7 @@ if [ "$PLATFORM" != "claude" ]; then
       echo "     The Companion will guide you through the ESF workflow."
       ;;
     gemini)
-      echo "  1. Open GEMINI.md."
+      echo "  1. Open esf/toolkit/GEMINI.md."
       echo "     Paste everything below the '---' line as your first message"
       echo "     in a new Gemini conversation."
       echo ""
@@ -481,26 +483,26 @@ if [ "$PLATFORM" != "claude" ]; then
       ;;
     *)
       # Claude.ai or generic conversation
-      echo "  1. Open prompts/quick-start.md, fill in the four fields at the top,"
+      echo "  1. Open esf/toolkit/prompts/quick-start.md, fill in the four fields at the top,"
       echo "     and paste the whole document as your first message."
       echo ""
       echo "  Or set up custom instructions for your tool:"
       echo "     Claude.ai:  Settings > Custom Instructions (or use a Project)"
       echo "     ChatGPT:    Settings > Personalization > Custom Instructions"
-      echo "     Gemini:     Paste GEMINI.md at the start of your conversation"
+      echo "     Gemini:     Paste esf/toolkit/GEMINI.md at the start of your conversation"
       echo ""
       echo "  Claude.ai Projects (recommended for returning users):"
       echo "     Create a project, upload companion-state.md and your brief"
-      echo "     as knowledge files, set prompts/esf-companion.md as the"
+      echo "     as knowledge files, set esf/toolkit/prompts/esf-companion.md as the"
       echo "     system prompt. Context loads automatically every session."
       ;;
   esac
 
   echo ""
-  echo "  Templates are in the templates/ folder."
-  echo "  The visual process diagram is in WORKFLOW.md."
+  echo "  Templates are in esf/toolkit/templates/."
+  echo "  The visual process diagram is in esf/toolkit/WORKFLOW.md."
   echo ""
-  echo "  For a quick overview, read START_HERE.md"
+  echo "  For a quick overview, read esf/toolkit/START_HERE.md"
   echo ""
   echo "  Want the full Claude Code experience later? Re-run and choose option 1."
   echo "──────────────────────────────────────"
