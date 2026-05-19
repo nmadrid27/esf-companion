@@ -235,7 +235,7 @@ assert "Cowork: plugin.json has a parseable version"   \
 
 # The version should appear at least twice in esf-start.md Step 0:
 # once in "shipped with this command is `X.Y.Z`" and once in "(you have vX.Y.Z)".
-BAKED_COUNT=$(grep -c "\`${COWORK_VERSION}\`\|v${COWORK_VERSION}" "$COWORK_START" || echo 0)
+BAKED_COUNT=$(grep -E "\`${COWORK_VERSION}\`|v${COWORK_VERSION}" "$COWORK_START" 2>/dev/null | wc -l | tr -d ' ')
 assert "Cowork: esf-start.md baked-in version matches plugin.json ($COWORK_VERSION)" \
   "$([ "$BAKED_COUNT" -ge 2 ] && echo 0 || echo 1)"
 
