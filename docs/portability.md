@@ -66,7 +66,7 @@ Every step in `/esf-onboarding` labeled by what it requires:
 | Step 8: Explain ESF process | Required (any platform) | Pure explanation; works in any medium |
 | Step 9: Confirm and close | Required (any platform) | Closing instruction; platform-agnostic |
 
-**On conversation tools:** Steps 0, 5-6, and 7 are skipped or replaced with instructions for manual setup. The conversation prompt in `prompts/esf-companion.md` covers the equivalent of Steps 1-4 and 8-9 on first use.
+**On conversation tools:** Steps 0, 5-6, and 7 are skipped or replaced with instructions for manual setup. The conversation prompt in `esf/toolkit/prompts/esf-companion.md` covers the equivalent of Steps 1-4 and 8-9 on first use.
 
 **Zero-install path:** Steps 0 and 5-9 are replaced by a single instruction: fill in `position-statement.md` before your next AI session. No setup, no state file, no folder structure required.
 

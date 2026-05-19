@@ -31,8 +31,8 @@ The installer asks what AI tool you use (Claude Code, Claude.ai, ChatGPT, or oth
 **What got installed:**
 - An agent that knows the ESF process (`.claude/agents/esf-companion.md`)
 - Skills for onboarding, project workflow, and verification (`.claude/skills/`)
-- Templates for Position Statements, Records of Resistance, and AI Use Logs (`templates/`)
-- A visual process diagram (`WORKFLOW.md`)
+- Templates for Position Statements, Records of Resistance, and AI Use Logs (`esf/toolkit/templates/`)
+- A visual process diagram (`esf/toolkit/WORKFLOW.md`)
 
 You are ready. Open your AI tool and run `/esf-onboarding` to set up your profile.
 
@@ -191,13 +191,13 @@ The core process is the same. The difference: context does not persist between c
 
 Without it, the Companion starts fresh and cannot compare your work to your original direction.
 
-**Getting started:** Open `prompts/quick-start.md`, fill in the four placeholders at the top (name, discipline, project, phase), and paste the whole document as your first message. No other setup needed.
+**Getting started:** Open `esf/toolkit/prompts/quick-start.md`, fill in the four placeholders at the top (name, discipline, project, phase), and paste the whole document as your first message. No other setup needed.
 
-**Returning to a project:** Paste your saved PROJECT.md first, then paste `prompts/project-workflow.md`. The Companion picks up where you left off.
+**Returning to a project:** Paste your saved PROJECT.md first, then paste `esf/toolkit/prompts/project-workflow.md`. The Companion picks up where you left off.
 
 #### Claude.ai Projects (recommended for returning users)
 
-If you use Claude.ai, Projects give you persistent file context without pasting. Create a project, upload your `companion-state.md` and project brief as project knowledge files, and set `prompts/esf-companion.md` as the project system prompt. The Companion reads your files at the start of every conversation automatically.
+If you use Claude.ai, Projects give you persistent file context without pasting. Create a project, upload your `companion-state.md` and project brief as project knowledge files, and set `esf/toolkit/prompts/esf-companion.md` as the project system prompt. The Companion reads your files at the start of every conversation automatically.
 
 No paste needed as long as your knowledge files are current. After each session, re-upload your updated `companion-state.md` to keep the project knowledge in sync. If you skip this step, paste your PROJECT.md at the start of the next conversation to catch the Companion up.
 

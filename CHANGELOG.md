@@ -4,6 +4,24 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.8.0] - 2026-05-18
+
+### Changed
+- **Install footprint consolidated under `esf/toolkit/`.** Previously the installer scattered five top-level folders (`prompts/`, `templates/`, `.claude/`, `esf/`, `.codex/`) and 3–4 files (`CLAUDE.md`, `WORKFLOW.md`, `START_HERE.md`, plus `GEMINI.md` or `chatgpt-instructions.md` depending on platform) into the user's project root. After v0.8.0, a fresh Claude Code install drops two visible folders (`esf/`, `.claude/`) and one file (`CLAUDE.md`) at the root; conversation/chatgpt/gemini installs drop just `esf/` plus an optional `.gitignore` (codex still adds `.codex/` because Codex CLI requires that path). Toolkit content (prompts, templates, WORKFLOW.md, START_HERE.md, the platform-specific paste-source files for ChatGPT and Gemini) lives under `esf/toolkit/`. This is especially valuable when installing into a folder that already has other files, like an Obsidian vault.
+- **Skill and reference path instructions updated** to point at `esf/toolkit/templates/...` so the model writes from and reads to the new location at runtime. Documentation (README, GETTING_STARTED, WALKTHROUGH, START_HERE, the docs/ folder) similarly updated for post-install paths.
+- **`setup-repo.sh`-generated README now describes the new `esf/toolkit/` layout** for new repositories the script bootstraps.
+
+### Migration
+- **Re-running the installer on a v0.7.x install auto-migrates legacy paths into `esf/toolkit/`.** The migration block detects `prompts/`, `templates/`, `WORKFLOW.md`, `START_HERE.md`, `GEMINI.md`, and `chatgpt-instructions.md` at the project root, snapshots them under `esf/.migration-snapshot-YYYY-MM-DD/` for rollback, then moves them under `esf/toolkit/`. Idempotent: re-running after a successful migration is a no-op.
+- **No action required for users on `/esf-update`.** The next update run migrates automatically; the rollback snapshot is also added to the install commit so you can revert via `git` if needed.
+
+### Compatibility
+- **Repo source layout is unchanged.** Path 1 (the no-install workflow that downloads `templates/position-statement.md` directly from GitHub) keeps working against the same URLs. The GitHub download path and the installed path differ on purpose.
+- **`.claude/`, `CLAUDE.md`, and `.codex/AGENTS.md` stay at root** because Claude Code and Codex CLI auto-load from those exact paths.
+
+### Internal
+- **Smoke test hardened** to not silently abort on `grep -c` returning zero matches under `set -e`. A pre-existing Cowork plugin version-sync FAIL became visible after this change; that FAIL is tracked separately and is unrelated to this release.
+
 ## [companion-v0.7.2] - 2026-05-14
 
 ### Fixed

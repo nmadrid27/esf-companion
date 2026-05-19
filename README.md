@@ -8,7 +8,7 @@ No institution, course, or program required. If you use AI to write, research, d
 
 ## Quick Start
 
-**Just installed?** Open **[START_HERE.md](START_HERE.md)**: it covers what got installed, your next 3 steps, and what success looks like.
+**Just installed?** Open `esf/toolkit/START_HERE.md` in your project: it covers what got installed, your next 3 steps, and what success looks like.
 
 **[WALKTHROUGH.md](WALKTHROUGH.md)** is the complete guide: install, onboarding, all five phases, and worked examples.
 
@@ -63,6 +63,8 @@ templates/
 
 **Start here:** Copy `position-statement.md` into your project folder and fill it in before opening any AI tool.
 
+If you later run the installer, those same files are set up for you at `esf/toolkit/templates/`. The GitHub download path and the installed path differ on purpose: GitHub paths stay at the repo root so the no-install workflow has simple download URLs.
+
 ### Path 2: Use with Claude.ai, ChatGPT, Gemini, or any conversation tool
 
 Open `prompts/esf-companion.md`, copy the contents, and paste into your AI tool's custom instructions. The AI will follow the ESF process and ask for your Position Statement before helping with project work.
@@ -75,9 +77,11 @@ curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/instal
 
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
-**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session (no manual paste needed as long as you re-upload `companion-state.md` after each session).
+After install, those files live under `esf/toolkit/prompts/`. The installer creates that layout; the GitHub repo source keeps `prompts/` at the root for the no-install workflow.
 
-**Next step:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
+**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `esf/toolkit/prompts/esf-companion.md` as the system prompt. Your context loads automatically every session (no manual paste needed as long as you re-upload `companion-state.md` after each session).
+
+**Next step:** Open `esf/toolkit/prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
 
 ### Path 3: Use with Claude Cowork (no terminal needed)
 
@@ -224,7 +228,7 @@ New to the framework?
 
 **Does the installer create a new folder?** It asks if you want one. If you say yes, it creates the folder and installs inside it. If you are already in a project directory, it installs there.
 
-**What is the difference between the companion prompts?** Three options in `prompts/`: `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message; fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
+**What is the difference between the companion prompts?** Three options in `esf/toolkit/prompts/` after install (or `prompts/` in the GitHub source for Path 1): `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message; fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
 
 ---
 
@@ -256,32 +260,25 @@ The Position Statement is the gate. Everything downstream depends on it. Without
 
 ```
 your-project/
-├── .claude/                          ← Claude Code configuration (optional)
-│   ├── agents/
-│   │   └── esf-companion.md         ← AI companion identity
-│   ├── skills/
-│   │   ├── esf-onboarding/          ← Setup wizard
-│   │   ├── esf-project/             ← Five-phase workflow
-│   │   ├── esf-git/                 ← Commit discipline
-│   │   ├── esf-verify/              ← Source verification
-│   │   ├── esf-update/              ← Self-update
-│   │   └── esf-cognitive/           ← Cognitive techniques
-│   └── reference/
-│       └── esf-guide.md             ← Framework reference
-├── templates/                        ← Blank templates for each practice
-├── prompts/
-│   ├── esf-companion.md             ← Paste-anywhere system prompt
-│   └── companion.md                 ← Compact companion prompt
-├── esf/
-│   ├── companion-state.md           ← Your identity and active contexts
-│   ├── companion-notes.md           ← Corrections the Companion applies every session
-│   └── [your-context]/
-│       ├── briefs/                   ← Project briefs
-│       ├── position-statements/      ← Your direction (write this first)
-│       ├── records-of-resistance/    ← Your decisions about AI output
-│       ├── ai-use-logs/             ← What AI contributed
-│       └── logs/                     ← Session logs
-└── WORKFLOW.md                       ← Process diagram
+├── .claude/                            ← Claude Code configuration
+│   ├── agents/esf-companion.md         ← AI companion identity
+│   ├── skills/                         ← Onboarding, project workflow, git, verify, update, cognitive
+│   └── reference/esf-guide.md          ← Framework reference
+├── CLAUDE.md                           ← Ambient activation block
+└── esf/
+    ├── companion-state.md              ← Your identity and active contexts
+    ├── companion-notes.md              ← Corrections the Companion applies every session
+    ├── toolkit/                        ← The Companion's own files
+    │   ├── prompts/                    ← Paste-anywhere system prompts
+    │   ├── templates/                  ← Blank templates for each practice
+    │   ├── WORKFLOW.md                 ← Process diagram
+    │   └── START_HERE.md               ← First-read overview
+    └── [your-context]/
+        ├── briefs/                     ← Project briefs
+        ├── position-statements/        ← Your direction (write this first)
+        ├── records-of-resistance/      ← Your decisions about AI output
+        ├── ai-use-logs/                ← What AI contributed
+        └── logs/                       ← Session logs
 ```
 
 ---
