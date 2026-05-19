@@ -34,7 +34,7 @@ Scale minimums to project complexity. A short exercise needs fewer Records of Re
 
 ## 3. Add your project briefs
 
-Drop your assignment briefs into a `briefs/` directory. Reference them in the workspace state so the AI has context when students ask about project requirements:
+Drop your assignment briefs into your `esf/your-course/briefs/` directory. Reference them in the workspace state so the AI has context when students ask about project requirements:
 
 ```
 your-course-repo/
