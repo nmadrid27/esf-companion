@@ -53,7 +53,7 @@ Be honest about what the change gives up and what it gains. Do not advocate for 
 
 **Step 4: Record the evolution**
 
-If the user confirms the change, create an evolution log entry at `esf/evolution-log.md` (create if it does not exist). Use the template at `templates/evolution-log-template.md`:
+If the user confirms the change, create an evolution log entry at `esf/evolution-log.md` (create if it does not exist). Use the template at `esf/toolkit/templates/evolution-log-template.md`:
 
 ```markdown
 ## Evolution Entry [date]

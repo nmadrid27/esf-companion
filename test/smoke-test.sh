@@ -66,10 +66,10 @@ assert "esf-companion agent present"                   "$([ -f .claude/agents/es
 assert "esf-project skill present"                     "$([ -f .claude/skills/esf-project/SKILL.md ] && echo 0 || echo 1)"
 assert "esf-cognitive skill present"                   "$([ -f .claude/skills/esf-cognitive/SKILL.md ] && echo 0 || echo 1)"
 assert "esf-onboarding skill present"                  "$([ -f .claude/skills/esf-onboarding/SKILL.md ] && echo 0 || echo 1)"
-assert "START_HERE.md present"                         "$([ -f START_HERE.md ] && echo 0 || echo 1)"
-assert "WORKFLOW.md present"                           "$([ -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "START_HERE.md present in esf/toolkit"          "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
+assert "WORKFLOW.md present in esf/toolkit"            "$([ -f esf/toolkit/WORKFLOW.md ] && echo 0 || echo 1)"
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
-assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
+assert "esf/toolkit in git commit"                     "$(git show --name-only HEAD | grep -q 'esf/toolkit/' && echo 0 || echo 1)"
 assert "esf-cognitive in git commit"                   "$(git show --name-only HEAD | grep -q 'esf-cognitive' && echo 0 || echo 1)"
 
 # Phase 2 conversational drafting option present
@@ -129,12 +129,12 @@ bash "$INSTALL_SH" --force --platform conversation --source "$REPO_ROOT" > /dev/
 EXIT=$?
 
 assert "install exits 0"                               "$EXIT"
-assert "prompts/companion.md present"                  "$([ -f prompts/companion.md ] && echo 0 || echo 1)"
-assert "prompts/project-workflow.md present"           "$([ -f prompts/project-workflow.md ] && echo 0 || echo 1)"
-assert "templates/position-statement-template.md"      "$([ -f templates/position-statement-template.md ] && echo 0 || echo 1)"
-assert "START_HERE.md present"                         "$([ -f START_HERE.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/companion.md present"      "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/project-workflow.md"       "$([ -f esf/toolkit/prompts/project-workflow.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/templates/position-statement"      "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/START_HERE.md present"             "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
-assert "START_HERE.md in git commit"                   "$(git show --name-only HEAD | grep -q 'START_HERE.md' && echo 0 || echo 1)"
+assert "esf/toolkit in git commit"                     "$(git show --name-only HEAD | grep -q 'esf/toolkit/' && echo 0 || echo 1)"
 
 # Phase 2 conversational drafting option present in conversation prompt
 assert "Phase 2 conversational drafting in project-workflow" \
@@ -235,7 +235,7 @@ assert "Cowork: plugin.json has a parseable version"   \
 
 # The version should appear at least twice in esf-start.md Step 0:
 # once in "shipped with this command is `X.Y.Z`" and once in "(you have vX.Y.Z)".
-BAKED_COUNT=$(grep -c "\`${COWORK_VERSION}\`\|v${COWORK_VERSION}" "$COWORK_START")
+BAKED_COUNT=$(grep -E "\`${COWORK_VERSION}\`|v${COWORK_VERSION}" "$COWORK_START" 2>/dev/null | wc -l | tr -d ' ')
 assert "Cowork: esf-start.md baked-in version matches plugin.json ($COWORK_VERSION)" \
   "$([ "$BAKED_COUNT" -ge 2 ] && echo 0 || echo 1)"
 
@@ -260,8 +260,107 @@ assert "guard shows correct download command"          \
 
 # ────────────────────────────────────────────────────────────────
 echo ""
+echo "Test 6: Migration from legacy install footprint"
+
+MIGRATE_DIR="/tmp/esf-smoke-migrate"
+make_git_repo "$MIGRATE_DIR"
+
+# Simulate legacy v0.7.x install: scatter the old toolkit paths at root
+mkdir -p prompts templates
+echo "legacy prompt" > prompts/companion.md
+echo "legacy template" > templates/position-statement-template.md
+echo "legacy workflow" > WORKFLOW.md
+echo "legacy start" > START_HERE.md
+git add . && git commit -q -m "legacy install"
+
+# Run installer — migration should fire
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+
+assert "migration install exits 0"                     "$EXIT"
+assert "legacy prompts/ removed from root"             "$([ ! -d prompts ] && echo 0 || echo 1)"
+assert "legacy templates/ removed from root"           "$([ ! -d templates ] && echo 0 || echo 1)"
+assert "legacy WORKFLOW.md removed from root"          "$([ ! -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "legacy START_HERE.md removed from root"        "$([ ! -f START_HERE.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/prompts/companion.md present"      "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/templates/ populated"              "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/WORKFLOW.md present"               "$([ -f esf/toolkit/WORKFLOW.md ] && echo 0 || echo 1)"
+assert "esf/toolkit/START_HERE.md present"             "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
+assert "migration snapshot directory exists"           "$(ls -d esf/.migration-snapshot-* 2>/dev/null | head -1 | grep -q . && echo 0 || echo 1)"
+
+# Idempotency: running again is a no-op
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+assert "second install run exits 0 (idempotent)"       "$EXIT"
+SNAPSHOT_COUNT=$(ls -d esf/.migration-snapshot-* 2>/dev/null | wc -l | tr -d ' ')
+assert "no duplicate snapshot on second run"           "$([ "$SNAPSHOT_COUNT" = "1" ] && echo 0 || echo 1)"
+
+# ────────────────────────────────────────────────────────────────
+echo ""
+echo "Test 7: Migration preserves user-custom files in shared namespaces"
+
+# Real-world v0.7.x install in an Obsidian vault: templates/ and prompts/ are
+# SHARED between the Companion (canonical files) and the user (custom files).
+# Migration must move only canonical files, leaving user content untouched at
+# root. The directory itself must remain if any user files remain inside it.
+
+SHARED_DIR="/tmp/esf-smoke-shared"
+make_git_repo "$SHARED_DIR"
+
+# Seed shared namespaces with BOTH canonical Companion files AND user content
+mkdir -p prompts templates
+# Canonical templates
+echo "canonical position-statement" > templates/position-statement-template.md
+echo "canonical ai-use-log"         > templates/ai-use-log-template.md
+# User-custom templates (Obsidian-style)
+echo "user custom template body"    > "templates/My Custom Template.md"
+echo "user daily research note"     > "templates/Daily Research.md"
+# Canonical prompts (esf-companion.md doubles as the migration-gate signal)
+echo "canonical esf-companion"      > prompts/esf-companion.md
+echo "canonical companion"          > prompts/companion.md
+# User-custom prompt
+echo "user personal prompt"         > prompts/my-personal-prompt.md
+# Canonical-uniqueish root files
+echo "legacy workflow"              > WORKFLOW.md
+echo "legacy start"                 > START_HERE.md
+git add . && git commit -q -m "legacy install with user content"
+
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+
+assert "shared-namespace install exits 0"              "$EXIT"
+
+# Canonical files migrated into esf/toolkit/
+assert "canonical templates/position-statement moved"  "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "canonical templates/ai-use-log moved"          "$([ -f esf/toolkit/templates/ai-use-log-template.md ] && echo 0 || echo 1)"
+assert "canonical prompts/esf-companion moved"         "$([ -f esf/toolkit/prompts/esf-companion.md ] && echo 0 || echo 1)"
+assert "canonical prompts/companion moved"             "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "WORKFLOW.md migrated to esf/toolkit"           "$([ -f esf/toolkit/WORKFLOW.md ] && [ ! -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "START_HERE.md migrated to esf/toolkit"         "$([ -f esf/toolkit/START_HERE.md ] && [ ! -f START_HERE.md ] && echo 0 || echo 1)"
+
+# User-custom files preserved at root (the whole point of this test)
+assert "user-custom templates/My Custom Template.md preserved" \
+  "$([ -f "templates/My Custom Template.md" ] && echo 0 || echo 1)"
+assert "user-custom templates/Daily Research.md preserved" \
+  "$([ -f "templates/Daily Research.md" ] && echo 0 || echo 1)"
+assert "user-custom prompts/my-personal-prompt.md preserved" \
+  "$([ -f prompts/my-personal-prompt.md ] && echo 0 || echo 1)"
+
+# Shared directories must remain at root because user content still lives in them
+assert "templates/ directory still at root"            "$([ -d templates ] && echo 0 || echo 1)"
+assert "prompts/ directory still at root"              "$([ -d prompts ] && echo 0 || echo 1)"
+
+# Snapshot exists and captured both canonical and user content (proves nothing
+# was deleted unrecoverably even if Task B has a bug)
+SHARED_SNAPSHOT=$(ls -d esf/.migration-snapshot-* 2>/dev/null | head -1)
+assert "shared-namespace snapshot exists"              "$([ -n "$SHARED_SNAPSHOT" ] && [ -d "$SHARED_SNAPSHOT" ] && echo 0 || echo 1)"
+assert "snapshot captured canonical template"          "$([ -f "$SHARED_SNAPSHOT/templates/position-statement-template.md" ] && echo 0 || echo 1)"
+assert "snapshot captured user-custom template"        "$([ -f "$SHARED_SNAPSHOT/templates/My Custom Template.md" ] && echo 0 || echo 1)"
+
+# ────────────────────────────────────────────────────────────────
+echo ""
 echo "Cleanup"
-rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation
+rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation /tmp/esf-smoke-migrate /tmp/esf-smoke-shared
 echo "  Temp dirs removed"
 
 # ────────────────────────────────────────────────────────────────
