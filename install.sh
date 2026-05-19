@@ -193,27 +193,39 @@ fi
 # WORKFLOW.md, START_HERE.md, GEMINI.md, and chatgpt-instructions.md at
 # the project root. We now consolidate those under esf/toolkit/ so the
 # install drops a single visible folder. Detect legacy paths and move them.
-LEGACY_PATHS=()
-[ -d "prompts" ] && [ ! -d "esf/toolkit/prompts" ] && LEGACY_PATHS+=("prompts")
-[ -d "templates" ] && [ ! -d "esf/toolkit/templates" ] && LEGACY_PATHS+=("templates")
-[ -f "WORKFLOW.md" ] && [ ! -f "esf/toolkit/WORKFLOW.md" ] && LEGACY_PATHS+=("WORKFLOW.md")
-[ -f "START_HERE.md" ] && [ ! -f "esf/toolkit/START_HERE.md" ] && LEGACY_PATHS+=("START_HERE.md")
-[ -f "GEMINI.md" ] && [ ! -f "esf/toolkit/GEMINI.md" ] && LEGACY_PATHS+=("GEMINI.md")
-[ -f "chatgpt-instructions.md" ] && [ ! -f "esf/toolkit/chatgpt-instructions.md" ] && LEGACY_PATHS+=("chatgpt-instructions.md")
+#
+# Only fire migration when there's evidence of a prior Companion install.
+# Otherwise a non-Companion user with their own prompts/ or templates/
+# directory would see those silently moved.
+COMPANION_LIKELY=false
+[ -f ".claude/agents/esf-companion.md" ] && COMPANION_LIKELY=true
+[ -f "esf/companion-state.md" ] && COMPANION_LIKELY=true
+[ -f "templates/position-statement-template.md" ] && COMPANION_LIKELY=true
+[ -f "prompts/esf-companion.md" ] && COMPANION_LIKELY=true
 
-if [ "${#LEGACY_PATHS[@]}" -gt 0 ]; then
-  MIGRATION_DATE=$(date +%Y-%m-%d)
-  SNAPSHOT_DIR="esf/.migration-snapshot-${MIGRATION_DATE}"
-  echo ""
-  echo -e "${YELLOW}Detected legacy Companion install layout. Migrating to esf/toolkit/...${NC}"
-  mkdir -p "$SNAPSHOT_DIR"
-  mkdir -p esf/toolkit
-  for p in "${LEGACY_PATHS[@]}"; do
-    cp -R "$p" "$SNAPSHOT_DIR/" 2>/dev/null || true
-    mv "$p" "esf/toolkit/$p"
-  done
-  echo -e "  ${GREEN}Migrated: ${LEGACY_PATHS[*]} → esf/toolkit/${NC}"
-  echo -e "  ${YELLOW}Snapshot for rollback: $SNAPSHOT_DIR${NC}"
+if [ "$COMPANION_LIKELY" = true ]; then
+  LEGACY_PATHS=()
+  [ -d "prompts" ] && [ ! -d "esf/toolkit/prompts" ] && LEGACY_PATHS+=("prompts")
+  [ -d "templates" ] && [ ! -d "esf/toolkit/templates" ] && LEGACY_PATHS+=("templates")
+  [ -f "WORKFLOW.md" ] && [ ! -f "esf/toolkit/WORKFLOW.md" ] && LEGACY_PATHS+=("WORKFLOW.md")
+  [ -f "START_HERE.md" ] && [ ! -f "esf/toolkit/START_HERE.md" ] && LEGACY_PATHS+=("START_HERE.md")
+  [ -f "GEMINI.md" ] && [ ! -f "esf/toolkit/GEMINI.md" ] && LEGACY_PATHS+=("GEMINI.md")
+  [ -f "chatgpt-instructions.md" ] && [ ! -f "esf/toolkit/chatgpt-instructions.md" ] && LEGACY_PATHS+=("chatgpt-instructions.md")
+
+  if [ "${#LEGACY_PATHS[@]}" -gt 0 ]; then
+    MIGRATION_DATE=$(date +%Y-%m-%d)
+    SNAPSHOT_DIR="esf/.migration-snapshot-${MIGRATION_DATE}"
+    echo ""
+    echo -e "${YELLOW}Detected legacy Companion install layout. Migrating to esf/toolkit/...${NC}"
+    mkdir -p "$SNAPSHOT_DIR"
+    mkdir -p esf/toolkit
+    for p in "${LEGACY_PATHS[@]}"; do
+      cp -R "$p" "$SNAPSHOT_DIR/" 2>/dev/null || true
+      mv "$p" "esf/toolkit/$p"
+    done
+    echo -e "  ${GREEN}Migrated: ${LEGACY_PATHS[*]} → esf/toolkit/${NC}"
+    echo -e "  ${YELLOW}Snapshot for rollback: $SNAPSHOT_DIR${NC}"
+  fi
 fi
 # ─── end migration ───
 
