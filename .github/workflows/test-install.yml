@@ -5,10 +5,12 @@ on:
     paths:
       - 'install.sh'
       - 'setup-repo.sh'
+      - '.github/workflows/test-install.yml'
   pull_request:
     paths:
       - 'install.sh'
       - 'setup-repo.sh'
+      - '.github/workflows/test-install.yml'
 
 jobs:
   syntax-check:
@@ -30,11 +32,11 @@ jobs:
           git init
           bash "$GITHUB_WORKSPACE/install.sh" --force --platform claude
           test -f .claude/agents/esf-companion.md || exit 1
-          test -f prompts/companion.md || exit 1
-          test -f prompts/esf-companion.md || exit 1
-          test -f templates/position-statement.md || exit 1
-          test -f templates/five-questions-checklist.md || exit 1
-          test -f WORKFLOW.md || exit 1
+          test -f esf/toolkit/prompts/companion.md || exit 1
+          test -f esf/toolkit/prompts/esf-companion.md || exit 1
+          test -f esf/toolkit/templates/position-statement.md || exit 1
+          test -f esf/toolkit/templates/five-questions-checklist.md || exit 1
+          test -f esf/toolkit/WORKFLOW.md || exit 1
           echo "Claude install: all expected files present"
 
   test-conversation-install:
@@ -46,11 +48,11 @@ jobs:
           mkdir -p /tmp/test-conv && cd /tmp/test-conv
           git init
           bash "$GITHUB_WORKSPACE/install.sh" --force --platform conversation
-          test -f prompts/companion.md || exit 1
-          test -f prompts/esf-companion.md || exit 1
-          test -f templates/position-statement.md || exit 1
-          test -f templates/five-questions-checklist.md || exit 1
-          test -f templates/disclosure-statement.md || exit 1
+          test -f esf/toolkit/prompts/companion.md || exit 1
+          test -f esf/toolkit/prompts/esf-companion.md || exit 1
+          test -f esf/toolkit/templates/position-statement.md || exit 1
+          test -f esf/toolkit/templates/five-questions-checklist.md || exit 1
+          test -f esf/toolkit/templates/disclosure-statement.md || exit 1
           test ! -d .claude || exit 1
           echo "Conversation install: correct files present, no .claude/"
 
