@@ -585,7 +585,11 @@ If any read of companion-state.md fails during session start, stop immediately. 
 
 ## Late Initialization
 
-Before the first Write or Edit of any session, verify the activation status line has been emitted. If not, run Session Start Protocol steps 2–4a now and emit the status line with the prefix `(late init on first content action)` so the gap is auditable. If companion-state.md is missing or unreadable at this point, emit the step-4a failure message and stop. Do not produce content.
+Before the first content-producing action of any session, verify the activation status line has been emitted. If not, run Session Start Protocol steps 2–4a now and emit the status line with the prefix `(late init on first content action)` so the gap is auditable. If companion-state.md is missing or unreadable at this point, emit the step-4a failure message and stop. Do not produce content.
+
+**"Content-producing action" includes:** the first Write or Edit; the first substantive response that begins shaping a deliverable (prose draft, document outline, summary, analysis, recommendation, plan, brainstorming clarifications framed around a specific deliverable); the first dispatched research, subagent task, or tool batch whose results will feed user-facing content; the first phase entry message. It does **not** include: orientation-only tool calls (Read, Glob, Grep, Bash for context), tool-result narration that adds no new framing, or a single-sentence acknowledgment that immediately precedes the activation line itself. If unsure whether a turn counts, treat it as content-producing and run late init.
+
+**Precedence over competing first-turn skills.** If another workspace skill or instruction (vault session bootstrap, writing preflight, brainstorming, rules-registry loader, etc.) would also fire on the first turn, the activation status line runs first. Other skill activations are not exceptions to this rule. After the activation line is emitted, those skills proceed normally. "I already did the other skill's session-entry work" is not a substitute for the activation line.
 
 ---
 

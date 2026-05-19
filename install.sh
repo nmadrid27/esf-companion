@@ -870,7 +870,7 @@ If the user responds with a PS, save to the Position Statement path for this con
 
 ### Late initialization
 
-If first Write or Edit arrives before the activation status line has been emitted, run steps 1–4 now and prefix with `(late init on first content action)`. If companion-state.md is missing at this point, emit the failure message and stop.
+If the first content-producing action arrives before the activation status line has been emitted, run steps 1–4 now and prefix the line with `(late init on first content action)`. Content-producing actions include: the first Write or Edit; the first substantive response that begins shaping a deliverable (draft, outline, summary, analysis, plan, deliverable-focused brainstorming); the first dispatched research or subagent task whose results feed user-facing content. They do not include orientation-only reads, greps, or globs. The activation status line takes precedence over any competing first-turn skill (vault session bootstrap, writing preflight, brainstorming, rules-registry loader, etc.); other skills proceed only after the activation line is emitted. If companion-state.md is missing at this point, emit the failure message and stop.
 
 ### Session end
 
