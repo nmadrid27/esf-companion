@@ -504,6 +504,12 @@ if [ "$PLATFORM" != "claude" ]; then
 
   # Auto-commit if in a git repo
   if [ -d ".git" ]; then
+    # Stage tracked-file deletions from migration. Loop per-path so a missing
+    # pathspec on one doesn't abort staging of the others (git add -u errors
+    # on unknown pathspecs).
+    for _legacy in prompts templates WORKFLOW.md START_HERE.md GEMINI.md chatgpt-instructions.md; do
+      git add -u "$_legacy" 2>/dev/null || true
+    done
     git add esf/toolkit/ 2>/dev/null
     [ -f .gitignore ] && git add .gitignore 2>/dev/null
     [ -d .codex ] && git add .codex/ 2>/dev/null
@@ -909,6 +915,12 @@ fi
 
 # Auto-commit only Companion files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
+  # Stage tracked-file deletions from migration. Loop per-path so a missing
+  # pathspec on one doesn't abort staging of the others (git add -u errors
+  # on unknown pathspecs).
+  for _legacy in prompts templates WORKFLOW.md START_HERE.md GEMINI.md chatgpt-instructions.md; do
+    git add -u "$_legacy" 2>/dev/null || true
+  done
   git add .claude/ esf/toolkit/ 2>/dev/null
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
   [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
