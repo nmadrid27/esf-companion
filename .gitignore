@@ -40,3 +40,8 @@ launch/
 # Temporary files (commit messages, logs)
 *.tmp
 .commit-msg.tmp
+
+# Dated planning / design / handoff artifacts in docs/ (working files,
+# not user-facing documentation). User-facing docs in docs/ use kebab-case
+# names without a date prefix.
+docs/20[0-9][0-9]-*.md
