@@ -219,9 +219,64 @@ if [ "$COMPANION_LIKELY" = true ]; then
     echo -e "${YELLOW}Detected legacy Companion install layout. Migrating to esf/toolkit/...${NC}"
     mkdir -p "$SNAPSHOT_DIR"
     mkdir -p esf/toolkit
+    # Canonical allowlists. Per-file moves let us safely migrate shared
+    # namespaces (e.g., an Obsidian vault where templates/ also contains
+    # the user's own templates). User-custom files at root are preserved.
+    CANONICAL_TEMPLATES=(
+      position-statement-template.md
+      position-statement.md
+      ai-use-log-template.md
+      ai-use-log-lite-template.md
+      ai-use-log.md
+      companion-state-template.md
+      companion-notes-template.md
+      record-of-resistance-template.md
+      record-of-resistance.md
+      five-questions-checklist.md
+      disclosure-statement.md
+      evolution-log-template.md
+      session-log-template.md
+      reflection-template.md
+      project-brief-template.md
+      project-plan.md
+      project-scope-template.md
+    )
+    CANONICAL_PROMPTS=(
+      companion.md
+      esf-companion.md
+      project-workflow.md
+      cowork.md
+      quick-start.md
+      README.md
+    )
+
     for p in "${LEGACY_PATHS[@]}"; do
+      # Snapshot the WHOLE path (canonical + any user-custom content) so the
+      # rollback artifact is faithful even when we only move part of it.
       cp -R "$p" "$SNAPSHOT_DIR/" 2>/dev/null || true
-      mv "$p" "esf/toolkit/$p"
+
+      case "$p" in
+        prompts)
+          mkdir -p esf/toolkit/prompts
+          for f in "${CANONICAL_PROMPTS[@]}"; do
+            [ -f "prompts/$f" ] && mv "prompts/$f" "esf/toolkit/prompts/$f"
+          done
+          # Remove prompts/ only if it's empty after the canonical moves.
+          rmdir prompts 2>/dev/null || true
+          ;;
+        templates)
+          mkdir -p esf/toolkit/templates
+          for f in "${CANONICAL_TEMPLATES[@]}"; do
+            [ -f "templates/$f" ] && mv "templates/$f" "esf/toolkit/templates/$f"
+          done
+          rmdir templates 2>/dev/null || true
+          ;;
+        *)
+          # Unique single-file legacy paths (WORKFLOW.md, START_HERE.md,
+          # GEMINI.md, chatgpt-instructions.md) — straight move.
+          mv "$p" "esf/toolkit/$p"
+          ;;
+      esac
     done
     echo -e "  ${GREEN}Migrated: ${LEGACY_PATHS[*]} → esf/toolkit/${NC}"
     echo -e "  ${YELLOW}Snapshot for rollback (local-only, gitignored): $SNAPSHOT_DIR${NC}"
