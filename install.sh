@@ -261,7 +261,9 @@ if [ "$COMPANION_LIKELY" = true ]; then
           for f in "${CANONICAL_PROMPTS[@]}"; do
             [ -f "prompts/$f" ] && mv "prompts/$f" "esf/toolkit/prompts/$f"
           done
-          # Remove prompts/ only if it's empty after the canonical moves.
+          # Remove prompts/ only if it has no user content left.
+          # Strip macOS .DS_Store first so it doesn't strand an empty dir.
+          [ -f "prompts/.DS_Store" ] && rm -f "prompts/.DS_Store"
           rmdir prompts 2>/dev/null || true
           ;;
         templates)
@@ -269,11 +271,12 @@ if [ "$COMPANION_LIKELY" = true ]; then
           for f in "${CANONICAL_TEMPLATES[@]}"; do
             [ -f "templates/$f" ] && mv "templates/$f" "esf/toolkit/templates/$f"
           done
+          [ -f "templates/.DS_Store" ] && rm -f "templates/.DS_Store"
           rmdir templates 2>/dev/null || true
           ;;
         *)
           # Unique single-file legacy paths (WORKFLOW.md, START_HERE.md,
-          # GEMINI.md, chatgpt-instructions.md) — straight move.
+          # GEMINI.md, chatgpt-instructions.md): straight move.
           mv "$p" "esf/toolkit/$p"
           ;;
       esac
