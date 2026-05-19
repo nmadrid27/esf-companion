@@ -8,7 +8,7 @@ No institution, course, or program required. If you use AI to write, research, d
 
 ## Quick Start
 
-**Just installed?** Open **[START_HERE.md](START_HERE.md)**: it covers what got installed, your next 3 steps, and what success looks like.
+**Just installed?** Open `esf/toolkit/START_HERE.md` in your project: it covers what got installed, your next 3 steps, and what success looks like.
 
 **[WALKTHROUGH.md](WALKTHROUGH.md)** is the complete guide: install, onboarding, all five phases, and worked examples.
 
@@ -77,9 +77,11 @@ curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/instal
 
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
-**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `prompts/esf-companion.md` as the system prompt. Your context loads automatically every session (no manual paste needed as long as you re-upload `companion-state.md` after each session).
+After install, those files live under `esf/toolkit/prompts/`. The installer creates that layout; the GitHub repo source keeps `prompts/` at the root for the no-install workflow.
 
-**Next step:** Open `prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
+**Claude.ai Projects (recommended):** Create a project in Claude.ai, upload your `companion-state.md` and brief as project knowledge, and paste `esf/toolkit/prompts/esf-companion.md` as the system prompt. Your context loads automatically every session (no manual paste needed as long as you re-upload `companion-state.md` after each session).
+
+**Next step:** Open `esf/toolkit/prompts/quick-start.md`, fill in your information at the top, and paste the whole document as your first message.
 
 ### Path 3: Use with Claude Cowork (no terminal needed)
 
@@ -226,7 +228,7 @@ New to the framework?
 
 **Does the installer create a new folder?** It asks if you want one. If you say yes, it creates the folder and installs inside it. If you are already in a project directory, it installs there.
 
-**What is the difference between the companion prompts?** Three options in `prompts/`: `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message; fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
+**What is the difference between the companion prompts?** Three options in `esf/toolkit/prompts/` after install (or `prompts/` in the GitHub source for Path 1): `quick-start.md` is a single-paste document (fill in your info, paste the whole thing as your first message; fastest to get started). `companion.md` is a fill-in-your-information template for returning users who have already set up their context. `esf-companion.md` is the full system prompt if you want to configure the AI separately from your context.
 
 ---
 

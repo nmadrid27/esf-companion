@@ -224,7 +224,14 @@ if [ "$COMPANION_LIKELY" = true ]; then
       mv "$p" "esf/toolkit/$p"
     done
     echo -e "  ${GREEN}Migrated: ${LEGACY_PATHS[*]} → esf/toolkit/${NC}"
-    echo -e "  ${YELLOW}Snapshot for rollback: $SNAPSHOT_DIR${NC}"
+    echo -e "  ${YELLOW}Snapshot for rollback (local-only, gitignored): $SNAPSHOT_DIR${NC}"
+    echo -e "  ${YELLOW}Once you've verified the migration, remove it with: rm -rf $SNAPSHOT_DIR${NC}"
+
+    # Make sure the snapshot dir is gitignored so it stays local-only.
+    touch .gitignore
+    if ! grep -q '.migration-snapshot-' .gitignore 2>/dev/null; then
+      printf '\n# ESF migration snapshots (local rollback only, not versioned)\nesf/.migration-snapshot-*/\n' >> .gitignore
+    fi
   fi
 fi
 # ─── end migration ───
@@ -442,10 +449,6 @@ if [ "$PLATFORM" != "claude" ]; then
     git add esf/toolkit/ 2>/dev/null
     [ -f .gitignore ] && git add .gitignore 2>/dev/null
     [ -d .codex ] && git add .codex/ 2>/dev/null
-    # Snapshot dir from migration, if present
-    for d in esf/.migration-snapshot-*/; do
-      [ -d "$d" ] && git add "$d" 2>/dev/null
-    done
     git commit -m "Install ESF Companion ($PLATFORM)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
   fi
@@ -849,10 +852,6 @@ fi
 # Auto-commit only Companion files if in a git repo (do not stage unrelated work)
 if [ -d ".git" ]; then
   git add .claude/ esf/toolkit/ 2>/dev/null
-  # Snapshot dir from migration, if present
-  for d in esf/.migration-snapshot-*/; do
-    [ -d "$d" ] && git add "$d" 2>/dev/null
-  done
   [ -f .gitignore ] && git add .gitignore 2>/dev/null
   [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
   [ -f .claude/settings.json ] && git add .claude/settings.json 2>/dev/null
