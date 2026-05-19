@@ -297,8 +297,70 @@ assert "no duplicate snapshot on second run"           "$([ "$SNAPSHOT_COUNT" = 
 
 # ────────────────────────────────────────────────────────────────
 echo ""
+echo "Test 7: Migration preserves user-custom files in shared namespaces"
+
+# Real-world v0.7.x install in an Obsidian vault: templates/ and prompts/ are
+# SHARED between the Companion (canonical files) and the user (custom files).
+# Migration must move only canonical files, leaving user content untouched at
+# root. The directory itself must remain if any user files remain inside it.
+
+SHARED_DIR="/tmp/esf-smoke-shared"
+make_git_repo "$SHARED_DIR"
+
+# Seed shared namespaces with BOTH canonical Companion files AND user content
+mkdir -p prompts templates
+# Canonical templates
+echo "canonical position-statement" > templates/position-statement-template.md
+echo "canonical ai-use-log"         > templates/ai-use-log-template.md
+# User-custom templates (Obsidian-style)
+echo "user custom template body"    > "templates/My Custom Template.md"
+echo "user daily research note"     > "templates/Daily Research.md"
+# Canonical prompts (esf-companion.md doubles as the migration-gate signal)
+echo "canonical esf-companion"      > prompts/esf-companion.md
+echo "canonical companion"          > prompts/companion.md
+# User-custom prompt
+echo "user personal prompt"         > prompts/my-personal-prompt.md
+# Canonical-uniqueish root files
+echo "legacy workflow"              > WORKFLOW.md
+echo "legacy start"                 > START_HERE.md
+git add . && git commit -q -m "legacy install with user content"
+
+bash "$INSTALL_SH" --force --platform claude --source "$REPO_ROOT" > /dev/null 2>&1
+EXIT=$?
+
+assert "shared-namespace install exits 0"              "$EXIT"
+
+# Canonical files migrated into esf/toolkit/
+assert "canonical templates/position-statement moved"  "$([ -f esf/toolkit/templates/position-statement-template.md ] && echo 0 || echo 1)"
+assert "canonical templates/ai-use-log moved"          "$([ -f esf/toolkit/templates/ai-use-log-template.md ] && echo 0 || echo 1)"
+assert "canonical prompts/esf-companion moved"         "$([ -f esf/toolkit/prompts/esf-companion.md ] && echo 0 || echo 1)"
+assert "canonical prompts/companion moved"             "$([ -f esf/toolkit/prompts/companion.md ] && echo 0 || echo 1)"
+assert "WORKFLOW.md migrated to esf/toolkit"           "$([ -f esf/toolkit/WORKFLOW.md ] && [ ! -f WORKFLOW.md ] && echo 0 || echo 1)"
+assert "START_HERE.md migrated to esf/toolkit"         "$([ -f esf/toolkit/START_HERE.md ] && [ ! -f START_HERE.md ] && echo 0 || echo 1)"
+
+# User-custom files preserved at root (the whole point of this test)
+assert "user-custom templates/My Custom Template.md preserved" \
+  "$([ -f "templates/My Custom Template.md" ] && echo 0 || echo 1)"
+assert "user-custom templates/Daily Research.md preserved" \
+  "$([ -f "templates/Daily Research.md" ] && echo 0 || echo 1)"
+assert "user-custom prompts/my-personal-prompt.md preserved" \
+  "$([ -f prompts/my-personal-prompt.md ] && echo 0 || echo 1)"
+
+# Shared directories must remain at root because user content still lives in them
+assert "templates/ directory still at root"            "$([ -d templates ] && echo 0 || echo 1)"
+assert "prompts/ directory still at root"              "$([ -d prompts ] && echo 0 || echo 1)"
+
+# Snapshot exists and captured both canonical and user content (proves nothing
+# was deleted unrecoverably even if Task B has a bug)
+SHARED_SNAPSHOT=$(ls -d esf/.migration-snapshot-* 2>/dev/null | head -1)
+assert "shared-namespace snapshot exists"              "$([ -n "$SHARED_SNAPSHOT" ] && [ -d "$SHARED_SNAPSHOT" ] && echo 0 || echo 1)"
+assert "snapshot captured canonical template"          "$([ -f "$SHARED_SNAPSHOT/templates/position-statement-template.md" ] && echo 0 || echo 1)"
+assert "snapshot captured user-custom template"        "$([ -f "$SHARED_SNAPSHOT/templates/My Custom Template.md" ] && echo 0 || echo 1)"
+
+# ────────────────────────────────────────────────────────────────
+echo ""
 echo "Cleanup"
-rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation /tmp/esf-smoke-migrate
+rm -rf /tmp/esf-smoke-claude /tmp/esf-smoke-conversation /tmp/esf-smoke-migrate /tmp/esf-smoke-shared
 echo "  Temp dirs removed"
 
 # ────────────────────────────────────────────────────────────────
