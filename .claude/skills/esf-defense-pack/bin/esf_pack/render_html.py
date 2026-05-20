@@ -72,11 +72,61 @@ def _drift_block(pack: DefensePack) -> str:
 
 
 def _gaps_block(pack: DefensePack) -> str:
+    """Render warning + hard_stop gaps with severity-specific visual treatment.
+
+    Info-level gaps are not surfaced (they describe optional artifacts).
+    Hard-stop gaps render with stronger emphasis than warnings.
+    """
     visible_gaps = [g for g in pack.gaps if g.severity.value != "info"]
     if not visible_gaps:
         return ""
-    items = "".join(f"<li>{_esc(g.message)}</li>" for g in visible_gaps)
-    return f'<aside class="gaps"><h3>Gaps in this pack</h3><ul>{items}</ul></aside>'
+    items = "".join(
+        f'<div class="gap {_esc(g.severity.value)}"><strong>{_esc(g.severity.value.replace("_", " ").title())}:</strong> {_esc(g.message)}</div>'
+        for g in visible_gaps
+    )
+    return f'<aside class="gaps" role="note" aria-label="Gaps in this defense pack"><h3>Gaps in this pack</h3>{items}</aside>'
+
+
+def _protect_block(pack: DefensePack) -> str:
+    if not pack.narrative or not pack.narrative.what_set_out_to_protect:
+        return ""
+    return f'<div class="protect"><h3>What I set out to protect</h3><p>{_esc(pack.narrative.what_set_out_to_protect)}</p></div>'
+
+
+def _intro_section(pack: DefensePack) -> str:
+    """Render the Opening section only if the narrative provided one.
+
+    Previously the renderer always emitted an Opening section using the first
+    line of "How I came in", which duplicated content in the script. Now Opening
+    is skipped entirely if the narrative.md doesn't include a dedicated `## Opening`.
+    """
+    if not pack.narrative or not pack.narrative.intro:
+        return ""
+    return f'<section id="intro"><h2>Opening</h2><p>{_esc(pack.narrative.intro)}</p></section>'
+
+
+def _toc_intro_link(pack: DefensePack) -> str:
+    if not pack.narrative or not pack.narrative.intro:
+        return ""
+    return '<a href="#intro">Opening</a>'
+
+
+def _closing_html(pack: DefensePack) -> str:
+    """Render 'What I'd defend if asked' as an <ol> when numbered claims exist,
+    falling back to the raw prose otherwise.
+    """
+    if pack.narrative and pack.narrative.defend_claims:
+        items = "".join(f"<li>{_esc(c)}</li>" for c in pack.narrative.defend_claims)
+        return f'<ol class="defend-list">{items}</ol>'
+    return f'<p>{_esc(pack.narrative.closing if pack.narrative else "")}</p>'
+
+
+def _reflection_html(pack: DefensePack) -> str:
+    """Reflection summary, preserving paragraph breaks from the narrative."""
+    if not pack.narrative or not pack.narrative.reflection_summary:
+        return "<p><em>No reflection summary provided.</em></p>"
+    paragraphs = [p.strip() for p in pack.narrative.reflection_summary.split("\n\n") if p.strip()]
+    return "\n".join(f"<p>{_esc(p)}</p>" for p in paragraphs)
 
 
 def render_html(pack: DefensePack) -> str:
@@ -85,22 +135,26 @@ def render_html(pack: DefensePack) -> str:
     template_str = (_RENDER_DIR / "template.html").read_text(encoding="utf-8")
     css = (_RENDER_DIR / "print.css").read_text(encoding="utf-8")
     ps = pack.position_statement
+    timestamp = _esc(pack.export_timestamp) or "[date unavailable]"
     return Template(template_str).safe_substitute(
         project_name=_esc(pack.project_name),
+        student_name=_esc(pack.student_name),
         context=_esc(pack.context),
         phase=_esc(pack.phase_at_export),
-        timestamp=_esc(pack.export_timestamp),
+        timestamp=timestamp,
         scaffolding_level=_esc(pack.scaffolding_level),
         companion_version=_esc(pack.companion_version),
         print_css=css,
-        narrative_intro=_esc(pack.narrative.intro),
+        intro_section=_intro_section(pack),
+        toc_intro_link=_toc_intro_link(pack),
         ps_stance=_esc(ps.stance if ps else ""),
         ps_matters=_esc(ps.what_matters_most if ps else ""),
         ps_non_neg=_esc(ps.non_negotiables if ps else ""),
+        protect_block=_protect_block(pack),
         drift_block=_drift_block(pack),
         decisions_html=_decisions_html(pack),
-        reflection_summary=_esc(pack.narrative.reflection_summary),
-        closing=_esc(pack.narrative.closing),
+        reflection_html=_reflection_html(pack),
+        closing_html=_closing_html(pack),
         disclosure_text=_esc(pack.disclosure.text if pack.disclosure else ""),
         appendix_html=_appendix_html(pack),
         gaps_block=_gaps_block(pack),
