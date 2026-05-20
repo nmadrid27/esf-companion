@@ -1,0 +1,50 @@
+{
+  "project_name": "minimal-project",
+  "context": "test-course",
+  "scaffolding_level": "Guided",
+  "phase_at_export": "Inquire",
+  "export_timestamp": "FIXED",
+  "companion_version": "0.8.0",
+  "position_statement": {
+    "stance": "A minimal stance just enough to anchor the project.",
+    "what_matters_most": "Direct first-person voice.",
+    "non_negotiables": "Personal authorship of the final phrasing.",
+    "drift_level": null,
+    "drift_what_shifted": null,
+    "drift_was_user_decision": null
+  },
+  "records_of_resistance": [],
+  "key_decisions": [],
+  "ai_use_log": null,
+  "reflection": null,
+  "disclosure": null,
+  "evolution_log_entries": [],
+  "narrative": null,
+  "gaps": [
+    {
+      "artifact": "record_of_resistance",
+      "severity": "warning",
+      "message": "No Records of Resistance found. Defense rests on Position Statement and Reflection only. Consider whether this matches your scaffolding level."
+    },
+    {
+      "artifact": "ai_use_log",
+      "severity": "warning",
+      "message": "No AI Use Log found. Pack includes Records of Resistance and Reflection only."
+    },
+    {
+      "artifact": "reflection",
+      "severity": "warning",
+      "message": "No Reflection found. Pack does not include the Five Questions check or the kept/revised/rejected summary."
+    },
+    {
+      "artifact": "disclosure",
+      "severity": "info",
+      "message": "No Disclosure found. A short-form disclosure will be auto-generated."
+    },
+    {
+      "artifact": "evolution_log",
+      "severity": "info",
+      "message": "No Evolution Log entries reference this project. (Optional artifact.)"
+    }
+  ]
+}
