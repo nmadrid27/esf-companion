@@ -4,6 +4,16 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Added
+- **`/esf-defense-pack`**: generate a portable Defense Pack (HTML + PDF + recording script) from existing ESF artifacts for use in oral defenses and crits. Aggregates Position Statement, Records of Resistance, AI Use Log, Reflection, and Disclosure into a single defensible artifact. PDF rendering uses WeasyPrint (optional; HTML and recording-script outputs always produced).
+- **`templates/defense-narrative-template.md`** and **`templates/defense-pack-checklist.md`**: Path 1 (templates-only) manual-assembly support for users without Claude Code installed.
+- **Path 2 (conversation tools) prompt updated** with Defense Pack conversational assembly guidance in `prompts/esf-companion.md`.
+- **Aggregator `--scan-only` mode**: groundwork for a future periodic gap scanner that surfaces missing artifacts during a project, not just at export time. See [Defense Pack design §13](docs/2026-05-20-defense-pack-design.md).
+
+### Infrastructure
+- First Python module in the repo (`.claude/skills/esf-defense-pack/bin/esf_pack/`, stdlib-only). Installer adds non-blocking preflight notes for Python 3.10+ and WeasyPrint.
+- `pyrightconfig.json` added with extraPaths for the skill module.
+
 ## [companion-v0.8.0] - 2026-05-18
 
 ### Changed
