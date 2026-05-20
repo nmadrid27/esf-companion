@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Defense Pack — $project_name</title>
+  <style>$print_css</style>
+</head>
+<body>
+  <header class="cover">
+    <h1>Defense Pack</h1>
+    <p class="project">$project_name</p>
+    <p class="meta">Context: $context · Phase at export: $phase · Generated $timestamp</p>
+    <p class="meta">Scaffolding level: $scaffolding_level · Companion v$companion_version</p>
+  </header>
+
+  <nav class="toc">
+    <a href="#intro">Opening</a>
+    <a href="#position">Position</a>
+    <a href="#decisions">Key decisions</a>
+    <a href="#reflection">How my position held</a>
+    <a href="#closing">What I'd defend</a>
+    <a href="#disclosure">Disclosure</a>
+    <a href="#appendix">Full record</a>
+  </nav>
+
+  <section id="intro">
+    <h2>Opening</h2>
+    <p>$narrative_intro</p>
+  </section>
+
+  <section id="position">
+    <h2>How I came in</h2>
+    <div class="position-grid">
+      <div><h3>Stance</h3><p>$ps_stance</p></div>
+      <div><h3>What matters most</h3><p>$ps_matters</p></div>
+      <div><h3>Non-negotiables</h3><p>$ps_non_neg</p></div>
+    </div>
+    $drift_block
+  </section>
+
+  <section id="decisions">
+    <h2>Key decisions</h2>
+    $decisions_html
+  </section>
+
+  <section id="reflection">
+    <h2>How my position held (or shifted)</h2>
+    <p>$reflection_summary</p>
+  </section>
+
+  <section id="closing">
+    <h2>What I'd defend if asked</h2>
+    <p>$closing</p>
+  </section>
+
+  <section id="disclosure">
+    <h2>Disclosure</h2>
+    <blockquote class="disclosure">$disclosure_text</blockquote>
+  </section>
+
+  <section id="appendix">
+    <h2>Appendix: full Records of Resistance</h2>
+    $appendix_html
+  </section>
+
+  $gaps_block
+
+  <footer class="meta-footer">
+    <p>This Defense Pack was generated from the student's ESF artifacts. The narrative was drafted with AI assistance and approved by the student. All Records of Resistance, Position Statement, and Reflection contents are the student's own.</p>
+  </footer>
+
+  <button id="presenter-toggle" aria-label="Toggle presenter mode">Presenter</button>
+  <script>
+    // Presenter mode: append ?presenter=1 to the URL or click the Presenter button.
+    (function() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('presenter') === '1') document.body.classList.add('presenter');
+      document.getElementById('presenter-toggle').addEventListener('click', () => {
+        document.body.classList.toggle('presenter');
+        const url = new URL(location.href);
+        if (document.body.classList.contains('presenter')) url.searchParams.set('presenter', '1');
+        else url.searchParams.delete('presenter');
+        history.replaceState(null, '', url);
+      });
+      document.querySelectorAll('.ror details').forEach(d => d.open = false);
+    })();
+  </script>
+</body>
+</html>
