@@ -7,7 +7,7 @@ from esf_pack.gaps import detect_gaps, has_hard_stop
 
 def _pack(**overrides):
     base = dict(
-        project_name="p", context="c", scaffolding_level="Independent",
+        project_name="p", context="c", student_name="t", scaffolding_level="Independent",
         phase_at_export="Reflect", export_timestamp="2026-05-20T00:00:00Z",
         companion_version="0.8.0",
         position_statement=PositionStatement(

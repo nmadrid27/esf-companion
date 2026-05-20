@@ -1,6 +1,6 @@
 """DefensePack data structure — contract between aggregator and renderer."""
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from enum import Enum
 from typing import Optional
 
@@ -79,12 +79,17 @@ class Narrative:
     closing: str
     user_approved: bool
     drafted_at: str
+    # New narrative.md sections that were previously silently dropped:
+    what_set_out_to_protect: Optional[str] = None
+    defend_claims: list[str] = field(default_factory=list)
+    disclosure_override: Optional[str] = None
 
 
 @dataclass
 class DefensePack:
     project_name: str
     context: str
+    student_name: str
     scaffolding_level: str
     phase_at_export: str
     export_timestamp: str
