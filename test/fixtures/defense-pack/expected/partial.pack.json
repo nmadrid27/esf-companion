@@ -1,0 +1,60 @@
+{
+  "project_name": "partial-project",
+  "context": "test-course",
+  "scaffolding_level": "Supported",
+  "phase_at_export": "Make",
+  "export_timestamp": "FIXED",
+  "companion_version": "0.8.0",
+  "position_statement": {
+    "stance": "A partial-fixture stance. The work explores a single creative direction.",
+    "what_matters_most": "Coherence of voice across the deliverables.",
+    "non_negotiables": "The first-person voice. I will not let AI flatten it.",
+    "drift_level": null,
+    "drift_what_shifted": "**Was the shift your decision, or did you follow AI's framing without questioning it?**",
+    "drift_was_user_decision": null
+  },
+  "records_of_resistance": [
+    {
+      "record_number": 1,
+      "date": "2026-04-25",
+      "ai_suggested": "AI rewrote three paragraphs with smoother transitions.",
+      "why_rejected": "The smoothing erased the abruptness that signals my voice.",
+      "what_i_did_instead": "Reinstated the original cuts and kept the abrupt transitions."
+    },
+    {
+      "record_number": 2,
+      "date": "2026-05-02",
+      "ai_suggested": "AI proposed a five-section structure with a summary up front.",
+      "why_rejected": "The up-front summary undercuts the reveal at the end.",
+      "what_i_did_instead": "Kept the three-act structure with the reveal in the final section."
+    }
+  ],
+  "key_decisions": [],
+  "ai_use_log": null,
+  "reflection": null,
+  "disclosure": null,
+  "evolution_log_entries": [],
+  "narrative": null,
+  "gaps": [
+    {
+      "artifact": "ai_use_log",
+      "severity": "warning",
+      "message": "No AI Use Log found. Pack includes Records of Resistance and Reflection only."
+    },
+    {
+      "artifact": "reflection",
+      "severity": "warning",
+      "message": "No Reflection found. Pack does not include the Five Questions check or the kept/revised/rejected summary."
+    },
+    {
+      "artifact": "disclosure",
+      "severity": "info",
+      "message": "No Disclosure found. A short-form disclosure will be auto-generated."
+    },
+    {
+      "artifact": "evolution_log",
+      "severity": "info",
+      "message": "No Evolution Log entries reference this project. (Optional artifact.)"
+    }
+  ]
+}
