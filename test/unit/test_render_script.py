@@ -7,6 +7,7 @@ def _full_pack():
     return DefensePack(
         project_name="responsive-system",
         context="test-course",
+        student_name="Alex Rivera",
         scaffolding_level="Independent",
         phase_at_export="Reflect",
         export_timestamp="2026-05-20T12:00:00Z",

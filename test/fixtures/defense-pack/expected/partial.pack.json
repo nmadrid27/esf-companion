@@ -1,6 +1,7 @@
 {
   "project_name": "partial-project",
   "context": "test-course",
+  "student_name": "Test",
   "scaffolding_level": "Supported",
   "phase_at_export": "Make",
   "export_timestamp": "FIXED",
@@ -32,7 +33,10 @@
   "key_decisions": [],
   "ai_use_log": null,
   "reflection": null,
-  "disclosure": null,
+  "disclosure": {
+    "form": "short",
+    "text": "This work was produced through structured human-AI collaboration. The author directed all substantive decisions consistent with their Position Statement. 2 Records of Resistance document specific decisions to reject or revise AI suggestions."
+  },
   "evolution_log_entries": [],
   "narrative": null,
   "gaps": [
@@ -45,11 +49,6 @@
       "artifact": "reflection",
       "severity": "warning",
       "message": "No Reflection found. Pack does not include the Five Questions check or the kept/revised/rejected summary."
-    },
-    {
-      "artifact": "disclosure",
-      "severity": "info",
-      "message": "No Disclosure found. A short-form disclosure will be auto-generated."
     },
     {
       "artifact": "evolution_log",

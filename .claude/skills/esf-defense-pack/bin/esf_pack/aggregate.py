@@ -44,6 +44,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     context = state.get("Context", "")
     scaffolding_level = state.get("Scaffolding level", "")
     phase = state.get("Phase", "")
+    student_name = state.get("Preferred name", "") or state.get("Name", "")
 
     ctx_root = workspace / "esf" / context
     ps_path = ctx_root / "position-statements" / f"{project_name}.md"
@@ -67,20 +68,28 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     log = parse_ai_use_log(log_path.read_text(encoding="utf-8")) if log_path.exists() else None
     refl = parse_reflection(reflection_path.read_text(encoding="utf-8")) if reflection_path.exists() else None
 
+    # Auto-disclosure is generated whenever there's a Position Statement.
+    # The log presence affects the disclosure's specificity (interaction count etc.),
+    # but its absence shouldn't leave the disclosure section empty in partial packs.
     auto_disclosure = None
-    if log and ps:
+    if ps:
+        log_clause = ""
+        if log:
+            log_clause = f" {log.interaction_count} AI interactions are logged."
         auto_disclosure = Disclosure(
             form="short",
             text=(
                 f"This work was produced through structured human-AI collaboration. "
                 f"The author directed all substantive decisions consistent with their Position Statement. "
                 f"{len(rors)} Records of Resistance document specific decisions to reject or revise AI suggestions."
+                f"{log_clause}"
             ),
         )
 
     pack = DefensePack(
         project_name=project_name,
         context=context,
+        student_name=student_name,
         scaffolding_level=scaffolding_level,
         phase_at_export=phase,
         export_timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds").replace("+00:00", "Z"),

@@ -36,6 +36,7 @@ def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
         return cast(T, DefensePack(
             project_name=data["project_name"],
             context=data["context"],
+            student_name=data.get("student_name", ""),
             scaffolding_level=data["scaffolding_level"],
             phase_at_export=data["phase_at_export"],
             export_timestamp=data["export_timestamp"],

@@ -8,6 +8,7 @@ class TestSchema(unittest.TestCase):
         pack = DefensePack(
             project_name="test-project",
             context="test-course",
+            student_name="Test Student",
             scaffolding_level="Independent",
             phase_at_export="Reflect",
             export_timestamp="2026-05-20T12:00:00Z",
