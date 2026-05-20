@@ -5,8 +5,10 @@ from esf_pack.parsers import (
     is_section_empty,
     parse_position_statement,
     parse_record_of_resistance,
+    parse_ai_use_log,
+    parse_reflection,
 )
-from esf_pack.schema import PositionStatement, RecordOfResistance
+from esf_pack.schema import PositionStatement, RecordOfResistance, AIUseLog, Reflection
 
 
 SAMPLE = """---
@@ -155,6 +157,90 @@ class TestRoRParser(unittest.TestCase):
         self.assertEqual(ror.ai_suggested, "12-column grid.")
         self.assertEqual(ror.why_rejected, "Conflicts with friction premise.")
         self.assertEqual(ror.what_i_did_instead, "Off-grid staggered layout.")
+
+
+AIUSE_SAMPLE = """---
+type: esf-template
+project: responsive-system
+---
+
+# AI Use Log
+
+## Intervention Summary
+
+| Moment | AI Output | My Decision | Reasoning |
+|--------|-----------|-------------|-----------|
+| RoR #1 | grid | Reject | conflicts |
+| RoR #3 | curves | Reject | same |
+
+## Pattern Analysis
+
+> Rejected when AI optimized for comfort.
+
+## Summary Reflection
+
+**Total AI interactions logged:** 12
+**Percentage of AI output incorporated without major revision:** 35%
+**Percentage substantially revised:** 25%
+**Percentage rejected:** 40%
+"""
+
+
+REFLECTION_SAMPLE = """---
+type: esf-template
+project: responsive-system
+---
+
+# Reflection
+
+## What I Kept, Revised, and Rejected
+
+**Kept (and why):** Technical scaffolding.
+
+**Revised (what changed and why):** Color palette.
+
+**Rejected (and why):** Easing curves.
+
+## The Five Questions
+
+| # | Question | Answer | Notes |
+|---|----------|--------|-------|
+| 1 | Can I defend this? | Yes | |
+| 2 | Is this mine? | Yes | |
+| 3 | Did I verify? | Yes | |
+| 4 | Would I teach this? | Yes | |
+| 5 | Is my disclosure honest? | Yes | |
+
+## Reflection
+
+**What did I learn from this project that I would not have learned without AI?**
+> That my instincts sharpen.
+
+**What did I learn despite using AI?**
+> Rejection is editorial.
+
+**Where was I most tempted to accept AI output uncritically, and why?**
+> Around accessibility.
+"""
+
+
+class TestAIUseLogParser(unittest.TestCase):
+    def test_parses_log_counts(self):
+        log = parse_ai_use_log(AIUSE_SAMPLE)
+        self.assertIsInstance(log, AIUseLog)
+        self.assertEqual(log.interaction_count, 12)
+        self.assertIn("comfort", log.pattern_analysis)
+        self.assertEqual(log.intervention_summary.count("Reject"), 2)
+
+
+class TestReflectionParser(unittest.TestCase):
+    def test_parses_five_questions(self):
+        r = parse_reflection(REFLECTION_SAMPLE)
+        self.assertIsInstance(r, Reflection)
+        self.assertTrue(r.five_questions["defend"])
+        self.assertTrue(r.five_questions["mine"])
+        self.assertEqual(r.kept, "Technical scaffolding.")
+        self.assertIn("instincts sharpen", r.learning)
 
 
 if __name__ == "__main__":
