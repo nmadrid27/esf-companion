@@ -2,6 +2,11 @@
 Thumbs.db
 *.swp
 *~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 .vscode/
 .idea/
 node_modules/
