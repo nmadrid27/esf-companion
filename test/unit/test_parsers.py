@@ -1,5 +1,11 @@
 import unittest
-from esf_pack.parsers import parse_frontmatter_and_body, extract_sections, is_section_empty
+from esf_pack.parsers import (
+    parse_frontmatter_and_body,
+    extract_sections,
+    is_section_empty,
+    parse_position_statement,
+)
+from esf_pack.schema import PositionStatement
 
 
 SAMPLE = """---
@@ -64,6 +70,59 @@ class TestEmptyCheck(unittest.TestCase):
 
     def test_non_empty_quote_is_not_empty(self):
         self.assertFalse(is_section_empty("> something here"))
+
+
+POSITION_SAMPLE = """---
+type: position-statement
+project: responsive-system
+date: 2026-04-15
+---
+
+# Position Statement
+
+## Element 1: My Stance
+
+> I want to make a responsive system.
+
+## Element 2: What Matters Most
+
+> The system must respond.
+
+## Element 3: What I Will Not Compromise On
+
+> No autoplay.
+
+## After the AI Session
+
+**Drift level:** minor
+**What shifted:**
+
+> Started leaning toward more feedback.
+
+**Was the shift your decision, or did you follow AI's framing without questioning it?**
+
+> Mine.
+"""
+
+
+class TestPositionStatementParser(unittest.TestCase):
+    def test_parses_three_elements(self):
+        ps = parse_position_statement(POSITION_SAMPLE)
+        self.assertIsInstance(ps, PositionStatement)
+        self.assertEqual(ps.stance, "I want to make a responsive system.")
+        self.assertEqual(ps.what_matters_most, "The system must respond.")
+        self.assertEqual(ps.non_negotiables, "No autoplay.")
+
+    def test_parses_drift(self):
+        ps = parse_position_statement(POSITION_SAMPLE)
+        self.assertEqual(ps.drift_level, "minor")
+        self.assertEqual(ps.drift_what_shifted, "Started leaning toward more feedback.")
+        self.assertTrue(ps.drift_was_user_decision)
+
+    def test_missing_drift_section_returns_none(self):
+        no_drift = POSITION_SAMPLE.split("## After")[0]
+        ps = parse_position_statement(no_drift)
+        self.assertIsNone(ps.drift_level)
 
 
 if __name__ == "__main__":
