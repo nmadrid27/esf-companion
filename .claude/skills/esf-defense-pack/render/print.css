@@ -33,7 +33,7 @@ section p, section li { font-size: 1rem; }
    evaluate viewport media queries reliably — auto-fit + minmax does. */
 .position-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 1rem;
 }
 .position-pillar h3 { margin-top: 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -70,10 +70,8 @@ body.presenter .presenter-notes { display: block; }
   size: letter;
   margin: 1in 0.85in;
   @top-left { content: "Defense Pack"; color: #888; font-size: 9pt; }
-  @top-right { content: string(project-title); color: #888; font-size: 9pt; }
   @bottom-center { content: counter(page) " / " counter(pages); color: #888; font-size: 9pt; }
 }
-.cover .project { string-set: project-title content(); }
 
 @media print {
   #presenter-toggle, .toc { display: none; }
