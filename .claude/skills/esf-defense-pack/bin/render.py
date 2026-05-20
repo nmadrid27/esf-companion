@@ -68,36 +68,81 @@ def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
     return cast(T, cls(**{k: v for k, v in data.items() if k in field_names}))
 
 
+def _strip_blockquote_markers(text: str) -> str:
+    """Strip leading '> ' from each line so blockquote markdown doesn't render literally.
+
+    The narrative template instructs students to write content as `> ...`
+    blockquotes. Without this, the renderer would emit literal '> Text' in HTML
+    and PDF.
+    """
+    out_lines = []
+    for line in text.splitlines():
+        stripped = line.lstrip("> ").rstrip() if line.lstrip().startswith(">") else line.rstrip()
+        out_lines.append(stripped)
+    return "\n".join(out_lines).strip()
+
+
+def _extract_numbered_items(text: str) -> list[str]:
+    """Pull `1.` / `2.` / ... numbered-list items out of narrative prose."""
+    items: list[str] = []
+    for line in text.splitlines():
+        m = re.match(r"^\s*\d+\.\s+(.+)$", line)
+        if m:
+            items.append(m.group(1).strip())
+    return items
+
+
 def _parse_narrative_md(text: str) -> Narrative:
     """Read the user's approved defense-narrative.md and turn it into a Narrative.
 
-    Expected H2 sections: 'How I came in', 'What I set out to protect',
-    'The key decisions', 'How my position held', 'What I'd defend if asked',
-    'Disclosure' (optional).
+    Expected H2 sections (all optional except 'How I came in'):
+      - 'Opening' — optional dedicated opening line; otherwise derived from 'How I came in'
+      - 'How I came in' — position summary in student voice
+      - 'What I set out to protect' — what mattered most + non-negotiables
+      - 'The key decisions' — `### Decision #N` blocks with narration
+      - 'How my position held' (or 'How my position held (or shifted)')
+      - 'What I'd defend if asked' — numbered claims
+      - 'Disclosure' — overrides auto-generated disclosure if present
     """
     sections = {}
     for m in re.finditer(r"^## (.+?)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
         sections[m.group(1).strip()] = m.group(2).strip()
 
-    decision_walkthrough = []
+    decision_walkthrough: list[dict] = []
     decisions_text = sections.get("The key decisions", "")
     for m in re.finditer(r"###\s*Decision\s*#(\d+).*?\n(.*?)(?=^### |\Z)", decisions_text, re.MULTILINE | re.DOTALL):
         decision_walkthrough.append({
             "record_number": int(m.group(1)),
-            "narration": m.group(2).strip(),
+            "narration": _strip_blockquote_markers(m.group(2)),
         })
 
-    came_in = sections.get("How I came in", "")
-    held = sections.get("How my position held", "") or sections.get("How my position held (or shifted)", "")
+    came_in = _strip_blockquote_markers(sections.get("How I came in", ""))
+    held = _strip_blockquote_markers(
+        sections.get("How my position held", "")
+        or sections.get("How my position held (or shifted)", "")
+    )
+    protect = _strip_blockquote_markers(sections.get("What I set out to protect", "")) or None
+    closing_text = sections.get("What I'd defend if asked", "")
+    defend_claims = _extract_numbered_items(closing_text)
+    disclosure_text = _strip_blockquote_markers(sections.get("Disclosure", "")) or None
+
+    # Opening: prefer an explicit '## Opening' section. Otherwise leave intro empty
+    # rather than duplicate the first sentence of 'How I came in' (which the previous
+    # implementation did, producing audible duplication in the recording script).
+    explicit_opening = _strip_blockquote_markers(sections.get("Opening", ""))
+    intro = explicit_opening  # may be empty; renderer/template handle that gracefully
 
     return Narrative(
-        intro=came_in.splitlines()[0] if came_in else "",
+        intro=intro,
         position_summary=came_in,
         decision_walkthrough=decision_walkthrough,
         reflection_summary=held,
-        closing=sections.get("What I'd defend if asked", ""),
+        closing=_strip_blockquote_markers(closing_text),
         user_approved=True,
         drafted_at="",
+        what_set_out_to_protect=protect,
+        defend_claims=defend_claims,
+        disclosure_override=disclosure_text,
     )
 
 
@@ -112,6 +157,28 @@ def main():
     pack = _to_dataclass(DefensePack, data)
     assert pack is not None, "pack.json should never produce None"
     pack.narrative = _parse_narrative_md(args.narrative_md.read_text(encoding="utf-8"))
+
+    # Fallback: if the SKILL didn't persist curated key_decisions to pack.json but
+    # the user's narrative walks through specific records, materialize key_decisions
+    # from the walkthrough so HTML and recording-script renderers stay in sync.
+    if not pack.key_decisions and pack.narrative and pack.narrative.decision_walkthrough:
+        for entry in pack.narrative.decision_walkthrough:
+            rec_num = entry["record_number"]
+            ror = next((r for r in pack.records_of_resistance if r.record_number == rec_num), None)
+            if not ror:
+                continue
+            # Headline: first non-empty line of narration, truncated.
+            first_line = next((ln.strip() for ln in entry["narration"].splitlines() if ln.strip()), "")
+            headline = first_line[:80] + ("…" if len(first_line) > 80 else "")
+            pack.key_decisions.append(KeyDecision(
+                record_number=rec_num,
+                headline=headline or f"Decision #{rec_num}",
+                curation_source="narrative_inferred",
+            ))
+
+    # Override auto-disclosure with the user's explicit disclosure if they wrote one.
+    if pack.narrative and pack.narrative.disclosure_override:
+        pack.disclosure = Disclosure(form="user", text=pack.narrative.disclosure_override)
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
 
