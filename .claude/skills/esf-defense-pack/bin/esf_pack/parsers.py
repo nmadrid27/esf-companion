@@ -50,10 +50,45 @@ def is_section_empty(content: str) -> bool:
     return not cleaned.strip()
 
 
+_THEMATIC_BREAK_RE = re.compile(r"-{3,}")
+_ITALIC_FOOTER_RE = re.compile(r"\*[^*]+\*")
+
+
 def quote_content(content: str) -> str:
-    """Extract the user's prose from a `> ...` blockquote, joining lines, stripping markers."""
-    lines = [line.lstrip("> ").rstrip() for line in content.splitlines() if line.strip()]
+    """Extract the user's prose from a `> ...` blockquote, joining lines, stripping markers.
+
+    Also strips trailing thematic-break lines (`---`) and trailing italic-only lines
+    that come from template footers (e.g. `*Epistemic Stewardship Framework, ...*`).
+    Those are template artifacts, not user content, and would otherwise bleed into
+    the rendered defense pack and the recording script.
+    """
+    lines: list[str] = []
+    for line in content.splitlines():
+        if not line.strip():
+            continue
+        stripped = line.lstrip("> ").rstrip()
+        if not stripped:
+            continue
+        lines.append(stripped)
+    while lines and (
+        _THEMATIC_BREAK_RE.fullmatch(lines[-1])
+        or _ITALIC_FOOTER_RE.fullmatch(lines[-1])
+    ):
+        lines.pop()
     return " ".join(lines).strip()
+
+
+def _section_by_prefix(sections: dict, prefix: str) -> str:
+    """Return the first section whose heading starts with `prefix`, or empty string.
+
+    Used for headings that drift across templates and examples (e.g. "Element 3:
+    What I Will Not Compromise" with or without trailing "On"; "After the AI
+    Session" vs. "After Drafting" vs. "After the Engagement").
+    """
+    for k, v in sections.items():
+        if k.startswith(prefix):
+            return v
+    return ""
 
 
 def parse_position_statement(text: str) -> PositionStatement:
@@ -61,12 +96,12 @@ def parse_position_statement(text: str) -> PositionStatement:
     sections = extract_sections(body)
     stance = quote_content(sections.get("Element 1: My Stance", ""))
     matters = quote_content(sections.get("Element 2: What Matters Most", ""))
-    non_neg = quote_content(sections.get("Element 3: What I Will Not Compromise On", ""))
+    non_neg = quote_content(_section_by_prefix(sections, "Element 3: What I Will Not Compromise"))
 
     drift_level = None
     drift_what = None
     drift_user_decision = None
-    after = sections.get("After the AI Session", "")
+    after = _section_by_prefix(sections, "After ")
     if after:
         for line in after.splitlines():
             if line.startswith("**Drift level:**"):

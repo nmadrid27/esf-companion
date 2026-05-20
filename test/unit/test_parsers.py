@@ -3,6 +3,7 @@ from esf_pack.parsers import (
     parse_frontmatter_and_body,
     extract_sections,
     is_section_empty,
+    quote_content,
     parse_position_statement,
     parse_record_of_resistance,
     parse_ai_use_log,
@@ -241,6 +242,105 @@ class TestReflectionParser(unittest.TestCase):
         self.assertTrue(r.five_questions["mine"])
         self.assertEqual(r.kept, "Technical scaffolding.")
         self.assertIn("instincts sharpen", r.learning)
+
+
+PS_TEMPLATE_VARIANT = """---
+type: position-statement
+project: writer-example
+date: 2026-04-01
+---
+
+# Position Statement
+
+## Element 1: My Stance
+
+> A.
+
+---
+
+## Element 2: What Matters Most
+
+> B.
+
+---
+
+## Element 3: What I Will Not Compromise
+
+> C.
+
+---
+
+## After Drafting
+
+**Drift level:** minor
+**What shifted:**
+
+> A small thing.
+
+**Was the shift your decision, or did you follow AI's framing without questioning it?**
+
+> Mine.
+"""
+
+
+ROR_WITH_FOOTER = """---
+type: record-of-resistance
+project: x
+date: 2026-04-20
+record-number: 1
+---
+
+# Record of Resistance
+
+## What AI Suggested
+
+> Standard grid.
+
+## Why I Rejected or Revised It
+
+> Conflicts with friction.
+
+## What I Did Instead
+
+> Off-grid staggered layout.
+
+---
+
+*Epistemic Stewardship Framework, Record of Resistance Template*
+*Document moments where you deliberately did not follow an AI suggestion, and why.*
+"""
+
+
+class TestPrefixMatching(unittest.TestCase):
+    """Tolerant heading matches for headings that drift across templates and examples."""
+
+    def test_element_3_without_trailing_On(self):
+        ps = parse_position_statement(PS_TEMPLATE_VARIANT)
+        self.assertEqual(ps.non_negotiables, "C.")
+
+    def test_drift_section_with_after_drafting_heading(self):
+        ps = parse_position_statement(PS_TEMPLATE_VARIANT)
+        self.assertEqual(ps.drift_level, "minor")
+        self.assertEqual(ps.drift_what_shifted, "A small thing.")
+        self.assertTrue(ps.drift_was_user_decision)
+
+
+class TestFooterStripping(unittest.TestCase):
+    """Template footer artifacts must not leak into rendered fields."""
+
+    def test_quote_content_strips_trailing_thematic_break(self):
+        self.assertEqual(quote_content("> something\n\n---"), "something")
+        self.assertEqual(quote_content("> a\n> b\n\n---\n---"), "a b")
+
+    def test_quote_content_strips_trailing_italic_footer(self):
+        out = quote_content("> something\n\n*Epistemic Stewardship Framework, Record of Resistance Template*")
+        self.assertEqual(out, "something")
+
+    def test_ror_parser_drops_template_footer(self):
+        ror = parse_record_of_resistance(ROR_WITH_FOOTER)
+        self.assertEqual(ror.what_i_did_instead, "Off-grid staggered layout.")
+        self.assertNotIn("Epistemic", ror.what_i_did_instead)
+        self.assertNotIn("---", ror.what_i_did_instead)
 
 
 if __name__ == "__main__":
