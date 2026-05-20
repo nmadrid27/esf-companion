@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Tuple
 
-from .schema import PositionStatement
+from .schema import PositionStatement, RecordOfResistance
 
 
 _FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n(.*)", re.DOTALL)
@@ -87,4 +87,18 @@ def parse_position_statement(text: str) -> PositionStatement:
         drift_level=drift_level,
         drift_what_shifted=drift_what,
         drift_was_user_decision=drift_user_decision,
+    )
+
+
+def parse_record_of_resistance(text: str) -> RecordOfResistance:
+    fm, body = parse_frontmatter_and_body(text)
+    sections = extract_sections(body)
+    record_number = int(fm.get("record-number", 0))
+    date = fm.get("date", "")
+    return RecordOfResistance(
+        record_number=record_number,
+        date=date,
+        ai_suggested=quote_content(sections.get("What AI Suggested", "")),
+        why_rejected=quote_content(sections.get("Why I Rejected or Revised It", "")),
+        what_i_did_instead=quote_content(sections.get("What I Did Instead", "")),
     )

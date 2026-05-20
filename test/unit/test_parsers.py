@@ -4,8 +4,9 @@ from esf_pack.parsers import (
     extract_sections,
     is_section_empty,
     parse_position_statement,
+    parse_record_of_resistance,
 )
-from esf_pack.schema import PositionStatement
+from esf_pack.schema import PositionStatement, RecordOfResistance
 
 
 SAMPLE = """---
@@ -123,6 +124,37 @@ class TestPositionStatementParser(unittest.TestCase):
         no_drift = POSITION_SAMPLE.split("## After")[0]
         ps = parse_position_statement(no_drift)
         self.assertIsNone(ps.drift_level)
+
+
+ROR_SAMPLE = """---
+type: record-of-resistance
+project: responsive-system
+date: 2026-04-20
+record-number: 1
+---
+
+# Record of Resistance
+
+## What AI Suggested
+> 12-column grid.
+
+## Why I Rejected or Revised It
+> Conflicts with friction premise.
+
+## What I Did Instead
+> Off-grid staggered layout.
+"""
+
+
+class TestRoRParser(unittest.TestCase):
+    def test_parses_record(self):
+        ror = parse_record_of_resistance(ROR_SAMPLE)
+        self.assertIsInstance(ror, RecordOfResistance)
+        self.assertEqual(ror.record_number, 1)
+        self.assertEqual(ror.date, "2026-04-20")
+        self.assertEqual(ror.ai_suggested, "12-column grid.")
+        self.assertEqual(ror.why_rejected, "Conflicts with friction premise.")
+        self.assertEqual(ror.what_i_did_instead, "Off-grid staggered layout.")
 
 
 if __name__ == "__main__":
