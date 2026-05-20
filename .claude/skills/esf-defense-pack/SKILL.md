@@ -88,15 +88,15 @@ Do not show info-level gaps in the summary unless `--verbose`.
 
 From the Records of Resistance, propose 3–5 to feature in the defense narrative. Rank by:
 
-1. Whether `why_rejected` echoes language from the Position Statement's Element 2 (What Matters Most) or Element 3 (Non-negotiables).
-2. Whether the RoR cites a specific Non-negotiable phrase.
-3. Whether the RoR is in a phase that immediately preceded a Five Questions "no→yes" transition in the AI Use Log.
+1. **PS-language echo:** `why_rejected` field uses phrases or concepts from the Position Statement's Element 2 (What Matters Most) or Element 3 (Non-negotiables). This is the strongest signal.
+2. **Named in the PS drift section or Reflection's "temptation moments":** the student themselves flagged this decision as load-bearing. If the PS drift section mentions "Record #3" or the Reflection's temptation field names a specific topic, that record is a strong candidate.
+3. **Partial acceptance or genuine tradeoff:** prefer records where the student kept some of the AI's suggestion and rejected part. Defense panels probe nuance, not reflex rejection. Avoid choosing two records that make the same argument (e.g., two "smoothness is bad" rejections).
 
 Present the proposal:
 
 ```
 Proposed key decisions to feature:
-  · #1 — <one-line headline>: <one-sentence why>
+  · #1 — <one-line headline>: <one-sentence why this record is load-bearing>
   · #3 — <one-line headline>: <one-sentence why>
   · #5 — <one-line headline>: <one-sentence why>
 
@@ -111,16 +111,79 @@ Accept one of:
 
 In `--ci` mode, pick the first three RoRs in `record_number` order without prompting.
 
-### 4. Draft narrative
+### 3.5. Persist curated decisions to pack.json
 
-Write `esf/<context>/defense-packs/<project>-<timestamp>/defense-narrative.md` using the structure from `templates/defense-narrative-template.md`. For each selected key decision, draft a one-paragraph narration that:
-- States the AI's suggestion in the user's voice
-- States why the user overruled it, citing the relevant Position Statement element
-- States what the user did instead
+**Critical:** the renderer reads `key_decisions` from `pack.json`, not from the narrative. After the user confirms in step 3, write the selected decisions back to the existing `pack.json`:
 
-**Important:** the narrative is the only AI-generated content in the pack. Use the student's voice based on their existing writing; do not introduce new claims or details that are not present in the source artifacts. Tell the user: "I've drafted the narrative at `<path>`. Open it, edit it, and tell me when you're ready to render."
+```python
+# Conceptual:
+pack["key_decisions"] = [
+    {"record_number": 1, "headline": "<one-line headline>", "curation_source": "ai_proposed_user_confirmed"},
+    {"record_number": 3, "headline": "<one-line headline>", "curation_source": "ai_proposed_user_confirmed"},
+    {"record_number": 5, "headline": "<one-line headline>", "curation_source": "user_selected"},
+]
+```
 
-### 5. Render
+If you skip this step, the HTML/PDF will display "No key decisions curated" while the recording script narrates them — the artifact will contradict itself. (The renderer has a fallback that materializes key_decisions from the narrative's decision_walkthrough, but that's a safety net, not the intended flow.)
+
+### 4. Extract the student's voice before drafting
+
+Read the Position Statement and Reflection. Extract 3–5 verbatim phrases that show the student's voice (e.g., "Rejection is editorial"; "The aesthetic discomfort is the point"; "I will not let AI flatten it"). List them mentally before you draft.
+
+**The narrative must land at least two of those phrases unchanged.**
+
+Avoid:
+- Em dashes (the project's voice guidelines prohibit them)
+- AI-style transitions ("That said," "Importantly," "Ultimately," "It's worth noting that")
+- Smoothing the student's deliberate roughness ("staccato" → "concise" is a betrayal)
+- Hedging where the student is direct
+- Generic academic register where the student is plain-spoken (or vice versa)
+
+### 5. Draft the narrative
+
+Write `esf/<context>/defense-packs/<project>-<timestamp>/defense-narrative.md` using the structure from `templates/defense-narrative-template.md` (also installed at `esf/toolkit/templates/defense-narrative-template.md`).
+
+**Required H2 sections — the renderer parses by exact heading text:**
+- `## How I came in` — position summary in student voice (becomes the body of the HTML's position section)
+- `## What I set out to protect` — what mattered most + non-negotiables, in the student's voice
+- `## The key decisions` — contains `### Decision #N` sub-blocks, one per curated record
+- `## How my position held` (or `## How my position held (or shifted)`)
+- `## What I'd defend if asked` — five numbered claims (`1.`, `2.`, etc.) the student would say out loud
+- `## Disclosure` — short AI disclosure (overrides the auto-generated one if present)
+- `## Opening` (optional) — explicit opening line. If omitted, the renderer skips Opening rather than duplicating "How I came in".
+
+Within `## The key decisions`, use sub-headers `### Decision #1`, `### Decision #3`, etc., matching the record numbers from step 3. The body of each is one paragraph in the student's voice.
+
+For each decision, the narration must:
+- State what the AI suggested (paraphrased from the source RoR, not invented)
+- State why the student overruled it, citing the relevant Position Statement element
+- State what the student did instead
+- Connect that choice to the Position Statement
+
+### 6. Anti-invention check (run before saving)
+
+After drafting, scan each sentence. Each sentence must be one of:
+
+- **(a) Verbatim quotation** from a source artifact (Position Statement, Record of Resistance, AI Use Log, Reflection)
+- **(b) Light grammatical bridging** between verbatim quotes (verb tense adjustments, subject substitution, joining clauses)
+- **(c) Direct restatement** of a source claim in close paraphrase
+
+If a sentence is **none of these** — if it's editorial sharpening, characterization, or a new claim — delete it OR mark it `[verify: <reason>]` for the student to confirm. Editorialization is invention; the student adds those themselves.
+
+Common invention failures to watch for:
+- "This is the suggestion my Position Statement was written to reject." (causal claim, not in source)
+- "The AI suggestion was technically reasonable but..." (characterization, not in source)
+- "...where I was most tempted." (could be source-grounded; verify it's actually in the Reflection)
+
+When in doubt, delete and let the student write it.
+
+### 7. Tell the user, with explicit invitation to edit
+
+After drafting, tell the user:
+
+> I've drafted the narrative at `<path>`. The Position Statement, RoRs, and Reflection were the source; nothing in the narrative is a new claim. Read it carefully — anything that sounds off probably is. Edit freely, then tell me when you're ready to render.
+
+### 8. Render
 
 After the user confirms:
 
@@ -133,7 +196,7 @@ After the user confirms:
 
 Report the output paths and a one-line summary. If PDF was skipped, report the reason and how to install WeasyPrint.
 
-### 6. Re-run on the same project
+### 9. Re-run on the same project
 
 A new run creates a new timestamped folder. Do not overwrite. Previous packs are version history.
 
