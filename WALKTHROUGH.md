@@ -171,6 +171,30 @@ You write a reflection first: what changed from your original position, what you
 
 ---
 
+## After Reflect: building your Defense Pack
+
+Once your project is complete and your Reflection is written, you can build a **Defense Pack**: a portable bundle (HTML, PDF when WeasyPrint is installed, and a recording script with timing cues) you walk through with your instructor in an oral defense or crit.
+
+In Claude Code, run:
+
+    /esf-defense-pack
+
+The Companion will:
+
+1. Read your Position Statement, Records of Resistance, AI Use Log, and Reflection.
+2. Propose 3 to 5 key decisions to feature, and let you confirm or override.
+3. Draft a defense narrative you edit before render.
+4. Produce three outputs in `esf/<context>/defense-packs/<project>-<timestamp>/`:
+   - `defense-pack.html`: live walkthrough surface (opens in any browser, presenter mode included)
+   - `defense-pack.pdf`: read-ahead document (requires `pip install weasyprint`)
+   - `defense-pack.md`: recording script with timing cues, for async video defenses
+
+The pack folder is yours. Email it, drop it into Canvas, zip it, or host it on GitHub Pages.
+
+On Paths 1 and 2 (templates and conversation tools), see `templates/defense-pack-checklist.md` and the Companion's conversational Defense Pack guidance, respectively.
+
+---
+
 ## For Different Users
 
 ### If you have an instructor brief
