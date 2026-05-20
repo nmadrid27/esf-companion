@@ -89,7 +89,7 @@ class DefensePack:
     phase_at_export: str
     export_timestamp: str
     companion_version: str
-    position_statement: PositionStatement
+    position_statement: Optional[PositionStatement]
     records_of_resistance: list[RecordOfResistance]
     key_decisions: list[KeyDecision]
     ai_use_log: Optional[AIUseLog]
