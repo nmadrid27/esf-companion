@@ -34,6 +34,7 @@ def main():
 
     out_json = json.dumps(payload, indent=2, default=str)
     if args.out:
+        args.out.parent.mkdir(parents=True, exist_ok=True)
         args.out.write_text(out_json, encoding="utf-8")
     else:
         sys.stdout.write(out_json + "\n")

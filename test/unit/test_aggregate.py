@@ -53,5 +53,55 @@ class TestSnapshots(unittest.TestCase):
         self._compare_to_snapshot("minimal")
 
 
+class TestProjectFilter(unittest.TestCase):
+    """Aggregator must exclude RoRs whose frontmatter `project` doesn't match
+    the current project, and must surface them as a warning gap so the student
+    knows their work didn't silently disappear.
+    """
+
+    def test_mismatched_ror_excluded_and_surfaced(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+        from esf_pack.aggregate import aggregate_from_dir
+
+        src = FIXTURES / "full"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Insert a misfiled RoR — frontmatter says project=other-project
+            misfiled = tmp / "ws" / "esf" / "test-course" / "records-of-resistance" / "99-misfiled.md"
+            misfiled.write_text(
+                "---\n"
+                "type: record-of-resistance\n"
+                "context: test-course\n"
+                "project: other-project\n"
+                "date: 2026-05-19\n"
+                "record-number: 99\n"
+                "---\n\n"
+                "## What AI Suggested\n\n> Something.\n\n"
+                "## Why I Rejected or Revised It\n\n> Reason.\n\n"
+                "## What I Did Instead\n\n> Alternative.\n",
+                encoding="utf-8",
+            )
+            pack = aggregate_from_dir(tmp / "ws")
+
+        # The misfiled RoR should be excluded from records_of_resistance
+        self.assertEqual(
+            len(pack.records_of_resistance), 5,
+            "expected 5 matching RoRs (original full fixture), misfiled one excluded",
+        )
+        self.assertNotIn(99, [r.record_number for r in pack.records_of_resistance])
+
+        # A warning gap should describe the mismatch
+        mismatch_gaps = [
+            g for g in pack.gaps
+            if g.artifact == "record_of_resistance" and "different `project` frontmatter" in g.message
+        ]
+        self.assertEqual(len(mismatch_gaps), 1)
+        self.assertIn("99-misfiled.md", mismatch_gaps[0].message)
+        self.assertIn("other-project", mismatch_gaps[0].message)
+
+
 if __name__ == "__main__":
     unittest.main()

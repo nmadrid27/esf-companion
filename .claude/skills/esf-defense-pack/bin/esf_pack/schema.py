@@ -35,6 +35,7 @@ class RecordOfResistance:
     ai_suggested: str
     why_rejected: str
     what_i_did_instead: str
+    project: str = ""  # frontmatter `project:` — used by aggregator to filter mismatched RoRs
 
 
 @dataclass
