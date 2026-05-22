@@ -86,7 +86,9 @@ Do not show info-level gaps in the summary unless `--verbose`.
 
 ### 3. Propose key decisions (the only AI-judgment step)
 
-From the Records of Resistance, propose 3–5 to feature in the defense narrative. Rank by:
+From the Records of Resistance, propose **all available RoRs up to 5** (3–5 is the target range; fewer is acceptable when fewer exist). If fewer than 3 RoRs exist, note that to the user — defense panels usually expect at least three points of resistance, and a thin record may signal the project needs more RoRs before defense, not that the pack should be padded.
+
+Rank by:
 
 1. **PS-language echo:** `why_rejected` field uses phrases or concepts from the Position Statement's Element 2 (What Matters Most) or Element 3 (Non-negotiables). This is the strongest signal.
 2. **Named in the PS drift section or Reflection's "temptation moments":** the student themselves flagged this decision as load-bearing. If the PS drift section mentions "Record #3" or the Reflection's temptation field names a specific topic, that record is a strong candidate.
@@ -176,6 +178,8 @@ Common invention failures to watch for:
 - "...where I was most tempted." (could be source-grounded; verify it's actually in the Reflection)
 
 When in doubt, delete and let the student write it.
+
+**Meta-check:** if you find yourself adding `[verify: ...]` to *every* Decision block, stop and ask the user before continuing. That pattern means the source artifacts probably don't actually belong to this project — RoRs may be misfiled, or the student copied a template without updating the body. Surface the suspicion rather than papering over it with verify markers everywhere.
 
 ### 7. Tell the user, with explicit invitation to edit
 
