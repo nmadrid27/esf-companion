@@ -128,7 +128,7 @@ If you skip this step, the HTML/PDF will display "No key decisions curated" whil
 
 ### 4. Extract the student's voice before drafting
 
-Read the Position Statement and Reflection. Extract 3–5 verbatim phrases that show the student's voice (e.g., "Rejection is editorial"; "The aesthetic discomfort is the point"; "I will not let AI flatten it"). List them mentally before you draft.
+Read the Position Statement and (if present) the Reflection. Extract 3–5 **short verbatim phrases** that show the student's voice — aim for 3–10 words each, not full sentences (e.g., "Rejection is editorial"; "The aesthetic discomfort is the point"; "I will not let AI flatten it"). List them before you draft.
 
 **The narrative must land at least two of those phrases unchanged.**
 
@@ -196,6 +196,8 @@ After the user confirms:
 
 Report the output paths and a one-line summary. If PDF was skipped, report the reason and how to install WeasyPrint.
 
+**PDF dependencies (macOS):** WeasyPrint requires the `pango` system library. If `pip install weasyprint` succeeds but `python -c "import weasyprint"` fails at runtime with a `libpango` error, the user needs `brew install pango`. On macOS, set `DYLD_LIBRARY_PATH=/opt/homebrew/lib` when invoking render.py if the Python interpreter can't find the library. The graceful-skip path will print these hints automatically — surface them clearly to the user instead of swallowing the message.
+
 ### 9. Re-run on the same project
 
 A new run creates a new timestamped folder. Do not overwrite. Previous packs are version history.
@@ -207,6 +209,7 @@ A new run creates a new timestamped folder. Do not overwrite. Previous packs are
 - **No `companion-state.md`** → "Defense Pack needs your workspace state. Run `/esf-onboarding` first."
 - **Empty Position Statement** → hard stop. Point to `templates/position-statement-template.md`.
 - **`esf/<context>/` doesn't exist** → soft stop. "No ESF artifacts found for context `<x>`. Have you done any project work yet?"
+- **Records of Resistance with mismatched `project:` frontmatter** → the aggregator excludes them and emits a warning gap. Surface the gap to the user explicitly — they may have misfiled an RoR, or the work belongs to a sibling project in the same context. Do not silently include or silently exclude.
 - **No Records of Resistance** → warning, but render. Skip the "Key decisions" section in the narrative; surface a callout in the pack: "No Records of Resistance recorded — defense rests entirely on Position Statement and Reflection."
 - **WeasyPrint missing** → render HTML and MD, skip PDF, surface the install hint.
 - **User edits `defense-narrative.md` after render** → re-run with `--skip-narrative` to re-render from the edited narrative.

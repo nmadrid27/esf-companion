@@ -56,13 +56,21 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     if ps_path.exists():
         ps = parse_position_statement(ps_path.read_text(encoding="utf-8"))
 
-    rors = []
+    rors: list = []
+    mismatched_rors: list = []
     if ror_dir.exists():
         for f in sorted(ror_dir.glob("*.md")):
             try:
-                rors.append(parse_record_of_resistance(f.read_text(encoding="utf-8")))
+                ror = parse_record_of_resistance(f.read_text(encoding="utf-8"))
             except Exception:
                 continue
+            # Filter by frontmatter `project` match. RoRs filed under a different
+            # project (or with no project frontmatter) shouldn't silently leak
+            # into this pack — that would mix unrelated decisions into a defense.
+            if ror.project and ror.project != project_name:
+                mismatched_rors.append((f.name, ror.project))
+                continue
+            rors.append(ror)
         rors.sort(key=lambda r: r.record_number)
 
     log = parse_ai_use_log(log_path.read_text(encoding="utf-8")) if log_path.exists() else None
@@ -105,4 +113,22 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         gaps=[],
     )
     pack.gaps = detect_gaps(pack)
+
+    # Surface mismatched RoRs as a warning gap so the student knows their work
+    # didn't silently disappear.
+    if mismatched_rors:
+        from .schema import Gap, GapSeverity
+        details = ", ".join(f"{name} (project={proj!r})" for name, proj in mismatched_rors)
+        pack.gaps.append(Gap(
+            artifact="record_of_resistance",
+            severity=GapSeverity.WARNING,
+            message=(
+                f"{len(mismatched_rors)} Record(s) of Resistance in {ror_dir} have a "
+                f"different `project` frontmatter than `{project_name}` and were NOT "
+                f"included in this pack: {details}. If they belong to this project, "
+                f"update their frontmatter; otherwise move them to the correct project's "
+                f"directory."
+            ),
+        ))
+
     return pack

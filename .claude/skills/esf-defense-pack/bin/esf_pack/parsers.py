@@ -130,12 +130,14 @@ def parse_record_of_resistance(text: str) -> RecordOfResistance:
     sections = extract_sections(body)
     record_number = int(fm.get("record-number", 0))
     date = fm.get("date", "")
+    project = fm.get("project", "")
     return RecordOfResistance(
         record_number=record_number,
         date=date,
         ai_suggested=quote_content(sections.get("What AI Suggested", "")),
         why_rejected=quote_content(sections.get("Why I Rejected or Revised It", "")),
         what_i_did_instead=quote_content(sections.get("What I Did Instead", "")),
+        project=project,
     )
 
 
