@@ -1,83 +1,470 @@
+/* Defense Pack — visual design
+   Tone: scholarly, considered, restrained. The accent color signals
+   load-bearing content (stance, decisions, drift, disclosure).
+   Self-contained: no external fonts, no remote assets. */
+
 :root {
   --ink: #1a1a1a;
-  --paper: #fff;
-  --rule: #ddd;
-  --accent: #92400e;     /* darker auburn for WCAG AA at small sizes */
-  --accent-soft: #fef3c7;
-  --muted: #555;          /* darker for AA at 0.9rem */
+  --ink-soft: #2a2a2a;
+  --paper: #fdfcf9;          /* faint warm off-white, easier on eyes than pure white */
+  --rule: #e2dfd8;
+  --rule-strong: #c9c4b8;
+  --accent: #8b2c1d;          /* deep brick red — load-bearing content marker */
+  --accent-soft: #f4e8e2;     /* tinted background derived from accent */
+  --accent-strong: #6b1f12;
+  --muted: #5a5650;
   --warn-bg: #fff8e1;
-  --warn-rule: #d97706;
-  font-family: Georgia, 'Iowan Old Style', serif;
+  --warn-rule: #b45309;
+  --critical-bg: #fde8e6;
+  --critical-rule: #991b1b;
+
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
   color: var(--ink);
   background: var(--paper);
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Cover page
+   ──────────────────────────────────────────────────────────────── */
+
+.cover {
+  text-align: center;
+  padding: 5rem 1rem 3.5rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 0;
+}
+.cover::before {
+  content: "DEFENSE PACK";
+  display: block;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 1.25rem;
+}
+.cover h1 {
+  display: none;     /* the eyebrow above replaces the literal "Defense Pack" h1 */
+}
+.cover .project {
+  font-size: 2.6rem;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--ink);
+  font-weight: normal;
+  letter-spacing: -0.01em;
+}
+.cover .student-name {
+  font-style: italic;
+  font-size: 1.25rem;
+  margin: 1.25rem 0 0;
+  color: var(--ink-soft);
+}
+.cover .student-name::before {
+  content: "by ";
+  font-style: normal;
+  color: var(--muted);
+}
+.cover .meta {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  color: var(--muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  margin: 0.4rem 0;
+  text-transform: uppercase;
+}
+.cover .meta:first-of-type { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); display: inline-block; padding-left: 2.5rem; padding-right: 2.5rem; }
+
+/* ────────────────────────────────────────────────────────────────
+   Gaps notice — surfaced above TOC so faculty sees what's missing
+   ──────────────────────────────────────────────────────────────── */
+
+.gaps {
+  background: var(--warn-bg);
+  border-left: 4px solid var(--warn-rule);
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  border-radius: 2px;
+}
+.gaps h3 {
+  margin: 0 0 0.75rem;
+  color: var(--warn-rule);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-weight: 600;
+}
+.gaps .gap {
+  margin: 0.6rem 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: 2px;
+  font-size: 0.95rem;
   line-height: 1.55;
 }
-body { max-width: 760px; margin: 2rem auto; padding: 0 1.25rem; }
+.gaps .gap.hard_stop { background: var(--critical-bg); border-left: 3px solid var(--critical-rule); }
+.gaps .gap.warning { background: #fff7ed; border-left: 3px solid var(--warn-rule); }
+.gaps .gap strong { color: var(--accent-strong); }
 
-.cover { text-align: center; padding: 2rem 0; border-bottom: 1px solid var(--rule); }
-.cover h1 { font-size: 2.5rem; margin: 0; }
-.cover .project { font-size: 1.5rem; color: var(--accent); margin: 0.5rem 0 0.25rem; }
-.cover .student-name { font-size: 1.1rem; margin: 0 0 0.75rem; color: var(--ink); }
-.cover .meta { color: var(--muted); font-size: 0.9rem; margin: 0.25rem 0; }
+/* ────────────────────────────────────────────────────────────────
+   TOC
+   ──────────────────────────────────────────────────────────────── */
 
-.toc { display: flex; flex-wrap: wrap; gap: 0.75rem; padding: 1rem 0; border-bottom: 1px solid var(--rule); font-size: 0.9rem; }
-.toc a { color: var(--accent); text-decoration: none; }
-.toc a:hover { text-decoration: underline; }
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.toc a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease;
+  padding-bottom: 1px;
+}
+.toc a:hover { border-bottom-color: var(--accent); }
 
-section { padding: 1.5rem 0; border-bottom: 1px solid var(--rule); }
-section h2 { margin-top: 0; }
-section p, section li { font-size: 1rem; }
+/* ────────────────────────────────────────────────────────────────
+   Sections
+   ──────────────────────────────────────────────────────────────── */
 
-/* Position pillars: 3-up on screen, stacked on narrow. Uses width-based grid
-   sizing instead of @media min-width because WeasyPrint's print path doesn't
-   evaluate viewport media queries reliably — auto-fit + minmax does. */
+section {
+  padding: 3rem 0 3rem;
+  border-bottom: 1px solid var(--rule);
+  counter-increment: section;
+}
+section:last-of-type { border-bottom: none; }
+section h2 {
+  margin: 0 0 1.5rem;
+  font-size: 1.75rem;
+  font-weight: normal;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-top: 0.25rem;
+}
+section h2::before {
+  content: "§ " counter(section, decimal-leading-zero);
+  display: block;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+section h3 {
+  font-size: 1.05rem;
+  color: var(--accent-strong);
+  margin: 1.5rem 0 0.5rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+section p, section li {
+  font-size: 1.02rem;
+  margin: 0 0 1.1rem;
+}
+
+/* Drop cap on opening paragraph of the position section */
+#position > p:first-of-type::first-letter,
+#intro p::first-letter {
+  font-size: 3.2rem;
+  line-height: 1;
+  float: left;
+  margin: 0.35rem 0.6rem 0 0;
+  color: var(--accent);
+  font-weight: normal;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Position pillars (Stance / What matters / Non-negotiables)
+   Render as pull-quote treatments rather than equal columns.
+   ──────────────────────────────────────────────────────────────── */
+
 .position-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  margin: 1.5rem 0 2rem;
 }
-.position-pillar h3 { margin-top: 0; font-size: 1rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; }
+.position-pillar {
+  border-left: 3px solid var(--rule-strong);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+  position: relative;
+}
+.position-pillar:nth-child(3) { border-left-color: var(--accent); }
+.position-pillar h3 {
+  margin: 0 0 0.4rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-weight: 600;
+}
+.position-pillar:nth-child(3) h3 { color: var(--accent); }
+.position-pillar p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+  color: var(--ink);
+}
 
-.protect { background: #fafafa; padding: 1rem 1.25rem; margin: 1rem 0; border-left: 3px solid var(--rule); }
-.protect h3 { margin-top: 0; font-size: 1rem; }
+.protect {
+  margin: 2rem 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--accent-soft);
+  border-radius: 2px;
+  position: relative;
+}
+.protect::before {
+  content: "“";
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  font-size: 4rem;
+  color: var(--accent);
+  line-height: 1;
+  font-family: Georgia, serif;
+}
+.protect h3 {
+  margin: 0 0 0.5rem 1.5rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.protect p {
+  margin: 0 0 0 1.5rem;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--ink);
+}
 
-.drift { background: var(--accent-soft); border-left: 4px solid var(--accent); padding: 0.75rem 1rem; margin: 1rem 0; border-radius: 4px; }
-.drift h3 { margin-top: 0; font-size: 1rem; color: var(--accent); }
-.drift p { margin: 0.3rem 0; }
+/* ────────────────────────────────────────────────────────────────
+   Drift block — load-bearing, visible
+   ──────────────────────────────────────────────────────────────── */
 
-.ror { border: 1px solid var(--rule); padding: 1rem; margin: 1rem 0; border-radius: 4px; }
-.ror summary { cursor: pointer; font-weight: bold; }
-.ror[data-key="true"] { border-left: 4px solid var(--accent); }
+.drift {
+  margin: 2rem 0 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 2px;
+}
+.drift h3 {
+  margin: 0 0 0.6rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.drift p { margin: 0.35rem 0; font-size: 0.98rem; }
+.drift p strong { color: var(--accent-strong); }
 
-.disclosure { background: #faf7f0; padding: 1rem; border-left: 4px solid var(--accent); margin: 0; }
-.meta-footer { color: var(--muted); font-size: 0.85rem; padding: 1.5rem 0; }
+/* ────────────────────────────────────────────────────────────────
+   Records of Resistance — featured + appendix
+   ──────────────────────────────────────────────────────────────── */
 
-.gaps { background: var(--warn-bg); border-left: 4px solid var(--warn-rule); padding: 1rem; margin: 1rem 0; border-radius: 4px; }
-.gaps h3 { margin-top: 0; color: var(--warn-rule); }
-.gaps .gap { margin: 0.5rem 0; padding: 0.5rem 0.75rem; }
-.gaps .gap.hard_stop { background: #fee2e2; border-left: 3px solid #b91c1c; }
-.gaps .gap.warning { background: #fff7ed; border-left: 3px solid var(--warn-rule); }
+.ror {
+  border: 1px solid var(--rule);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+  background: #fff;
+}
+.ror[data-key="true"] {
+  border-left: 4px solid var(--accent);
+  background: linear-gradient(to right, var(--accent-soft) 0%, #fff 8%);
+}
+.ror summary {
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1.1rem;
+  list-style: none;
+  position: relative;
+  padding-right: 2rem;
+  color: var(--ink);
+}
+.ror summary::after {
+  content: "+";
+  position: absolute;
+  right: 0;
+  top: -0.1rem;
+  color: var(--accent);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+.ror[open] summary::after { content: "−"; }
+.ror summary::-webkit-details-marker { display: none; }
+.ror h4 {
+  margin: 1.25rem 0 0.4rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.ror h4:first-of-type { margin-top: 1.25rem; }
+.ror[data-key="true"] h4:nth-of-type(3) { color: var(--accent); }  /* "What I did" gets accent */
+.ror p { margin: 0 0 1rem; font-size: 1rem; line-height: 1.65; }
+.ror p:last-child { margin-bottom: 0; }
 
-.defend-list { margin: 0.5rem 0; padding-left: 1.5rem; }
-.defend-list li { margin: 0.5rem 0; }
+/* ────────────────────────────────────────────────────────────────
+   Disclosure
+   ──────────────────────────────────────────────────────────────── */
 
-.presenter-notes { display: none; background: var(--accent-soft); padding: 0.75rem; border-radius: 4px; margin: 0.5rem 0; }
+.disclosure {
+  background: #faf7f0;
+  padding: 1.5rem 1.75rem;
+  border-left: 4px solid var(--accent);
+  margin: 0;
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   "What I'd defend if asked" — numbered claims as a confident list
+   ──────────────────────────────────────────────────────────────── */
+
+.defend-list {
+  margin: 1.5rem 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: defend;
+}
+.defend-list li {
+  counter-increment: defend;
+  padding: 0.85rem 0 0.85rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.05rem;
+  position: relative;
+}
+.defend-list li:last-child { border-bottom: none; }
+.defend-list li::before {
+  content: counter(defend, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  color: var(--accent);
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Footer
+   ──────────────────────────────────────────────────────────────── */
+
+.meta-footer {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 2.5rem 0 3rem;
+  text-align: center;
+  line-height: 1.55;
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Presenter mode (live walkthrough)
+   ──────────────────────────────────────────────────────────────── */
+
+.presenter-notes {
+  display: none;
+  background: #fef9e7;
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+  border-left: 3px solid #d4a017;
+}
+.presenter-notes strong {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #92750f;
+  display: block;
+  margin-bottom: 0.3rem;
+}
 body.presenter .presenter-notes { display: block; }
 
-#presenter-toggle { position: fixed; bottom: 1rem; right: 1rem; padding: 0.5rem 0.75rem; background: var(--accent); color: #fff; border: none; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+#presenter-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(139, 44, 29, 0.18);
+  transition: transform 120ms ease;
+}
+#presenter-toggle:hover { transform: translateY(-1px); }
+
+/* ────────────────────────────────────────────────────────────────
+   Print rules — preserve identity in PDF
+   ──────────────────────────────────────────────────────────────── */
 
 @page {
   size: letter;
-  margin: 1in 0.85in;
-  @top-left { content: "Defense Pack"; color: #888; font-size: 9pt; }
-  @bottom-center { content: counter(page) " / " counter(pages); color: #888; font-size: 9pt; }
+  margin: 1in 0.85in 0.95in;
+  @top-left {
+    content: "Defense Pack";
+    font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+    color: #999;
+    font-size: 8pt;
+    letter-spacing: 0.15em;
+  }
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+    color: #999;
+    font-size: 8pt;
+  }
 }
 
 @media print {
+  body { max-width: none; margin: 0; padding: 0; background: #fff; }
   #presenter-toggle, .toc { display: none; }
-  body { max-width: none; margin: 0; padding: 0; }
-  section { page-break-inside: avoid; break-inside: avoid; }
+  section { page-break-inside: avoid; break-inside: avoid; padding: 2.5rem 0; }
   .ror { page-break-inside: avoid; break-inside: avoid; }
-  .cover { page-break-after: always; break-after: page; border-bottom: none; }
+  .cover { page-break-after: always; break-after: page; border-bottom: none; padding: 4in 0 0; }
   .gaps { page-break-inside: avoid; break-inside: avoid; }
+  section h2::before { color: var(--accent-strong); }
 }
