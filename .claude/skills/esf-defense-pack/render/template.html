@@ -82,7 +82,9 @@
         else url.searchParams.delete('presenter');
         history.replaceState(null, '', url);
       });
-      document.querySelectorAll('.ror details').forEach(d => d.open = false);
+      // Collapse all RoR <details> by default. Querying `.ror details` only matches
+      // nested details (none exist) — we want the top-level <details class="ror"> too.
+      document.querySelectorAll('details.ror, .ror details').forEach(d => d.open = false);
     })();
   </script>
 </body>

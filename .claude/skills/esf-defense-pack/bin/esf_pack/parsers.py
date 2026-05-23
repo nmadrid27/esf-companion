@@ -86,6 +86,21 @@ _ITALIC_FOOTER_RE = re.compile(r"\*[^*]+\*")
 # `>>` and `> ` identically, eating legitimate content.
 _BLOCKQUOTE_PREFIX_RE = re.compile(r"^>\s?")
 
+# Module-level compiled regexes used in section-specific parsers. Compiling
+# once at module load is negligibly faster for our usual 5-10-RoR pack size,
+# but keeps each regex visible in one place and is hygienic.
+_DRIFT_QUOTE_RE = re.compile(r"^>\s*(.+)$", re.MULTILINE)
+_INTERACTION_COUNT_RE = re.compile(r"Total AI interactions logged:\*\*\s*(\d+)")
+_CHECKLIST_RE = re.compile(r"^\s*[-*]\s*\[([xX ])\]", re.MULTILINE)
+_LEARNING_RE = re.compile(
+    r"would not have learned without AI\?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)",
+    re.DOTALL,
+)
+_TEMPTATION_RE = re.compile(
+    r"tempted to accept AI output uncritically.*?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)",
+    re.DOTALL,
+)
+
 
 def _strip_blockquote_prefix(line: str) -> str:
     return _BLOCKQUOTE_PREFIX_RE.sub("", line, count=1)
@@ -145,7 +160,7 @@ def parse_position_statement(text: str) -> PositionStatement:
                 value = line.split("**Drift level:**", 1)[1].strip()
                 if value and value not in ("not set", "—"):
                     drift_level = value
-        quotes = re.findall(r"^>\s*(.+)$", after, re.MULTILINE)
+        quotes = _DRIFT_QUOTE_RE.findall(after)
         if len(quotes) >= 1:
             drift_what = quotes[0].strip()
         if len(quotes) >= 2:
@@ -195,14 +210,14 @@ def parse_ai_use_log(text: str) -> AIUseLog:
     summary = sections.get("Summary Reflection", "")
 
     interaction_count = 0
-    m = re.search(r"Total AI interactions logged:\*\*\s*(\d+)", summary)
+    m = _INTERACTION_COUNT_RE.search(summary)
     if m:
         interaction_count = int(m.group(1))
 
     # Five Questions pass rate. Restrict the match to actual checklist lines
     # (lines starting with `-` or `*` bullet, optionally indented) so we don't
     # accidentally count any literal `[ ]` in prose as an unchecked question.
-    checklist_lines = re.findall(r"^\s*[-*]\s*\[([xX ])\]", body, re.MULTILINE)
+    checklist_lines = _CHECKLIST_RE.findall(body)
     if checklist_lines:
         yes_count = sum(1 for c in checklist_lines if c.lower() == "x")
         pass_rate = yes_count / len(checklist_lines)
@@ -246,9 +261,9 @@ def parse_reflection(text: str) -> Reflection:
     }
 
     reflection_section = sections.get("Reflection", "")
-    learning_m = re.search(r"would not have learned without AI\?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)", reflection_section, re.DOTALL)
+    learning_m = _LEARNING_RE.search(reflection_section)
     learning = learning_m.group(1).strip() if learning_m else ""
-    temptation_m = re.search(r"tempted to accept AI output uncritically.*?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)", reflection_section, re.DOTALL)
+    temptation_m = _TEMPTATION_RE.search(reflection_section)
     temptation = temptation_m.group(1).strip() if temptation_m else ""
 
     return Reflection(
