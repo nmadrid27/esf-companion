@@ -352,6 +352,93 @@ section p, section li {
    "What I'd defend if asked" — numbered claims as a confident list
    ──────────────────────────────────────────────────────────────── */
 
+/* ────────────────────────────────────────────────────────────────
+   Process metrics — quantitative evidence from @resist / @default / @shift tags
+   ──────────────────────────────────────────────────────────────── */
+
+.process-metrics {
+  margin: 2rem 0 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--accent-soft);
+  border-radius: 2px;
+}
+.process-metrics h3 {
+  margin: 0 0 1rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 1rem;
+  margin: 0.75rem 0;
+}
+.metric {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.75rem 0.5rem;
+  background: rgba(255,255,255,0.55);
+  border-radius: 2px;
+}
+.metric-num {
+  font-size: 1.85rem;
+  color: var(--accent);
+  font-weight: normal;
+  line-height: 1;
+  margin-bottom: 0.3rem;
+}
+.metric-label {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.3;
+}
+.metrics-note {
+  margin: 0.5rem 0 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Appendix sub-sections and inline @resist records
+   ──────────────────────────────────────────────────────────────── */
+
+.appendix-subhead {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.1rem;
+  color: var(--accent-strong);
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+.appendix-note { color: var(--muted); font-size: 0.95rem; }
+.inline-group code { background: var(--accent-soft); padding: 0.1rem 0.4rem; border-radius: 2px; font-size: 0.85rem; }
+.inline-resist {
+  margin: 0.75rem 0;
+  padding: 0.5rem 1rem;
+  border-left: 2px solid var(--rule-strong);
+  background: #fafafa;
+}
+.inline-resist pre.block {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: 0.95rem;
+  line-height: 1.55;
+  margin: 0;
+  background: transparent;
+  padding: 0;
+}
+
 .defend-list {
   margin: 1.5rem 0;
   padding: 0;

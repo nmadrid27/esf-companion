@@ -143,12 +143,124 @@ def _section_by_prefix(sections: dict, prefix: str) -> str:
     return ""
 
 
+# Element heading aliases. Real students adapt the templates — they write
+# "## My Stance (Creative Direction)" instead of "## Element 1: My Stance", or
+# "## Design Intent" instead of "## Element 2: What Matters Most". We accept
+# any of the canonical Element-N phrasing plus a curated set of common variants
+# so a Defense Pack can be produced against a Position Statement the student
+# actually wrote in their own structure.
+_ELEMENT_1_ALIASES = (
+    "element 1",
+    "my stance",
+    "stance",
+    "creative direction",
+    "design intent",
+)
+_ELEMENT_2_ALIASES = (
+    "element 2",
+    "what matters most",
+    "matters most",
+    "values",
+    "core values",
+    "principles",
+)
+_ELEMENT_3_ALIASES = (
+    "element 3",
+    "what i will not compromise",
+    "non-negotiables",
+    "non negotiables",
+    "hard lines",
+    "lines i won't cross",
+    "what i won't compromise",
+)
+
+
+def _heading_lead(heading: str) -> str:
+    """Normalized heading with trailing parenthetical removed."""
+    return re.sub(r"\s*\([^)]*\)\s*$", "", heading).strip().lower()
+
+
+def _heading_paren(heading: str) -> str:
+    """Normalized contents of trailing parenthetical (empty if none)."""
+    m = re.search(r"\(([^)]*)\)\s*$", heading)
+    return m.group(1).strip().lower() if m else ""
+
+
+def _match_element_sections(
+    sections: dict,
+    alias_sets: list,
+) -> list:
+    """Assign each heading to at most one element.
+
+    `alias_sets` is a list of alias tuples in element order. Returns a parallel
+    list of section contents (or "" when no match).
+
+    Resolution rules:
+      1. Lead-match (canonical part of heading) is preferred over parenthetical-match.
+      2. Each heading is assigned to at most one element (no double-counting).
+      3. Element order is used as a tie-breaker when one heading would match two
+         element alias sets via the same path.
+
+    Designed for real student PSes like:
+      "## What Matters Most (Non-Negotiables)"
+        → lead matches Element 2; paren matches Element 3.
+        Lead wins, so this section becomes Element 2.
+      "## AI Boundaries (What I Will Not Compromise On)"
+        → lead doesn't match anything; paren matches Element 3.
+        Paren-match for Element 3 wins.
+    """
+    n = len(alias_sets)
+    matched_content = [""] * n
+    used_headings: set = set()
+
+    # Pass 1: lead matches (most specific). Each heading can match at most one
+    # element; prefer the earliest element index when there's a conflict.
+    for heading, content in sections.items():
+        if heading in used_headings:
+            continue
+        lead = _heading_lead(heading)
+        for i, aliases in enumerate(alias_sets):
+            if matched_content[i]:
+                continue  # element already assigned via lead
+            for alias in aliases:
+                if lead.startswith(alias):
+                    matched_content[i] = content
+                    used_headings.add(heading)
+                    break
+            if heading in used_headings:
+                break
+
+    # Pass 2: parenthetical matches for elements still empty.
+    for heading, content in sections.items():
+        if heading in used_headings:
+            continue
+        paren = _heading_paren(heading)
+        if not paren:
+            continue
+        for i, aliases in enumerate(alias_sets):
+            if matched_content[i]:
+                continue
+            for alias in aliases:
+                if paren.startswith(alias):
+                    matched_content[i] = content
+                    used_headings.add(heading)
+                    break
+            if heading in used_headings:
+                break
+
+    return matched_content
+
+
 def parse_position_statement(text: str) -> PositionStatement:
     _, body = parse_frontmatter_and_body(text)
     sections = extract_sections(body)
-    stance = quote_content(sections.get("Element 1: My Stance", ""))
-    matters = quote_content(sections.get("Element 2: What Matters Most", ""))
-    non_neg = quote_content(_section_by_prefix(sections, "Element 3: What I Will Not Compromise"))
+    matched = _match_element_sections(
+        sections,
+        [_ELEMENT_1_ALIASES, _ELEMENT_2_ALIASES, _ELEMENT_3_ALIASES],
+    )
+    stance = quote_content(matched[0])
+    matters = quote_content(matched[1])
+    non_neg = quote_content(matched[2])
 
     drift_level = None
     drift_what = None
@@ -175,6 +287,116 @@ def parse_position_statement(text: str) -> PositionStatement:
         drift_what_shifted=drift_what,
         drift_was_user_decision=drift_user_decision,
     )
+
+
+# Inline-tag extractor for the taught @resist / @default / @shift convention.
+# @resist marks a record of resistance directly inline in a process blog or
+# similar narrative file. @default marks acceptance, @shift marks a redirect.
+# We only convert @resist hits into RoRs; the other tags are counted for the
+# pack's process-metrics summary.
+_RESIST_RE = re.compile(r"@resist\b", re.IGNORECASE)
+_DEFAULT_RE = re.compile(r"@default\b", re.IGNORECASE)
+_SHIFT_RE = re.compile(r"@shift\b", re.IGNORECASE)
+
+# Package scopes (@types/foo, @babel/core) and CSS at-rules (@keyframes, @media)
+# match a naive @-tag regex if we're not careful, but @resist has no NPM / CSS
+# twin. The DEFAULT / SHIFT regexes are also safe — no common package or CSS
+# rule is named exactly @default or @shift. Callers should still scope the
+# scan to process-blog files specifically, not arbitrary node_modules trees.
+
+
+def _extract_paragraph_around(text: str, pos: int) -> str:
+    """Return the markdown block containing position `pos`.
+
+    A 'block' is bounded by blank lines, thematic breaks, or markdown headings
+    (any level). We walk backward to find the start and forward to find the end.
+    Returns the block content with leading/trailing whitespace stripped.
+    """
+    # Find the start: walk back to the first blank line or heading
+    line_start = text.rfind("\n", 0, pos) + 1
+    # Walk backward by lines until we hit a blank line or a heading
+    cursor = line_start
+    while cursor > 0:
+        prev_end = text.rfind("\n", 0, cursor - 1)
+        prev_line_start = prev_end + 1 if prev_end != -1 else 0
+        prev_line = text[prev_line_start:cursor - 1] if prev_end != -1 else text[:cursor - 1]
+        if not prev_line.strip():
+            break
+        if re.match(r"^#{1,6}\s", prev_line) or prev_line.strip() == "---":
+            # Include the heading itself if it's the immediate context
+            cursor = prev_line_start
+            break
+        cursor = prev_line_start
+
+    # Find the end: walk forward to the next blank line or heading
+    end_cursor = text.find("\n", pos)
+    if end_cursor == -1:
+        end_cursor = len(text)
+    while end_cursor < len(text):
+        next_end = text.find("\n", end_cursor + 1)
+        if next_end == -1:
+            next_end = len(text)
+        next_line = text[end_cursor + 1:next_end]
+        if not next_line.strip():
+            break
+        if re.match(r"^#{1,6}\s", next_line) or next_line.strip() == "---":
+            break
+        end_cursor = next_end
+
+    return text[cursor:end_cursor].strip()
+
+
+def extract_inline_resists(
+    text: str,
+    source_label: str,
+) -> tuple[list[RecordOfResistance], int, int, int]:
+    """Scan `text` for @resist / @default / @shift tags.
+
+    Returns (records, resist_count, default_count, shift_count). The records
+    list contains one RecordOfResistance per @resist hit, with the surrounding
+    block as `inline_narrative`. The counts include all occurrences of each tag
+    (a single block can be one record but still count its tags).
+    """
+    text = _normalize(text)
+    resist_count = len(_RESIST_RE.findall(text))
+    default_count = len(_DEFAULT_RE.findall(text))
+    shift_count = len(_SHIFT_RE.findall(text))
+
+    records: list[RecordOfResistance] = []
+    seen_blocks: set = set()
+    for i, m in enumerate(_RESIST_RE.finditer(text), start=1):
+        block = _extract_paragraph_around(text, m.start())
+
+        # Skip tagging-legend / template blocks: if the block contains all three
+        # of @resist, @default, and @shift, it's almost certainly explaining the
+        # convention rather than tagging a real moment.
+        has_resist = bool(_RESIST_RE.search(block))
+        has_default = bool(_DEFAULT_RE.search(block))
+        has_shift = bool(_SHIFT_RE.search(block))
+        if has_resist and has_default and has_shift:
+            continue
+
+        # Skip blocks that are just placeholder text — the canonical pattern is
+        # `[what you ...]` square-bracket fill-ins from the template.
+        if re.search(r"\[(what|brief|tag).*?\]", block, re.IGNORECASE):
+            continue
+
+        # Dedupe within a single file when the same block contains multiple
+        # @resist mentions (common in lists). Use first 200 chars as key.
+        key = block[:200]
+        if key in seen_blocks:
+            continue
+        seen_blocks.add(key)
+        records.append(RecordOfResistance(
+            record_number=0,  # aggregator assigns final numbers
+            date="",
+            ai_suggested="",
+            why_rejected="",
+            what_i_did_instead="",
+            source=f"{source_label} (@resist #{i})",
+            inline_narrative=block,
+        ))
+    return records, resist_count, default_count, shift_count
 
 
 def parse_record_of_resistance(text: str) -> RecordOfResistance:

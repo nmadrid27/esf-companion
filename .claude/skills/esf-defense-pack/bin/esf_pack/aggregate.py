@@ -1,7 +1,6 @@
 """Aggregator: walks a project workspace, produces a DefensePack."""
 from __future__ import annotations
 import datetime
-import re
 from pathlib import Path
 from .schema import DefensePack, Disclosure
 from .parsers import (
@@ -9,6 +8,7 @@ from .parsers import (
     parse_record_of_resistance,
     parse_ai_use_log,
     parse_reflection,
+    extract_inline_resists,
 )
 from .gaps import detect_gaps
 
@@ -26,35 +26,87 @@ def find_context_root(start: Path) -> Path:
     raise FileNotFoundError(f"No companion-state.md found from {start}")
 
 
+_COMPANION_STATE_LOCATIONS = (
+    "companion-state.md",                    # canonical (v0.8.0+)
+    "esf/companion-state.md",                # canonical alt
+    "projects/_esf/companion-state.md",      # pre-v0.8.0 layout (real users in the wild)
+    "_esf/companion-state.md",               # variant pre-v0.8.0
+    ".esf/companion-state.md",               # variant
+)
+
+
+def _find_companion_state(workspace: Path) -> Path:
+    """Locate companion-state.md across known install layouts.
+
+    The v0.8.0 release consolidated everything under `esf/toolkit/`, but real
+    student workspaces in the wild were installed under earlier versions that
+    placed companion-state in `projects/_esf/` or similar. Searching a small
+    set of known locations means the Defense Pack works against existing
+    workspaces without requiring a re-install or migration.
+    """
+    for rel in _COMPANION_STATE_LOCATIONS:
+        candidate = workspace / rel
+        if candidate.exists():
+            return candidate
+    raise FileNotFoundError(
+        f"companion-state.md not found in {workspace} or any known subdirectory "
+        f"({', '.join(_COMPANION_STATE_LOCATIONS)}). "
+        f"Run /esf-onboarding to initialize the workspace, or move your "
+        f"companion-state.md to {workspace}/companion-state.md."
+    )
+
+
 def _read_state(workspace: Path) -> dict:
-    """Parse companion-state.md into a flat dict of the keys we need."""
-    text = (workspace / "companion-state.md").read_text(encoding="utf-8")
+    """Parse companion-state.md into a flat dict of the keys we need.
+
+    Also extracts a 'Defense Pack Paths' override section if present — students
+    with non-canonical workspace layouts can point the aggregator at their
+    actual artifact locations explicitly.
+    """
+    state_path = _find_companion_state(workspace)
+    text = state_path.read_text(encoding="utf-8")
     state: dict = {}
-    for line in text.splitlines():
-        line = line.strip()
+    in_defense_paths = False
+    defense_paths: dict = {}
+    for raw_line in text.splitlines():
+        line = raw_line.strip()
+        # Detect the optional "## Defense Pack Paths" section. While inside it,
+        # bullet keys collect into a separate dict (e.g. {"Position Statement": "..."})
+        # rather than into the flat state.
+        if line.startswith("## "):
+            in_defense_paths = line.lower().startswith("## defense pack paths")
+            continue
         if line.startswith("- **") and ":**" in line:
             k, _, v = line.partition(":**")
-            state[k.lstrip("- *").strip()] = v.strip().rstrip("*").strip()
+            key = k.lstrip("- *").strip()
+            value = v.strip().rstrip("*").strip()
+            if in_defense_paths:
+                defense_paths[key] = value
+            else:
+                state[key] = value
+    if defense_paths:
+        state["__defense_paths__"] = defense_paths  # special key, consumed by aggregator
     return state
 
 
-_SAFE_PATH_SEGMENT_RE = re.compile(r"^[A-Za-z0-9._-]+$")
-
-
 def _validate_path_segment(value: str, field_name: str) -> None:
-    """Reject path-traversal characters and separators in path-component fields.
+    """Reject path-traversal patterns in path-component fields.
 
-    The threat is hypothetical (single-user, local execution) but companion-state.md
-    is a hand-edited markdown file with no schema enforcement. A typo or copy/paste
-    accident could leave a `..` or a `/` in `Context` or `Project name` that
-    silently directs reads outside the intended directory tree.
+    Real project names contain spaces, parens, and other ordinary characters
+    ('AI201-quarter-project (Baseline Testing Platform)'). The validator only
+    rejects the patterns that actually enable traversal: parent-directory
+    references (`..`), path separators (`/` or `\\`), and null bytes. Everything
+    else is treated as legal — students can name their projects anything.
     """
-    if value and not _SAFE_PATH_SEGMENT_RE.match(value):
-        raise ValueError(
-            f"companion-state.md `{field_name}` contains characters that aren't "
-            f"safe as a directory or file segment: {value!r}. Use only letters, "
-            f"digits, dots, underscores, and dashes."
-        )
+    if not value:
+        return
+    forbidden = ["..", "/", "\\", "\x00"]
+    for bad in forbidden:
+        if bad in value:
+            raise ValueError(
+                f"companion-state.md `{field_name}` contains a path-traversal "
+                f"pattern ({bad!r}) that isn't allowed: {value!r}."
+            )
 
 
 def aggregate_from_dir(workspace: Path) -> DefensePack:
@@ -78,11 +130,84 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     _validate_path_segment(project_name, "Project name")
     _validate_path_segment(context, "Context")
 
-    ctx_root = workspace / "esf" / context
-    ps_path = ctx_root / "position-statements" / f"{project_name}.md"
-    ror_dir = ctx_root / "records-of-resistance"
-    log_path = ctx_root / "ai-use-logs" / f"{project_name}.md"
-    reflection_path = ctx_root / "reflections" / f"{project_name}.md"
+    # Resolve artifact locations. Order:
+    #   1. Explicit overrides from companion-state's "Defense Pack Paths" section
+    #   2. Canonical v0.8.0+ layout: esf/<context>/...
+    #   3. Pre-v0.8.0 fallback layout: projects/<context>/...
+    #   4. Filename-pattern fallback (real students rename files: M2-position-statement.md)
+    overrides: dict = state.get("__defense_paths__", {}) or {}
+
+    def _resolve_file(
+        override_key: str,
+        canonical_subdir: str,
+        filename_patterns: list,
+    ) -> Path:
+        """Resolve a file path: override → canonical → legacy → glob fallback.
+
+        `filename_patterns` are glob-style patterns tried in order against each
+        candidate directory until a match is found.
+        """
+        override = overrides.get(override_key, "").strip()
+        if override and override.lower() not in ("(none)", "none", "n/a", "-"):
+            _validate_path_segment(override, override_key)
+            return workspace / override
+        candidate_dirs = [
+            workspace / "esf" / context / canonical_subdir,
+            workspace / "projects" / context / canonical_subdir,
+            workspace / "projects" / context / "references",
+            workspace / "projects" / context,
+        ]
+        for d in candidate_dirs:
+            if not d.exists():
+                continue
+            for pattern in filename_patterns:
+                matches = sorted(d.glob(pattern))
+                if matches:
+                    return matches[0]
+        # Return canonical-path-that-doesn't-exist so gap detection fires cleanly.
+        return workspace / "esf" / context / canonical_subdir / filename_patterns[0].lstrip("*")
+
+    def _resolve_dir(override_key: str, canonical_subdir: str) -> Path:
+        override = overrides.get(override_key, "").strip()
+        if override and override.lower() not in ("(none)", "none", "n/a", "-"):
+            _validate_path_segment(override, override_key)
+            return workspace / override
+        for root in (workspace / "esf" / context, workspace / "projects" / context):
+            d = root / canonical_subdir
+            if d.exists():
+                return d
+        return workspace / "esf" / context / canonical_subdir
+
+    # Build per-artifact filename patterns. Project names with spaces/parens are
+    # used as-is in the canonical pattern; the slug-like fallbacks catch the
+    # common real-student renames.
+    ps_path = _resolve_file(
+        "Position Statement",
+        "position-statements",
+        [
+            f"{project_name}.md",          # canonical
+            "*position-statement*.md",     # M2-position-statement.md, etc.
+            "*position*.md",               # broad fallback
+        ],
+    )
+    ror_dir = _resolve_dir("Records of Resistance", "records-of-resistance")
+    log_path = _resolve_file(
+        "AI Use Log",
+        "ai-use-logs",
+        [
+            f"{project_name}.md",
+            "*ai-use-log*.md",
+            "*ai-log*.md",
+        ],
+    )
+    reflection_path = _resolve_file(
+        "Reflection",
+        "reflections",
+        [
+            f"{project_name}.md",
+            "*reflection*.md",
+        ],
+    )
 
     ps = None
     if ps_path.exists():
@@ -114,6 +239,52 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         if r.record_number in seen_numbers:
             duplicate_numbers.append(r.record_number)
         seen_numbers[r.record_number] = True
+
+    # Scan process-blog files for inline @resist / @default / @shift tags. This
+    # supports the taught convention where students annotate their session
+    # narrative inline rather than (or in addition to) producing discrete RoR
+    # files. Each @resist tag becomes a supplementary RecordOfResistance with
+    # the surrounding paragraph as the inline_narrative.
+    resist_count = 0
+    default_count = 0
+    shift_count = 0
+    process_blog_sources: list[str] = []
+    blog_search_roots = [
+        workspace / "esf" / context / "process-blog",
+        workspace / "projects" / context / "process-blog",
+        workspace / "process-blog",
+    ]
+    inline_record_offset = max((r.record_number for r in rors), default=0) + 1000
+    inline_seq = 0
+    # Skip filenames that are templates, readmes, or example/instruction files.
+    _BLOG_SKIP_RE = __import__("re").compile(
+        r"(template|readme|instructions?|example|tutorial)",
+        __import__("re").IGNORECASE,
+    )
+    for root in blog_search_roots:
+        if not root.exists():
+            continue
+        for blog_file in sorted(root.glob("*.md")):
+            if _BLOG_SKIP_RE.search(blog_file.name):
+                continue
+            try:
+                text = blog_file.read_text(encoding="utf-8")
+            except (OSError, UnicodeDecodeError):
+                continue
+            inline_rors, rc, dc, sc = extract_inline_resists(
+                text, source_label=str(blog_file.relative_to(workspace)),
+            )
+            resist_count += rc
+            default_count += dc
+            shift_count += sc
+            if blog_file.relative_to(workspace).as_posix() not in process_blog_sources:
+                process_blog_sources.append(blog_file.relative_to(workspace).as_posix())
+            for inline_ror in inline_rors:
+                inline_seq += 1
+                inline_ror.record_number = inline_record_offset + inline_seq
+                inline_ror.project = project_name  # not filtered; treated as belonging
+                rors.append(inline_ror)
+        break  # only consume the first existing root to avoid double-counting
 
     log = parse_ai_use_log(log_path.read_text(encoding="utf-8")) if log_path.exists() else None
     refl = parse_reflection(reflection_path.read_text(encoding="utf-8")) if reflection_path.exists() else None
@@ -152,6 +323,10 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         )
 
     pack = DefensePack(
+        resist_count=resist_count,
+        default_count=default_count,
+        shift_count=shift_count,
+        process_blog_sources=process_blog_sources,
         project_name=project_name,
         context=context,
         student_name=student_name,

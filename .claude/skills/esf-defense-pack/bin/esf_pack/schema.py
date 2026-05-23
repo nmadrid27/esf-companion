@@ -36,6 +36,10 @@ class RecordOfResistance:
     why_rejected: str
     what_i_did_instead: str
     project: str = ""  # frontmatter `project:` — used by aggregator to filter mismatched RoRs
+    source: str = ""   # provenance ("file.md" or "process-blog/session-07.md @resist #3")
+    inline_narrative: str = ""  # full paragraph when extracted from a tagged process blog
+                                # (no field split possible). When set, renderer shows this
+                                # block in place of the three structured fields.
 
 
 @dataclass
@@ -104,3 +108,11 @@ class DefensePack:
     evolution_log_entries: list[str]
     narrative: Optional[Narrative]
     gaps: list[Gap]
+    # Process tag counts — when the workspace uses the taught @resist / @default / @shift
+    # convention in process blog files, the aggregator counts occurrences across the
+    # corpus. These provide defensible quantitative evidence ("147 documented resistance
+    # moments across 14 sessions") that complements the curated decisions.
+    resist_count: int = 0
+    default_count: int = 0
+    shift_count: int = 0
+    process_blog_sources: list[str] = field(default_factory=list)
