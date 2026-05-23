@@ -42,11 +42,31 @@ def _decisions_html(pack: DefensePack) -> str:
 
 
 def _appendix_html(pack: DefensePack) -> str:
+    """Render the full Records of Resistance appendix.
+
+    Handles two flavors:
+      - Structured RoRs (canonical format with ai_suggested / why_rejected /
+        what_i_did_instead H2 sections) — rendered as three labeled fields.
+      - Inline RoRs (extracted from @resist tags in process blogs) — rendered
+        as a single content block with source attribution. No empty field labels.
+
+    When the pack has many inline RoRs (Lily's case: 80+), they're grouped by
+    source file and rendered collapsed by default; faculty can drill in if they
+    want to read the full narrative.
+    """
     if not pack.records_of_resistance:
         return "<p><em>No Records of Resistance recorded.</em></p>"
-    parts = []
-    for ror in pack.records_of_resistance:
-        parts.append(f"""
+
+    # Split records by type
+    structured = [r for r in pack.records_of_resistance if not r.inline_narrative]
+    inline = [r for r in pack.records_of_resistance if r.inline_narrative]
+
+    parts: list[str] = []
+
+    if structured:
+        parts.append('<h3 class="appendix-subhead">Formal Records of Resistance</h3>')
+        for ror in structured:
+            parts.append(f"""
 <details class="ror" id="ror-{ror.record_number}-full">
   <summary>#{ror.record_number} · {_esc(ror.date)}</summary>
   <h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>
@@ -54,7 +74,59 @@ def _appendix_html(pack: DefensePack) -> str:
   <h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>
 </details>
 """)
+
+    if inline:
+        # Group inline RoRs by source file
+        by_source: dict = {}
+        for r in inline:
+            # source is "<file> (@resist #N)" — group by the file portion
+            src_file = r.source.split(" (@")[0] if " (@" in r.source else r.source
+            by_source.setdefault(src_file, []).append(r)
+
+        parts.append(f'<h3 class="appendix-subhead">Inline @resist Records ({len(inline)} from {len(by_source)} sources)</h3>')
+        parts.append(
+            '<p class="appendix-note"><em>These are <code>@resist</code>-tagged moments '
+            'extracted from the student\'s process blog. Each block is the surrounding '
+            'paragraph from the source file.</em></p>'
+        )
+        for src_file, recs in sorted(by_source.items()):
+            parts.append(f"""
+<details class="ror inline-group">
+  <summary><code>{_esc(src_file)}</code> — {len(recs)} moment(s)</summary>
+""")
+            for ror in recs:
+                # Show inline narrative with light markdown handling — convert blank
+                # lines to paragraph breaks, keep blockquote/list markers visible.
+                escaped_block = _esc(ror.inline_narrative)
+                parts.append(
+                    f'<div class="inline-resist"><pre class="block">{escaped_block}</pre></div>'
+                )
+            parts.append("</details>\n")
+
     return "\n".join(parts)
+
+
+def _process_metrics_block(pack: DefensePack) -> str:
+    """Render @resist / @default / @shift counts when a process blog was scanned.
+
+    These provide quantitative evidence of disciplined AI use across the work —
+    "92 documented resistance moments, 31 default acceptances, 16 shifts across
+    19 session blogs" is itself a defensible artifact.
+    """
+    if not pack.process_blog_sources:
+        return ""
+    return f"""
+<aside class="process-metrics">
+  <h3>Process tracking</h3>
+  <div class="metrics-grid">
+    <div class="metric"><span class="metric-num">{pack.resist_count}</span><span class="metric-label">@resist moments</span></div>
+    <div class="metric"><span class="metric-num">{pack.default_count}</span><span class="metric-label">@default acceptances</span></div>
+    <div class="metric"><span class="metric-num">{pack.shift_count}</span><span class="metric-label">@shift redirects</span></div>
+    <div class="metric"><span class="metric-num">{len(pack.process_blog_sources)}</span><span class="metric-label">session blogs documented</span></div>
+  </div>
+  <p class="metrics-note"><em>Tagged inline using the taught @resist / @default / @shift convention. Full inline records appear in the appendix.</em></p>
+</aside>
+"""
 
 
 def _drift_block(pack: DefensePack) -> str:
@@ -156,6 +228,7 @@ def render_html(pack: DefensePack) -> str:
         protect_block=_protect_block(pack),
         drift_block=_drift_block(pack),
         decisions_html=_decisions_html(pack),
+        process_metrics_block=_process_metrics_block(pack),
         reflection_html=_reflection_html(pack),
         closing_html=_closing_html(pack),
         disclosure_text=_esc(pack.disclosure.text if pack.disclosure else ""),
