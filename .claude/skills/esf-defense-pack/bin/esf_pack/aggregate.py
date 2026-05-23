@@ -227,6 +227,10 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             if ror.project and ror.project != project_name:
                 mismatched_rors.append((f.name, ror.project))
                 continue
+            try:
+                ror.source = str(f.relative_to(workspace))
+            except ValueError:
+                ror.source = f.name
             rors.append(ror)
         rors.sort(key=lambda r: r.record_number)
 

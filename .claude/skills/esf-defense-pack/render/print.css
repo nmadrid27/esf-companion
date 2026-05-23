@@ -408,20 +408,17 @@ section p, section li {
 }
 
 /* ────────────────────────────────────────────────────────────────
-   Appendix sub-sections and inline @resist records
+   Appendix: unified Records of Resistance grouped by source file
    ──────────────────────────────────────────────────────────────── */
 
-.appendix-subhead {
-  margin: 2rem 0 0.75rem;
-  font-size: 1.1rem;
-  color: var(--accent-strong);
-  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
-  font-weight: 600;
-  text-transform: none;
-  letter-spacing: 0.02em;
-}
-.appendix-note { color: var(--muted); font-size: 0.95rem; }
-.inline-group code { background: var(--accent-soft); padding: 0.1rem 0.4rem; border-radius: 2px; font-size: 0.85rem; }
+.appendix-note { color: var(--muted); font-size: 0.95rem; margin-bottom: 1rem; }
+.source-group { margin: 1rem 0; }
+.source-group summary { padding: 0.5rem 0; }
+.source-group code { background: var(--accent-soft); padding: 0.1rem 0.4rem; border-radius: 2px; font-size: 0.85rem; }
+.ror-entry { padding: 1rem 1.25rem; margin: 0.75rem 0; border-left: 3px solid var(--rule); }
+.ror-entry .ror-id { margin: 0 0 0.5rem; font-size: 0.7rem; letter-spacing: 0.15em; color: var(--accent); text-transform: uppercase; }
+.ror-source { color: var(--muted); font-size: 0.85rem; margin: 0.25rem 0 0.75rem; }
+.ror-source code { background: transparent; color: var(--muted); }
 .inline-resist {
   margin: 0.75rem 0;
   padding: 0.5rem 1rem;
