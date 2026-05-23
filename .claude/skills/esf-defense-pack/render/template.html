@@ -70,22 +70,28 @@
     <p>This Defense Pack was generated from the student's ESF artifacts. The narrative was drafted with AI assistance and approved by the student. All Records of Resistance, Position Statement, and Reflection contents are the student's own.</p>
   </footer>
 
-  <button id="presenter-toggle" aria-label="Toggle presenter mode">Presenter</button>
+  <button id="presenter-toggle" aria-label="Toggle presenter mode" hidden>Presenter</button>
   <script>
     // Presenter mode: append ?presenter=1 to the URL or click the Presenter button.
+    // The button is hidden by default and only revealed when the pack actually
+    // contains presenter-only content — clicking a dead toggle is confusing UX.
     (function() {
-      const params = new URLSearchParams(location.search);
-      if (params.get('presenter') === '1') document.body.classList.add('presenter');
-      document.getElementById('presenter-toggle').addEventListener('click', () => {
-        document.body.classList.toggle('presenter');
-        const url = new URL(location.href);
-        if (document.body.classList.contains('presenter')) url.searchParams.set('presenter', '1');
-        else url.searchParams.delete('presenter');
-        history.replaceState(null, '', url);
-      });
-      // Collapse all RoR <details> by default. Querying `.ror details` only matches
-      // nested details (none exist) — we want the top-level <details class="ror"> too.
-      document.querySelectorAll('details.ror, .ror details').forEach(d => d.open = false);
+      const hasPresenterNotes = document.querySelector('.presenter-notes') !== null;
+      const btn = document.getElementById('presenter-toggle');
+      if (hasPresenterNotes) {
+        btn.hidden = false;
+        const params = new URLSearchParams(location.search);
+        if (params.get('presenter') === '1') document.body.classList.add('presenter');
+        btn.addEventListener('click', () => {
+          document.body.classList.toggle('presenter');
+          const url = new URL(location.href);
+          if (document.body.classList.contains('presenter')) url.searchParams.set('presenter', '1');
+          else url.searchParams.delete('presenter');
+          history.replaceState(null, '', url);
+        });
+      }
+      // Collapse all RoR <details> by default.
+      document.querySelectorAll('details.ror, .ror details, details.source-group').forEach(d => d.open = false);
     })();
   </script>
 </body>
