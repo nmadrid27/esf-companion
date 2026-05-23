@@ -332,12 +332,21 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 f"{len(rors)} Records of Resistance document specific decisions "
                 f"to reject or revise AI suggestions."
             )
+        # Process tag metrics — quantitative evidence when present.
+        metrics_clause = ""
+        if resist_count + default_count + shift_count > 0:
+            metrics_clause = (
+                f" Process tracking across {len(process_blog_sources)} session "
+                f"blog(s) records {resist_count} @resist moment(s), "
+                f"{default_count} @default acceptance(s), and {shift_count} "
+                f"@shift redirect(s)."
+            )
         auto_disclosure = Disclosure(
             form="short",
             text=(
                 f"This work was produced through structured human-AI collaboration. "
                 f"The author directed all substantive decisions consistent with their "
-                f"Position Statement. {ror_clause}{log_clause}"
+                f"Position Statement. {ror_clause}{log_clause}{metrics_clause}"
             ),
         )
 
@@ -364,6 +373,32 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         gaps=[],
     )
     pack.gaps = detect_gaps(pack)
+
+    # Soften the AI Use Log and Reflection warnings when a process blog is
+    # present — for students using the @resist / @default / @shift convention,
+    # the process blog substitutes for both artifacts. The warnings would
+    # otherwise mislead faculty into thinking work is missing when it just
+    # lives in a different format.
+    if pack.process_blog_sources:
+        from .schema import GapSeverity
+        for g in pack.gaps:
+            if g.artifact == "ai_use_log" and g.severity == GapSeverity.WARNING:
+                g.message = (
+                    f"No dedicated AI Use Log file found, but {pack.resist_count} "
+                    f"AI interactions are documented inline across "
+                    f"{len(pack.process_blog_sources)} process-blog session(s) "
+                    f"via the @resist/@default/@shift convention. The process blog "
+                    f"substitutes for a discrete log file."
+                )
+                g.severity = GapSeverity.INFO
+            elif g.artifact == "reflection" and g.severity == GapSeverity.WARNING:
+                g.message = (
+                    f"No discrete Reflection file found. Process-blog sessions may "
+                    f"contain in-session reflection; the Five Questions checklist "
+                    f"can be run independently before submission."
+                )
+                # Leave as warning — process blog doesn't fully substitute for
+                # a Reflection (which captures end-of-project synthesis).
 
     # Surface mismatched RoRs as a warning gap so the student knows their work
     # didn't silently disappear.

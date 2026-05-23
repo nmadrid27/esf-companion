@@ -301,6 +301,14 @@ def render_html(pack: DefensePack) -> str:
     css = (_RENDER_DIR / "print.css").read_text(encoding="utf-8")
     ps = pack.position_statement
     timestamp = _esc(pack.export_timestamp) or "[date unavailable]"
+    # Truncate scaffolding level for cover display — real students sometimes
+    # write multi-clause descriptions ("Prototype iteration — Homepage + 2
+    # functional tests built (Bilateral Coordination, Reaction Time)") that
+    # overflow the cover meta line. Keep first clause; full text remains in
+    # pack.json for traceability.
+    scaffolding = pack.scaffolding_level or ""
+    if len(scaffolding) > 60:
+        scaffolding = scaffolding.split("—")[0].split(":")[0].strip()[:60].rstrip(", ")
     # Use substitute (not safe_substitute) so a missing template key raises a
     # clear KeyError at render time. safe_substitute leaves literal "$placeholder"
     # in the output, which would ship as visible junk to a faculty member.
@@ -310,7 +318,7 @@ def render_html(pack: DefensePack) -> str:
         context=_esc(pack.context),
         phase=_esc(pack.phase_at_export),
         timestamp=timestamp,
-        scaffolding_level=_esc(pack.scaffolding_level),
+        scaffolding_level=_esc(scaffolding),
         companion_version=_esc(pack.companion_version),
         print_css=css,
         intro_section=_intro_section(pack),

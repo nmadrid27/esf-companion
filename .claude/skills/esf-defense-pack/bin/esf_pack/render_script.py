@@ -27,7 +27,10 @@ def _walkthrough_text(pack: DefensePack) -> str:
         # (the appendix has them in full; reciting them aloud duplicates).
         ref = ""
         if ror:
-            ref = f"\n\n> *Reference: Record #{rec_num} ({ror.date}). Full detail in the appendix.*"
+            # Build the reference line conditionally — empty date parens look broken.
+            date_str = f" ({ror.date})" if ror.date else ""
+            source_str = f" from `{ror.source}`" if ror.source else ""
+            ref = f"\n\n> *Reference: Record #{rec_num}{date_str}{source_str}. Full detail in the appendix.*"
         chunks.append(f"### Decision #{rec_num}\n\n{narration}{ref}\n")
     return "\n".join(chunks)
 
