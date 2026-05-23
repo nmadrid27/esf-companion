@@ -215,8 +215,16 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
 
     rors: list = []
     mismatched_rors: list = []
+    # Skip summary/compilation files — they're metadata, not discrete records.
+    _RECORD_SKIP_RE = __import__("re").compile(
+        r"(compiled|summary|index|readme|template)",
+        __import__("re").IGNORECASE,
+    )
+    auto_number = 0
     if ror_dir.exists():
         for f in sorted(ror_dir.glob("*.md")):
+            if _RECORD_SKIP_RE.search(f.name):
+                continue
             try:
                 ror = parse_record_of_resistance(f.read_text(encoding="utf-8"))
             except Exception:
@@ -231,6 +239,13 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 ror.source = str(f.relative_to(workspace))
             except ValueError:
                 ror.source = f.name
+            # Auto-assign record numbers when frontmatter doesn't have one.
+            # Without this, records in directories that don't use record-number
+            # frontmatter all collide at 0 and the duplicate-warning fires for
+            # every file.
+            if ror.record_number == 0:
+                auto_number += 1
+                ror.record_number = auto_number
             rors.append(ror)
         rors.sort(key=lambda r: r.record_number)
 

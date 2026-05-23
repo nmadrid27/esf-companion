@@ -300,6 +300,69 @@ section p, section li {
   border-left: 4px solid var(--accent);
   background: linear-gradient(to right, var(--accent-soft) 0%, #fff 8%);
 }
+
+/* Key decision blocks — declarative argument units, not collapsed widgets.
+   Narration is the visible lead; underlying record is collapsible evidence. */
+.key-decision {
+  border-left: 4px solid var(--accent);
+  padding: 1.25rem 1.5rem;
+  margin: 1.75rem 0;
+  background: #fff;
+}
+.key-decision .kd-num {
+  margin: 0 0 0.4rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.key-decision .kd-headline {
+  margin: 0 0 0.6rem;
+  font-size: 1.2rem;
+  font-weight: normal;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.key-decision .kd-source {
+  margin: 0 0 1rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+.key-decision .kd-source code {
+  background: transparent;
+  color: var(--muted);
+}
+.key-decision .kd-narration {
+  margin: 0.5rem 0 1rem;
+}
+.key-decision .kd-narration p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+.key-decision .kd-evidence {
+  margin-top: 1rem;
+  border-top: 1px solid var(--rule);
+  padding-top: 0.75rem;
+}
+.key-decision .kd-evidence summary {
+  cursor: pointer;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.key-decision .kd-evidence h4 {
+  margin: 1rem 0 0.3rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
 .ror summary {
   cursor: pointer;
   font-weight: 600;
