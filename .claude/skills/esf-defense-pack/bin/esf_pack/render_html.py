@@ -14,41 +14,111 @@ def _esc(s: str) -> str:
 
 
 def _decisions_html(pack: DefensePack) -> str:
+    """Render the curated Key Decisions as a sequence of declarative argument blocks.
+
+    Each decision is its own visible article — not a collapsed details widget.
+    The narration (the student's in-voice argument for why this moment matters)
+    is the lead content. The underlying RoR record appears as collapsible
+    evidence below. If no matching record was found (narrative references a
+    record number that doesn't exist), the narration stands on its own.
+    """
     if not pack.key_decisions:
         return "<p><em>No key decisions curated.</em></p>"
-    parts = []
-    for kd in pack.key_decisions:
-        ror = next((r for r in pack.records_of_resistance if r.record_number == kd.record_number), None)
-        if not ror:
-            continue
+
+    total = len(pack.key_decisions)
+    parts: list[str] = []
+    for idx, kd in enumerate(pack.key_decisions, start=1):
+        ror = next(
+            (r for r in pack.records_of_resistance if r.record_number == kd.record_number),
+            None,
+        )
+        # Find the narration text — the student's in-voice argument.
         narration = ""
         if pack.narrative:
-            entry = next((e for e in pack.narrative.decision_walkthrough if e["record_number"] == kd.record_number), None)
+            entry = next(
+                (
+                    e for e in pack.narrative.decision_walkthrough
+                    if e["record_number"] == kd.record_number
+                ),
+                None,
+            )
             if entry:
                 narration = entry["narration"]
-        # Inline narrative RoRs (extracted from @resist tags) don't have the
-        # three structured fields populated — show the inline block instead.
-        structured_filled = any(
-            s.strip() for s in (ror.ai_suggested, ror.why_rejected, ror.what_i_did_instead)
-        )
-        if structured_filled:
-            body = (
-                f'<h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>'
-                f'<h4>Why I overruled it</h4><p>{_esc(ror.why_rejected)}</p>'
-                f'<h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>'
+
+        # Headline: only show if it adds information beyond the narration.
+        # When the parser auto-generates headline from the narration's first
+        # line, showing both produces duplication. Skip headline if it's a
+        # substring of the narration's first ~80 chars.
+        headline = (kd.headline or "").strip().rstrip("…").strip()
+        narration_lead = (narration or "").strip()[:100]
+        show_headline = bool(headline) and headline not in narration_lead
+
+        # Source attribution
+        source_line = ""
+        if ror and ror.source:
+            source_line = (
+                f'<p class="kd-source">From <code>{_esc(ror.source)}</code></p>'
             )
-        else:
-            body = (
-                f'<div class="inline-resist"><pre class="block">{_esc(ror.inline_narrative)}</pre></div>'
+
+        # Evidence body (collapsible). Only render if there's actual content.
+        evidence_block = ""
+        if ror:
+            structured_filled = any(
+                s.strip() for s in (ror.ai_suggested, ror.why_rejected, ror.what_i_did_instead)
             )
-        source_line = f'<p class="ror-source"><em>Source: <code>{_esc(ror.source)}</code></em></p>' if ror.source else ""
-        parts.append(f"""
-<details class="ror" data-key="true" id="ror-{ror.record_number}">
-  <summary>#{ror.record_number} — {_esc(kd.headline)}</summary>
-  <p class="presenter-notes"><strong>Speaker note:</strong> {_esc(narration)}</p>
-  {source_line}
-  {body}
+            if structured_filled:
+                evidence_inner = (
+                    f'<h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>'
+                    f'<h4>Why I overruled it</h4><p>{_esc(ror.why_rejected)}</p>'
+                    f'<h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>'
+                )
+            elif ror.inline_narrative.strip():
+                evidence_inner = (
+                    f'<div class="inline-resist"><pre class="block">'
+                    f'{_esc(ror.inline_narrative)}</pre></div>'
+                )
+            else:
+                evidence_inner = ""
+
+            if evidence_inner:
+                evidence_block = f"""
+<details class="kd-evidence">
+  <summary>The underlying record</summary>
+  {evidence_inner}
 </details>
+"""
+
+        # Build the article
+        header_parts = [f'<p class="kd-num">Key decision {idx} of {total}</p>']
+        if show_headline:
+            header_parts.append(f'<h3 class="kd-headline">{_esc(headline)}</h3>')
+
+        narration_block = ""
+        if narration_lead:
+            narration_block = f'<div class="kd-narration"><p>{_esc(narration)}</p></div>'
+
+        # Presenter notes are kept available but only differ from narration
+        # when the SKILL adds a separate cue. For now they mirror the narration
+        # for the live-walkthrough mode, but hidden by default.
+        presenter_block = ""
+        if narration and any(
+            cue in narration.lower() for cue in ("[note:", "[cue:", "[remember:")
+        ):
+            # Only emit a presenter-only block when the narration contains an
+            # explicit cue marker — otherwise we'd be duplicating content.
+            presenter_block = (
+                f'<p class="presenter-notes"><strong>Speaker note</strong> '
+                f'{_esc(narration)}</p>'
+            )
+
+        parts.append(f"""
+<article class="key-decision" id="ror-{kd.record_number}">
+  {''.join(header_parts)}
+  {source_line}
+  {narration_block}
+  {presenter_block}
+  {evidence_block}
+</article>
 """)
     return "\n".join(parts)
 

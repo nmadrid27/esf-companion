@@ -170,17 +170,20 @@ def main():
     assert pack is not None, "pack.json should never produce None"
     pack.narrative = _parse_narrative_md(args.narrative_md.read_text(encoding="utf-8"))
 
-    # Fallback: if the SKILL didn't persist curated key_decisions to pack.json but
-    # the user's narrative walks through specific records, materialize key_decisions
-    # from the walkthrough so HTML and recording-script renderers stay in sync.
+    # Fallback: if the SKILL didn't persist curated key_decisions to pack.json
+    # but the user's narrative walks through specific records, materialize
+    # key_decisions from the walkthrough so HTML and recording-script renderers
+    # stay in sync. The renderer surfaces narration even when the RoR link is
+    # broken (record_number in narrative doesn't match any record in the pack)
+    # so the student's curated argument isn't silently dropped.
     if not pack.key_decisions and pack.narrative and pack.narrative.decision_walkthrough:
         for entry in pack.narrative.decision_walkthrough:
             rec_num = entry["record_number"]
-            ror = next((r for r in pack.records_of_resistance if r.record_number == rec_num), None)
-            if not ror:
-                continue
             # Headline: first non-empty line of narration, truncated.
-            first_line = next((ln.strip() for ln in entry["narration"].splitlines() if ln.strip()), "")
+            first_line = next(
+                (ln.strip() for ln in entry["narration"].splitlines() if ln.strip()),
+                "",
+            )
             headline = first_line[:80] + ("…" if len(first_line) > 80 else "")
             pack.key_decisions.append(KeyDecision(
                 record_number=rec_num,
