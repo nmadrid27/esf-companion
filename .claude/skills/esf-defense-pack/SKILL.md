@@ -62,7 +62,7 @@ Run the aggregator:
 .claude/skills/esf-defense-pack/bin/aggregate.py . --out esf/<context>/defense-packs/<project>-<timestamp>/pack.json
 ```
 
-Resolve `<context>`, `<project>`, and `<timestamp>` (ISO with hyphens, e.g. `2026-05-20T1430`) from `companion-state.md`.
+Resolve `<context>`, `<project>`, and `<timestamp>` from `companion-state.md`. Use a **compact UTC** timestamp for `<timestamp>` (e.g. `2026-05-20T194743Z`) so the folder name matches the `export_timestamp` field the aggregator writes into `pack.json` — the two should be in the same timezone. Construct with `date -u +%Y-%m-%dT%H%M%SZ`.
 
 If aggregation reports a hard-stop gap (e.g. missing or empty Position Statement), surface the gap, point the user to the relevant template, and stop. Do not try to fill it in for them.
 
