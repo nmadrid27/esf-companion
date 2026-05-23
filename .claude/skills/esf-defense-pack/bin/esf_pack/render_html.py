@@ -26,82 +26,105 @@ def _decisions_html(pack: DefensePack) -> str:
             entry = next((e for e in pack.narrative.decision_walkthrough if e["record_number"] == kd.record_number), None)
             if entry:
                 narration = entry["narration"]
+        # Inline narrative RoRs (extracted from @resist tags) don't have the
+        # three structured fields populated — show the inline block instead.
+        structured_filled = any(
+            s.strip() for s in (ror.ai_suggested, ror.why_rejected, ror.what_i_did_instead)
+        )
+        if structured_filled:
+            body = (
+                f'<h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>'
+                f'<h4>Why I overruled it</h4><p>{_esc(ror.why_rejected)}</p>'
+                f'<h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>'
+            )
+        else:
+            body = (
+                f'<div class="inline-resist"><pre class="block">{_esc(ror.inline_narrative)}</pre></div>'
+            )
+        source_line = f'<p class="ror-source"><em>Source: <code>{_esc(ror.source)}</code></em></p>' if ror.source else ""
         parts.append(f"""
 <details class="ror" data-key="true" id="ror-{ror.record_number}">
   <summary>#{ror.record_number} — {_esc(kd.headline)}</summary>
   <p class="presenter-notes"><strong>Speaker note:</strong> {_esc(narration)}</p>
-  <h4>What AI suggested</h4>
-  <p>{_esc(ror.ai_suggested)}</p>
-  <h4>Why I overruled it</h4>
-  <p>{_esc(ror.why_rejected)}</p>
-  <h4>What I did instead</h4>
-  <p>{_esc(ror.what_i_did_instead)}</p>
+  {source_line}
+  {body}
 </details>
 """)
     return "\n".join(parts)
 
 
+def _ror_body_html(ror) -> str:
+    """Render the content of one Record of Resistance.
+
+    A record may carry structured fields (canonical RoR file with three labeled
+    sections) OR an inline narrative block (extracted from a @resist tag in a
+    process blog). Show whichever is populated. Both can coexist when the
+    structured fields are populated AND a narrative is preserved for context.
+    """
+    structured_filled = any(
+        s.strip() for s in (ror.ai_suggested, ror.why_rejected, ror.what_i_did_instead)
+    )
+    parts: list[str] = []
+    if structured_filled:
+        parts.append(f"<h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>")
+        parts.append(f"<h4>Why I rejected/revised</h4><p>{_esc(ror.why_rejected)}</p>")
+        parts.append(f"<h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>")
+    if ror.inline_narrative:
+        parts.append(
+            f'<div class="inline-resist"><pre class="block">{_esc(ror.inline_narrative)}</pre></div>'
+        )
+    if not parts:
+        parts.append("<p><em>(No content extracted.)</em></p>")
+    return "\n".join(parts)
+
+
 def _appendix_html(pack: DefensePack) -> str:
-    """Render the full Records of Resistance appendix.
+    """Render the full Records of Resistance appendix as a unified list.
 
-    Handles two flavors:
-      - Structured RoRs (canonical format with ai_suggested / why_rejected /
-        what_i_did_instead H2 sections) — rendered as three labeled fields.
-      - Inline RoRs (extracted from @resist tags in process blogs) — rendered
-        as a single content block with source attribution. No empty field labels.
-
-    When the pack has many inline RoRs (Lily's case: 80+), they're grouped by
-    source file and rendered collapsed by default; faculty can drill in if they
-    want to read the full narrative.
+    All RoRs — whether from dedicated `records-of-resistance/*.md` files or from
+    inline `@resist` tags in process blog files — are the same kind of artifact.
+    They're grouped by source file for navigability (some session blogs contain
+    many @resist moments), but presentationally there's no formal-vs-inline
+    distinction.
     """
     if not pack.records_of_resistance:
         return "<p><em>No Records of Resistance recorded.</em></p>"
 
-    # Split records by type
-    structured = [r for r in pack.records_of_resistance if not r.inline_narrative]
-    inline = [r for r in pack.records_of_resistance if r.inline_narrative]
+    # Group by source file. RoRs without a source (legacy or test fixtures) get
+    # bucketed under "(unknown source)".
+    by_source: dict = {}
+    for r in pack.records_of_resistance:
+        src_file = r.source.split(" (@")[0] if " (@" in r.source else (r.source or "(unknown source)")
+        by_source.setdefault(src_file, []).append(r)
 
-    parts: list[str] = []
+    total = len(pack.records_of_resistance)
+    parts: list[str] = [
+        f'<p class="appendix-note">{total} Record(s) of Resistance across '
+        f'{len(by_source)} source(s). Click any group to expand.</p>'
+    ]
 
-    if structured:
-        parts.append('<h3 class="appendix-subhead">Formal Records of Resistance</h3>')
-        for ror in structured:
-            parts.append(f"""
-<details class="ror" id="ror-{ror.record_number}-full">
-  <summary>#{ror.record_number} · {_esc(ror.date)}</summary>
-  <h4>What AI suggested</h4><p>{_esc(ror.ai_suggested)}</p>
-  <h4>Why I rejected/revised</h4><p>{_esc(ror.why_rejected)}</p>
-  <h4>What I did instead</h4><p>{_esc(ror.what_i_did_instead)}</p>
-</details>
+    # Sort sources so dedicated record-of-resistance files come first, then
+    # process-blog files. Within a group, sort by record_number.
+    def _source_key(src: str) -> tuple:
+        is_process_blog = "process-blog" in src or "session-" in src
+        return (is_process_blog, src)
+
+    for src_file in sorted(by_source.keys(), key=_source_key):
+        recs = sorted(by_source[src_file], key=lambda r: r.record_number)
+        count_label = f"{len(recs)} record{'s' if len(recs) != 1 else ''}"
+        parts.append(f"""
+<details class="ror source-group">
+  <summary><code>{_esc(src_file)}</code> — {count_label}</summary>
 """)
-
-    if inline:
-        # Group inline RoRs by source file
-        by_source: dict = {}
-        for r in inline:
-            # source is "<file> (@resist #N)" — group by the file portion
-            src_file = r.source.split(" (@")[0] if " (@" in r.source else r.source
-            by_source.setdefault(src_file, []).append(r)
-
-        parts.append(f'<h3 class="appendix-subhead">Inline @resist Records ({len(inline)} from {len(by_source)} sources)</h3>')
-        parts.append(
-            '<p class="appendix-note"><em>These are <code>@resist</code>-tagged moments '
-            'extracted from the student\'s process blog. Each block is the surrounding '
-            'paragraph from the source file.</em></p>'
-        )
-        for src_file, recs in sorted(by_source.items()):
+        for ror in recs:
+            date_str = f" · {_esc(ror.date)}" if ror.date else ""
             parts.append(f"""
-<details class="ror inline-group">
-  <summary><code>{_esc(src_file)}</code> — {len(recs)} moment(s)</summary>
+<div class="ror-entry" id="ror-{ror.record_number}-full">
+  <h4 class="ror-id">#{ror.record_number}{date_str}</h4>
+  {_ror_body_html(ror)}
+</div>
 """)
-            for ror in recs:
-                # Show inline narrative with light markdown handling — convert blank
-                # lines to paragraph breaks, keep blockquote/list markers visible.
-                escaped_block = _esc(ror.inline_narrative)
-                parts.append(
-                    f'<div class="inline-resist"><pre class="block">{escaped_block}</pre></div>'
-                )
-            parts.append("</details>\n")
+        parts.append("</details>\n")
 
     return "\n".join(parts)
 
