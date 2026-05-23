@@ -136,7 +136,10 @@ def render_html(pack: DefensePack) -> str:
     css = (_RENDER_DIR / "print.css").read_text(encoding="utf-8")
     ps = pack.position_statement
     timestamp = _esc(pack.export_timestamp) or "[date unavailable]"
-    return Template(template_str).safe_substitute(
+    # Use substitute (not safe_substitute) so a missing template key raises a
+    # clear KeyError at render time. safe_substitute leaves literal "$placeholder"
+    # in the output, which would ship as visible junk to a faculty member.
+    return Template(template_str).substitute(
         project_name=_esc(pack.project_name),
         student_name=_esc(pack.student_name),
         context=_esc(pack.context),

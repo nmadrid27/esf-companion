@@ -343,5 +343,63 @@ class TestFooterStripping(unittest.TestCase):
         self.assertNotIn("---", ror.what_i_did_instead)
 
 
+class TestEncodingAndLineEndings(unittest.TestCase):
+    """Real files in the wild use CRLF (Windows / web editors) or have a UTF-8 BOM.
+    The parser must handle both transparently — Track-D-equivalent bugs surfaced
+    by the post-merge code review.
+    """
+
+    def test_crlf_frontmatter_parses(self):
+        crlf = "---\r\ntype: record-of-resistance\r\nproject: x\r\ndate: 2026-01-01\r\nrecord-number: 1\r\n---\r\n\r\n## What AI Suggested\r\n\r\n> a\r\n\r\n## Why I Rejected or Revised It\r\n\r\n> b\r\n\r\n## What I Did Instead\r\n\r\n> c\r\n"
+        ror = parse_record_of_resistance(crlf)
+        self.assertEqual(ror.record_number, 1)
+        self.assertEqual(ror.date, "2026-01-01")
+        self.assertEqual(ror.ai_suggested, "a")
+
+    def test_utf8_bom_frontmatter_parses(self):
+        bom = "﻿" + SAMPLE  # SAMPLE defined above
+        fm, _ = parse_frontmatter_and_body(bom)
+        self.assertEqual(fm.get("type"), "position-statement")
+
+
+class TestRecordNumberDefensive(unittest.TestCase):
+    """A blank or non-numeric `record-number:` must not raise; defaults to 0
+    so the aggregator can surface it as a duplicate-number warning rather than
+    silently dropping the file.
+    """
+
+    def _ror_with_number(self, raw: str) -> str:
+        return (
+            f"---\ntype: record-of-resistance\nproject: x\ndate: 2026-01-01\n"
+            f"record-number: {raw}\n---\n\n"
+            f"## What AI Suggested\n\n> a\n\n"
+            f"## Why I Rejected or Revised It\n\n> b\n\n"
+            f"## What I Did Instead\n\n> c\n"
+        )
+
+    def test_blank_record_number_defaults_to_zero(self):
+        ror = parse_record_of_resistance(self._ror_with_number(""))
+        self.assertEqual(ror.record_number, 0)
+
+    def test_non_numeric_record_number_defaults_to_zero(self):
+        ror = parse_record_of_resistance(self._ror_with_number("1a"))
+        self.assertEqual(ror.record_number, 0)
+
+
+class TestBlockquotePrefixStrip(unittest.TestCase):
+    """str.lstrip('> ') is a character-set strip, not a prefix strip — would
+    treat `>>>nested` as `nested` and `> ` / `>>` identically. The fixed
+    parser uses a regex single-level strip so legitimate content with leading
+    `>` characters survives.
+    """
+
+    def test_single_level_blockquote_stripped(self):
+        self.assertEqual(quote_content("> hello"), "hello")
+
+    def test_nested_blockquote_keeps_inner_marker(self):
+        # `>> nested` should produce `> nested` (one level removed), not `nested`
+        self.assertEqual(quote_content(">> nested"), "> nested")
+
+
 if __name__ == "__main__":
     unittest.main()

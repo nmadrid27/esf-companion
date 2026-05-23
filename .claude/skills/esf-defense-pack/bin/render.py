@@ -33,39 +33,45 @@ def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
     if data is None:
         return None
     if cls is DefensePack:
+        # Use .get() with sensible defaults throughout so an older pack.json
+        # missing a field (added in a later schema revision) doesn't crash with
+        # an unhelpful KeyError. Required identity fields still default to "".
         return cast(T, DefensePack(
-            project_name=data["project_name"],
-            context=data["context"],
+            project_name=data.get("project_name", ""),
+            context=data.get("context", ""),
             student_name=data.get("student_name", ""),
-            scaffolding_level=data["scaffolding_level"],
-            phase_at_export=data["phase_at_export"],
-            export_timestamp=data["export_timestamp"],
-            companion_version=data["companion_version"],
-            position_statement=_to_dataclass(PositionStatement, data["position_statement"]),
+            scaffolding_level=data.get("scaffolding_level", ""),
+            phase_at_export=data.get("phase_at_export", ""),
+            export_timestamp=data.get("export_timestamp", ""),
+            companion_version=data.get("companion_version", ""),
+            position_statement=_to_dataclass(PositionStatement, data.get("position_statement")),
             records_of_resistance=[
-                r for r in (_to_dataclass(RecordOfResistance, x) for x in data["records_of_resistance"])
+                r for r in (_to_dataclass(RecordOfResistance, x) for x in data.get("records_of_resistance", []))
                 if r is not None
             ],
             key_decisions=[
-                k for k in (_to_dataclass(KeyDecision, x) for x in data["key_decisions"])
+                k for k in (_to_dataclass(KeyDecision, x) for x in data.get("key_decisions", []))
                 if k is not None
             ],
-            ai_use_log=_to_dataclass(AIUseLog, data["ai_use_log"]),
-            reflection=_to_dataclass(Reflection, data["reflection"]),
-            disclosure=_to_dataclass(Disclosure, data["disclosure"]),
-            evolution_log_entries=data["evolution_log_entries"],
-            narrative=_to_dataclass(Narrative, data["narrative"]),
+            ai_use_log=_to_dataclass(AIUseLog, data.get("ai_use_log")),
+            reflection=_to_dataclass(Reflection, data.get("reflection")),
+            disclosure=_to_dataclass(Disclosure, data.get("disclosure")),
+            evolution_log_entries=data.get("evolution_log_entries", []),
+            narrative=_to_dataclass(Narrative, data.get("narrative")),
             gaps=[
                 Gap(
                     artifact=g["artifact"],
                     severity=GapSeverity(g["severity"]) if isinstance(g["severity"], str) else g["severity"],
                     message=g["message"],
                 )
-                for g in data["gaps"]
+                for g in data.get("gaps", [])
             ],
         ))
     field_names = {f.name for f in fields(cast(Any, cls))}
     return cast(T, cls(**{k: v for k, v in data.items() if k in field_names}))
+
+
+_BLOCKQUOTE_PREFIX_RE = re.compile(r"^>\s?")
 
 
 def _strip_blockquote_markers(text: str) -> str:
@@ -74,11 +80,17 @@ def _strip_blockquote_markers(text: str) -> str:
     The narrative template instructs students to write content as `> ...`
     blockquotes. Without this, the renderer would emit literal '> Text' in HTML
     and PDF.
+
+    Uses a regex (not str.lstrip) because lstrip is a character-set strip —
+    `>>>nested` would collapse to `nested` and `> ` / `>>` would be
+    indistinguishable. We only want one prefix level removed.
     """
     out_lines = []
     for line in text.splitlines():
-        stripped = line.lstrip("> ").rstrip() if line.lstrip().startswith(">") else line.rstrip()
-        out_lines.append(stripped)
+        if line.lstrip().startswith(">"):
+            out_lines.append(_BLOCKQUOTE_PREFIX_RE.sub("", line, count=1).rstrip())
+        else:
+            out_lines.append(line.rstrip())
     return "\n".join(out_lines).strip()
 
 

@@ -6,8 +6,21 @@ from typing import Tuple
 from .schema import PositionStatement, RecordOfResistance, AIUseLog, Reflection
 
 
-_FRONTMATTER_RE = re.compile(r"^---\n(.*?)\n---\n(.*)", re.DOTALL)
+# Frontmatter regex accepts either LF or CRLF line endings so files saved by
+# Windows editors or pasted from web editors parse correctly.
+_FRONTMATTER_RE = re.compile(r"^---\r?\n(.*?)\r?\n---\r?\n(.*)", re.DOTALL)
 _H2_RE = re.compile(r"^## (.+)$", re.MULTILINE)
+_FENCED_CODE_RE = re.compile(r"```.*?```", re.DOTALL)
+
+
+def _normalize(text: str) -> str:
+    """Strip UTF-8 BOM and normalize CRLF to LF before parsing.
+
+    Some macOS/Windows editors silently prepend a BOM or use CRLF line endings;
+    both break naive regex parsing. We normalize once at the entry point so the
+    rest of the parser can assume LF and no BOM.
+    """
+    return text.lstrip("﻿").replace("\r\n", "\n").replace("\r", "\n")
 
 
 def parse_frontmatter_and_body(text: str) -> Tuple[dict, str]:
@@ -15,7 +28,10 @@ def parse_frontmatter_and_body(text: str) -> Tuple[dict, str]:
 
     Frontmatter is parsed as simple key: value lines. Empty strings allowed.
     No nested YAML support — ESF templates only use flat keys.
+
+    Tolerates UTF-8 BOM and CRLF line endings transparently.
     """
+    text = _normalize(text)
     m = _FRONTMATTER_RE.match(text)
     if not m:
         return {}, text
@@ -30,9 +46,21 @@ def parse_frontmatter_and_body(text: str) -> Tuple[dict, str]:
 
 
 def extract_sections(body: str) -> dict:
-    """Split body by H2 headings; return {heading_text: section_content_until_next_h2}."""
+    """Split body by H2 headings; return {heading_text: section_content_until_next_h2}.
+
+    Strips fenced code blocks (```...```) before splitting so that an H2-looking
+    line *inside* a code block doesn't falsely terminate the surrounding section.
+    Code-block content within a section is preserved by replacing matched fences
+    with a placeholder string of equal-ish length before regex matching, then
+    restoring; in our markdown-template use case ESF templates don't currently
+    use fenced blocks, but this guard prevents the worst-case parser-confusion
+    silently dropping section content if the convention ever changes.
+    """
+    # Replace fenced code blocks with a placeholder of matching length so offsets
+    # stay aligned (cheap and easy: same-length spaces).
+    placeholder_body = _FENCED_CODE_RE.sub(lambda m: " " * len(m.group(0)), body)
     sections = {}
-    matches = list(_H2_RE.finditer(body))
+    matches = list(_H2_RE.finditer(placeholder_body))
     for i, m in enumerate(matches):
         heading = m.group(1).strip()
         start = m.end()
@@ -52,6 +80,15 @@ def is_section_empty(content: str) -> bool:
 
 _THEMATIC_BREAK_RE = re.compile(r"-{3,}")
 _ITALIC_FOOTER_RE = re.compile(r"\*[^*]+\*")
+# Single-level blockquote prefix strip: `> ` optionally with one extra `>` for
+# legacy/edge cases. Uses a regex (not lstrip) because str.lstrip("> ") is a
+# character-set strip — it would collapse `>>>nested` to `nested` and treat
+# `>>` and `> ` identically, eating legitimate content.
+_BLOCKQUOTE_PREFIX_RE = re.compile(r"^>\s?")
+
+
+def _strip_blockquote_prefix(line: str) -> str:
+    return _BLOCKQUOTE_PREFIX_RE.sub("", line, count=1)
 
 
 def quote_content(content: str) -> str:
@@ -66,7 +103,7 @@ def quote_content(content: str) -> str:
     for line in content.splitlines():
         if not line.strip():
             continue
-        stripped = line.lstrip("> ").rstrip()
+        stripped = _strip_blockquote_prefix(line).rstrip()
         if not stripped:
             continue
         lines.append(stripped)
@@ -128,7 +165,16 @@ def parse_position_statement(text: str) -> PositionStatement:
 def parse_record_of_resistance(text: str) -> RecordOfResistance:
     fm, body = parse_frontmatter_and_body(text)
     sections = extract_sections(body)
-    record_number = int(fm.get("record-number", 0))
+    # Defensive parse of record-number: blank, non-numeric, or missing all
+    # default to 0 rather than raising. The blanket `except Exception` in the
+    # aggregator's RoR loop would otherwise silently drop the file with no
+    # signal to the student. A 0-numbered record will sort first and the
+    # aggregator's duplicate-detection (see S4) will surface collisions.
+    raw_num = fm.get("record-number", "0")
+    try:
+        record_number = int(str(raw_num).strip() or "0")
+    except (ValueError, TypeError):
+        record_number = 0
     date = fm.get("date", "")
     project = fm.get("project", "")
     return RecordOfResistance(
@@ -153,10 +199,15 @@ def parse_ai_use_log(text: str) -> AIUseLog:
     if m:
         interaction_count = int(m.group(1))
 
-    # Five Questions pass rate: count "[x]" or "Yes" checks across the log
-    yes_count = len(re.findall(r"\[x\]", body, re.IGNORECASE))
-    total_q = len(re.findall(r"\[\s*[xX ]\s*\]", body))
-    pass_rate = (yes_count / total_q) if total_q else None
+    # Five Questions pass rate. Restrict the match to actual checklist lines
+    # (lines starting with `-` or `*` bullet, optionally indented) so we don't
+    # accidentally count any literal `[ ]` in prose as an unchecked question.
+    checklist_lines = re.findall(r"^\s*[-*]\s*\[([xX ])\]", body, re.MULTILINE)
+    if checklist_lines:
+        yes_count = sum(1 for c in checklist_lines if c.lower() == "x")
+        pass_rate = yes_count / len(checklist_lines)
+    else:
+        pass_rate = None
 
     return AIUseLog(
         interaction_count=interaction_count,

@@ -53,6 +53,84 @@ class TestSnapshots(unittest.TestCase):
         self._compare_to_snapshot("minimal")
 
 
+class TestPathSegmentValidation(unittest.TestCase):
+    """companion-state.md isn't schema-enforced; reject obviously-unsafe path
+    segments to prevent traversal even though execution is local-only.
+    """
+
+    def _ws_with_state(self, state_text: str):
+        import tempfile
+        from pathlib import Path
+        tmp = Path(tempfile.mkdtemp(prefix="esf-agg-test-"))
+        (tmp / "companion-state.md").write_text(state_text, encoding="utf-8")
+        return tmp
+
+    def test_traversal_in_context_rejected(self):
+        from esf_pack.aggregate import aggregate_from_dir
+        ws = self._ws_with_state(
+            "# State\n## Current Project\n"
+            "- **Context:** ../etc\n"
+            "- **Project name:** x\n"
+        )
+        with self.assertRaises(ValueError) as ctx:
+            aggregate_from_dir(ws)
+        self.assertIn("Context", str(ctx.exception))
+
+    def test_empty_state_raises_hard(self):
+        from esf_pack.aggregate import aggregate_from_dir
+        ws = self._ws_with_state("# Heading only with no bullets\n")
+        with self.assertRaises(ValueError) as ctx:
+            aggregate_from_dir(ws)
+        self.assertIn("companion-state.md", str(ctx.exception))
+
+
+class TestDuplicateRecordNumbers(unittest.TestCase):
+    """Two RoRs sharing the same record-number must surface as a warning gap."""
+
+    def test_duplicate_numbers_warned(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+        from esf_pack.aggregate import aggregate_from_dir
+        src = FIXTURES / "full"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Add an RoR with record-number 1 (collides with existing #1)
+            dup = tmp / "ws" / "esf" / "test-course" / "records-of-resistance" / "1b-duplicate.md"
+            dup.write_text(
+                "---\ntype: record-of-resistance\ncontext: test-course\n"
+                "project: responsive-system\ndate: 2026-05-19\n"
+                "record-number: 1\n---\n\n"
+                "## What AI Suggested\n\n> x\n\n"
+                "## Why I Rejected or Revised It\n\n> y\n\n"
+                "## What I Did Instead\n\n> z\n",
+                encoding="utf-8",
+            )
+            pack = aggregate_from_dir(tmp / "ws")
+        dup_gaps = [g for g in pack.gaps if "Duplicate Record" in g.message]
+        self.assertEqual(len(dup_gaps), 1)
+        self.assertIn("#1", dup_gaps[0].message)
+
+
+class TestZeroRoRDisclosure(unittest.TestCase):
+    """Auto-disclosure must read naturally when zero RoRs are included."""
+
+    def test_zero_rors_phrased_naturally(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+        from esf_pack.aggregate import aggregate_from_dir
+        src = FIXTURES / "minimal"  # has PS, no RoRs
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            pack = aggregate_from_dir(tmp / "ws")
+        self.assertIsNotNone(pack.disclosure)
+        self.assertNotIn("0 Records of Resistance", pack.disclosure.text)
+        self.assertIn("No Records of Resistance", pack.disclosure.text)
+
+
 class TestProjectFilter(unittest.TestCase):
     """Aggregator must exclude RoRs whose frontmatter `project` doesn't match
     the current project, and must surface them as a warning gap so the student

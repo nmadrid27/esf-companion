@@ -62,7 +62,8 @@ def render_script(pack: DefensePack) -> str:
     if not pack.narrative:
         raise ValueError("Cannot render script without an approved narrative.")
     tmpl = Template(_TEMPLATE_PATH.read_text(encoding="utf-8"))
-    return tmpl.safe_substitute(
+    # substitute (not safe_substitute) so missing keys raise loudly.
+    return tmpl.substitute(
         project_name=pack.project_name,
         student_name=pack.student_name or "[student name not set]",
         opening_block=_opening_block(pack),
