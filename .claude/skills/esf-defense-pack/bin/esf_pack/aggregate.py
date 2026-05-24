@@ -13,7 +13,7 @@ from .parsers import (
 from .gaps import detect_gaps
 
 
-COMPANION_VERSION = "0.8.0"
+COMPANION_VERSION = "0.9.0"
 
 
 def find_context_root(start: Path) -> Path:
