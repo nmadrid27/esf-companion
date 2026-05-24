@@ -1,0 +1,580 @@
+/* Defense Pack — process-book-inspired single-page aesthetic.
+   Scholarly typography, left-aligned hero, equal-weight section cards as
+   visual TOC, records of resistance featured as full-width sequential
+   evidence rather than buried in a collapsed appendix. */
+
+:root {
+  --ink: #1a1a1a;
+  --ink-soft: #2a2a2a;
+  --paper: #fdfcf9;
+  --paper-tint: #f7f4ec;
+  --rule: #e2dfd8;
+  --rule-strong: #c9c4b8;
+  --accent: #8b2c1d;
+  --accent-soft: #f4e8e2;
+  --accent-strong: #6b1f12;
+  --muted: #5a5650;
+  --warn-bg: #fff8e1;
+  --warn-rule: #b45309;
+  --critical-bg: #fde8e6;
+  --critical-rule: #991b1b;
+
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.7;
+  font-size: 17px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Hero — left-aligned project framing (not vertically-centered cover)
+   ──────────────────────────────────────────────────────────────── */
+
+.hero {
+  padding: 4rem 0 2.5rem;
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 2rem;
+}
+.hero .eyebrow {
+  margin: 0 0 1rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.35em;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.hero h1.project {
+  margin: 0 0 0.5rem;
+  font-size: 2.75rem;
+  line-height: 1.1;
+  font-weight: normal;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.hero .byline {
+  margin: 0 0 2rem;
+  font-size: 1.15rem;
+  color: var(--muted);
+}
+.hero .byline .student-name { font-style: italic; color: var(--ink); }
+.hero .frame {
+  font-size: 1.08rem;
+  line-height: 1.55;
+  max-width: 65ch;
+  margin: 0 0 2rem;
+  color: var(--ink-soft);
+}
+.hero-meta {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.4rem 1.5rem;
+  margin: 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+}
+.hero-meta dt {
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 600;
+}
+.hero-meta dd { margin: 0; color: var(--ink); }
+
+/* ────────────────────────────────────────────────────────────────
+   Section cards — equal-weight scannable destinations near the top
+   (like the process book's 5-block navigation, but adapted to the
+   defense-pack's argument sections)
+   ──────────────────────────────────────────────────────────────── */
+
+.section-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin: 0 0 3rem;
+}
+.section-cards a {
+  display: block;
+  padding: 1.15rem 1.25rem;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: #fff;
+  text-decoration: none;
+  color: var(--ink);
+  transition: border-color 120ms ease, background 120ms ease;
+}
+.section-cards a:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+.section-cards .card-eyebrow {
+  display: block;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: 0.3rem;
+}
+.section-cards .card-title {
+  display: block;
+  font-size: 1.05rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+.section-cards .card-meta {
+  display: block;
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Sections — typographic hierarchy with section eyebrows
+   ──────────────────────────────────────────────────────────────── */
+
+section { padding: 2.5rem 0 2.5rem; border-bottom: 1px solid var(--rule); }
+section:last-of-type { border-bottom: none; }
+.section-eyebrow {
+  margin: 0 0 0.4rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+section h2 {
+  margin: 0 0 1.25rem;
+  font-size: 1.85rem;
+  font-weight: normal;
+  color: var(--ink);
+  letter-spacing: -0.01em;
+}
+section h3 {
+  font-size: 1.05rem;
+  color: var(--accent-strong);
+  margin: 1.5rem 0 0.5rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+section p, section li { font-size: 1.02rem; }
+.section-intro {
+  font-size: 1.05rem;
+  color: var(--muted);
+  max-width: 65ch;
+  margin: 0 0 2rem;
+  font-style: italic;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Position pillars
+   ──────────────────────────────────────────────────────────────── */
+
+.position-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 1rem 0 2rem;
+}
+.position-pillar {
+  border-left: 3px solid var(--rule-strong);
+  padding: 0.25rem 0 0.25rem 1.5rem;
+}
+.position-pillar:nth-child(3) { border-left-color: var(--accent); }
+.position-pillar h3 {
+  margin: 0 0 0.5rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.position-pillar:nth-child(3) h3 { color: var(--accent); }
+.position-pillar p { margin: 0; font-size: 1.05rem; line-height: 1.65; }
+
+.protect {
+  margin: 2rem 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--paper-tint);
+  border-radius: 2px;
+  position: relative;
+}
+.protect::before {
+  content: "“";
+  position: absolute;
+  top: -0.5rem;
+  left: 1rem;
+  font-size: 4rem;
+  color: var(--accent);
+  line-height: 1;
+}
+.protect h3 {
+  margin: 0 0 0.5rem 1.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.protect p { margin: 0 0 0 1.5rem; font-size: 1.05rem; font-style: italic; }
+
+.drift {
+  margin: 2rem 0 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--accent-soft);
+  border-left: 4px solid var(--accent);
+  border-radius: 2px;
+}
+.drift h3 {
+  margin: 0 0 0.6rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.drift p { margin: 0.35rem 0; font-size: 0.98rem; }
+.drift p strong { color: var(--accent-strong); }
+
+/* ────────────────────────────────────────────────────────────────
+   Key decision argument blocks
+   ──────────────────────────────────────────────────────────────── */
+
+.key-decision {
+  border-left: 4px solid var(--accent);
+  padding: 1.5rem 1.75rem;
+  margin: 1.75rem 0;
+  background: #fff;
+}
+.key-decision .kd-num {
+  margin: 0 0 0.4rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.key-decision .kd-headline { margin: 0 0 0.6rem; font-size: 1.2rem; font-weight: normal; line-height: 1.3; }
+.key-decision .kd-source { margin: 0 0 1rem; font-size: 0.85rem; color: var(--muted); }
+.key-decision .kd-source code { background: transparent; color: var(--muted); }
+.key-decision .kd-narration { margin: 0.5rem 0 1rem; }
+.key-decision .kd-narration p { margin: 0; font-size: 1.05rem; line-height: 1.65; }
+.key-decision .kd-evidence { margin-top: 1rem; border-top: 1px solid var(--rule); padding-top: 0.75rem; }
+.key-decision .kd-evidence summary {
+  cursor: pointer;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.key-decision .kd-evidence h4 {
+  margin: 1rem 0 0.3rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Records of Resistance — featured, full-width sequential
+   (Sample-inspired header: `RoR N · date · milestone · @resist · headline`)
+   ──────────────────────────────────────────────────────────────── */
+
+.record {
+  margin: 2rem 0 0;
+  padding: 0 0 2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.record:last-of-type { border-bottom: none; }
+.record .record-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  margin: 0 0 0.5rem;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+.record .record-header .ror-num {
+  color: var(--accent);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.record .record-header .tag {
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  padding: 0.1rem 0.5rem;
+  border-radius: 2px;
+  font-weight: 600;
+}
+.record h3.record-title {
+  margin: 0 0 1rem;
+  font-size: 1.35rem;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-weight: normal;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  line-height: 1.3;
+}
+.record .field-label {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  font-weight: 600;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin: 1rem 0 0.3rem;
+}
+.record blockquote.suggested {
+  margin: 0.3rem 0 1rem;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-left: 2px solid var(--rule-strong);
+  font-style: italic;
+  color: var(--ink-soft);
+}
+.record p { margin: 0 0 1rem; }
+.record .source-line {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: 1rem 0 0;
+}
+.record .source-line code {
+  background: transparent;
+  color: var(--muted);
+  font-size: inherit;
+}
+.record .inline-block {
+  margin: 0.5rem 0 0;
+  padding: 0.75rem 1rem;
+  background: #fafafa;
+  border-left: 2px solid var(--rule-strong);
+  white-space: pre-wrap;
+  font-family: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
+  font-size: 0.97rem;
+  line-height: 1.55;
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Process Blog Timeline — sessions as row-cards with tag counts
+   (Process-book sample inspired: "Week 05 · @shift ×1 @resist ×1 @default ×2")
+   ──────────────────────────────────────────────────────────────── */
+
+.timeline { margin: 1.5rem 0 0; }
+.session-row {
+  margin: 0.5rem 0;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  background: #fff;
+}
+.session-row > summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+  padding: 0.85rem 1.15rem;
+}
+.session-row > summary::-webkit-details-marker { display: none; }
+.session-row > summary::after {
+  content: "+";
+  margin-left: auto;
+  color: var(--accent);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+.session-row[open] > summary::after { content: "−"; }
+.session-row .session-id {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  font-weight: 600;
+  text-transform: uppercase;
+  min-width: 6rem;
+}
+.session-row .session-title { font-size: 1rem; color: var(--ink); }
+.session-row .tag-counts {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.75rem;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+}
+.session-row .tag-counts .resist { color: var(--accent); font-weight: 600; }
+.session-row[open] {
+  border-color: var(--accent);
+}
+.session-row .session-records {
+  padding: 0 1.15rem 1rem;
+  border-top: 1px solid var(--rule);
+}
+.session-row .session-records .record { margin-top: 1rem; padding-bottom: 1.25rem; }
+
+/* ────────────────────────────────────────────────────────────────
+   Process metrics, disclosure, closing list, gaps, presenter
+   ──────────────────────────────────────────────────────────────── */
+
+.process-metrics {
+  margin: 2rem 0 0;
+  padding: 1.5rem 1.75rem;
+  background: var(--paper-tint);
+  border-radius: 2px;
+}
+.process-metrics h3 {
+  margin: 0 0 1rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 1rem; }
+.metric { display: flex; flex-direction: column; align-items: center; padding: 0.75rem 0.5rem; background: rgba(255,255,255,0.55); border-radius: 2px; }
+.metric-num { font-size: 1.85rem; color: var(--accent); font-weight: normal; line-height: 1; margin-bottom: 0.3rem; }
+.metric-label {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-align: center;
+  line-height: 1.3;
+}
+.metrics-note { margin: 0.75rem 0 0; font-size: 0.85rem; color: var(--muted); }
+
+.defend-list { margin: 1.5rem 0; padding: 0; list-style: none; counter-reset: defend; }
+.defend-list li {
+  counter-increment: defend;
+  padding: 0.85rem 0 0.85rem 3rem;
+  border-bottom: 1px solid var(--rule);
+  font-size: 1.05rem;
+  position: relative;
+}
+.defend-list li:last-child { border-bottom: none; }
+.defend-list li::before {
+  content: counter(defend, decimal-leading-zero);
+  position: absolute;
+  left: 0;
+  top: 0.85rem;
+  color: var(--accent);
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.disclosure {
+  background: var(--paper-tint);
+  padding: 1.5rem 1.75rem;
+  border-left: 4px solid var(--accent);
+  margin: 0;
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: 1.65;
+}
+
+.gaps {
+  background: var(--warn-bg);
+  border-left: 4px solid var(--warn-rule);
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  border-radius: 2px;
+}
+.gaps h3 {
+  margin: 0 0 0.75rem;
+  color: var(--warn-rule);
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.gaps .gap { margin: 0.6rem 0; padding: 0.7rem 0.9rem; border-radius: 2px; font-size: 0.95rem; }
+.gaps .gap.hard_stop { background: var(--critical-bg); border-left: 3px solid var(--critical-rule); }
+.gaps .gap.warning { background: #fff7ed; border-left: 3px solid var(--warn-rule); }
+.gaps .gap strong { color: var(--accent-strong); }
+
+.meta-footer {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  padding: 2.5rem 0 1rem;
+  text-align: center;
+  line-height: 1.55;
+  border-top: 1px solid var(--rule);
+  margin-top: 1rem;
+}
+
+.presenter-notes {
+  display: none;
+  background: #fef9e7;
+  padding: 0.85rem 1rem;
+  border-radius: 2px;
+  margin: 0.75rem 0;
+  font-size: 0.95rem;
+  border-left: 3px solid #d4a017;
+}
+.presenter-notes strong {
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #92750f;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+body.presenter .presenter-notes { display: block; }
+
+#presenter-toggle {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  padding: 0.65rem 1rem;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(139, 44, 29, 0.18);
+}
+
+/* ────────────────────────────────────────────────────────────────
+   Print
+   ──────────────────────────────────────────────────────────────── */
+
+@page {
+  size: letter;
+  margin: 0.85in;
+  @top-left { content: "Defense Pack"; font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif; color: #999; font-size: 8pt; letter-spacing: 0.15em; }
+  @bottom-center { content: counter(page) " / " counter(pages); font-family: "Avenir Next", "Helvetica Neue", system-ui, sans-serif; color: #999; font-size: 8pt; }
+}
+
+@media print {
+  body { max-width: none; margin: 0; padding: 0; background: #fff; }
+  #presenter-toggle { display: none; }
+  section { page-break-inside: avoid; break-inside: avoid; padding: 2rem 0; }
+  .key-decision, .record { page-break-inside: avoid; break-inside: avoid; }
+  .hero { padding: 0 0 2rem; border-bottom: 1px solid var(--rule); }
+  .section-cards { display: none; }   /* nav is digital-only */
+}

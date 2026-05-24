@@ -115,6 +115,13 @@ claude
 
 **Next step:** Run `claude`, then `/esf-onboarding`.
 
+### `/esf-defense-pack`
+
+Generate a portable **Defense Pack** from your existing ESF artifacts: a self-contained HTML walkthrough, a print-ready document, and a recording script with timing cues, all built from your Position Statement, Records of Resistance, AI Use Log, and Reflection. Walk an instructor through it in an oral defense or crit. See [Defense Pack design](docs/2026-05-20-defense-pack-design.md).
+
+- Path 1 users: see `templates/defense-pack-checklist.md` for manual assembly.
+- Path 2 users: the conversational Companion prompt now includes Defense Pack assembly guidance.
+
 ### Windows Installation
 
 The installer requires `bash`, which is not built into Windows. There are three ways to run it.

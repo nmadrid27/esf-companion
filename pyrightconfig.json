@@ -1,0 +1,9 @@
+{
+  "extraPaths": [".claude/skills/esf-defense-pack/bin"],
+  "include": [
+    ".claude/skills/esf-defense-pack/bin",
+    "test"
+  ],
+  "reportMissingImports": "error",
+  "pythonVersion": "3.10"
+}

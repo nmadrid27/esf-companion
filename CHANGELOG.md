@@ -4,6 +4,38 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.9.0] - 2026-05-23
+
+### Added
+- **`/esf-defense-pack`**: generate a portable Defense Pack (HTML + PDF + recording script) from existing ESF artifacts for use in oral defenses and crits. Aggregates Position Statement, Records of Resistance, AI Use Log, Reflection, and Disclosure into a single defensible artifact. PDF rendering uses WeasyPrint (optional; HTML and recording-script outputs always produced).
+- **`templates/defense-narrative-template.md`** and **`templates/defense-pack-checklist.md`**: Path 1 (templates-only) manual-assembly support for users without Claude Code installed.
+- **Path 2 (conversation tools) prompt updated** with Defense Pack conversational assembly guidance in `prompts/esf-companion.md`.
+- **Aggregator `--scan-only` mode**: groundwork for a future periodic gap scanner that surfaces missing artifacts during a project, not just at export time. See [Defense Pack design §13](docs/2026-05-20-defense-pack-design.md).
+
+### Defense Pack workspace flexibility
+- **Tolerant workspace layout discovery.** `companion-state.md` is searched at the project root, `esf/`, `projects/_esf/`, and other known locations — works against pre-v0.8.0 installs without migration. Artifact paths fall through canonical → legacy → glob fallback so renamed files (`M2-position-statement.md`) are still found. Optional explicit override via a `## Defense Pack Paths` section in `companion-state.md`.
+- **Position Statement heading flexibility.** Element headings are matched via alias sets and parenthetical handling — accepts canonical `## Element 1: My Stance` plus real-student variants like `## My Stance (Creative Direction)`, `## What Matters Most (Non-Negotiables)`, `## AI Boundaries (What I Will Not Compromise On)`.
+- **Inline `@resist` / `@default` / `@shift` extraction from process-blog files.** Supports a taught inline-annotation convention where students annotate session narrative inline rather than (or in addition to) producing discrete RoR files. Each `@resist` tag becomes a supplementary Record of Resistance; `@default` / `@shift` counts surface as quantitative process evidence in the rendered pack.
+- **Auto-numbering for records missing `record-number:` frontmatter**, so multiple records don't collide at #0.
+- **Skip filter for compilation/summary/template files** in `records-of-resistance/`.
+
+### Defense Pack visual model
+- **Process-book-inspired single-page aesthetic.** Left-aligned hero (project + byline + frame sentence + metadata grid) replaces the centered cover. Equal-weight "section cards" near the top serve as scannable visual TOC.
+- **Records of Resistance featured, not buried.** Formal records render as full-width sequential blocks with a `RoR N · date · @resist · headline` header pattern. Field labels in tracked uppercase sans; AI-suggested content as italic blockquote.
+- **Process Blog Timeline** as collapsible session rows with per-session `@resist ×N` counts. Expand to read the records pulled from that session.
+- **Key decisions as visible argument blocks.** Curated narrations render as the lead content of each decision (no longer hidden as presenter-only speaker notes). Source attribution prominent; underlying record as collapsible evidence.
+- **Defensibility evidence on cover and in disclosure** — process tag counts ("92 @resist moments across 19 sessions") appended to auto-disclosure and shown in a metrics panel.
+
+### Defense Pack rigor (anti-invention)
+- **SKILL.md anti-invention guard** instructs Claude to mark unsupported claims `[verify: ...]` rather than fabricate. Voice extraction step requires landing at least two verbatim student phrases unchanged.
+- **Narrative `## Disclosure` override**: when the student's narrative includes its own disclosure, it takes precedence over the auto-generated one. Otherwise the auto-disclosure mentions process metrics.
+- **Validated against a real student project** (a GitHub-public workspace). The full pipeline — aggregator, fuzzy heading matcher, inline `@resist` extraction, key-decisions curation, narrative drafting under the anti-invention guard, HTML/PDF/recording-script render — produces a faculty-readable defense pack against unmodified student files.
+
+### Infrastructure
+- First Python module in the repo (`.claude/skills/esf-defense-pack/bin/esf_pack/`, stdlib-only). Installer adds non-blocking preflight notes for Python 3.10+ and WeasyPrint.
+- `pyrightconfig.json` added with extraPaths for the skill module.
+- 51 unit tests + 3 e2e tests covering parsers, aggregator, gap detection, schema round-trip, renderer correctness, project-frontmatter filtering, CRLF / BOM tolerance, and the full pipeline against three fixture workspaces (full / partial / minimal).
+
 ## [companion-v0.8.0] - 2026-05-18
 
 ### Changed
