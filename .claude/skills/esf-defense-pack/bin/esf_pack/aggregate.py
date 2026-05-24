@@ -13,7 +13,7 @@ from .parsers import (
 from .gaps import detect_gaps
 
 
-COMPANION_VERSION = "0.9.0"
+COMPANION_VERSION = "0.9.1"
 
 
 def find_context_root(start: Path) -> Path:
@@ -90,13 +90,11 @@ def _read_state(workspace: Path) -> dict:
 
 
 def _validate_path_segment(value: str, field_name: str) -> None:
-    """Reject path-traversal patterns in path-component fields.
+    """Reject path-traversal patterns in single-segment path fields.
 
-    Real project names contain spaces, parens, and other ordinary characters
-    ('AI201-quarter-project (Baseline Testing Platform)'). The validator only
-    rejects the patterns that actually enable traversal: parent-directory
-    references (`..`), path separators (`/` or `\\`), and null bytes. Everything
-    else is treated as legal — students can name their projects anything.
+    Applied to fields that name ONE directory or file component (Project name,
+    Context). Forbids `..`, `/`, `\\`, and null bytes. Real project names
+    contain spaces, parens, and other ordinary characters and remain legal.
     """
     if not value:
         return
@@ -106,6 +104,35 @@ def _validate_path_segment(value: str, field_name: str) -> None:
             raise ValueError(
                 f"companion-state.md `{field_name}` contains a path-traversal "
                 f"pattern ({bad!r}) that isn't allowed: {value!r}."
+            )
+
+
+def _validate_relative_path(value: str, field_name: str) -> None:
+    """Reject only true traversal in multi-segment override paths.
+
+    Applied to the optional Defense Pack Paths override values, which ARE
+    relative paths (e.g. `projects/AI201/references/M2-position-statement.md`)
+    and legitimately contain `/`. We block parent-directory references (`..`),
+    absolute paths (leading `/`), and null bytes.
+    """
+    if not value:
+        return
+    if value.startswith("/") or value.startswith("\\"):
+        raise ValueError(
+            f"companion-state.md Defense Pack Paths `{field_name}` must be a "
+            f"relative path (no leading `/`): {value!r}."
+        )
+    if "\x00" in value:
+        raise ValueError(
+            f"companion-state.md Defense Pack Paths `{field_name}` contains a "
+            f"null byte: {value!r}."
+        )
+    # Walk segments looking for `..`
+    for segment in value.replace("\\", "/").split("/"):
+        if segment == "..":
+            raise ValueError(
+                f"companion-state.md Defense Pack Paths `{field_name}` contains "
+                f"a parent-directory reference (`..`) that isn't allowed: {value!r}."
             )
 
 
@@ -149,7 +176,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         """
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
-            _validate_path_segment(override, override_key)
+            _validate_relative_path(override, override_key)
             return workspace / override
         candidate_dirs = [
             workspace / "esf" / context / canonical_subdir,
@@ -170,7 +197,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     def _resolve_dir(override_key: str, canonical_subdir: str) -> Path:
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
-            _validate_path_segment(override, override_key)
+            _validate_relative_path(override, override_key)
             return workspace / override
         for root in (workspace / "esf" / context, workspace / "projects" / context):
             d = root / canonical_subdir
