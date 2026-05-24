@@ -378,6 +378,18 @@ elif [ "$FORCE" != true ]; then
   esac
 fi
 
+# Defense Pack preflight (informational, non-blocking).
+# The /esf-defense-pack skill calls python3 with optional weasyprint for PDF
+# output. Surface missing pieces so users know what to expect, but never block.
+if ! command -v python3 >/dev/null 2>&1; then
+  echo -e "${YELLOW}Note: python3 not found. The Defense Pack feature (/esf-defense-pack) requires Python 3.10+. macOS ships it by default; on Linux: apt install python3 (or equivalent).${NC}"
+fi
+if command -v python3 >/dev/null 2>&1; then
+  if ! python3 -c "import weasyprint" 2>/dev/null; then
+    echo -e "${YELLOW}Note: weasyprint not installed. Defense Pack will produce HTML and MD; PDF will be skipped. Install with: pip install weasyprint${NC}"
+  fi
+fi
+
 echo "Installing..."
 
 # Cowork: download the .plugin file — no project-directory install needed
@@ -479,6 +491,8 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
   fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
 
   if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
@@ -692,6 +706,22 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/ski
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
 
+# esf-defense-pack: SKILL.md plus bin/ and render/ subdirectories.
+mkdir -p .claude/skills/esf-defense-pack/bin/esf_pack .claude/skills/esf-defense-pack/render
+curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/SKILL.md" -o .claude/skills/esf-defense-pack/SKILL.md \
+  || { echo -e "${RED}Failed to fetch esf-defense-pack/SKILL.md.${NC}"; exit 1; }
+for _f in bin/aggregate.py bin/render.py \
+          bin/esf_pack/__init__.py bin/esf_pack/aggregate.py bin/esf_pack/gaps.py \
+          bin/esf_pack/parsers.py bin/esf_pack/render_html.py bin/esf_pack/render_pdf.py \
+          bin/esf_pack/render_script.py bin/esf_pack/schema.py \
+          render/print.css render/script.md.tmpl render/template.html; do
+  curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/$_f" \
+    -o ".claude/skills/esf-defense-pack/$_f" \
+    || { echo -e "${RED}Failed to fetch esf-defense-pack/$_f.${NC}"; exit 1; }
+done
+chmod +x .claude/skills/esf-defense-pack/bin/aggregate.py 2>/dev/null || true
+chmod +x .claude/skills/esf-defense-pack/bin/render.py 2>/dev/null || true
+
 # Write version file
 # When installing from a resolved tag (API path), the resolved tag IS the
 # canonical version marker. When installing from a local --source clone,
@@ -797,6 +827,8 @@ fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" esf/toolkit/te
 fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" esf/toolkit/templates/project-brief-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
 fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
+fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
 
 # Download reference files
 echo "  Fetching reference files..."

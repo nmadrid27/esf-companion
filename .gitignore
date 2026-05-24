@@ -2,6 +2,11 @@
 Thumbs.db
 *.swp
 *~
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
 .vscode/
 .idea/
 node_modules/
@@ -45,3 +50,6 @@ launch/
 # not user-facing documentation). User-facing docs in docs/ use kebab-case
 # names without a date prefix.
 docs/20[0-9][0-9]-*.md
+
+# Defense Pack outputs (generated; never committed)
+esf/*/defense-packs/
