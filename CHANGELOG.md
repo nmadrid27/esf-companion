@@ -4,6 +4,11 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.9.1] - 2026-05-23
+
+### Fixed
+- **Defense Pack Paths override accepted relative paths that contain `/`.** The validator was rejecting any value with a path separator — but override paths legitimately contain them (e.g. `projects/AI201/references/M2-position-statement.md`). The override mechanism was broken for any subdirectory target. Validator now allows `/`, still blocks `..`, absolute paths, and null bytes. Surfaced by validation against a second real student workspace (AI180_P1_Snyder_CJ, cycle-based directory layout) post-v0.9.0 release.
+
 ## [companion-v0.9.0] - 2026-05-23
 
 ### Added
