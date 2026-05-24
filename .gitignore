@@ -50,6 +50,7 @@ launch/
 # not user-facing documentation). User-facing docs in docs/ use kebab-case
 # names without a date prefix.
 docs/20[0-9][0-9]-*.md
+docs/esf-project-history.md
 
 # Defense Pack outputs (generated; never committed)
 esf/*/defense-packs/
