@@ -117,10 +117,11 @@ claude
 
 ### `/esf-defense-pack`
 
-Generate a portable **Defense Pack** from your existing ESF artifacts: a self-contained HTML walkthrough, a print-ready document, and a recording script with timing cues, all built from your Position Statement, Records of Resistance, AI Use Log, and Reflection. Walk an instructor through it in an oral defense or crit. See [Defense Pack design](docs/2026-05-20-defense-pack-design.md).
+Generate a portable **Defense Pack** from your existing ESF artifacts: a self-contained HTML walkthrough, a print-ready document, and a recording script with timing cues, all built from your Position Statement, Records of Resistance, AI Use Log, and Reflection. Walk an instructor through it in an oral defense or crit.
 
-- Path 1 users: see `templates/defense-pack-checklist.md` for manual assembly.
-- Path 2 users: the conversational Companion prompt now includes Defense Pack assembly guidance.
+- **See what it produces:** [`examples/defense-pack/`](examples/defense-pack/) — a rendered HTML + PDF + recording script from the synthetic `responsive-system` fixture. Open the HTML in any browser; the PDF prints cleanly.
+- **Path 1 users:** see [`templates/defense-pack-checklist.md`](templates/defense-pack-checklist.md) for manual assembly.
+- **Path 2 users:** the conversational Companion prompt includes Defense Pack assembly guidance.
 
 ### Windows Installation
 
