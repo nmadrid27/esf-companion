@@ -54,3 +54,11 @@ docs/esf-project-history.md
 
 # Defense Pack outputs (generated; never committed)
 esf/*/defense-packs/
+
+# ESF demo sandbox (generated at runtime by /esf-demo). The template source
+# lives in platforms/cowork/templates/demo-project/ and stays tracked so users
+# get the demo. Only the generated sandbox and its runtime companion-state.md
+# are local-only. Root-anchored so the tracked template and the
+# companion-state.md fixtures under test/ and sample/ are unaffected.
+/demo/
+/companion-state.md
