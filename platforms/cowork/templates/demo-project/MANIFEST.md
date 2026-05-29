@@ -4,8 +4,8 @@ This directory is the source of truth for the `/esf-demo` sandbox. The `esf-demo
 
 ## Files in this template
 
-- `briefs/cartography.md` — the project brief. Contains `position-statement: required` in frontmatter so the gate fires on first substantive request.
-- `planning-notes.md` — a rough, user-voice planning note. Written deliberately to match what a real student would write before AI involvement: incomplete, opinionated, fragmented. This file is the source the gate's "draft from your materials" path will use.
+- `briefs/cartography.md`: the project brief. Contains `position-statement: required` in frontmatter so the gate fires on first substantive request.
+- `planning-notes.md`: a rough, user-voice planning note. Written deliberately to match what a real student would write before AI involvement: incomplete, opinionated, fragmented. This file is the source the gate's "draft from your materials" path will use.
 
 ## What this template does NOT include
 

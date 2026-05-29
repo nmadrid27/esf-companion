@@ -102,16 +102,16 @@ Extract every milestone, checkpoint, or deliverable with a date or sequence posi
 **Important:** Do not overwrite the phase tracker. The `esf-project` skill maintains a combined TodoWrite list with phase items first. Read `companion-state.md` to determine the current phase, then write a single TodoWrite call that includes all five phase items (with correct status) followed by a separator and the milestone items:
 
 ```
-Phase 1: Inquire          — [status based on current phase]
-Phase 2: Position         — [status based on current phase]
-Phase 3: Explore          — [status based on current phase]
-Phase 4: Make             — [status based on current phase]
-Phase 5: Reflect          — [status based on current phase]
-── Milestones ──          — pending (visual separator, always pending)
-Milestone: [name] — [date or "Week N"] — pending
-Milestone: [name] — [date or "Week N"] — pending
+Phase 1: Inquire          : [status based on current phase]
+Phase 2: Position         : [status based on current phase]
+Phase 3: Explore          : [status based on current phase]
+Phase 4: Make             : [status based on current phase]
+Phase 5: Reflect          : [status based on current phase]
+── Milestones ──          : pending (visual separator, always pending)
+Milestone: [name]: [date or "Week N"]: pending
+Milestone: [name]: [date or "Week N"]: pending
 ...
-Final: [name] — [date] — pending
+Final: [name]: [date]: pending
 ```
 
 Mark each milestone as `pending`. As the user completes milestones across sessions, update only the milestone items while preserving phase items.

@@ -13,7 +13,7 @@ I came in wanting friction over flow. My position was clear from day one: the sy
 
 ### What I set out to protect
 
-The aesthetic of resistance. No autoplay, no idle motion, no smoothed-over comfort. The visual roughness is the point — I would not let AI soften the friction into polish.
+The aesthetic of resistance. No autoplay, no idle motion, no smoothed-over comfort. The visual roughness is the point; I would not let AI soften the friction into polish.
 
 
 ## The key decisions `[~6 min]`
@@ -33,12 +33,12 @@ On hover: I rejected the "feel-good" hover states because they soften the fricti
 
 ## How my position held (or shifted) `[~2 min]`
 
-My drift was minor. I let one option in — slightly more visible feedback than I originally wanted — but only after evaluating it against Element 3 and deciding the user-feedback need outweighed the aesthetic purity. Every other AI suggestion that pulled toward smoothness or comfort was rejected.
+My drift was minor. I let one option in (slightly more visible feedback than I originally wanted) but only after evaluating it against Element 3 and deciding the user-feedback need outweighed the aesthetic purity. Every other AI suggestion that pulled toward smoothness or comfort was rejected.
 
 ## What I'd defend if asked `[~2 min]`
 
 1. Friction is the system's argument, not a flaw I failed to polish.
-2. Every motion choice maps to my Position Statement — I can trace each one back.
+2. Every motion choice maps to my Position Statement; I can trace each one back.
 3. I rejected 40% of AI suggestions because they pulled toward conventional comfort.
 4. The visual roughness is intentional and protected by Element 3.
 5. I can defend each surviving paragraph of the design as a deliberate choice.
