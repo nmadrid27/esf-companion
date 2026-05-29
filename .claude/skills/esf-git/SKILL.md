@@ -4,7 +4,7 @@ description: Use when a user is ready to commit work. Frames git commits as thin
 ---
 
 <!--
-MANAGED FILE — do not edit directly.
+MANAGED FILE: do not edit directly.
 Changes made here will be overwritten on the next /esf-update run.
 To customize Companion behavior, edit companion-notes.md instead.
 To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
