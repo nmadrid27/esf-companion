@@ -41,7 +41,7 @@ All Companion commands use `/` syntax in Claude Code.
 
 **Ambient vs. manual mode:**
 
-The default install writes an ambient block to `CLAUDE.md`. With ambient active, the Companion reads your workspace state and picks up your project automatically at the start of every Claude Code session — no `/esf-project` needed. Just open Claude Code and it is active.
+The default install writes an ambient block to `CLAUDE.md`. With ambient active, the Companion reads your workspace state and picks up your project automatically at the start of every Claude Code session, no `/esf-project` needed. Just open Claude Code and it is active.
 
 If you installed with `--no-ambient`, the Companion does not activate until you call it. Run `/esf-project` at the start of each session to load your context and enter the workflow.
 

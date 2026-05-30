@@ -4,7 +4,7 @@ description: Use when working on a course project. Runs the ESF project workflow
 ---
 
 <!--
-MANAGED FILE — do not edit directly.
+MANAGED FILE: do not edit directly.
 Changes made here will be overwritten on the next /esf-update run.
 To customize Companion behavior, edit companion-notes.md instead.
 To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
@@ -17,9 +17,9 @@ To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
 `companion-state.md` is always a workspace-relative path in the current repository. Its location depends on how the user ran onboarding:
 
 **Location lookup order (check these in sequence, stop at the first match):**
-1. `esf/companion-state.md` — current installs
-2. `context/companion-state.md` — legacy structured-workspace installs
-3. `projects/_esf/companion-state.md` — legacy pre-v0.7 installs
+1. `esf/companion-state.md`: current installs
+2. `context/companion-state.md`: legacy structured-workspace installs
+3. `projects/_esf/companion-state.md`: legacy pre-v0.7 installs
 4. Workspace root: `companion-state.md`
 
 - Use the resolved path for all reads and writes throughout the session. Do not switch paths mid-session.
@@ -173,7 +173,7 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 **PS lookup (both modes).** Read Current Project and Context from `companion-state.md`, then check `esf/[context]/position-statements/[project-slug].md`. If that file exists, neither mode fires.
 
-**Install hygiene.** All ESF artifacts for a context live in `esf/[context]/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
+**Install hygiene.** All ESF artifacts for a context live in `esf/[context]/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
 
 ### Nudge Mode (default)
 
@@ -184,7 +184,7 @@ Two-tier behavior: a low-friction inline text nudge on first touch, and a higher
 **First touch (inline text nudge).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
 
 ```
-[ESF: no Position Statement for [doc] — note one?]
+[ESF: no Position Statement for [doc]; note one?]
 ```
 
 No pause, no blocking refusal, no three-question prompt. The user can note a PS, decline, or ignore and keep working.
@@ -201,10 +201,10 @@ No pause, no blocking refusal, no three-question prompt. The user can note a PS,
 - **header:** `"ESF nudge"`
 - **multiSelect:** `false`
 - **options:**
-  1. **label:** `"Write one now (offline)"` — **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
-  2. **label:** `"Talk it through (3 questions)"` — **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
-  3. **label:** `"Skip for this document"` — **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
-  4. **label:** `"Skip for this session"` — **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
+  1. **label:** `"Write one now (offline)"`: **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
+  2. **label:** `"Talk it through (3 questions)"`: **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
+  3. **label:** `"Skip for this document"`: **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
+  4. **label:** `"Skip for this session"`: **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
 
 **Routing the selection:**
 
