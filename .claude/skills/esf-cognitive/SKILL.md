@@ -4,7 +4,7 @@ description: Cognitive techniques engine. Offers lateral thinking, analogical re
 ---
 
 <!--
-MANAGED FILE — do not edit directly.
+MANAGED FILE: do not edit directly.
 Changes made here will be overwritten on the next /esf-update run.
 To customize Companion behavior, edit companion-notes.md instead.
 To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion

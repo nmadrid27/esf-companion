@@ -4,7 +4,7 @@ description: Run this first. Sets up your ESF Companion by collecting your ident
 ---
 
 <!--
-MANAGED FILE — do not edit directly.
+MANAGED FILE: do not edit directly.
 Changes made here will be overwritten on the next /esf-update run.
 To customize Companion behavior, edit companion-notes.md instead.
 To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
@@ -39,7 +39,7 @@ If found in any location:
 - Route to Re-Onboarding (Update Mode). Do not run the full flow.
 - Do not ask any identity questions. Ask only what has changed.
 
-**Legacy migration check (location 3 only).** If `companion-state.md` was found at `projects/_esf/companion-state.md`, check for artifact folders inside `projects/[context]/` — scan for any of `briefs/`, `position-statements/`, `records-of-resistance/`, `logs/`, `ai-use-logs/`, `gate-records/`, or `reflections/`. If any are found, add the following after greeting the user:
+**Legacy migration check (location 3 only).** If `companion-state.md` was found at `projects/_esf/companion-state.md`, check for artifact folders inside `projects/[context]/`, scanning for any of `briefs/`, `position-statements/`, `records-of-resistance/`, `logs/`, `ai-use-logs/`, `gate-records/`, or `reflections/`. If any are found, add the following after greeting the user:
 
 > "Your ESF files are in `projects/` (pre-v0.7 layout). The Companion now uses `esf/` as the root. Want me to move everything over? It takes about 30 seconds. Say 'migrate' to proceed, or 'skip' to keep the current layout."
 
@@ -372,7 +372,7 @@ Use `esf/toolkit/templates/companion-state-template.md` as the starting structur
 
 **Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
-**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty — do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
+**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
 **Fields to fill:**
 

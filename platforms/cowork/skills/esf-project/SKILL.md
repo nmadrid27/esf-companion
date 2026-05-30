@@ -4,7 +4,7 @@ description: >
   Ambient ESF workflow. Runs whenever the user is doing project work in a folder that
   contains companion-state.md, so the Companion picks up state without the user
   having to run /esf-start on every session. Triggers on: the first substantive
-  message of a session (any Write, Edit, or work-adjacent request — "draft,"
+  message of a session (any Write, Edit, or work-adjacent request: "draft,"
   "edit," "review," "refine," "continue," "help me with this," "let's work on");
   explicit phase phrases ("start my project," "work on my brief," "I wrote my
   position statement," "let's explore," "let's make," "review my work"); and
@@ -32,14 +32,14 @@ At the start of any session and whenever a phase transition occurs, use TodoWrit
 **Format:** Phase items come first, then a separator item, then milestone items. Mark completed phases as `completed`, the current phase as `in_progress`, and upcoming phases as `pending`. Milestone items follow the same state pattern.
 
 ```
-Phase 1: Inquire          — completed / in_progress / pending
-Phase 2: Position         — completed / in_progress / pending
-Phase 3: Explore          — completed / in_progress / pending
-Phase 4: Make             — completed / in_progress / pending
-Phase 5: Reflect          — completed / in_progress / pending
-── Milestones ──          — pending (always pending; visual separator)
-Milestone 1: [name]       — completed / in_progress / pending
-Milestone 2: [name]       — completed / in_progress / pending
+Phase 1: Inquire          : completed / in_progress / pending
+Phase 2: Position         : completed / in_progress / pending
+Phase 3: Explore          : completed / in_progress / pending
+Phase 4: Make             : completed / in_progress / pending
+Phase 5: Reflect          : completed / in_progress / pending
+── Milestones ──          : pending (always pending; visual separator)
+Milestone 1: [name]       : completed / in_progress / pending
+Milestone 2: [name]       : completed / in_progress / pending
 ...
 ```
 
@@ -51,7 +51,7 @@ Milestone 2: [name]       — completed / in_progress / pending
 
 Update the tracker whenever the phase changes. This gives the user a persistent visual progress bar in the sidebar without requiring any extra interaction.
 
-**After updating the tracker, surface the phase entry message for the current phase.** This fires at session start and again on every phase transition. Output the matching block verbatim — do not paraphrase or condense.
+**After updating the tracker, surface the phase entry message for the current phase.** This fires at session start and again on every phase transition. Output the matching block verbatim; do not paraphrase or condense.
 
 ---
 
@@ -63,7 +63,7 @@ Surface the matching block when entering each phase. Fires at session start and 
 
 > ★ Phase 1: Inquire
 >
-> This phase is yours alone — no AI.
+> This phase is yours alone; no AI.
 >
 > Before you can direct AI effectively, you need to understand what you're actually solving. Work through it on your own: What is this really asking? What do you already know? What assumptions are you making? What would a good answer look like?
 >
@@ -73,9 +73,9 @@ Surface the matching block when entering each phase. Fires at session start and 
 
 > ★ Phase 2: Position
 >
-> This phase is yours alone — no AI.
+> This phase is yours alone; no AI.
 >
-> The Position Statement you write here is what drift detection checks against for the rest of the project. It needs to be your thinking — not AI framing you refined — so that it can do its job as an anchor.
+> The Position Statement you write here is what drift detection checks against for the rest of the project. It needs to be your thinking, not AI framing you refined, so that it can do its job as an anchor.
 >
 > Write it offline and save it when you're ready. Or say "talk it through" and I'll ask you three questions and draft from your answers.
 
@@ -83,9 +83,9 @@ Surface the matching block when entering each phase. Fires at session start and 
 
 > ★ Phase 3: Explore
 >
-> AI enters the work here — but to challenge your thinking, not replace it.
+> AI enters the work here, but to challenge your thinking, not replace it.
 >
-> Your Position Statement is the anchor. Everything AI suggests gets measured against it. Use this phase to find weaknesses in your position, alternatives you haven't considered, and evidence you might be missing. The goal is a more examined position — not a shorter path to a draft.
+> Your Position Statement is the anchor. Everything AI suggests gets measured against it. Use this phase to find weaknesses in your position, alternatives you haven't considered, and evidence you might be missing. The goal is a more examined position, not a shorter path to a draft.
 >
 > What do you want to test or pressure-test first?
 
@@ -93,9 +93,9 @@ Surface the matching block when entering each phase. Fires at session start and 
 
 > ★ Phase 4: Make
 >
-> You're building now — AI-assisted, but directed by your Position Statement.
+> You're building now, AI-assisted, but directed by your Position Statement.
 >
-> Check each section against the position you wrote in Phase 2 as you go. Apply the Five Questions at major decision points. Log what you kept, revised, and rejected — and why. Those decisions are your Record of Resistance.
+> Check each section against the position you wrote in Phase 2 as you go. Apply the Five Questions at major decision points. Log what you kept, revised, and rejected, and why. Those decisions are your Record of Resistance.
 >
 > Where do you want to start?
 
@@ -103,7 +103,7 @@ Surface the matching block when entering each phase. Fires at session start and 
 
 > ★ Phase 5: Reflect
 >
-> This phase is yours alone — no AI.
+> This phase is yours alone; no AI.
 >
 > The work is done. Now compare it to the Position Statement you wrote in Phase 2. What held? What changed? For anything that changed: was it a genuine improvement you directed, or drift you accepted without examining it?
 >
@@ -287,7 +287,7 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 **PS lookup (both modes).** Read Current Project and Context from `companion-state.md`, then check `[context base-path]/esf/position-statements/[project-slug].md`. If that file exists, neither mode fires.
 
-**Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
+**Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
 
 ---
 
@@ -300,7 +300,7 @@ Two-tier behavior: a low-friction inline text nudge on first touch, and a higher
 **First touch (inline text nudge).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
 
 ```
-[ESF: no Position Statement for [doc] — note one?]
+[ESF: no Position Statement for [doc]; note one?]
 ```
 
 No pause, no blocking refusal, no three-question prompt. The user can note a PS, decline, or ignore and keep working.
@@ -317,10 +317,10 @@ No pause, no blocking refusal, no three-question prompt. The user can note a PS,
 - **header:** `"ESF nudge"`
 - **multiSelect:** `false`
 - **options:**
-  1. **label:** `"Write one now (offline)"` — **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
-  2. **label:** `"Talk it through (3 questions)"` — **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
-  3. **label:** `"Skip for this document"` — **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
-  4. **label:** `"Skip for this session"` — **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
+  1. **label:** `"Write one now (offline)"`: **description:** `"Pause here. I'll wait while you write your Position Statement, then come back and tell me it's saved."`
+  2. **label:** `"Talk it through (3 questions)"`: **description:** `"I'll ask three questions and draft a Position Statement from your answers. The ideas have to be yours; I just help with structure."`
+  3. **label:** `"Skip for this document"`: **description:** `"Silence all nudges for this document for the session. Substantive work continues without a Position Statement on file."`
+  4. **label:** `"Skip for this session"`: **description:** `"Silence all ESF nudges for this session. Gate Mode contexts are unaffected."`
 
 **Routing the selection:**
 
@@ -357,7 +357,7 @@ Gate mode activates when any of the following is true:
 1. The project brief frontmatter specifies `position-statement: required`.
 2. The active context in companion-state.md marks Position Statements as required for substantial documents in that context. Institutional, scholarly, and professional contexts typically set this, because the author's stated position is part of the record the work will be judged against.
 3. Substantial content is being produced without an existing tracked project (see "Ad hoc substantial work" below).
-4. A bulk production command fires ("draft all," "generate the set," "write the N posts," or any numeric-count + production verb) — bulk production triggers gate mode unconditionally, regardless of the context's default.
+4. A bulk production command fires ("draft all," "generate the set," "write the N posts," or any numeric-count + production verb); bulk production triggers gate mode unconditionally, regardless of the context's default.
 
 **A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Produce nothing substantive until the answer is yes.
 
@@ -743,7 +743,7 @@ Surface once, do not repeat more than every 8 exchanges, do not block:
    - Session log → `projects/[context]/logs/session-[YYYY-MM-DD].md`
    - AI Use Log update → append to `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`
 5. **Update `projects/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
-6. **Update `companion-state.md`** (Edit tool only — do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
+6. **Update `companion-state.md`** (Edit tool only; do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
 7. **Clear the session buffer.** Write an empty string (zero-byte file) to `projects/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
 8. **Confirm:** "Session logged and saved. Project state updated. See you next time."
 

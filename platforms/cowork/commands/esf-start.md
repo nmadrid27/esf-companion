@@ -17,7 +17,7 @@ and must be kept in sync with `platforms/cowork/.claude-plugin/plugin.json`'s
 
 The plugin version shipped with this command is `0.6.0`. Fetch the remote manifest from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/platforms/cowork/.claude-plugin/plugin.json` with WebFetch and read its `version` field.
 
-- If the remote version is higher than `0.6.0`: emit one line before proceeding — `Cowork plugin update available: v[remote] (you have v0.6.0). Run /plugin to update.` Do not block. Continue with Step 1.
+- If the remote version is higher than `0.6.0`: emit one line before proceeding: `Cowork plugin update available: v[remote] (you have v0.6.0). Run /plugin to update.` Do not block. Continue with Step 1.
 - If the remote version equals `0.6.0`: skip silently.
 - If the WebFetch fails (offline, rate limit, GitHub 5xx, parse error, any other failure): skip silently. The version check is a convenience, not a requirement.
 
@@ -180,11 +180,11 @@ None yet.
 **Create the initial phase tracker** using TodoWrite. Set Phase 1 to `in_progress` and all others to `pending`. If a brief was loaded in Step 3 and milestones were extracted, include them below a separator:
 
 ```
-Phase 1: Inquire          — in_progress
-Phase 2: Position         — pending
-Phase 3: Explore          — pending
-Phase 4: Make             — pending
-Phase 5: Reflect          — pending
+Phase 1: Inquire          : in_progress
+Phase 2: Position         : pending
+Phase 3: Explore          : pending
+Phase 4: Make             : pending
+Phase 5: Reflect          : pending
 ```
 
 If no brief was loaded during setup, add a note about `/esf-brief`:

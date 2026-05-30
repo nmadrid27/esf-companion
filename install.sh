@@ -392,7 +392,7 @@ fi
 
 echo "Installing..."
 
-# Cowork: download the .plugin file — no project-directory install needed
+# Cowork: download the .plugin file; no project-directory install needed
 if [ "$PLATFORM" = "cowork" ]; then
   PLUGIN_URL="https://github.com/nmadrid27/esf-companion/releases/latest/download/esf-companion.plugin"
   PLUGIN_DEST="esf-companion.plugin"
@@ -644,7 +644,7 @@ if [ "$FORCE" != true ]; then
 fi
 
 # Determine install scope.
-# --force (CI/automation) defaults to project — no global ~/.claude/ writes.
+# --force (CI/automation) defaults to project; no global ~/.claude/ writes.
 # Interactive defaults to user (prompted below).
 SCOPE="user"
 [ "$FORCE" = true ] && SCOPE="project"
@@ -663,9 +663,9 @@ elif [ "$FORCE" != true ]; then
   echo ""
   echo "Install scope:"
   echo ""
-  echo "  1) Project + user  — also wires the status line in ~/.claude/"
+  echo "  1) Project + user: also wires the status line in ~/.claude/"
   echo "                       (recommended for personal projects)"
-  echo "  2) Project only    — installs ESF tools in .claude/ only"
+  echo "  2) Project only: installs ESF tools in .claude/ only"
   echo "                       (recommended for shared or team repos)"
   echo ""
   read -r -p "Choose [1/2] (default: 1): " SCOPE_CHOICE </dev/tty
@@ -763,7 +763,7 @@ if not already:
     p.write_text(json.dumps(data, indent=2) + '\n')
 PY
 else
-  echo -e "  ${YELLOW}python3 not found — SessionStart hook not wired automatically.${NC}"
+  echo -e "  ${YELLOW}python3 not found; SessionStart hook not wired automatically.${NC}"
   echo -e "  ${YELLOW}Add manually to .claude/settings.json if needed.${NC}"
 fi
 
@@ -792,11 +792,11 @@ if data.get('statusLine') != new_entry:
     p.write_text(json.dumps(data, indent=2) + '\n')
 PY
   else
-    echo -e "  ${YELLOW}python3 not found — status line not wired automatically.${NC}"
+    echo -e "  ${YELLOW}python3 not found; status line not wired automatically.${NC}"
     echo -e "  ${YELLOW}Add manually to ~/.claude/settings.json if needed.${NC}"
   fi
 else
-  echo -e "  ${YELLOW}Scope: project only — skipping global status line install.${NC}"
+  echo -e "  ${YELLOW}Scope: project only; skipping global status line install.${NC}"
   echo -e "  ${YELLOW}To add the status line later, re-run with --scope user.${NC}"
 fi
 
@@ -849,7 +849,7 @@ fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" esf/toolkit/START_HERE.md
 if [ "$AMBIENT" = true ]; then
   ESF_SECTION_MARKER="## ESF Companion (Always On)"
   if [ -f "CLAUDE.md" ] && grep -q "$ESF_SECTION_MARKER" CLAUDE.md 2>/dev/null; then
-    echo -e "  ${YELLOW}ESF ambient block already present in CLAUDE.md — skipping.${NC}"
+    echo -e "  ${YELLOW}ESF ambient block already present in CLAUDE.md; skipping.${NC}"
   else
     if [ ! -f "CLAUDE.md" ]; then
       echo "# CLAUDE.md" > CLAUDE.md
@@ -878,7 +878,7 @@ Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Mome
 
 ### Four key moments
 
-- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc] — note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `esf/[context]/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause — elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
+- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc]; note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `esf/[context]/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause; elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
 - **Drift (Moment 2).** When work moves away from a stated PS across two or more exchanges, surface the drift observation with the reference point visible.
 - **Rejection capture (Moment 3).** When the user pushes back, redirects scope, corrects framing, corrects the audience read, or signals "not that," offer to log a Record of Resistance. Bar is low: scope and framing redirections count. Formatting cleanup and tool-use corrections do not.
 - **Ownership check (Moment 4).** When the user signals wrap-up, ask about specific choices before finalizing.
@@ -898,7 +898,7 @@ If the user responds with a PS, save to the Position Statement path for this con
 
 - If Current Project is "not set" and substantial content is requested, pause and offer to log the project before producing anything.
 - If a bulk command fires and no brief exists for the project, stop and run the four-question minimal-brief flow (project in one sentence, success criterion, audience, non-negotiable) before drafting. Save to `esf/[context]/briefs/[project-name]-brief.md`, then run Moment 1 against the brief.
-- **Install hygiene.** All ESF artifacts for a context live in `esf/[context]/` — `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install. Install hygiene applies only to ESF-created files. Never move, rename, or reorganize files that existed before this session. If an existing file conflicts with an ESF path, write to an alternate location and notify the user.
+- **Install hygiene.** All ESF artifacts for a context live in `esf/[context]/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install. Install hygiene applies only to ESF-created files. Never move, rename, or reorganize files that existed before this session. If an existing file conflicts with an ESF path, write to an alternate location and notify the user.
 
 ### Late initialization
 

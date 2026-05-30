@@ -1,4 +1,4 @@
-# Planning notes — cartography series
+# Planning notes: cartography series
 
 (rough, written in one sitting before any AI involvement)
 
