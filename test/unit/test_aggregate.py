@@ -181,5 +181,89 @@ class TestProjectFilter(unittest.TestCase):
         self.assertIn("other-project", mismatch_gaps[0].message)
 
 
+class TestCycleBasedLayout(unittest.TestCase):
+    """Workspaces organized by milestone/cycle directories (CJ Snyder layout, issue #25).
+
+    Artifacts live at the top of cycle dirs (`p2-break-through/`, `p3-next-steps/`)
+    instead of under `records-of-resistance/`. The aggregator must auto-discover
+    them without an explicit `## Defense Pack Paths` override.
+    """
+
+    def test_position_statement_discovered_in_cycle_dir(self):
+        pack = aggregate_from_dir(FIXTURES / "cycle-based")
+        self.assertIsNotNone(pack.position_statement)
+        self.assertTrue(pack.position_statement.stance.startswith("I want my work"))
+
+    def test_records_aggregated_across_multiple_cycle_dirs(self):
+        pack = aggregate_from_dir(FIXTURES / "cycle-based")
+        # 4 RoRs: 1 in p2-break-through/, 3 in p3-next-steps/
+        self.assertEqual(len(pack.records_of_resistance), 4)
+        numbers = [r.record_number for r in pack.records_of_resistance]
+        self.assertEqual(numbers, [1, 2, 3, 4])
+        # Sources should reflect the cycle dirs they came from
+        sources = [r.source for r in pack.records_of_resistance]
+        self.assertTrue(any("p2-break-through" in s for s in sources))
+        self.assertTrue(any("p3-next-steps" in s for s in sources))
+
+    def test_templates_dir_excluded_from_cycle_scan(self):
+        pack = aggregate_from_dir(FIXTURES / "cycle-based")
+        # The fixture has templates/record-of-resistance-template.md which must
+        # NOT appear in the pack (template, not a record).
+        sources = [r.source or "" for r in pack.records_of_resistance]
+        self.assertFalse(any("templates/" in s for s in sources))
+        self.assertFalse(any("template" in s.lower() for s in sources))
+
+    def test_auto_discovery_surfaces_info_gap(self):
+        pack = aggregate_from_dir(FIXTURES / "cycle-based")
+        layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
+        self.assertEqual(len(layout_gaps), 1)
+        self.assertEqual(layout_gaps[0].severity.value, "info")
+        # Message should name the discovered dirs and mention the override path
+        self.assertIn("p2-break-through", layout_gaps[0].message)
+        self.assertIn("p3-next-steps", layout_gaps[0].message)
+        self.assertIn("Defense Pack Paths", layout_gaps[0].message)
+
+    def test_explicit_override_suppresses_cycle_discovery(self):
+        """When the user declares `## Defense Pack Paths`, the cycle-based
+        fallback must NOT fire — the INFO gap is the test signal.
+        """
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "cycle-based"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Override RoR + PS dirs explicitly. p2-break-through has exactly
+            # one record so the count is unambiguous.
+            state = (tmp / "ws" / "companion-state.md").read_text(encoding="utf-8")
+            state += (
+                "\n## Defense Pack Paths\n"
+                "- **Records of Resistance:** p2-break-through\n"
+                "- **Position Statement:** p3-next-steps/position-statement.md\n"
+            )
+            (tmp / "ws" / "companion-state.md").write_text(state, encoding="utf-8")
+            pack = aggregate_from_dir(tmp / "ws")
+
+        # Override scoped to p2-break-through → only the one RoR there
+        self.assertEqual(len(pack.records_of_resistance), 1)
+        self.assertEqual(pack.records_of_resistance[0].record_number, 1)
+        # No workspace_layout INFO gap — override means no auto-discovery happened
+        layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
+        self.assertEqual(layout_gaps, [])
+
+
+class TestCanonicalLayoutSilentOnCycles(unittest.TestCase):
+    """Canonical-layout fixtures must NOT emit a cycle-layout INFO gap. Regression
+    guard: cycle discovery should only fire when canonical paths are absent.
+    """
+
+    def test_full_fixture_no_cycle_gap(self):
+        pack = aggregate_from_dir(FIXTURES / "full")
+        layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
+        self.assertEqual(layout_gaps, [])
+
+
 if __name__ == "__main__":
     unittest.main()

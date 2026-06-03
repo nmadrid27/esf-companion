@@ -213,6 +213,7 @@ A new run creates a new timestamped folder. Do not overwrite. Previous packs are
 - **No `companion-state.md`** → "Defense Pack needs your workspace state. Run `/esf-onboarding` first."
 - **Empty Position Statement** → hard stop. Point to `templates/position-statement-template.md`.
 - **`esf/<context>/` doesn't exist** → soft stop. "No ESF artifacts found for context `<x>`. Have you done any project work yet?"
+- **Cycle-based / milestone-organized workspace** (e.g. `p2-break-through/`, `p3-next-steps/` with artifacts in each rather than `records-of-resistance/`) → the aggregator auto-discovers them and emits an INFO-severity `workspace_layout` gap. The pack is complete; surface the gap only with `--verbose`. Suggest declaring `## Defense Pack Paths` in companion-state.md if the user wants the layout pinned.
 - **Records of Resistance with mismatched `project:` frontmatter** → the aggregator excludes them and emits a warning gap. Surface the gap to the user explicitly; they may have misfiled an RoR, or the work belongs to a sibling project in the same context. Do not silently include or silently exclude.
 - **No Records of Resistance** → warning, but render. Skip the "Key decisions" section in the narrative; surface a callout in the pack: "No Records of Resistance recorded; defense rests entirely on Position Statement and Reflection."
 - **WeasyPrint missing** → render HTML and MD, skip PDF, surface the install hint.
