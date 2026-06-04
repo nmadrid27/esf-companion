@@ -27,10 +27,17 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test Claude Code install (force mode)
+        # `--source $GITHUB_WORKSPACE` tells install.sh to fetch from the
+        # checked-out PR rather than from the latest release tag on GitHub.
+        # Without it, install.sh fetches every file via raw.githubusercontent
+        # against the resolved tag, so any file the PR adds (e.g. MANIFEST.txt
+        # in #22) 404s until merge — chicken-and-egg. With --source, the test
+        # actually exercises the PR's complete install rather than the PR's
+        # install.sh + main's other files.
         run: |
           mkdir -p /tmp/test-claude && cd /tmp/test-claude
           git init
-          bash "$GITHUB_WORKSPACE/install.sh" --force --platform claude
+          bash "$GITHUB_WORKSPACE/install.sh" --force --platform claude --source "$GITHUB_WORKSPACE"
           test -f .claude/agents/esf-companion.md || exit 1
           test -f esf/toolkit/prompts/companion.md || exit 1
           test -f esf/toolkit/prompts/esf-companion.md || exit 1
@@ -47,7 +54,7 @@ jobs:
         run: |
           mkdir -p /tmp/test-conv && cd /tmp/test-conv
           git init
-          bash "$GITHUB_WORKSPACE/install.sh" --force --platform conversation
+          bash "$GITHUB_WORKSPACE/install.sh" --force --platform conversation --source "$GITHUB_WORKSPACE"
           test -f esf/toolkit/prompts/companion.md || exit 1
           test -f esf/toolkit/prompts/esf-companion.md || exit 1
           test -f esf/toolkit/templates/position-statement.md || exit 1
@@ -63,7 +70,7 @@ jobs:
       - name: Test invalid platform flag exits with error
         run: |
           mkdir -p /tmp/test-invalid && cd /tmp/test-invalid
-          if bash "$GITHUB_WORKSPACE/install.sh" --force --platform typo 2>/dev/null; then
+          if bash "$GITHUB_WORKSPACE/install.sh" --force --platform typo --source "$GITHUB_WORKSPACE" 2>/dev/null; then
             echo "ERROR: should have exited non-zero"
             exit 1
           fi
