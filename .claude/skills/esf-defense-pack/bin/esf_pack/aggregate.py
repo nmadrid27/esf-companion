@@ -243,9 +243,12 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 if matches:
                     return matches[0]
         # Cycle-based fallback: scan top-level milestone dirs for the same patterns.
-        # Skip the broad `<project_name>.md` and `*<artifact>*.md` catch-alls when
-        # searching cycle dirs — they're too permissive across many sibling files.
-        cycle_patterns = [p for p in filename_patterns if p.startswith("*") and "-" in p.lstrip("*")]
+        # Drop only the bare `<project_name>.md` catch-all (index 0) — in a mixed
+        # milestone dir, matching a file by project name is too loose and would
+        # grab unrelated artifacts. Keep every artifact-specific glob, including
+        # single-pattern ones like `*reflection*.md` (dropping those left whole
+        # artifacts undiscoverable in cycle layouts).
+        cycle_patterns = [p for p in filename_patterns if p.startswith("*")]
         for d in cycle_dirs:
             for pattern in cycle_patterns:
                 matches = sorted(d.glob(pattern))
@@ -255,16 +258,23 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         # Return canonical-path-that-doesn't-exist so gap detection fires cleanly.
         return workspace / "esf" / context / canonical_subdir / filename_patterns[0].lstrip("*")
 
-    def _resolve_ror_dirs(override_key: str, canonical_subdir: str) -> list[Path]:
-        """Resolve RoR scan roots. Returns ONE override dir, OR the canonical/legacy
-        dirs that exist, OR cycle-based fallback dirs. Multi-dir return enables
-        aggregating records spread across milestone folders.
+    def _resolve_ror_dirs(override_key: str, canonical_subdir: str) -> tuple[list[Path], bool]:
+        """Resolve RoR scan roots. Returns (dirs, from_cycle).
+
+        `from_cycle` is True only when the returned dirs are milestone/cycle
+        directories that hold MIXED artifacts (records alongside the position
+        statement, reflection, etc.). The scanner uses that flag to pick a
+        strict `record-of-resistance*.md` glob for cycle dirs versus the
+        permissive `*.md` for dedicated `records-of-resistance/` dirs. It is NOT
+        derived from how many dirs are returned: canonical+legacy can both exist
+        (two dedicated dirs) without being cycle dirs, and a lone milestone dir
+        is still a cycle dir.
         """
         nonlocal cycle_layout_used
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
             _validate_relative_path(override, override_key)
-            return [workspace / override]
+            return [workspace / override], False
         existing = [
             d for d in (
                 workspace / "esf" / context / canonical_subdir,
@@ -273,13 +283,13 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             if d.exists()
         ]
         if existing:
-            return existing
+            return existing, False
         if cycle_dirs:
             cycle_layout_used = True
-            return list(cycle_dirs)
+            return list(cycle_dirs), True
         # Nothing found — return canonical-path-that-doesn't-exist so the empty
         # scan downstream surfaces as a "no RoRs" gap rather than a crash.
-        return [workspace / "esf" / context / canonical_subdir]
+        return [workspace / "esf" / context / canonical_subdir], False
 
     # Build per-artifact filename patterns. Project names with spaces/parens are
     # used as-is in the canonical pattern; the slug-like fallbacks catch the
@@ -293,7 +303,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             "*position*.md",               # broad fallback
         ],
     )
-    ror_dirs = _resolve_ror_dirs("Records of Resistance", "records-of-resistance")
+    ror_dirs, ror_dirs_are_cycle = _resolve_ror_dirs("Records of Resistance", "records-of-resistance")
     log_path = _resolve_file(
         "AI Use Log",
         "ai-use-logs",
@@ -324,19 +334,20 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         __import__("re").IGNORECASE,
     )
     auto_number = 0
-    # When scanning multiple roots (cycle-based layout), use a pattern that
-    # matches both canonical (`*.md` in records-of-resistance/) and bare RoR
-    # files living next to other artifacts in a milestone dir.
-    multi_root_mode = len(ror_dirs) > 1
-    ror_file_pattern = "record-of-resistance*.md" if multi_root_mode else "*.md"
+    # Cycle/milestone dirs hold mixed artifacts (records alongside the position
+    # statement, reflection, log), so restrict the glob to record files there.
+    # Dedicated `records-of-resistance/` dirs (canonical or legacy) hold only
+    # records, so `*.md` is correct and preserves back-compat with arbitrarily
+    # named record files (e.g. `1-grid-rejection.md`, `01-pivot.md`).
+    ror_file_pattern = "record-of-resistance*.md" if ror_dirs_are_cycle else "*.md"
     seen_files: set = set()  # guard against double-counting if dirs overlap
     for ror_dir in ror_dirs:
         if not ror_dir.exists():
             continue
         for f in sorted(ror_dir.glob(ror_file_pattern)):
-            if f in seen_files:
+            if f.resolve() in seen_files:
                 continue
-            seen_files.add(f)
+            seen_files.add(f.resolve())
             if _RECORD_SKIP_RE.search(f.name):
                 continue
             try:
