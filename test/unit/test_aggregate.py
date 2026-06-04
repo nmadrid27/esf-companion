@@ -253,6 +253,98 @@ class TestCycleBasedLayout(unittest.TestCase):
         layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
         self.assertEqual(layout_gaps, [])
 
+    def test_reflection_discovered_in_cycle_dir(self):
+        """Regression: the cycle-pattern filter must not drop `*reflection*.md`.
+
+        Reflection has only one glob fallback; an over-eager filter once
+        excluded it, making Reflections in cycle layouts undiscoverable while
+        PS and RoRs were found.
+        """
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "cycle-based"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            (tmp / "ws" / "p3-next-steps" / "reflection.md").write_text(
+                "---\ntype: reflection\nproject: P1-cycle-project\n"
+                "context: AI180\n---\n\n# Reflection\n\n"
+                "End-of-project synthesis of what was kept, revised, rejected.\n",
+                encoding="utf-8",
+            )
+            pack = aggregate_from_dir(tmp / "ws")
+
+        self.assertIsNotNone(
+            pack.reflection,
+            "reflection.md in a cycle dir must be auto-discovered",
+        )
+        reflection_gaps = [g for g in pack.gaps if g.artifact == "reflection"]
+        self.assertEqual(
+            reflection_gaps, [],
+            "no 'missing reflection' gap when a reflection exists in a cycle dir",
+        )
+
+    def test_single_cycle_dir_does_not_slurp_non_records(self):
+        """Regression: a layout with exactly ONE cycle dir must still use the
+        strict record glob, not `*.md`.
+
+        A `len(ror_dirs) > 1` proxy once caused single-cycle-dir workspaces to
+        glob `*.md`, pulling position-statement.md / reflection.md into the RoR
+        list as phantom records.
+        """
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "cycle-based"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Collapse to a single cycle dir: p3-next-steps holds the PS plus
+            # records 02-04. p2 is removed.
+            shutil.rmtree(tmp / "ws" / "p2-break-through")
+            pack = aggregate_from_dir(tmp / "ws")
+
+        sources = [r.source or "" for r in pack.records_of_resistance]
+        self.assertFalse(
+            any("position-statement" in s or "reflection" in s for s in sources),
+            f"non-record markdown leaked into RoR list: {sources}",
+        )
+        # Only the three record-of-resistance-*.md files in p3-next-steps
+        self.assertEqual(len(pack.records_of_resistance), 3)
+
+
+class TestHybridMigrationLayout(unittest.TestCase):
+    """A workspace mid-migration may have BOTH `esf/<ctx>/records-of-resistance/`
+    and `projects/<ctx>/records-of-resistance/` on disk. Both are dedicated RoR
+    dirs (not cycle dirs), so the permissive `*.md` glob must still apply —
+    records using canonical filenames like `1-grid-rejection.md` must not be
+    dropped just because two RoR dirs coexist.
+    """
+
+    def test_canonical_records_kept_when_legacy_dir_also_exists(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "full"  # 5 records under esf/test-course/records-of-resistance
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Create an (empty) legacy RoR dir so two dirs resolve.
+            (tmp / "ws" / "projects" / "test-course" / "records-of-resistance").mkdir(parents=True)
+            pack = aggregate_from_dir(tmp / "ws")
+
+        self.assertEqual(
+            len(pack.records_of_resistance), 5,
+            "canonical records must survive when a legacy RoR dir also exists",
+        )
+        # This is not a cycle layout — no workspace_layout gap.
+        layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
+        self.assertEqual(layout_gaps, [])
+
 
 class TestCanonicalLayoutSilentOnCycles(unittest.TestCase):
     """Canonical-layout fixtures must NOT emit a cycle-layout INFO gap. Regression
