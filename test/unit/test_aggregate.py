@@ -374,5 +374,172 @@ class TestExportTimestampShape(unittest.TestCase):
         )
 
 
+class TestCycleLayoutGapPrecision(unittest.TestCase):
+    """The cycle-layout INFO gap message must name only the artifacts that
+    actually resolved through the cycle path, not the union of every artifact
+    in the pack. Regression: the boolean `cycle_layout_used` once flipped True
+    for any artifact resolved through the cycle path, so a workspace where only
+    the PS lived in a milestone dir still emitted a message claiming canonical
+    `records-of-resistance/` and `position-statements/` folders were both
+    bypassed.
+    """
+
+    def test_gap_names_only_cycle_resolved_artifacts(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "full"  # canonical layout: PS, RoRs, log, reflection
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Remove the canonical PS so PS falls through to cycle discovery.
+            ps_dir = tmp / "ws" / "esf" / "test-course" / "position-statements"
+            shutil.rmtree(ps_dir)
+            # Create a sibling cycle dir holding only a position statement.
+            # RoRs remain in the canonical records-of-resistance/ folder.
+            cycle = tmp / "ws" / "p2-break-through"
+            cycle.mkdir()
+            (cycle / "position-statement.md").write_text(
+                "---\ntype: position-statement\nproject: responsive-system\n"
+                "context: test-course\n---\n\n"
+                "## Stance\n\nI want my work to feel...\n\n"
+                "## What Matters Most\n\nx\n\n"
+                "## Non-negotiables\n\ny\n",
+                encoding="utf-8",
+            )
+            # Add at least one cycle marker file beyond the PS so the dir is
+            # discovered (it already has a position-statement*.md marker).
+            pack = aggregate_from_dir(tmp / "ws")
+
+        layout_gaps = [g for g in pack.gaps if g.artifact == "workspace_layout"]
+        self.assertEqual(len(layout_gaps), 1)
+        msg = layout_gaps[0].message
+        # Only PS resolved through the cycle path. RoRs stayed canonical.
+        self.assertIn("Position Statement", msg)
+        self.assertNotIn("Records of Resistance", msg)
+        # Old misleading copy ("canonical records-of-resistance/ and
+        # position-statements/ folders") should be gone.
+        self.assertNotIn(
+            "canonical `records-of-resistance/` and `position-statements/`",
+            msg,
+        )
+
+
+class TestCycleDirBlacklistCaseInsensitive(unittest.TestCase):
+    """A workspace directory called `Templates/` or `Tests/` must be skipped by
+    cycle discovery even though the blacklist is lowercase. Real macOS APFS
+    (and NTFS) default to case-insensitive filesystems where the existing
+    `Templates/` dir in fixtures can appear as-is, bypassing the guard.
+    """
+
+    def test_capitalized_templates_dir_excluded_from_cycle_scan(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "cycle-based"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            # Rename templates/ to Templates/ (the case-flip the bug allowed
+            # through the guard). The dir holds a record-of-resistance-
+            # template.md, so without a case-insensitive blacklist check the
+            # cycle scan picks it up as a candidate cycle dir and would pull
+            # the template into the records list.
+            old = tmp / "ws" / "templates"
+            new = tmp / "ws" / "Templates"
+            old.rename(new)
+            pack = aggregate_from_dir(tmp / "ws")
+
+        sources = [r.source or "" for r in pack.records_of_resistance]
+        self.assertFalse(
+            any("Templates/" in s or "template" in s.lower() for s in sources),
+            f"`Templates/` slipped past the case-insensitive blacklist: {sources}",
+        )
+
+
+class TestDiscoverCycleDirsHandlesOSError(unittest.TestCase):
+    """An unreadable workspace must not crash the aggregator from inside
+    `_discover_cycle_dirs`. PermissionError / OSError on iterdir() should
+    degrade to an empty cycle-dir list, letting normal gap detection surface
+    the missing artifacts instead of raising.
+    """
+
+    def test_unreadable_workspace_returns_empty_cycle_list(self):
+        from unittest.mock import patch
+        from esf_pack.aggregate import _discover_cycle_dirs
+
+        fake_workspace = FIXTURES / "full"  # real dir so .is_dir() passes
+        with patch("pathlib.Path.iterdir", side_effect=PermissionError("denied")):
+            # _discover_cycle_dirs should swallow the error and return [].
+            result = _discover_cycle_dirs(fake_workspace)
+        self.assertEqual(result, [])
+
+    def test_unreadable_workspace_OSError_returns_empty_cycle_list(self):
+        from unittest.mock import patch
+        from esf_pack.aggregate import _discover_cycle_dirs
+
+        fake_workspace = FIXTURES / "full"
+        with patch("pathlib.Path.iterdir", side_effect=OSError("io error")):
+            result = _discover_cycle_dirs(fake_workspace)
+        self.assertEqual(result, [])
+
+
+class TestProcessBlogScanIncludesCycleDirs(unittest.TestCase):
+    """Inline @resist / @default / @shift tags in a cycle dir's session notes
+    must be counted. Previously `blog_search_roots` was hardcoded to canonical
+    process-blog/ paths only; a cycle-layout student with tags in
+    `p2-break-through/session-notes.md` got `resist_count = 0`.
+    """
+
+    def test_inline_resist_tags_in_cycle_dir_are_counted(self):
+        import tempfile
+        import shutil
+        from pathlib import Path
+
+        src = FIXTURES / "cycle-based"
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            (tmp / "ws" / "p2-break-through" / "session-notes.md").write_text(
+                "# Session 1\n\n"
+                "Tried AI suggestion. @resist — kept my own grid pattern.\n\n"
+                "Later moment: @default and let the suggestion through.\n\n"
+                "And another: @shift to a different direction.\n",
+                encoding="utf-8",
+            )
+            pack = aggregate_from_dir(tmp / "ws")
+
+        self.assertGreaterEqual(
+            pack.resist_count, 1,
+            "inline @resist tag in cycle-dir session notes must be counted",
+        )
+        self.assertGreaterEqual(pack.default_count, 1)
+        self.assertGreaterEqual(pack.shift_count, 1)
+        self.assertTrue(
+            any("p2-break-through" in s for s in pack.process_blog_sources),
+            f"session notes file must be listed in process_blog_sources: {pack.process_blog_sources}",
+        )
+
+    def test_record_files_in_cycle_dir_not_scanned_as_blog(self):
+        """Record-of-resistance-*.md files in cycle dirs are already parsed as
+        records; they must not be re-scanned for inline @resist tags. The
+        cycle-based fixture has tags inside records — without the skip filter
+        they would double-count.
+        """
+        # Cycle-based fixture has record-of-resistance-*.md files but no
+        # session-notes; without the skip filter, resist_count would reflect
+        # any @resist mentions inside record bodies.
+        src = FIXTURES / "cycle-based"
+        pack = aggregate_from_dir(src)
+        # process_blog_sources should not list record-of-resistance files
+        for source in pack.process_blog_sources:
+            self.assertNotIn(
+                "record-of-resistance", source.lower(),
+                f"record file leaked into process_blog_sources: {source}",
+            )
+
+
 if __name__ == "__main__":
     unittest.main()
