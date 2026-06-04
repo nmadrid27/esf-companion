@@ -68,12 +68,23 @@ def _discover_cycle_dirs(workspace: Path) -> list[Path]:
     discovered: list[Path] = []
     if not workspace.is_dir():
         return discovered
-    for child in sorted(workspace.iterdir()):
+    # Guard against unreadable workspaces — a directory we can stat but not
+    # read raises PermissionError/OSError from iterdir(). Returning [] is the
+    # safe fallback; downstream gap detection surfaces the missing artifacts
+    # rather than crashing the whole aggregator on a permission error.
+    try:
+        children = sorted(workspace.iterdir())
+    except OSError:
+        return discovered
+    for child in children:
         if not child.is_dir():
             continue
         if child.name.startswith("."):
             continue
-        if child.name in _CYCLE_DIR_BLACKLIST:
+        # Lowercase the comparison so case-insensitive filesystems (macOS APFS
+        # default, NTFS) don't let `Templates/` or `Tests/` bypass the guard.
+        # The blacklist itself is already all-lowercase.
+        if child.name.lower() in _CYCLE_DIR_BLACKLIST:
             continue
         for pattern in _CYCLE_DIR_MARKER_PATTERNS:
             if any(child.glob(pattern)):
@@ -212,19 +223,26 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     #   5. Cycle-based layout (top-level milestone dirs holding artifacts directly)
     overrides: dict = state.get("__defense_paths__", {}) or {}
     cycle_dirs = _discover_cycle_dirs(workspace)
-    cycle_layout_used = False  # flipped True if cycle discovery contributes to the pack
+    # Track which artifact names came from cycle discovery (rather than a single
+    # boolean). This drives a precise INFO gap message: a workspace where only
+    # the PS resolves through the cycle path but RoRs are in canonical
+    # `records-of-resistance/` shouldn't claim that artifacts (plural) were in
+    # milestone dirs.
+    cycle_resolved_artifacts: set = set()
 
     def _resolve_file(
         override_key: str,
         canonical_subdir: str,
         filename_patterns: list,
+        cycle_artifact_name: str = "",
     ) -> Path:
         """Resolve a file path: override → canonical → legacy → glob fallback → cycle dirs.
 
         `filename_patterns` are glob-style patterns tried in order against each
-        candidate directory until a match is found.
+        candidate directory until a match is found. `cycle_artifact_name`, if
+        non-empty, is the artifact label recorded into `cycle_resolved_artifacts`
+        when the resolution falls through to the cycle-based fallback.
         """
-        nonlocal cycle_layout_used
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
             _validate_relative_path(override, override_key)
@@ -253,7 +271,8 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             for pattern in cycle_patterns:
                 matches = sorted(d.glob(pattern))
                 if matches:
-                    cycle_layout_used = True
+                    if cycle_artifact_name:
+                        cycle_resolved_artifacts.add(cycle_artifact_name)
                     return matches[0]
         # Return canonical-path-that-doesn't-exist so gap detection fires cleanly.
         return workspace / "esf" / context / canonical_subdir / filename_patterns[0].lstrip("*")
@@ -270,7 +289,6 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         (two dedicated dirs) without being cycle dirs, and a lone milestone dir
         is still a cycle dir.
         """
-        nonlocal cycle_layout_used
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
             _validate_relative_path(override, override_key)
@@ -285,7 +303,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         if existing:
             return existing, False
         if cycle_dirs:
-            cycle_layout_used = True
+            cycle_resolved_artifacts.add("Records of Resistance")
             return list(cycle_dirs), True
         # Nothing found — return canonical-path-that-doesn't-exist so the empty
         # scan downstream surfaces as a "no RoRs" gap rather than a crash.
@@ -302,6 +320,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             "*position-statement*.md",     # M2-position-statement.md, etc.
             "*position*.md",               # broad fallback
         ],
+        cycle_artifact_name="Position Statement",
     )
     ror_dirs, ror_dirs_are_cycle = _resolve_ror_dirs("Records of Resistance", "records-of-resistance")
     log_path = _resolve_file(
@@ -312,6 +331,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             "*ai-use-log*.md",
             "*ai-log*.md",
         ],
+        cycle_artifact_name="AI Use Log",
     )
     reflection_path = _resolve_file(
         "Reflection",
@@ -320,6 +340,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             f"{project_name}.md",
             "*reflection*.md",
         ],
+        cycle_artifact_name="Reflection",
     )
 
     ps = None
@@ -393,11 +414,15 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     default_count = 0
     shift_count = 0
     process_blog_sources: list[str] = []
+    # Canonical process-blog locations, plus the discovered cycle dirs so that
+    # students who keep inline @resist/@default/@shift tags in milestone notes
+    # (e.g. p2-break-through/session-notes.md) get a non-zero resist_count.
     blog_search_roots = [
         workspace / "esf" / context / "process-blog",
         workspace / "projects" / context / "process-blog",
         workspace / "process-blog",
     ]
+    blog_search_roots.extend(cycle_dirs)
     inline_record_offset = max((r.record_number for r in rors), default=0) + 1000
     inline_seq = 0
     # Skip filenames that are templates, readmes, or example/instruction files.
@@ -405,12 +430,40 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         r"(template|readme|instructions?|example|tutorial)",
         __import__("re").IGNORECASE,
     )
+    # Cycle dirs also hold the record-of-resistance / position-statement /
+    # reflection / ai-use-log markdown files; those have already been parsed
+    # above and must not be re-scanned for inline @resist tags (a record-of-
+    # resistance file isn't a process-blog session). Skip these markers in
+    # cycle-dir scans only — canonical process-blog/ dirs shouldn't contain
+    # them at all.
+    _CYCLE_BLOG_SKIP_RE = __import__("re").compile(
+        r"(record-of-resistance|position-statement|reflection|ai-use-log|ai-log)",
+        __import__("re").IGNORECASE,
+    )
+    # Path-based dedupe so a file that happens to appear under multiple roots
+    # (e.g. cycle_dir overlapping with a canonical root in some odd layout)
+    # is only counted once. process_blog_sources alone wasn't enough: it
+    # short-circuits the list-append but not the resist_count increment.
+    seen_blog_files: set = set()
+    consumed_any_canonical = False
     for root in blog_search_roots:
         if not root.exists():
+            continue
+        is_cycle_dir = root in cycle_dirs
+        # Preserve the historical behavior of consuming only the first existing
+        # canonical root. Cycle dirs are additive: scan every one of them so a
+        # student with both p2- and p3- session notes gets both counted.
+        if not is_cycle_dir and consumed_any_canonical:
             continue
         for blog_file in sorted(root.glob("*.md")):
             if _BLOG_SKIP_RE.search(blog_file.name):
                 continue
+            if is_cycle_dir and _CYCLE_BLOG_SKIP_RE.search(blog_file.name):
+                continue
+            resolved = blog_file.resolve()
+            if resolved in seen_blog_files:
+                continue
+            seen_blog_files.add(resolved)
             try:
                 text = blog_file.read_text(encoding="utf-8")
             except (OSError, UnicodeDecodeError):
@@ -428,7 +481,8 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 inline_ror.record_number = inline_record_offset + inline_seq
                 inline_ror.project = project_name  # not filtered; treated as belonging
                 rors.append(inline_ror)
-        break  # only consume the first existing root to avoid double-counting
+        if not is_cycle_dir:
+            consumed_any_canonical = True
 
     log = parse_ai_use_log(log_path.read_text(encoding="utf-8")) if log_path.exists() else None
     refl = parse_reflection(reflection_path.read_text(encoding="utf-8")) if reflection_path.exists() else None
@@ -550,22 +604,27 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     # Surface cycle-based auto-discovery as an INFO gap. Not a problem; just a
     # breadcrumb so faculty understand where artifacts came from, and so the
     # student knows they can declare `## Defense Pack Paths` for determinism.
-    if cycle_layout_used:
+    # Only name the artifacts that actually resolved through the cycle path,
+    # not the union of every artifact in the pack — otherwise a workspace where
+    # only PS lives in a milestone dir while RoRs sit in canonical
+    # `records-of-resistance/` misleads the reader about which paths were used.
+    if cycle_resolved_artifacts:
         from .schema import Gap, GapSeverity
         try:
             discovered_names = ", ".join(sorted(d.name for d in cycle_dirs))
         except Exception:
             discovered_names = "(unavailable)"
+        resolved_list = ", ".join(sorted(cycle_resolved_artifacts))
         pack.gaps.append(Gap(
             artifact="workspace_layout",
             severity=GapSeverity.INFO,
             message=(
-                f"Auto-discovered cycle-based workspace layout. Artifacts were "
-                f"located in milestone directories ({discovered_names}) rather than "
-                f"the canonical `records-of-resistance/` and `position-statements/` "
-                f"folders. The pack is complete; consider declaring an explicit "
-                f"`## Defense Pack Paths` section in companion-state.md if you want "
-                f"the layout pinned rather than auto-detected."
+                f"Auto-discovered cycle-based workspace layout. The following "
+                f"artifact(s) were located in milestone directories "
+                f"({discovered_names}) rather than their canonical folders: "
+                f"{resolved_list}. The pack is complete; consider declaring an "
+                f"explicit `## Defense Pack Paths` section in companion-state.md "
+                f"if you want the layout pinned rather than auto-detected."
             ),
         ))
 

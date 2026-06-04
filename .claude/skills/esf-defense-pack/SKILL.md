@@ -38,6 +38,7 @@ The Defense Pack is the operational expression of the ESF thesis: **proof that t
 /esf-defense-pack --skip-narrative # render using existing narrative.md
 /esf-defense-pack --list           # list previous packs for this project
 /esf-defense-pack --ci             # non-interactive defaults (testing only)
+/esf-defense-pack --verbose        # show INFO-severity gaps in the one-screen summary
 ```
 
 ### `--list` implementation (skill-level, not aggregator-level)
