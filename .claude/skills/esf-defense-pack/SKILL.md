@@ -149,7 +149,7 @@ Write `esf/<context>/defense-packs/<project>-<timestamp>/defense-narrative.md` u
 - `## How I came in`: position summary in student voice (becomes the body of the HTML's position section)
 - `## What I set out to protect`: what mattered most + non-negotiables, in the student's voice
 - `## The key decisions`: contains `### Decision #N` sub-blocks, one per curated record
-- `## How my position held` (or `## How my position held (or shifted)`)
+- `## How my position held (or shifted)`
 - `## What I'd defend if asked`: five numbered claims (`1.`, `2.`, etc.) the student would say out loud
 - `## Disclosure`: short AI disclosure (overrides the auto-generated one if present)
 - `## Opening` (optional): explicit opening line. If omitted, the renderer skips Opening rather than duplicating "How I came in".
