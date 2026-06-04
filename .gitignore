@@ -62,3 +62,8 @@ esf/*/defense-packs/
 # companion-state.md fixtures under test/ and sample/ are unaffected.
 /demo/
 /companion-state.md
+
+# Claude Code agent worktrees — temporary worktrees created by parallel
+# subagent dispatch (isolation=worktree). Each worktree is its own git
+# checkout pinned to a stable commit; the parent repo does not track them.
+.claude/worktrees/
