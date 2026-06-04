@@ -62,7 +62,11 @@ def extract_sections(body: str) -> dict:
     sections = {}
     matches = list(_H2_RE.finditer(placeholder_body))
     for i, m in enumerate(matches):
-        heading = m.group(1).strip()
+        # Strip trailing punctuation that students naturally add to headings
+        # (`## What AI Suggested:` instead of `## What AI Suggested`). Without
+        # this, downstream `sections.get("What AI Suggested", "")` lookups
+        # return empty and the student silently loses their whole section.
+        heading = m.group(1).strip().rstrip(":").rstrip()
         start = m.end()
         end = matches[i + 1].start() if i + 1 < len(matches) else len(body)
         sections[heading] = body[start:end].strip()
@@ -89,15 +93,20 @@ _BLOCKQUOTE_PREFIX_RE = re.compile(r"^>\s?")
 # Module-level compiled regexes used in section-specific parsers. Compiling
 # once at module load is negligibly faster for our usual 5-10-RoR pack size,
 # but keeps each regex visible in one place and is hygienic.
-_DRIFT_QUOTE_RE = re.compile(r"^>\s*(.+)$", re.MULTILINE)
+# Capture the body of a single-line blockquote (`> text`). The horizontal
+# whitespace class is `[ \t]*` rather than `\s*` so it cannot span newlines —
+# otherwise an empty `>` line followed by a `**Bold question?**` paragraph
+# would have its `(.+)` match the bold question line and mis-attribute it as
+# the drift quote.
+_DRIFT_QUOTE_RE = re.compile(r"^>[ \t]*(.+)$", re.MULTILINE)
 _INTERACTION_COUNT_RE = re.compile(r"Total AI interactions logged:\*\*\s*(\d+)")
 _CHECKLIST_RE = re.compile(r"^\s*[-*]\s*\[([xX ])\]", re.MULTILINE)
 _LEARNING_RE = re.compile(
-    r"would not have learned without AI\?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)",
+    r"would not have learned without AI\?\*\*\s*>[ \t]*(.+?)(?=\n\s*\*\*|$)",
     re.DOTALL,
 )
 _TEMPTATION_RE = re.compile(
-    r"tempted to accept AI output uncritically.*?\*\*\s*>\s*(.+?)(?=\n\s*\*\*|$)",
+    r"tempted to accept AI output uncritically.*?\*\*\s*>[ \t]*(.+?)(?=\n\s*\*\*|$)",
     re.DOTALL,
 )
 
@@ -305,16 +314,44 @@ _SHIFT_RE = re.compile(r"@shift\b", re.IGNORECASE)
 # scan to process-blog files specifically, not arbitrary node_modules trees.
 
 
+_LIST_ITEM_RE = re.compile(r"^\s*(?:[-*+]\s+|\d+\.\s+)")
+
+
 def _extract_paragraph_around(text: str, pos: int) -> str:
     """Return the markdown block containing position `pos`.
 
     A 'block' is bounded by blank lines, thematic breaks, or markdown headings
-    (any level). We walk backward to find the start and forward to find the end.
-    Returns the block content with leading/trailing whitespace stripped.
+    (any level). List items get special handling: each bullet/numbered item is
+    its own block (plus any indented continuation lines), so a bulleted list of
+    `- @resist on X` / `- @resist on Y` produces two distinct blocks rather than
+    one — otherwise the inline-tag scanner would either dedupe distinct
+    decisions into a single record or inflate the count past the records list.
     """
-    # Find the start: walk back to the first blank line or heading
     line_start = text.rfind("\n", 0, pos) + 1
-    # Walk backward by lines until we hit a blank line or a heading
+    line_end = text.find("\n", pos)
+    if line_end == -1:
+        line_end = len(text)
+    current_line = text[line_start:line_end]
+
+    # List item: block is this item plus indented continuation. Each item in a
+    # tight bulleted list is its own block, so multiple `@resist` tags in one
+    # list produce one record per item.
+    if _LIST_ITEM_RE.match(current_line):
+        end = line_end
+        while end < len(text):
+            next_end = text.find("\n", end + 1)
+            if next_end == -1:
+                next_end = len(text)
+            next_line = text[end + 1:next_end]
+            if not next_line.strip():
+                break
+            # Continuation must be indented further than the list marker.
+            if not next_line.startswith(("  ", "\t")):
+                break
+            end = next_end
+        return text[line_start:end].strip()
+
+    # Prose paragraph: walk back to the first blank line or heading.
     cursor = line_start
     while cursor > 0:
         prev_end = text.rfind("\n", 0, cursor - 1)
@@ -323,12 +360,14 @@ def _extract_paragraph_around(text: str, pos: int) -> str:
         if not prev_line.strip():
             break
         if re.match(r"^#{1,6}\s", prev_line) or prev_line.strip() == "---":
-            # Include the heading itself if it's the immediate context
             cursor = prev_line_start
+            break
+        # Stop at the preceding list item too — prose that follows a bullet
+        # list shouldn't get glued to the list above.
+        if _LIST_ITEM_RE.match(prev_line):
             break
         cursor = prev_line_start
 
-    # Find the end: walk forward to the next blank line or heading
     end_cursor = text.find("\n", pos)
     if end_cursor == -1:
         end_cursor = len(text)
@@ -340,6 +379,9 @@ def _extract_paragraph_around(text: str, pos: int) -> str:
         if not next_line.strip():
             break
         if re.match(r"^#{1,6}\s", next_line) or next_line.strip() == "---":
+            break
+        # End of a prose paragraph when the next line starts a list item.
+        if _LIST_ITEM_RE.match(next_line):
             break
         end_cursor = next_end
 
@@ -436,10 +478,17 @@ def parse_ai_use_log(text: str) -> AIUseLog:
     if m:
         interaction_count = int(m.group(1))
 
-    # Five Questions pass rate. Restrict the match to actual checklist lines
-    # (lines starting with `-` or `*` bullet, optionally indented) so we don't
-    # accidentally count any literal `[ ]` in prose as an unchecked question.
-    checklist_lines = _CHECKLIST_RE.findall(body)
+    # Five Questions pass rate. Scope the checklist scan to the Five-Questions
+    # section specifically — globally scanning the body would mis-count any
+    # markdown task list elsewhere in the log (a `## Next Steps` to-do list, an
+    # action-items section, retro notes) as Five-Questions answers and fabricate
+    # a pass rate. Accept the canonical heading plus the obvious variants.
+    five_q_section = next(
+        (sections[k] for k in sections
+         if "five" in k.lower() and "question" in k.lower()),
+        "",
+    )
+    checklist_lines = _CHECKLIST_RE.findall(five_q_section)
     if checklist_lines:
         yes_count = sum(1 for c in checklist_lines if c.lower() == "x")
         pass_rate = yes_count / len(checklist_lines)
@@ -460,8 +509,21 @@ def parse_reflection(text: str) -> Reflection:
     sections = extract_sections(body)
     krr = sections.get("What I Kept, Revised, and Rejected", "")
 
+    # Terminate each Kept/Revised/Rejected block at the start of the NEXT
+    # labeled block, not at any inline `**bold**` token. A naive `(?=\n\s*\*\*|$)`
+    # truncates the field as soon as the student writes an emphasized phrase
+    # (e.g. `**Layout principles** — the friction premise`), silently dropping
+    # everything from the bold-list onward.
+    _NEXT_KRR_LABEL_RE = (
+        r"\n\*\*(?:Kept\s*\(and why\)|Revised\s*\(what changed and why\)|Rejected\s*\(and why\)):\*\*"
+    )
+
     def _after(label: str) -> str:
-        m = re.search(rf"\*\*{re.escape(label)}\*\*\s*(.*?)(?=\n\s*\*\*|$)", krr, re.DOTALL)
+        m = re.search(
+            rf"\*\*{re.escape(label)}\*\*\s*(.*?)(?={_NEXT_KRR_LABEL_RE}|$)",
+            krr,
+            re.DOTALL,
+        )
         return m.group(1).strip() if m else ""
 
     kept = _after("Kept (and why):")
