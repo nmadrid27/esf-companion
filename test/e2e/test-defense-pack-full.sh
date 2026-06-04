@@ -39,7 +39,7 @@ On the grid: I rejected the 12-column proposal.
 ### Decision #3
 On hover: I rejected feel-good states.
 
-## How my position held
+## How my position held (or shifted)
 Minor drift, owned.
 
 ## What I'd defend if asked

@@ -357,5 +357,22 @@ class TestCanonicalLayoutSilentOnCycles(unittest.TestCase):
         self.assertEqual(layout_gaps, [])
 
 
+class TestExportTimestampShape(unittest.TestCase):
+    """export_timestamp must match the SKILL.md folder convention
+    `date -u +%Y-%m-%dT%H%M%SZ` (compact, no colons in the time portion) so the
+    pack.json field and its containing folder name are visibly the same shape.
+    """
+
+    def test_export_timestamp_is_compact_utc(self):
+        import re as _re
+        pack = aggregate_from_dir(FIXTURES / "full")
+        self.assertRegex(
+            pack.export_timestamp,
+            _re.compile(r"^\d{4}-\d{2}-\d{2}T\d{6}Z$"),
+            f"export_timestamp {pack.export_timestamp!r} should be compact UTC "
+            f"(`YYYY-MM-DDTHHMMSSZ`, no colons in time)",
+        )
+
+
 if __name__ == "__main__":
     unittest.main()

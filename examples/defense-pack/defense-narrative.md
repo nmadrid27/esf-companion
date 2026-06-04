@@ -14,7 +14,7 @@ On the grid: I rejected the 12-column smooth-reflow proposal because the grid is
 ### Decision #3
 On hover: I rejected the "feel-good" hover states because they soften the friction premise. Hover feedback should feel like a tap on a hard surface, not a wash. I used abrupt color and scale changes with no in-between, treating hover as state confirmation rather than decoration.
 
-## How my position held
+## How my position held (or shifted)
 My drift was minor. I let one option in (slightly more visible feedback than I originally wanted) but only after evaluating it against Element 3 and deciding the user-feedback need outweighed the aesthetic purity. Every other AI suggestion that pulled toward smoothness or comfort was rejected.
 
 ## What I'd defend if asked
