@@ -1,0 +1,33 @@
+name: Test Defense Pack
+
+on:
+  push:
+    paths:
+      - '.claude/skills/esf-defense-pack/**'
+      - 'test/**'
+      - '.github/workflows/test-defense-pack.yml'
+  pull_request:
+    paths:
+      - '.claude/skills/esf-defense-pack/**'
+      - 'test/**'
+      - '.github/workflows/test-defense-pack.yml'
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run Defense Pack unit tests
+        # `-t .` makes the repo root the import root, so cross-test imports
+        # like `from test.unit.test_render_script import _full_pack` resolve.
+        # PYTHONPATH adds the aggregator package; the skill ships its code
+        # under .claude/skills/, not in a top-level python package.
+        env:
+          PYTHONPATH: .claude/skills/esf-defense-pack/bin
+        run: python -m unittest discover -s test -t . -v
