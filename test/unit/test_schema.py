@@ -1,7 +1,11 @@
 import json
 import unittest
 from dataclasses import asdict, fields
-from esf_pack.schema import DefensePack, PositionStatement, RecordOfResistance, Gap, GapSeverity
+from esf_pack.schema import (
+    DefensePack, PositionStatement, RecordOfResistance, Gap, GapSeverity,
+    Narrative, DecisionWalkthroughEntry,
+)
+from render import _to_dataclass
 
 
 def _sample_pack(**overrides) -> DefensePack:
@@ -49,6 +53,78 @@ class TestSchema(unittest.TestCase):
         self.assertEqual(d["project_name"], "test-project")
         self.assertEqual(len(d["records_of_resistance"]), 1)
         self.assertEqual(d["gaps"][0]["artifact"], "reflection")
+
+    def test_decision_walkthrough_survives_round_trip(self):
+        """A DefensePack with a non-empty decision_walkthrough must survive
+        asdict → json.dumps → json.loads → _to_dataclass with .record_number
+        and .narration accessible via attribute (not subscript).
+
+        This also guards backwards compatibility: older pack.json files in the
+        wild serialized decision_walkthrough as plain dicts; the round-trip
+        must read them as DecisionWalkthroughEntry instances.
+        """
+        pack = DefensePack(
+            project_name="test-project",
+            context="test-course",
+            student_name="Test Student",
+            scaffolding_level="Independent",
+            phase_at_export="Reflect",
+            export_timestamp="2026-05-20T12:00:00Z",
+            companion_version="0.8.0",
+            position_statement=None,
+            records_of_resistance=[],
+            key_decisions=[],
+            ai_use_log=None,
+            reflection=None,
+            disclosure=None,
+            evolution_log_entries=[],
+            narrative=Narrative(
+                intro="",
+                position_summary="",
+                decision_walkthrough=[
+                    DecisionWalkthroughEntry(record_number=1, narration="First."),
+                    DecisionWalkthroughEntry(record_number=3, narration="Third."),
+                ],
+                reflection_summary="",
+                closing="",
+                user_approved=True,
+                drafted_at="2026-05-20T12:00:00Z",
+            ),
+            gaps=[],
+        )
+
+        round_tripped = _to_dataclass(DefensePack, json.loads(json.dumps(asdict(pack))))
+        assert round_tripped is not None
+        assert round_tripped.narrative is not None
+        walkthrough = round_tripped.narrative.decision_walkthrough
+        self.assertEqual(len(walkthrough), 2)
+        # Attribute access, not subscript — the whole point of the dataclass.
+        self.assertEqual(walkthrough[0].record_number, 1)
+        self.assertEqual(walkthrough[0].narration, "First.")
+        self.assertEqual(walkthrough[1].record_number, 3)
+        self.assertEqual(walkthrough[1].narration, "Third.")
+        self.assertIsInstance(walkthrough[0], DecisionWalkthroughEntry)
+
+    def test_decision_walkthrough_reads_legacy_dict_shape(self):
+        """Older pack.json files persist decision_walkthrough as plain dicts.
+        The round-trip must tolerate that shape and produce typed entries."""
+        legacy_narrative = {
+            "intro": "",
+            "position_summary": "",
+            "decision_walkthrough": [
+                {"record_number": 7, "narration": "Legacy entry."},
+            ],
+            "reflection_summary": "",
+            "closing": "",
+            "user_approved": True,
+            "drafted_at": "",
+        }
+        narrative = _to_dataclass(Narrative, legacy_narrative)
+        assert narrative is not None
+        self.assertEqual(len(narrative.decision_walkthrough), 1)
+        self.assertIsInstance(narrative.decision_walkthrough[0], DecisionWalkthroughEntry)
+        self.assertEqual(narrative.decision_walkthrough[0].record_number, 7)
+        self.assertEqual(narrative.decision_walkthrough[0].narration, "Legacy entry.")
 
 
 class TestSchemaVersion(unittest.TestCase):

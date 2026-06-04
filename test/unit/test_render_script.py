@@ -1,5 +1,8 @@
 import unittest
-from esf_pack.schema import DefensePack, PositionStatement, RecordOfResistance, Narrative, KeyDecision
+from esf_pack.schema import (
+    DefensePack, PositionStatement, RecordOfResistance, Narrative, KeyDecision,
+    DecisionWalkthroughEntry,
+)
 from esf_pack.render_script import render_script
 
 
@@ -33,8 +36,8 @@ def _full_pack():
             intro="Intro text.",
             position_summary="Position summary.",
             decision_walkthrough=[
-                {"record_number": 1, "narration": "On the grid: I chose off-grid."},
-                {"record_number": 3, "narration": "On hover: I chose discrete."},
+                DecisionWalkthroughEntry(record_number=1, narration="On the grid: I chose off-grid."),
+                DecisionWalkthroughEntry(record_number=3, narration="On hover: I chose discrete."),
             ],
             reflection_summary="What I learned.",
             closing="What I'd defend.",

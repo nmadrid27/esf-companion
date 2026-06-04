@@ -39,12 +39,12 @@ def _decisions_html(pack: DefensePack) -> str:
             entry = next(
                 (
                     e for e in pack.narrative.decision_walkthrough
-                    if e["record_number"] == kd.record_number
+                    if e.record_number == kd.record_number
                 ),
                 None,
             )
             if entry:
-                narration = entry["narration"]
+                narration = entry.narration
 
         # Headline: only show if it adds information beyond the narration.
         # When the parser auto-generates headline from the narration's first

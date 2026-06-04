@@ -23,6 +23,7 @@ sys.path.insert(0, str(Path(__file__).parent))
 from esf_pack.schema import (
     DefensePack, Narrative, PositionStatement, RecordOfResistance,
     KeyDecision, AIUseLog, Reflection, Disclosure, Gap, GapSeverity,
+    DecisionWalkthroughEntry,
 )
 from esf_pack.render_html import render_html
 from esf_pack.render_pdf import render_pdf_or_skip
@@ -32,6 +33,24 @@ from esf_pack.render_script import render_script
 def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
     if data is None:
         return None
+    if cls is Narrative:
+        # Convert decision_walkthrough dicts → DecisionWalkthroughEntry on round-trip
+        # so older pack.json files (which serialize the entries as plain dicts) read
+        # back into the typed dataclass without breaking. asdict() of a
+        # DecisionWalkthroughEntry produces the same `{record_number, narration}`
+        # shape, so the wire format stays compatible.
+        field_names = {f.name for f in fields(cast(Any, Narrative))}
+        kwargs = {k: v for k, v in data.items() if k in field_names}
+        raw_walkthrough = kwargs.get("decision_walkthrough", []) or []
+        kwargs["decision_walkthrough"] = [
+            entry if isinstance(entry, DecisionWalkthroughEntry)
+            else DecisionWalkthroughEntry(
+                record_number=entry["record_number"],
+                narration=entry["narration"],
+            )
+            for entry in raw_walkthrough
+        ]
+        return cast(T, Narrative(**kwargs))
     if cls is DefensePack:
         # Use .get() with sensible defaults throughout so an older pack.json
         # missing a field (added in a later schema revision) doesn't crash with
@@ -125,13 +144,13 @@ def _parse_narrative_md(text: str) -> Narrative:
     for m in re.finditer(r"^## (.+?)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
         sections[m.group(1).strip()] = m.group(2).strip()
 
-    decision_walkthrough: list[dict] = []
+    decision_walkthrough: list[DecisionWalkthroughEntry] = []
     decisions_text = sections.get("The key decisions", "")
     for m in re.finditer(r"###\s*Decision\s*#(\d+).*?\n(.*?)(?=^### |\Z)", decisions_text, re.MULTILINE | re.DOTALL):
-        decision_walkthrough.append({
-            "record_number": int(m.group(1)),
-            "narration": _strip_blockquote_markers(m.group(2)),
-        })
+        decision_walkthrough.append(DecisionWalkthroughEntry(
+            record_number=int(m.group(1)),
+            narration=_strip_blockquote_markers(m.group(2)),
+        ))
 
     came_in = _strip_blockquote_markers(sections.get("How I came in", ""))
     # Prefer the canonical (longer) heading the template ships, but accept the
@@ -186,10 +205,10 @@ def main():
     # so the student's curated argument isn't silently dropped.
     if not pack.key_decisions and pack.narrative and pack.narrative.decision_walkthrough:
         for entry in pack.narrative.decision_walkthrough:
-            rec_num = entry["record_number"]
+            rec_num = entry.record_number
             # Headline: first non-empty line of narration, truncated.
             first_line = next(
-                (ln.strip() for ln in entry["narration"].splitlines() if ln.strip()),
+                (ln.strip() for ln in entry.narration.splitlines() if ln.strip()),
                 "",
             )
             headline = first_line[:80] + ("…" if len(first_line) > 80 else "")

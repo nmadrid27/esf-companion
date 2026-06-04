@@ -74,12 +74,17 @@ class Disclosure:
     text: str
 
 
+@dataclass(frozen=True)
+class DecisionWalkthroughEntry:
+    record_number: int
+    narration: str
+
+
 @dataclass
 class Narrative:
     intro: str
     position_summary: str
-    # {record_number, narration} dicts in this build; dedicated dataclass deferred to a later task.
-    decision_walkthrough: list[dict]
+    decision_walkthrough: list[DecisionWalkthroughEntry]
     reflection_summary: str
     closing: str
     user_approved: bool

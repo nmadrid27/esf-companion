@@ -19,9 +19,9 @@ def _walkthrough_text(pack: DefensePack) -> str:
         return "*(No key decisions captured — defense rests on Position Statement and Reflection only.)*"
     chunks = []
     for entry in pack.narrative.decision_walkthrough:
-        rec_num = entry["record_number"]
+        rec_num = entry.record_number
         ror = next((r for r in pack.records_of_resistance if r.record_number == rec_num), None)
-        narration = entry.get("narration", "").strip()
+        narration = (entry.narration or "").strip()
         # Lead with the student's narration. Add a short reference line afterward
         # pointing to the appendix entry, without restating the RoR's three fields
         # (the appendix has them in full; reciting them aloud duplicates).
