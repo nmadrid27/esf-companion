@@ -8,6 +8,7 @@ from esf_pack.parsers import (
     parse_record_of_resistance,
     parse_ai_use_log,
     parse_reflection,
+    extract_inline_resists,
 )
 from esf_pack.schema import PositionStatement, RecordOfResistance, AIUseLog, Reflection
 
@@ -399,6 +400,148 @@ class TestBlockquotePrefixStrip(unittest.TestCase):
     def test_nested_blockquote_keeps_inner_marker(self):
         # `>> nested` should produce `> nested` (one level removed), not `nested`
         self.assertEqual(quote_content(">> nested"), "> nested")
+
+
+class TestTrailingColonHeadings(unittest.TestCase):
+    """Students naturally write `## What AI Suggested:` (with trailing colon).
+    extract_sections must normalize that so per-section parsers find the
+    content; otherwise the entire RoR (or any other artifact) renders blank.
+    """
+
+    def test_ror_sections_with_trailing_colon_in_heading(self):
+        ror = parse_record_of_resistance(
+            "---\ntype: record-of-resistance\nproject: x\n"
+            "record-number: 1\n---\n\n"
+            "## What AI Suggested:\n\n> AI proposed X.\n\n"
+            "## Why I Rejected or Revised It:\n\n> Because Y.\n\n"
+            "## What I Did Instead:\n\n> I did Z.\n"
+        )
+        self.assertEqual(ror.ai_suggested, "AI proposed X.")
+        self.assertEqual(ror.why_rejected, "Because Y.")
+        self.assertEqual(ror.what_i_did_instead, "I did Z.")
+
+    def test_extract_sections_strips_trailing_colon_only(self):
+        # Embedded `:` (Element 1: My Stance) must be preserved.
+        sections = extract_sections("## Element 1: My Stance\n\nbody\n")
+        self.assertIn("Element 1: My Stance", sections)
+
+
+class TestAIUseLogChecklistScope(unittest.TestCase):
+    """The Five-Questions pass rate must be computed over the Five-Questions
+    section only. A globally-scanned checklist counts unrelated task lists
+    (Next Steps, action items) as Five-Questions answers and fabricates a rate.
+    """
+
+    def test_pass_rate_none_when_no_five_questions_section(self):
+        log = parse_ai_use_log(
+            "---\ntype: ai-use-log\n---\n\n"
+            "## Next Steps\n\n- [ ] write tests\n- [x] fix bug\n- [ ] review PR\n"
+        )
+        self.assertIsNone(log.five_questions_pass_rate)
+
+    def test_pass_rate_ignores_unrelated_checklists(self):
+        log = parse_ai_use_log(
+            "---\ntype: ai-use-log\n---\n\n"
+            "## The Five Questions\n\n- [x] Q1\n- [x] Q2\n- [ ] Q3\n\n"
+            "## Next Steps\n\n- [ ] unrelated\n- [ ] unrelated\n"
+        )
+        self.assertAlmostEqual(log.five_questions_pass_rate, 2 / 3)
+
+
+class TestReflectionLabelTermination(unittest.TestCase):
+    """Reflection `_after()` must terminate each Kept/Revised/Rejected block
+    at the next labeled block, not at any inline **bold** token. A reflection
+    that uses `**bold**` for emphasis inside a kept-items list was silently
+    truncated at the first emphasized phrase.
+    """
+
+    def test_kept_block_preserves_inline_bold_lines(self):
+        ref = parse_reflection(
+            "---\ntype: reflection\n---\n\n"
+            "## What I Kept, Revised, and Rejected\n\n"
+            "**Kept (and why):** I kept several things:\n"
+            "**Layout principles** — friction premise\n"
+            "**Color choices** — research-informed\n\n"
+            "**Revised (what changed and why):** I revised the easing curves.\n\n"
+            "**Rejected (and why):** I rejected the grid suggestion.\n"
+        )
+        self.assertIn("Layout principles", ref.kept)
+        self.assertIn("Color choices", ref.kept)
+        self.assertEqual(ref.revised, "I revised the easing curves.")
+        self.assertEqual(ref.rejected, "I rejected the grid suggestion.")
+
+
+class TestInlineResistListItems(unittest.TestCase):
+    """A bullet list of distinct `@resist` decisions must produce one record
+    per item, with resist_count and len(records) agreeing. The previous
+    paragraph-extractor treated the whole list as one block, then deduped to
+    a single record while keeping the inflated raw count — counts and records
+    disagreed and two distinct decisions silently vanished.
+    """
+
+    def test_bullet_list_resists_yield_one_record_each(self):
+        records, rc, dc, sc = extract_inline_resists(
+            "Today I made several decisions:\n"
+            "- @resist on the grid\n"
+            "- @resist on color palette\n"
+            "- @resist on typography\n",
+            source_label="blog.md",
+        )
+        self.assertEqual(len(records), 3)
+        self.assertEqual(rc, 3)
+        self.assertEqual(len(records), rc, "records and resist_count must agree")
+        narratives = [r.inline_narrative for r in records]
+        self.assertTrue(any("grid" in n for n in narratives))
+        self.assertTrue(any("color palette" in n for n in narratives))
+        self.assertTrue(any("typography" in n for n in narratives))
+
+
+class TestDriftQuoteRegex(unittest.TestCase):
+    """`_DRIFT_QUOTE_RE` previously used `\\s*` after `>`, which matches
+    newlines, so an empty `>` line followed by a `**Bold question?**`
+    paragraph had its capture span across blank lines and capture the bold
+    question as the drift quote. The fix narrows the class to horizontal
+    whitespace (`[ \\t]*`).
+    """
+
+    def test_empty_drift_quote_does_not_pull_next_question(self):
+        # Primary guard: an empty `>` blockquote must not absorb the next
+        # bolded question line as the drift content. (When the user truly
+        # leaves drift_what empty, the parser can't fully reconstruct both
+        # fields, but it must never mis-attribute the question prompt itself
+        # as the user's drift description.)
+        ps = parse_position_statement(
+            "---\ntype: position-statement\n---\n\n"
+            "## Element 1: My Stance\n> I want.\n\n"
+            "## Element 2: What Matters Most\n> Respond.\n\n"
+            "## Element 3: What I Will Not Compromise On\n> No.\n\n"
+            "## After the AI Session\n\n"
+            "**Drift level:** minor\n"
+            "**What shifted:**\n\n"
+            ">\n\n"
+            "**Was the shift your decision, or did you follow AI's framing without questioning it?**\n\n"
+            "> Mine.\n"
+        )
+        self.assertNotIn("Was the shift", (ps.drift_what_shifted or ""))
+
+    def test_filled_drift_section_parses_both_fields(self):
+        # Happy path: when both `>` blockquotes are filled, both fields
+        # populate correctly.
+        ps = parse_position_statement(
+            "---\ntype: position-statement\n---\n\n"
+            "## Element 1: My Stance\n> I want.\n\n"
+            "## Element 2: What Matters Most\n> Respond.\n\n"
+            "## Element 3: What I Will Not Compromise On\n> No.\n\n"
+            "## After the AI Session\n\n"
+            "**Drift level:** minor\n"
+            "**What shifted:**\n\n"
+            "> Started leaning toward visible feedback cues.\n\n"
+            "**Was the shift your decision, or did you follow AI's framing without questioning it?**\n\n"
+            "> Mine.\n"
+        )
+        self.assertEqual(ps.drift_level, "minor")
+        self.assertEqual(ps.drift_what_shifted, "Started leaning toward visible feedback cues.")
+        self.assertTrue(ps.drift_was_user_decision)
 
 
 if __name__ == "__main__":
