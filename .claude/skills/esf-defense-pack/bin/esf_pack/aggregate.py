@@ -35,6 +35,53 @@ _COMPANION_STATE_LOCATIONS = (
 )
 
 
+# Directory names skipped when auto-discovering cycle-based layouts. The
+# blacklist guards against accidentally pulling RoRs out of canonical install
+# trees (where they're already discovered), virtualenvs, VCS metadata, and
+# template/example directories that look like records but aren't.
+_CYCLE_DIR_BLACKLIST = frozenset({
+    "esf", "projects", "_esf", ".esf",
+    "templates", "examples", "node_modules",
+    "venv", ".venv", "__pycache__",
+    ".git", ".github", ".claude",
+    "test", "tests",
+})
+
+# A cycle-dir candidate must contain at least one file matching one of these
+# patterns. Defines what "looks like a cycle dir" without keying on dir names
+# (students name them p2-break-through, milestone-3, cycle-1, etc.).
+_CYCLE_DIR_MARKER_PATTERNS = (
+    "record-of-resistance*.md",
+    "position-statement*.md",
+)
+
+
+def _discover_cycle_dirs(workspace: Path) -> list[Path]:
+    """Find direct-child directories that look like ESF cycle/phase dirs.
+
+    A cycle dir is a top-level directory in the workspace that holds ESF
+    artifacts directly (no `records-of-resistance/` subfolder), as students
+    sometimes organize work by milestone/cycle (e.g. `p2-break-through/`,
+    `p3-next-steps/`) rather than by artifact type. Returns sorted list so
+    aggregation order is deterministic across runs.
+    """
+    discovered: list[Path] = []
+    if not workspace.is_dir():
+        return discovered
+    for child in sorted(workspace.iterdir()):
+        if not child.is_dir():
+            continue
+        if child.name.startswith("."):
+            continue
+        if child.name in _CYCLE_DIR_BLACKLIST:
+            continue
+        for pattern in _CYCLE_DIR_MARKER_PATTERNS:
+            if any(child.glob(pattern)):
+                discovered.append(child)
+                break
+    return discovered
+
+
 def _find_companion_state(workspace: Path) -> Path:
     """Locate companion-state.md across known install layouts.
 
@@ -162,18 +209,22 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     #   2. Canonical v0.8.0+ layout: esf/<context>/...
     #   3. Pre-v0.8.0 fallback layout: projects/<context>/...
     #   4. Filename-pattern fallback (real students rename files: M2-position-statement.md)
+    #   5. Cycle-based layout (top-level milestone dirs holding artifacts directly)
     overrides: dict = state.get("__defense_paths__", {}) or {}
+    cycle_dirs = _discover_cycle_dirs(workspace)
+    cycle_layout_used = False  # flipped True if cycle discovery contributes to the pack
 
     def _resolve_file(
         override_key: str,
         canonical_subdir: str,
         filename_patterns: list,
     ) -> Path:
-        """Resolve a file path: override → canonical → legacy → glob fallback.
+        """Resolve a file path: override → canonical → legacy → glob fallback → cycle dirs.
 
         `filename_patterns` are glob-style patterns tried in order against each
         candidate directory until a match is found.
         """
+        nonlocal cycle_layout_used
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
             _validate_relative_path(override, override_key)
@@ -191,19 +242,54 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 matches = sorted(d.glob(pattern))
                 if matches:
                     return matches[0]
+        # Cycle-based fallback: scan top-level milestone dirs for the same patterns.
+        # Drop only the bare `<project_name>.md` catch-all (index 0) — in a mixed
+        # milestone dir, matching a file by project name is too loose and would
+        # grab unrelated artifacts. Keep every artifact-specific glob, including
+        # single-pattern ones like `*reflection*.md` (dropping those left whole
+        # artifacts undiscoverable in cycle layouts).
+        cycle_patterns = [p for p in filename_patterns if p.startswith("*")]
+        for d in cycle_dirs:
+            for pattern in cycle_patterns:
+                matches = sorted(d.glob(pattern))
+                if matches:
+                    cycle_layout_used = True
+                    return matches[0]
         # Return canonical-path-that-doesn't-exist so gap detection fires cleanly.
         return workspace / "esf" / context / canonical_subdir / filename_patterns[0].lstrip("*")
 
-    def _resolve_dir(override_key: str, canonical_subdir: str) -> Path:
+    def _resolve_ror_dirs(override_key: str, canonical_subdir: str) -> tuple[list[Path], bool]:
+        """Resolve RoR scan roots. Returns (dirs, from_cycle).
+
+        `from_cycle` is True only when the returned dirs are milestone/cycle
+        directories that hold MIXED artifacts (records alongside the position
+        statement, reflection, etc.). The scanner uses that flag to pick a
+        strict `record-of-resistance*.md` glob for cycle dirs versus the
+        permissive `*.md` for dedicated `records-of-resistance/` dirs. It is NOT
+        derived from how many dirs are returned: canonical+legacy can both exist
+        (two dedicated dirs) without being cycle dirs, and a lone milestone dir
+        is still a cycle dir.
+        """
+        nonlocal cycle_layout_used
         override = overrides.get(override_key, "").strip()
         if override and override.lower() not in ("(none)", "none", "n/a", "-"):
             _validate_relative_path(override, override_key)
-            return workspace / override
-        for root in (workspace / "esf" / context, workspace / "projects" / context):
-            d = root / canonical_subdir
-            if d.exists():
-                return d
-        return workspace / "esf" / context / canonical_subdir
+            return [workspace / override], False
+        existing = [
+            d for d in (
+                workspace / "esf" / context / canonical_subdir,
+                workspace / "projects" / context / canonical_subdir,
+            )
+            if d.exists()
+        ]
+        if existing:
+            return existing, False
+        if cycle_dirs:
+            cycle_layout_used = True
+            return list(cycle_dirs), True
+        # Nothing found — return canonical-path-that-doesn't-exist so the empty
+        # scan downstream surfaces as a "no RoRs" gap rather than a crash.
+        return [workspace / "esf" / context / canonical_subdir], False
 
     # Build per-artifact filename patterns. Project names with spaces/parens are
     # used as-is in the canonical pattern; the slug-like fallbacks catch the
@@ -217,7 +303,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
             "*position*.md",               # broad fallback
         ],
     )
-    ror_dir = _resolve_dir("Records of Resistance", "records-of-resistance")
+    ror_dirs, ror_dirs_are_cycle = _resolve_ror_dirs("Records of Resistance", "records-of-resistance")
     log_path = _resolve_file(
         "AI Use Log",
         "ai-use-logs",
@@ -248,8 +334,20 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         __import__("re").IGNORECASE,
     )
     auto_number = 0
-    if ror_dir.exists():
-        for f in sorted(ror_dir.glob("*.md")):
+    # Cycle/milestone dirs hold mixed artifacts (records alongside the position
+    # statement, reflection, log), so restrict the glob to record files there.
+    # Dedicated `records-of-resistance/` dirs (canonical or legacy) hold only
+    # records, so `*.md` is correct and preserves back-compat with arbitrarily
+    # named record files (e.g. `1-grid-rejection.md`, `01-pivot.md`).
+    ror_file_pattern = "record-of-resistance*.md" if ror_dirs_are_cycle else "*.md"
+    seen_files: set = set()  # guard against double-counting if dirs overlap
+    for ror_dir in ror_dirs:
+        if not ror_dir.exists():
+            continue
+        for f in sorted(ror_dir.glob(ror_file_pattern)):
+            if f.resolve() in seen_files:
+                continue
+            seen_files.add(f.resolve())
             if _RECORD_SKIP_RE.search(f.name):
                 continue
             try:
@@ -274,7 +372,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
                 auto_number += 1
                 ror.record_number = auto_number
             rors.append(ror)
-        rors.sort(key=lambda r: r.record_number)
+    rors.sort(key=lambda r: r.record_number)
 
     # Detect duplicate record-numbers and collect for a warning gap below.
     # Two RoRs sharing a number means at least one was misnumbered; the sort
@@ -432,15 +530,38 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     if mismatched_rors:
         from .schema import Gap, GapSeverity
         details = ", ".join(f"{name} (project={proj!r})" for name, proj in mismatched_rors)
+        scanned = ", ".join(str(d) for d in ror_dirs) or "(no RoR directory resolved)"
         pack.gaps.append(Gap(
             artifact="record_of_resistance",
             severity=GapSeverity.WARNING,
             message=(
-                f"{len(mismatched_rors)} Record(s) of Resistance in {ror_dir} have a "
+                f"{len(mismatched_rors)} Record(s) of Resistance under {scanned} have a "
                 f"different `project` frontmatter than `{project_name}` and were NOT "
                 f"included in this pack: {details}. If they belong to this project, "
                 f"update their frontmatter; otherwise move them to the correct project's "
                 f"directory."
+            ),
+        ))
+
+    # Surface cycle-based auto-discovery as an INFO gap. Not a problem; just a
+    # breadcrumb so faculty understand where artifacts came from, and so the
+    # student knows they can declare `## Defense Pack Paths` for determinism.
+    if cycle_layout_used:
+        from .schema import Gap, GapSeverity
+        try:
+            discovered_names = ", ".join(sorted(d.name for d in cycle_dirs))
+        except Exception:
+            discovered_names = "(unavailable)"
+        pack.gaps.append(Gap(
+            artifact="workspace_layout",
+            severity=GapSeverity.INFO,
+            message=(
+                f"Auto-discovered cycle-based workspace layout. Artifacts were "
+                f"located in milestone directories ({discovered_names}) rather than "
+                f"the canonical `records-of-resistance/` and `position-statements/` "
+                f"folders. The pack is complete; consider declaring an explicit "
+                f"`## Defense Pack Paths` section in companion-state.md if you want "
+                f"the layout pinned rather than auto-detected."
             ),
         ))
 
