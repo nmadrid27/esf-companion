@@ -96,7 +96,7 @@ def _decisions_html(pack: DefensePack) -> str:
 
         narration_block = ""
         if narration_lead:
-            narration_block = f'<div class="kd-narration"><p>{_esc(narration)}</p></div>'
+            narration_block = f'<div class="kd-narration">{_prose_paragraphs_html(narration, line_breaks=True)}</div>'
 
         # Presenter notes are kept available but only differ from narration
         # when the SKILL adds a separate cue. For now they mirror the narration
@@ -163,15 +163,6 @@ def _record_title_from_content(ror) -> str:
             if cleaned:
                 return cleaned[:140] + ("…" if len(cleaned) > 140 else "")
     return f"Record #{ror.record_number}"
-
-
-def _record_header_html(ror) -> str:
-    """The `RoR N · date · @resist` metadata line at the top of a record."""
-    parts = [f'<span class="ror-num">RoR {ror.record_number}</span>']
-    if ror.date:
-        parts.append(f'<span class="ror-date">{_esc(ror.date)}</span>')
-    parts.append('<span class="tag">@resist</span>')
-    return f'<div class="record-header">{"".join(f"<span>·</span>" if i else "" for i in [0]) and ""}{" · ".join(parts).replace("<span>·</span>", "")}'  # joined inline
 
 
 def _record_html(ror) -> str:
@@ -409,10 +400,27 @@ def _gaps_block(pack: DefensePack) -> str:
     return f'<aside class="gaps" role="note" aria-label="Gaps in this defense pack"><h3>Gaps in this pack</h3>{items}</aside>'
 
 
+def _prose_paragraphs_html(text: str, line_breaks: bool = False) -> str:
+    """Render free-text prose as one <p> per blank-line-separated paragraph.
+
+    With line_breaks=True, single newlines inside a paragraph become <br> so a
+    multi-line field keeps its structure in HTML (matching the recording-script
+    .md). Without it, paragraphs are emitted the way _reflection_html always has.
+    Returns "" for empty input.
+    """
+    paragraphs = [p.strip() for p in (text or "").split("\n\n") if p.strip()]
+    if line_breaks:
+        return "\n".join(
+            "<p>" + "<br>".join(_esc(line) for line in p.split("\n")) + "</p>"
+            for p in paragraphs
+        )
+    return "\n".join(f"<p>{_esc(p)}</p>" for p in paragraphs)
+
+
 def _protect_block(pack: DefensePack) -> str:
     if not pack.narrative or not pack.narrative.what_set_out_to_protect:
         return ""
-    return f'<div class="protect"><h3>What I set out to protect</h3><p>{_esc(pack.narrative.what_set_out_to_protect)}</p></div>'
+    return f'<div class="protect"><h3>What I set out to protect</h3>{_prose_paragraphs_html(pack.narrative.what_set_out_to_protect)}</div>'
 
 
 def _intro_section(pack: DefensePack) -> str:
@@ -424,7 +432,7 @@ def _intro_section(pack: DefensePack) -> str:
     """
     if not pack.narrative or not pack.narrative.intro:
         return ""
-    return f'<section id="intro"><h2>Opening</h2><p>{_esc(pack.narrative.intro)}</p></section>'
+    return f'<section id="intro"><h2>Opening</h2>{_prose_paragraphs_html(pack.narrative.intro)}</section>'
 
 
 def _toc_intro_link(pack: DefensePack) -> str:
@@ -440,15 +448,14 @@ def _closing_html(pack: DefensePack) -> str:
     if pack.narrative and pack.narrative.defend_claims:
         items = "".join(f"<li>{_esc(c)}</li>" for c in pack.narrative.defend_claims)
         return f'<ol class="defend-list">{items}</ol>'
-    return f'<p>{_esc(pack.narrative.closing if pack.narrative else "")}</p>'
+    return _prose_paragraphs_html(pack.narrative.closing if pack.narrative else "")
 
 
 def _reflection_html(pack: DefensePack) -> str:
     """Reflection summary, preserving paragraph breaks from the narrative."""
     if not pack.narrative or not pack.narrative.reflection_summary:
         return "<p><em>No reflection summary provided.</em></p>"
-    paragraphs = [p.strip() for p in pack.narrative.reflection_summary.split("\n\n") if p.strip()]
-    return "\n".join(f"<p>{_esc(p)}</p>" for p in paragraphs)
+    return _prose_paragraphs_html(pack.narrative.reflection_summary)
 
 
 def render_html(pack: DefensePack) -> str:
