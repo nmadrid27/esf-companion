@@ -31,7 +31,7 @@ You can zip the folder, email it, drop it into Canvas, or share it however your 
    - Copy your stance into "How I came in"
    - Copy what matters most + non-negotiables into "What I set out to protect"
    - **Pick 3 to 5 Records of Resistance** that most directly defend your stance. For each, write a one-paragraph narration in your own voice: what AI suggested, why you overruled it, what you did instead, and how that connects to your Position Statement.
-   - Write your drift summary into "How my position held"
+   - Write your drift summary into "How my position held (or shifted)"
    - Restate your Five Questions answers as defensible claims under "What I'd defend if asked"
    - Paste or rewrite your disclosure under "Disclosure"
 

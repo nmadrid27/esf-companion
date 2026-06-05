@@ -10,7 +10,7 @@ def _full_pack():
         student_name="Alex Rivera",
         scaffolding_level="Independent",
         phase_at_export="Reflect",
-        export_timestamp="2026-05-20T12:00:00Z",
+        export_timestamp="2026-05-20T120000Z",
         companion_version="0.8.0",
         position_statement=PositionStatement(
             stance="X.", what_matters_most="Y.", non_negotiables="Z.",
@@ -39,7 +39,7 @@ def _full_pack():
             reflection_summary="What I learned.",
             closing="What I'd defend.",
             user_approved=True,
-            drafted_at="2026-05-20T12:00:00Z",
+            drafted_at="2026-05-20T120000Z",
         ),
         gaps=[],
     )

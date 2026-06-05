@@ -28,7 +28,7 @@ y
 ## The key decisions
 ### Decision #1
 z
-## How my position held
+## How my position held (or shifted)
 ok
 ## What I'd defend if asked
 ok

@@ -66,6 +66,10 @@ def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
                 )
                 for g in data.get("gaps", [])
             ],
+            # Older packs predate `schema_version`; the dataclass default ("1.0")
+            # applies when the field is absent, so a missing key is interpreted
+            # the same as an explicit 1.0.
+            schema_version=data.get("schema_version", "1.0"),
         ))
     field_names = {f.name for f in fields(cast(Any, cls))}
     return cast(T, cls(**{k: v for k, v in data.items() if k in field_names}))
@@ -112,7 +116,8 @@ def _parse_narrative_md(text: str) -> Narrative:
       - 'How I came in' — position summary in student voice
       - 'What I set out to protect' — what mattered most + non-negotiables
       - 'The key decisions' — `### Decision #N` blocks with narration
-      - 'How my position held' (or 'How my position held (or shifted)')
+      - 'How my position held (or shifted)' (canonical) or the shorter
+        'How my position held' (back-compat with older narrative files)
       - 'What I'd defend if asked' — numbered claims
       - 'Disclosure' — overrides auto-generated disclosure if present
     """
@@ -129,9 +134,12 @@ def _parse_narrative_md(text: str) -> Narrative:
         })
 
     came_in = _strip_blockquote_markers(sections.get("How I came in", ""))
+    # Prefer the canonical (longer) heading the template ships, but accept the
+    # shorter form so narrative.md files written under earlier examples still
+    # render rather than silently losing the section.
     held = _strip_blockquote_markers(
-        sections.get("How my position held", "")
-        or sections.get("How my position held (or shifted)", "")
+        sections.get("How my position held (or shifted)", "")
+        or sections.get("How my position held", "")
     )
     protect = _strip_blockquote_markers(sections.get("What I set out to protect", "")) or None
     closing_text = sections.get("What I'd defend if asked", "")
