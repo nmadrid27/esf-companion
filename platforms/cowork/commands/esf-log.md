@@ -9,7 +9,7 @@ Run end-of-session synthesis: save the session log, update PROJECT.md, and clear
 
 ## Step 1: Read the Session Buffer
 
-Glob for `projects/*/logs/.session-buffer.md` in the selected folder. Ignore any matches under `sample/`, `examples/`, or `templates/`.
+Glob for `esf/*/logs/.session-buffer.md` (and the legacy `projects/*/logs/.session-buffer.md` for workspaces not yet migrated to v0.7+) in the selected folder. Ignore any matches under `sample/`, `examples/`, or `templates/`.
 
 If no session buffer exists, check if there is recent session activity to synthesize from the current conversation context.
 
@@ -71,7 +71,7 @@ phase: [phase at end of session]
 - [2-3 specific items: what to work on, what to decide, what to finish]
 ```
 
-Also draft an AI Use Log update from buffer entries only. Target the existing log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
+Also draft an AI Use Log update from buffer entries only. Target the existing log at `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
 
 Present both drafts to the user:
 
@@ -81,12 +81,12 @@ Present both drafts to the user:
 
 Once the user confirms (or makes edits and confirms), save:
 
-- Session log → `projects/[context]/logs/session-[YYYY-MM-DD].md`
-- AI Use Log update → append to `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`
+- Session log → `esf/[context]/logs/session-[YYYY-MM-DD].md`
+- AI Use Log update → append to `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`
 
 ## Step 4: Update PROJECT.md
 
-Write or update `projects/[context]/PROJECT.md`:
+Write or update `esf/[context]/PROJECT.md`:
 
 ```markdown
 # Project: [name]
@@ -100,13 +100,13 @@ Next: [what to work on next session, pulled from session log "Next session" sect
 
 ## Step 5: Update companion-state.md
 
-**Read `projects/_esf/companion-state.md` first.** If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`.
+**Read `esf/companion-state.md` first.** If not found, check `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), `companion-state.md` at root, and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`.
 
 Then use the Edit tool to update only the Phase and Last session fields in the Current Project block. Do not rewrite the entire file. Set Phase to the current phase and Last session to today's date with a brief note from the session log's "What we worked on" section.
 
 ## Step 6: Clear the Session Buffer
 
-Use the Write tool to overwrite `projects/[context]/logs/.session-buffer.md` with an empty string (zero-byte file). Do not delete the file. Overwrite it so the path remains valid for the next session.
+Use the Write tool to overwrite `esf/[context]/logs/.session-buffer.md` with an empty string (zero-byte file). Do not delete the file. Overwrite it so the path remains valid for the next session.
 
 Confirm to the user:
 

@@ -25,7 +25,7 @@ Use `esf/toolkit/templates/position-statement.md` as your starting format.
 Create a project folder and move your existing files in:
 
 ```
-projects/
+esf/
 └── [context]/
     ├── position-statements/
     │   └── [project-name].md       ← Write this first (Step 1)

@@ -10,16 +10,17 @@ Initialize or resume an ESF Companion session. Follow this sequence exactly.
 ## Step 0: Version Check (Soft Nudge)
 
 <!--
-MAINTAINER NOTE: The three `0.6.0` references below are baked at release time
-and must be kept in sync with `platforms/cowork/.claude-plugin/plugin.json`'s
-`version` field. Update all three occurrences whenever the plugin version bumps.
+MAINTAINER NOTE: This check reads the shipped version from the bundled
+plugin.json rather than a hardcoded literal, so there is no version string to
+keep in sync here. `platforms/cowork/.claude-plugin/plugin.json` is the single
+source of truth for the plugin version.
 -->
 
-The plugin version shipped with this command is `0.6.0`. Fetch the remote manifest from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/platforms/cowork/.claude-plugin/plugin.json` with WebFetch and read its `version` field.
+Determine the locally shipped plugin version, then compare it against the latest published version.
 
-- If the remote version is higher than `0.6.0`: emit one line before proceeding: `Cowork plugin update available: v[remote] (you have v0.6.0). Run /plugin to update.` Do not block. Continue with Step 1.
-- If the remote version equals `0.6.0`: skip silently.
-- If the WebFetch fails (offline, rate limit, GitHub 5xx, parse error, any other failure): skip silently. The version check is a convenience, not a requirement.
+1. **Read the local version.** Try to read the bundled manifest at `${CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json` and take its `version` field. If that path is unavailable (some runtimes, including Cowork, may not expose plugin-relative paths to a command) or the read fails for any reason, skip the rest of Step 0 silently and continue with Step 1.
+2. **Read the remote version.** Fetch the remote manifest from `https://raw.githubusercontent.com/nmadrid27/esf-companion/main/platforms/cowork/.claude-plugin/plugin.json` with WebFetch and read its `version` field. If the WebFetch fails (offline, rate limit, GitHub 5xx, parse error, any other failure): skip silently. The version check is a convenience, not a requirement.
+3. **Compare.** If the remote version is higher than the local version: emit one line before proceeding: `Cowork plugin update available: v[remote] (you have v[local]). Run /plugin to update.` Do not block. Continue with Step 1. If the versions are equal or local is higher: skip silently.
 
 Do not offer to run the update yourself. Do not surface the notice more than once per session.
 
@@ -27,7 +28,7 @@ Do not offer to run the update yourself. Do not surface the notice more than onc
 
 ## Step 1: Check for companion-state.md
 
-Search for `projects/_esf/companion-state.md` in the selected folder. If not found, also check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore any match whose path contains `sample/`, `examples/`, or `templates/`.
+Search for `esf/companion-state.md` in the selected folder. If not found, also check `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), `companion-state.md` at root, and `*/companion-state.md` one level deep for backwards compatibility. Ignore any match whose path contains `sample/`, `examples/`, or `templates/`.
 
 **If companion-state.md exists:**
 Read it. Extract: user name/role, active contexts (courses or projects), current project name, current phase, and last session date.
@@ -89,7 +90,7 @@ Question: "How much guidance do you want as you work?"
 - **Independent.** Preview: "Minimal interruption. I'll flag significant drift and respond when you ask, but stay out of the way otherwise."
 
 If they have a project (which they should, from the demo): go to Step 3. Carry the Position Statement and project info forward.
-If they are just setting up: create `projects/_esf/companion-state.md` with their identity and an empty Current Project block, confirm it is saved, and tell them to run `/esf-start` again when they are ready.
+If they are just setting up: create `esf/companion-state.md` with their identity and an empty Current Project block, confirm it is saved, and tell them to run `/esf-start` again when they are ready.
 
 ---
 
@@ -97,7 +98,7 @@ If they are just setting up: create `projects/_esf/companion-state.md` with thei
 
 Ask:
 1. "What's the name of this project?"
-2. "Is there a project brief? If so, drop it into `projects/[course-or-context]/briefs/` and I'll read it. Or you can describe the project and I'll help you build a brief."
+2. "Is there a project brief? If so, drop it into `esf/[course-or-context]/briefs/` and I'll read it. Or you can describe the project and I'll help you build a brief."
 
 **If a brief exists:** Read it. Extract deliverables, AI use policy, timeline, ESF requirements (position-statement, five-questions frontmatter values). Summarize what you found: "Your brief calls for [deliverables]. Position Statement is [required/optional]. Records of Resistance minimum is [N or not specified]. Due: [date]."
 
@@ -107,7 +108,7 @@ Ask:
 3. "What's your deadline or key milestone?"
 4. "Where is the line for AI on this project? What tasks do you want to keep human-only?"
 
-Generate a minimal brief in markdown, present it, and ask: "Does this capture it? I'll save it to `projects/[context]/briefs/[project-name]-brief.md`."
+Generate a minimal brief in markdown, present it, and ask: "Does this capture it? I'll save it to `esf/[context]/briefs/[project-name]-brief.md`."
 
 ---
 
@@ -116,23 +117,23 @@ Generate a minimal brief in markdown, present it, and ask: "Does this capture it
 Create the following folders if they do not exist:
 
 ```
-projects/
-├── _esf/
-├── [context]/
-│   ├── briefs/
-│   ├── position-statements/
-│   ├── records-of-resistance/
-│   ├── ai-use-logs/
-│   ├── gate-records/
-│   ├── reflections/
-│   └── logs/
+esf/
+├── companion-state.md
+└── [context]/
+    ├── briefs/
+    ├── position-statements/
+    ├── records-of-resistance/
+    ├── ai-use-logs/
+    ├── gate-records/
+    ├── reflections/
+    └── logs/
 ```
 
 ---
 
 ## Step 5: Update companion-state.md
 
-Write or update `projects/_esf/companion-state.md` with the current project and set Phase to "Inquire". Use `templates/companion-state-template.md` as the starting structure:
+Write or update `esf/companion-state.md` with the current project and set Phase to "Inquire". Use `templates/companion-state-template.md` as the starting structure:
 
 ```markdown
 ---
@@ -158,8 +159,8 @@ last-updated: [today's date]
 
 - **Context:** [course or project context]
 - **Project name:** [project name]
-- **Brief location:** `projects/[context]/briefs/[brief-file].md`
-- **Position Statement:** `projects/[context]/position-statements/[project-name].md`
+- **Brief location:** `esf/[context]/briefs/[brief-file].md`
+- **Position Statement:** `esf/[context]/position-statements/[project-name].md`
 - **Phase:** Inquire
 - **Last session:** [today's date] (Project initialized).
 - **Scaffolding level:** [Guided / Supported / Independent]

@@ -37,7 +37,7 @@ The educator collects Position Statements from consenting students and runs the 
 
 **Step 1: Collect statements**
 
-Ask students to share their Position Statement file (`projects/[context]/position-statements/[project].md`) or paste its text. Consent can be a simple question at the start of a class session: "I am going to run a cohort analysis on your Position Statements to check for homogenization. If you would like your statement included, paste it in the shared document."
+Ask students to share their Position Statement file (`esf/[context]/position-statements/[project].md`) or paste its text. Consent can be a simple question at the start of a class session: "I am going to run a cohort analysis on your Position Statements to check for homogenization. If you would like your statement included, paste it in the shared document."
 
 **Step 2: Run the analysis**
 
