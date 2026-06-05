@@ -707,18 +707,23 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/ski
   || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
 
 # esf-defense-pack: SKILL.md plus bin/ and render/ subdirectories.
-mkdir -p .claude/skills/esf-defense-pack/bin/esf_pack .claude/skills/esf-defense-pack/render
+# The file list is driven by MANIFEST.txt in the skill, so adding a new module
+# only requires updating that manifest. CI guards the manifest vs. the tree.
+mkdir -p .claude/skills/esf-defense-pack
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/SKILL.md" -o .claude/skills/esf-defense-pack/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-defense-pack/SKILL.md.${NC}"; exit 1; }
-for _f in bin/aggregate.py bin/render.py \
-          bin/esf_pack/__init__.py bin/esf_pack/aggregate.py bin/esf_pack/gaps.py \
-          bin/esf_pack/parsers.py bin/esf_pack/render_html.py bin/esf_pack/render_pdf.py \
-          bin/esf_pack/render_script.py bin/esf_pack/schema.py \
-          render/print.css render/script.md.tmpl render/template.html; do
+_MANIFEST_TMP="$(mktemp)"
+curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/MANIFEST.txt" -o "$_MANIFEST_TMP" \
+  || { echo -e "${RED}Failed to fetch esf-defense-pack/MANIFEST.txt.${NC}"; rm -f "$_MANIFEST_TMP"; exit 1; }
+while IFS= read -r _f || [ -n "$_f" ]; do
+  # Skip blank lines so a trailing newline in the manifest is harmless.
+  [ -z "$_f" ] && continue
+  mkdir -p ".claude/skills/esf-defense-pack/$(dirname "$_f")"
   curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/$_f" \
     -o ".claude/skills/esf-defense-pack/$_f" \
-    || { echo -e "${RED}Failed to fetch esf-defense-pack/$_f.${NC}"; exit 1; }
-done
+    || { echo -e "${RED}Failed to fetch esf-defense-pack/$_f.${NC}"; rm -f "$_MANIFEST_TMP"; exit 1; }
+done < "$_MANIFEST_TMP"
+rm -f "$_MANIFEST_TMP"
 chmod +x .claude/skills/esf-defense-pack/bin/aggregate.py 2>/dev/null || true
 chmod +x .claude/skills/esf-defense-pack/bin/render.py 2>/dev/null || true
 
