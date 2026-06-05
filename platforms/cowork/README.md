@@ -84,7 +84,7 @@ Same command. If `companion-state.md` exists, it reads your current state and or
 /esf-brief
 ```
 
-Drop a brief into `projects/[context]/briefs/` and run this command. It reads any format: course assignments, client scopes, research proposals, personal project specs. Extracts deliverables, timeline, AI boundaries, and ESF requirements. Sets up a milestone tracker in the sidebar. If you don't have a document, it asks 4 questions and generates one.
+Drop a brief into `esf/[context]/briefs/` and run this command. It reads any format: course assignments, client scopes, research proposals, personal project specs. Extracts deliverables, timeline, AI boundaries, and ESF requirements. Sets up a milestone tracker in the sidebar. If you don't have a document, it asks 4 questions and generates one.
 
 ### Running a cognitive technique
 
@@ -126,18 +126,17 @@ After running `/esf-start`, your project folder will look like this:
 
 ```
 your-workspace/
-├── projects/
-│   ├── _esf/
-│   │   └── companion-state.md  # Your identity, active contexts, current project
-│   └── [context]/
-│       ├── briefs/             # Project brief goes here
-│       ├── position-statements/
-│       ├── records-of-resistance/
-│       ├── ai-use-logs/
-│       ├── gate-records/
-│       ├── reflections/
-│       └── logs/               # Session logs and .session-buffer.md
-│           └── PROJECT.md      # Current project state (one screen)
+└── esf/
+    ├── companion-state.md      # Your identity, active contexts, current project
+    └── [context]/
+        ├── briefs/             # Project brief goes here
+        ├── position-statements/
+        ├── records-of-resistance/
+        ├── ai-use-logs/
+        ├── gate-records/
+        ├── reflections/
+        ├── logs/               # Session logs and .session-buffer.md
+        └── PROJECT.md          # Current project state (one screen)
 ```
 
 ---
@@ -161,7 +160,7 @@ ai-use: permitted-after-position
 
 **No brief at all** is fine. Run `/esf-brief` and answer 4 questions. The plugin generates a minimal brief you can edit.
 
-For educators: place course briefs in `projects/[course]/briefs/`. When anyone runs `/esf-start` and then `/esf-brief`, the Companion reads the requirements automatically.
+For educators: place course briefs in `esf/[course]/briefs/`. When anyone runs `/esf-start` and then `/esf-brief`, the Companion reads the requirements automatically.
 
 ---
 

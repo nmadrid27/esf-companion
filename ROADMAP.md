@@ -183,9 +183,9 @@ The install script detects or asks the platform, then installs only what that us
 | **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) | [SHIPPED] |
 | **Gemini CLI** | `GEMINI.md` format | [SHIPPED] |
 | **Codex CLI** | `.codex/AGENTS.md` directory | [SHIPPED] |
-| **Other / Not sure** | `COMPANION.md` (universal system prompt) | [SHIPPED] |
+| **Other / Not sure** | `esf/toolkit/prompts/` (universal system prompts) | [SHIPPED] |
 
-**v1 scope:** Claude Code is the full experience. Other platforms get the `prompts/` directory (manual paste, honest about limitations). Platform-specific files for ChatGPT, Gemini, and Codex are [ROADMAP].
+**v1 scope:** Claude Code is the full experience. Other platforms get the `esf/toolkit/prompts/` directory (manual paste, honest about limitations). Platform-specific files for ChatGPT, Gemini, and Codex are [ROADMAP].
 
 ### Repo Structure
 
@@ -223,7 +223,7 @@ esf-companion/
 
 | Path | User action | Companion response | Status |
 |------|-----------|-------------------|----|
-| **Drop a file** | Places `.md`, `.pdf`, `.docx`, or `.txt` in `projects/[name]/briefs/` | Reads frontmatter first (instant). If none, reads prose and asks clarifying questions. | [SHIPPED] |
+| **Drop a file** | Places `.md`, `.pdf`, `.docx`, or `.txt` in `esf/[context]/briefs/` | Reads frontmatter first (instant). If none, reads prose and asks clarifying questions. | [SHIPPED] |
 | **Paste or describe** | Pastes text or describes project verbally | Extracts structure, generates formatted brief, asks "does this capture it?" | [PARTIAL] |
 | **Build from scratch** | Says "I'm starting a new project" | Asks 5 questions: what, deliverables, AI boundaries, deadline, ESF preference. Generates and saves the brief. | [PARTIAL] |
 
