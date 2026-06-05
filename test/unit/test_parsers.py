@@ -544,5 +544,58 @@ class TestDriftQuoteRegex(unittest.TestCase):
         self.assertTrue(ps.drift_was_user_decision)
 
 
+class TestCodeBlockMasking(unittest.TestCase):
+    """`extract_sections` must mask code-block content before splitting on H2,
+    so an `## ...` line that appears inside any CommonMark code block does NOT
+    falsely terminate the surrounding section. Covers all three forms:
+    backtick fences, tilde fences, and 4-space-indented blocks.
+    """
+
+    def test_backtick_fence_does_not_terminate_section(self):
+        sections = extract_sections(
+            "## Real Section\n\n"
+            "Body before fence.\n\n"
+            "```\n"
+            "## Not A Heading\n"
+            "```\n\n"
+            "Body after fence.\n"
+        )
+        self.assertIn("Real Section", sections)
+        self.assertNotIn("Not A Heading", sections)
+        self.assertIn("Body before fence", sections["Real Section"])
+        self.assertIn("Body after fence", sections["Real Section"])
+
+    def test_tilde_fence_does_not_terminate_section(self):
+        sections = extract_sections(
+            "## Real Section\n\n"
+            "Body before fence.\n\n"
+            "~~~\n"
+            "## Not A Heading\n"
+            "~~~\n\n"
+            "Body after fence.\n"
+        )
+        self.assertIn("Real Section", sections)
+        self.assertNotIn("Not A Heading", sections)
+        self.assertIn("Body before fence", sections["Real Section"])
+        self.assertIn("Body after fence", sections["Real Section"])
+
+    def test_indented_code_block_is_masked(self):
+        # An indented code block can't actually produce a false H2 (the leading
+        # whitespace pushes ## off column 0), but masking it keeps the
+        # strip-then-parse story consistent across all three code forms. Verify
+        # the indented content survives in the section body — it must NOT be
+        # dropped just because it was masked for the heading-scan pass.
+        sections = extract_sections(
+            "## Real Section\n\n"
+            "Before code.\n\n"
+            "    indented code line 1\n"
+            "    indented code line 2\n\n"
+            "After code.\n"
+        )
+        self.assertIn("Real Section", sections)
+        self.assertIn("indented code line 1", sections["Real Section"])
+        self.assertIn("After code", sections["Real Section"])
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -116,3 +116,9 @@ class DefensePack:
     default_count: int = 0
     shift_count: int = 0
     process_blog_sources: list[str] = field(default_factory=list)
+    # Schema version of the pack. Bumped only on breaking shape changes (renames,
+    # removals, type changes); additive fields stay at the same major.minor.
+    # Consumers reading a pack.json should fall back gracefully when the field
+    # is absent (treat as the default), but can assert on a major-version match
+    # before relying on any field that wasn't present at 1.0.
+    schema_version: str = "1.0"
