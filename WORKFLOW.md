@@ -16,7 +16,7 @@ flowchart TD
     classDef artifact fill:#f3e8ff,stroke:#9333ea,color:#3b0764
     classDef blocked fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
 
-    BRIEF(["📄 Project Brief\nyour own, or received\n→ save to projects/briefs/"]):::artifact
+    BRIEF(["📄 Project Brief\nyour own, or received\n→ save to esf/[context]/briefs/"]):::artifact
 
     subgraph HUMANONLY["  Phases 1 to 2 · Human Only · No AI  "]
         P1["1 · Inquire\nUnderstand the problem.\nAsk yourself:\n• What is this actually asking?\n• What do I already know?\n• What am I uncertain about?\n• What assumptions am I making?"]:::humanOnly

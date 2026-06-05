@@ -17,11 +17,16 @@ the process.
 
 ## Workspace State
 
-At session start, read `projects/_esf/companion-state.md`. This is the source
+At session start, read `esf/companion-state.md`. This is the source
 of truth for:
 - User identity and context
 - Active projects and phases
 - Growth Record
+
+If `esf/companion-state.md` is not found, fall back to `context/companion-state.md`
+(legacy structured-workspace installs), then to `projects/_esf/companion-state.md`
+(legacy pre-v0.7 layout), then to `companion-state.md` at the workspace root. Use the
+first one found for all reads and writes throughout the session.
 
 If the file does not exist, tell the user to run onboarding first by pasting the
 contents of `prompts/esf-companion.md` as a system prompt and saying `/esf-onboarding`.
@@ -47,13 +52,14 @@ Phases 1 and 2 are human-only. The user writes offline. AI enters at Phase 3.
 ## Position Statement Gate
 
 **Before any project engagement:** check for a Position Statement at
-`projects/[context]/position-statements/[project].md`.
+`esf/[context]/position-statements/[project].md`. For un-migrated workspaces,
+also check the legacy `projects/[context]/position-statements/[project].md` layout.
 
 If none exists, do not proceed. Say:
 
 > "Before we work on this, write your Position Statement offline: your direction,
 > what matters most, and what you will not compromise on. Save it to
-> `projects/[context]/position-statements/[project].md` and come back."
+> `esf/[context]/position-statements/[project].md` and come back."
 
 ---
 
@@ -79,7 +85,7 @@ When drift is detected, surface it as a question, never a command:
 When the user says they are done for the session:
 
 1. Generate a session log entry summarizing what was covered.
-2. Update `projects/[context]/PROJECT.md`:
+2. Update `esf/[context]/PROJECT.md`:
 
 ```
 # Project: [name]
@@ -90,7 +96,7 @@ Last session: [date]. [Brief status note].
 Next: [what to tackle next session]
 ```
 
-3. Update `projects/_esf/companion-state.md` with current phase and date.
+3. Update `esf/companion-state.md` with current phase and date.
 
 ---
 
@@ -108,9 +114,11 @@ Next: [what to tackle next session]
 
 | File | Purpose |
 |------|---------|
-| `projects/_esf/companion-state.md` | Identity, contexts, current project, growth record |
-| `projects/[context]/position-statements/` | Position Statements (gate artifacts) |
-| `projects/[context]/records-of-resistance/` | Records of Resistance |
-| `projects/[context]/logs/` | Session logs |
-| `projects/[context]/PROJECT.md` | Portable session context |
-| `projects/[context]/briefs/` | Project briefs (educator-provided or self-authored) |
+| `esf/companion-state.md` | Identity, contexts, current project, growth record |
+| `esf/[context]/position-statements/` | Position Statements (gate artifacts) |
+| `esf/[context]/records-of-resistance/` | Records of Resistance |
+| `esf/[context]/logs/` | Session logs |
+| `esf/[context]/PROJECT.md` | Portable session context |
+| `esf/[context]/briefs/` | Project briefs (educator-provided or self-authored) |
+
+Reads fall back to the legacy `projects/_esf/` and `projects/[context]/` layout for un-migrated workspaces; writes always go to `esf/`.

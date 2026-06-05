@@ -6,7 +6,7 @@ This file is for Claude Desktop Cowork users. It maps verbal phrases to the ESF 
 
 ## How Cowork Works With the Companion
 
-When you open a Cowork session and point Claude to this folder, the Companion agent (`esf-companion.md`) loads automatically. Your identity, project context, and current phase are read from `projects/_esf/companion-state.md`.
+When you open a Cowork session and point Claude to this folder, the Companion agent (`esf-companion.md`) loads automatically. Your identity, project context, and current phase are read from `esf/companion-state.md`.
 
 You do not need to invoke skills manually. Use the phrases below and Claude responds with the equivalent behavior.
 
@@ -62,7 +62,7 @@ Claude offers one relevant technique based on where you are and what kind of stu
 
 > "I rejected that" / "I changed this" / "Record of Resistance"
 
-Claude prompts you through a Record of Resistance: what AI suggested, what you changed, and why. Saves it to `projects/[context]/records-of-resistance/`.
+Claude prompts you through a Record of Resistance: what AI suggested, what you changed, and why. Saves it to `esf/[context]/records-of-resistance/`.
 
 > "Log that" / "Add to my AI Use Log"
 

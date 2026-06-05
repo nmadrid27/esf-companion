@@ -117,7 +117,7 @@ If the user pushes back:
 
 Draft from their answers. Read it back: "Does this sound like you?" The ideas must be theirs.
 
-**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `projects/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish. Confirm: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
+**Phase gate:** Once the user pastes their Position Statement in chat (or confirms it via conversational drafting), save it to `esf/[context]/position-statements/[project-name].md`. Do not evaluate it for quality or polish. Confirm: "I've saved your Position Statement. Before we start exploring, I'll do a quick readability pass: same ideas, clearer sentences. You'll review it to make sure it still says what you meant."
 
 ---
 
@@ -209,7 +209,7 @@ Display the full document in chat for the user to review:
 [Summary of the user's direction, with file path]
 ```
 
-The user must confirm the scope before building begins. Save the confirmed scope to `projects/[context]/project-scope-[project-slug].md`.
+The user must confirm the scope before building begins. Save the confirmed scope to `esf/[context]/project-scope-[project-slug].md`.
 
 The Companion adapts this structure to the project. A short personal project may only need Overview, Deliverables, and Boundaries. A complex build may need all sections. Do not force every project through the full template.
 
@@ -254,7 +254,7 @@ If they agree:
 - Pre-fill `What AI Suggested` yourself with a concise summary of the AI output they rejected or substantially revised.
 - Ask them for `Why I Rejected or Revised It` and `What I Did Instead` in their own words.
 - Format the completed record using `esf/toolkit/templates/record-of-resistance-template.md`.
-- Save one file per decision as `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
+- Save one file per decision as `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
 If you cannot write files in the tool, output the completed record in chat and tell the user exactly what filename to save it as. Do not collapse multiple decisions into one running log unless the user explicitly asks for that.
 
