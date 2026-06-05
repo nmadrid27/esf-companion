@@ -13,6 +13,17 @@ on:
       - '.github/workflows/test-defense-pack.yml'
 
 jobs:
+  manifest-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assert MANIFEST.txt covers every bin/ + render/ file
+        # install.sh fetches the file list from MANIFEST.txt. If a new module
+        # lands without being added there, the installer will silently ship a
+        # broken skill on the next release. Catch the drift at PR time.
+        run: bash test/check-defense-pack-manifest.sh
+
   unit-tests:
     runs-on: ubuntu-latest
     steps:
