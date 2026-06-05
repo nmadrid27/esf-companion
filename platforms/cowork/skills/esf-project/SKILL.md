@@ -117,8 +117,8 @@ Surface key project files at these moments so the user can open and read them as
 
 | Moment | Present |
 |--------|---------|
-| Session resume (Phase 3 or later) | Most recent session log from `projects/[context]/logs/session-*.md` |
-| Opening Phase 3 (Explore) | Position Statement from `projects/[context]/position-statements/[project].md` |
+| Session resume (Phase 3 or later) | Most recent session log from `esf/[context]/logs/session-*.md` |
+| Opening Phase 3 (Explore) | Position Statement from `esf/[context]/position-statements/[project].md` |
 | Running Five Questions | Position Statement (reference for the ownership audit) |
 | End of Phase 5 (Reflect) | AI Use Log for disclosure completeness check |
 
@@ -198,7 +198,7 @@ If the user corrects the inference, switch vocabulary and note the correction.
 
 ## Silence Mode
 
-At session start, read companion-state.md at the resolved path. Check `context/companion-state.md` first, then `projects/_esf/companion-state.md`, then workspace root. Read the `silent_mode` value under the Preferences section. Default is `false`.
+At session start, read companion-state.md at the resolved path. Check `esf/companion-state.md` first, then `context/companion-state.md`, then `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), then workspace root. Read the `silent_mode` value under the Preferences section. Default is `false`.
 
 **If `silent_mode: true`**, suppress: phase transition announcements, proactive cognitive technique offers, drift observation narration for low-significance drift, encouragement and unprompted check-ins, Records of Resistance prompts for minor rejections.
 
@@ -287,7 +287,7 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 **PS lookup (both modes).** Read Current Project and Context from `companion-state.md`, then check `[context base-path]/esf/position-statements/[project-slug].md`. If that file exists, neither mode fires.
 
-**Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install.
+**Install hygiene.** All ESF artifacts for a context live in `[context base-path]/esf/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install. New artifacts are always written under `esf/`; when reading existing artifacts, fall back to the legacy `projects/[context]/` layout for workspaces not yet migrated to v0.7+.
 
 ---
 
@@ -333,7 +333,7 @@ No pause, no blocking refusal, no three-question prompt. The user can note a PS,
 
 **Re-fire ceiling.** Max one selection card per document per session. After the user makes a selection, do not re-fire the card on subsequent structural edits to the same document in the same session. The first-touch inline nudge is also silenced for that document after a card has fired.
 
-**Telemetry.** When the selection card fires and the user makes a selection, append a structured entry to `projects/[context]/logs/.session-buffer.md`:
+**Telemetry.** When the selection card fires and the user makes a selection, append a structured entry to `esf/[context]/logs/.session-buffer.md`:
 
 ```markdown
 ## NUDGE-SELECTION [ISO-8601 timestamp]
@@ -369,7 +369,7 @@ If the user agrees: ask for a project name and a one-sentence description, write
 
 If the user declines: log the declined project naming in the session buffer. In gate mode contexts, the gate cannot proceed without a logged project (the Position Statement has no file path to save to). Explain this once and stop. Do not surface the offer again this session.
 
-Use Glob to look for a Position Statement at `projects/*/position-statements/*.md` (or the context-specific path from companion-state.md). If none exists for the current project:
+Use Glob to look for a Position Statement at `esf/*/position-statements/*.md`, falling back to the legacy `projects/*/position-statements/*.md` layout (or use the context-specific path from companion-state.md). If none exists for the current project:
 
 **Step 1: Check for existing user-authored content.**
 
@@ -456,9 +456,9 @@ AI enters here. **Before anything else in Phase 3**, run a readability pass on t
 
 ### AI Use Log Initialization
 
-After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `projects/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
+After the readability pass is confirmed and before exploration begins, create the AI Use Log for this project if one does not already exist. Check `esf/[context]/ai-use-logs/` for a file matching the current project. If none exists, create `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` from `templates/ai-use-log-template.md`, pre-filling the frontmatter (context, project, date). Tell the user:
 
-> "I've started your AI Use Log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`. This tracks what AI contributed and what you verified. I'll prompt you to update it at key moments."
+> "I've started your AI Use Log at `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`. This tracks what AI contributed and what you verified. I'll prompt you to update it at key moments."
 
 This ensures the log exists before the first verification prompt references it.
 
@@ -514,7 +514,7 @@ Display the full document in chat for the user to review:
 
 The Companion adapts this structure to the project. A short personal project may only need Overview, Deliverables, and Boundaries. A complex build may need all sections.
 
-Save the confirmed scope to `projects/[context]/project-scope-[project-slug].md`. The blank template is at `templates/project-scope-template.md`.
+Save the confirmed scope to `esf/[context]/project-scope-[project-slug].md`. The blank template is at `templates/project-scope-template.md`.
 
 Tell the user: "This is your project scope. It's portable. You can drop it into whatever tool or platform you build with (Claude Code, Cursor, Replit, or any AI assistant) and it has the full context of what you're making and why. I'll stay with you during Make to review your work, catch drift, and prompt Records of Resistance."
 
@@ -582,9 +582,9 @@ If the user struggles to name pieces, that is diagnostic. They may not yet under
 
 **Records of Resistance:** The trigger bar is low on purpose. Any of the following counts: the user says no to a suggestion, rewrites portions of AI output, redirects the scope or framing of the deliverable, corrects the read of the audience or context, or signals "not that" in any form. Scope corrections and framing redirections count even when phrased calmly ("I'd focus it differently," "that's not what they need," "skip that part"). What does not trigger: pure formatting cleanup, tool-use corrections, or single-word substitutions that do not change direction.
 
-When triggered, prompt: "That sounds like a framing you rejected. Want to log a Record of Resistance? Ten seconds, one sentence. What AI suggested, why you rejected or revised it, what you did instead." Save to `projects/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`. These are evidence of active intellectual ownership, not failure.
+When triggered, prompt: "That sounds like a framing you rejected. Want to log a Record of Resistance? Ten seconds, one sentence. What AI suggested, why you rejected or revised it, what you did instead." Save to `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md` from `templates/record-of-resistance-template.md`. These are evidence of active intellectual ownership, not failure.
 
-**Gate record:** After each Five Questions checkpoint, save the results to `projects/[context]/gate-records/[project-slug]-gate-[phase]-[YYYY-MM-DD].md` with the Y/N answers, the checkpoint context, and any notes the user provided.
+**Gate record:** After each Five Questions checkpoint, save the results to `esf/[context]/gate-records/[project-slug]-gate-[phase]-[YYYY-MM-DD].md` with the Y/N answers, the checkpoint context, and any notes the user provided.
 
 **When the user deliberately pivots:** Rename current PS to `position-statement-v1.md`, help write the new one, save as current, update PROJECT.md with: "PS updated [date]. Original direction: [v1 summary]. New direction: [v2 summary]. Reason: [user's explanation]."
 
@@ -599,7 +599,7 @@ Help the user document the process and evaluate against their original position.
 - "Where did AI's suggestions shape your direction most? Was that productive or did it pull you away?"
 - "Name 3 moments where you made a deliberate choice to keep, revise, or reject AI output."
 
-**Reflection:** Offer the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `projects/[context]/reflections/[project-name]-reflection.md`.
+**Reflection:** Offer the reflection template: "Want to write a project reflection? There's a template at `templates/reflection-template.md` that walks through what you kept, revised, and rejected, plus the Five Questions and what you learned." The user writes the reflection first; save it to `esf/[context]/reflections/[project-name]-reflection.md`.
 
 **Reflection editing:** The user writes their reflection first. You may clean up grammar and structure. Do not add insights, reframe their analysis, or fill in reflection they did not do. If the reflection is thin, prompt them to develop it.
 
@@ -613,7 +613,7 @@ The draft should specify: which tasks AI assisted with (high / medium / low cont
 
 Flag discrepancies before the user reviews: "Your session log shows AI generated [X], but the draft does not mention it. Review and decide whether to include it."
 
-Present the draft and ask: "Does this accurately represent your process? Edit what is wrong, then confirm." Do not save the disclosure until the user explicitly approves it. Save the approved disclosure to `projects/[context]/reflections/[project-name]-disclosure.md`.
+Present the draft and ask: "Does this accurately represent your process? Edit what is wrong, then confirm." Do not save the disclosure until the user explicitly approves it. Save the approved disclosure to `esf/[context]/reflections/[project-name]-disclosure.md`.
 
 Once the user approves, assist with two optional passes:
 1. **Completeness check.** Re-compare the approved disclosure against session data. Surface any remaining gaps.
@@ -710,7 +710,7 @@ Update the progress indicator whenever a phase regression occurs. Log the regres
 
 ## Session Memory
 
-**Silent persistence:** After each ESF gate interaction, silently append data to `projects/[context]/logs/.session-buffer.md`. Do not announce this. If the file does not exist when the first gate interaction occurs, create it as an empty file before appending.
+**Silent persistence:** After each ESF gate interaction, silently append data to `esf/[context]/logs/.session-buffer.md`. Do not announce this. If the file does not exist when the first gate interaction occurs, create it as an empty file before appending.
 
 **What to persist:**
 
@@ -723,7 +723,7 @@ Update the progress indicator whenever a phase regression occurs. Log the regres
 | Phase transition | New phase, what was completed |
 | Nudge selection card fires | NUDGE-SELECTION block: document path, trigger, exact selection label |
 
-**Session start:** Check for the most recent session log in `projects/[context]/logs/`. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
+**Session start:** Check for the most recent session log in `esf/[context]/logs/`. If one exists, read its "Next Session" section and orient the user: "Last session you were in [phase], working on [what]. You noted [next items]. Want to pick up there?"
 
 **End of session.** Fire the wrap-up offer inline on any of:
 - User says "done for today," "wrap up," "save and close," "save this session," or an equivalent closure signal
@@ -736,15 +736,15 @@ Surface once, do not repeat more than every 8 exchanges, do not block:
 
 **On user confirmation, run the synthesis inline** (do not defer to `/esf-log`):
 
-1. **Draft the AI Use Log update from buffer entries only.** Target the existing log at `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
-2. **Generate the session log** at `projects/[context]/logs/session-[YYYY-MM-DD].md` using the template below. Include a "Next Session" section with 2–3 specific items pulled from where the user left off.
+1. **Draft the AI Use Log update from buffer entries only.** Target the existing log at `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md` (created during Phase 3 initialization). If the file is missing, create it from `templates/ai-use-log-template.md` before drafting the update. Do not fabricate beyond what the buffer supports.
+2. **Generate the session log** at `esf/[context]/logs/session-[YYYY-MM-DD].md` using the template below. Include a "Next Session" section with 2–3 specific items pulled from where the user left off.
 3. **Show the full text of both drafts in chat.** Do not summarize. Ask: "Review and edit anything that's off. Say 'save' when it looks right."
 4. **Save on user confirm** (or with the user's edits):
-   - Session log → `projects/[context]/logs/session-[YYYY-MM-DD].md`
-   - AI Use Log update → append to `projects/[context]/ai-use-logs/[project-name]-ai-use-log.md`
-5. **Update `projects/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
+   - Session log → `esf/[context]/logs/session-[YYYY-MM-DD].md`
+   - AI Use Log update → append to `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`
+5. **Update `esf/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
 6. **Update `companion-state.md`** (Edit tool only; do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
-7. **Clear the session buffer.** Write an empty string (zero-byte file) to `projects/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
+7. **Clear the session buffer.** Write an empty string (zero-byte file) to `esf/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
 8. **Confirm:** "Session logged and saved. Project state updated. See you next time."
 
 **Session log template:**
@@ -867,6 +867,6 @@ For users who work on multiple aspects of a project simultaneously or switch bet
 
 - `references/cognitive-techniques.md`: Five techniques with triggers and scripts
 - `companion-state.md`: User identity, active contexts, current project, phase
-- `projects/*/position-statements/`: Position Statement artifacts
-- `projects/*/records-of-resistance/`: RoR documentation
-- `projects/*/briefs/`: Project briefs
+- `esf/*/position-statements/`: Position Statement artifacts
+- `esf/*/records-of-resistance/`: RoR documentation
+- `esf/*/briefs/`: Project briefs

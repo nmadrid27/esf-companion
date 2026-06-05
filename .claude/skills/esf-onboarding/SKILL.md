@@ -372,8 +372,6 @@ Use `esf/toolkit/templates/companion-state-template.md` as the starting structur
 
 **Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
 
-**Also create `companion-notes.md` in the same location.** This is the self-correcting notes file the Companion reads at every session start and applies active corrections from. Use `esf/toolkit/templates/companion-notes-template.md` as the starting structure. Leave all sections empty; do not pre-fill. Tell the user: "I've also created `companion-notes.md` next to your state file. You can add corrections there directly, or tell me what to change and I'll log it for you."
-
 **Fields to fill:**
 
 | Field | Fill with |

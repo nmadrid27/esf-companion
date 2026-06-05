@@ -9,9 +9,9 @@ Read a project brief, extract milestones and deliverables, set up a milestone tr
 
 ## Step 1: Find or Receive the Brief
 
-**First, read `projects/_esf/companion-state.md`.** If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`. Extract the current project name, context, and brief path (if set).
+**First, read `esf/companion-state.md`.** If not found, check `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), `companion-state.md` at root, and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`. Extract the current project name, context, and brief path (if set).
 
-**Then look for briefs using the known project path.** If `companion-state.md` has a brief path, check that specific file. If it has a context but no brief path, check `projects/[context]/briefs/` directly. Only fall back to `projects/*/briefs/*.md` if no project context is available.
+**Then look for briefs using the known project path.** If `companion-state.md` has a brief path, check that specific file. If it has a context but no brief path, check `esf/[context]/briefs/` directly, then `projects/[context]/briefs/` for un-migrated workspaces. Only fall back to `esf/*/briefs/*.md` (then legacy `projects/*/briefs/*.md`) if no project context is available.
 
 If one or more briefs exist, present them and use AskUserQuestion. When the `mcp__cowork__present_files` tool is available, call it to render each brief as a clickable card. Otherwise, list each brief's relative path with the AskUserQuestion options.
 
@@ -74,7 +74,7 @@ five-questions: optional
 
 Present the draft and ask: "Does this capture it? I'll save it to your briefs folder."
 
-Save to `projects/[context]/briefs/[project-name]-brief.md`.
+Save to `esf/[context]/briefs/[project-name]-brief.md`.
 
 ---
 

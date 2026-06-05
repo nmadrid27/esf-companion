@@ -430,7 +430,7 @@ if [ "$PLATFORM" = "cowork" ]; then
     echo "  1. Go to claude.ai and create a new Project."
     echo ""
     echo "  2. In Project Settings, paste the contents of:"
-    echo "     prompts/esf-companion.md"
+    echo "     https://raw.githubusercontent.com/nmadrid27/esf-companion/main/prompts/esf-companion.md"
     echo "     into the system prompt field."
     echo ""
     echo "  3. Upload companion-state.md as a Project knowledge file."

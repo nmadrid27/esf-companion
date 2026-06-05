@@ -7,7 +7,7 @@ Display a one-screen status snapshot of the current ESF project. Follow this seq
 
 ## Step 1: Read companion-state.md
 
-Search for `projects/_esf/companion-state.md` first. If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches whose path contains `sample/`, `examples/`, or `templates/`. If not found, tell the user: "No ESF workspace found in this folder. Run `/esf-start` to set one up." Stop.
+Search for `esf/companion-state.md` first. If not found, check `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), `companion-state.md` at root, and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches whose path contains `sample/`, `examples/`, or `templates/`. If not found, tell the user: "No ESF workspace found in this folder. Run `/esf-start` to set one up." Stop.
 
 If found, read it and extract: project name, current phase, last session date.
 
@@ -17,13 +17,15 @@ Using the project name and context from `companion-state.md`, check for the foll
 
 | Artifact | Check |
 |----------|-------|
-| Project brief | `projects/*/briefs/*.md` |
-| Position Statement | `projects/*/position-statements/*.md` |
-| Records of Resistance | `projects/*/records-of-resistance/*.md` (count entries) |
-| AI Use Log | `projects/*/ai-use-logs/*.md` |
-| Session logs | `projects/*/logs/session-*.md` (count and find most recent) |
-| Gate records | `projects/*/gate-records/*.md` (count entries) |
-| Active session buffer | `projects/*/logs/.session-buffer.md` |
+| Project brief | `esf/*/briefs/*.md` |
+| Position Statement | `esf/*/position-statements/*.md` |
+| Records of Resistance | `esf/*/records-of-resistance/*.md` (count entries) |
+| AI Use Log | `esf/*/ai-use-logs/*.md` |
+| Session logs | `esf/*/logs/session-*.md` (count and find most recent) |
+| Gate records | `esf/*/gate-records/*.md` (count entries) |
+| Active session buffer | `esf/*/logs/.session-buffer.md` |
+
+If no `esf/` artifacts are found, repeat these checks against the legacy `projects/*/` layout so workspaces not yet migrated to the v0.7+ structure still resolve.
 
 Read the brief frontmatter to find: RoR minimum required, position-statement setting (required / optional / not-required), five-questions setting.
 

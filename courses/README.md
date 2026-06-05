@@ -2,7 +2,7 @@
 
 This folder is available for educators who want to distribute pre-configured course templates to students.
 
-It is not required by the Companion at runtime. The Companion reads course-specific requirements from each student's `projects/_esf/companion-state.md`, not from here.
+It is not required by the Companion at runtime. The Companion reads course-specific requirements from each student's `esf/companion-state.md`, not from here.
 
 ---
 

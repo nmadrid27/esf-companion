@@ -49,7 +49,7 @@ Default to Supported mode: standard gate enforcement, check-ins at key moments. 
 
 ChatGPT does not persist files between conversations. To restore context in a new session:
 
-1. Paste your `projects/[context]/PROJECT.md` as your first message.
+1. Paste your `esf/[context]/PROJECT.md` as your first message.
 2. Paste `companion-state.md` if you are starting with a new assistant or after a long gap.
 3. Say: "Continue ESF work on [project]. We were in [phase]."
 
