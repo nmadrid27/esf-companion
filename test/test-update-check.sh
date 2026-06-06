@@ -20,7 +20,7 @@ check "resolve prints latest" '[[ "$out" == *"latest=companion-v0.10.0"* ]]'
 # --- invalid injected tag is rejected (no latest emitted) ---
 out=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
       ESF_UPDATE_LATEST="cowork-v1.0.0" bash "$HELPER" resolve)
-check "invalid latter rejected" '[[ "$out" != *"latest=cowork"* ]]'
+check "invalid latest rejected" '[[ "$out" != *"latest=cowork"* ]]'
 
 # --- exit code is always 0 (fail-open) ---
 ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/nope" bash "$HELPER" resolve >/dev/null 2>&1
@@ -102,6 +102,13 @@ check "changelog includes v0.10.0"  '[[ "$out" == *"ten"* ]]'
 check "changelog excludes OLD v0.9.1" '[[ "$out" != *"nine-one"* ]]'
 check "changelog excludes Unreleased" '[[ "$out" != *"unreleased item"* ]]'
 check "changelog excludes legacy"     '[[ "$out" != *"legacy item"* ]]'
+rm -rf "$T"
+
+# --- trailing newline in esf-version is stripped before compare ---
+T=$(newtmp); printf 'companion-v0.9.1\n\n' > "$T/esf-version"
+printf 'latest_tag=companion-v0.10.0\n' > "$T/cache"
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status 2>&1 1>/dev/null)
+check "trailing newline stripped (clean nudge)" '[[ "$err" == *"companion-v0.9.1 -> companion-v0.10.0"* ]]'
 rm -rf "$T"
 
 echo "PASS=$PASS FAIL=$FAIL"

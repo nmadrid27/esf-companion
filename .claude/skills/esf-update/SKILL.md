@@ -35,6 +35,5 @@ Check whether a newer version of the ESF Companion is available and offer to ins
 6. Refresh the cache so the session-start nudge does not re-fire for the just-installed version:
    ```bash
    ESF_UPDATE_LATEST="<NEW>" bash .claude/hooks/esf-update-check.sh refresh
-   bash .claude/hooks/esf-update-check.sh status >/dev/null 2>&1  # marks last_notified=<NEW> if applicable
    ```
    (Equivalently, the next session's refresh self-corrects within 24h.)

@@ -51,7 +51,7 @@ _resolve_latest() {  # prints a validated latest tag, or returns 1
   fi
   local resp tag
   resp=$(curl -fsSL --max-time 6 --connect-timeout 3 "$TAGS_API" 2>/dev/null) || return 1
-  tag=$(printf '%s' "$resp" | grep -oE 'companion-v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -1)
+  tag=$(printf '%s' "$resp" | grep -oE '"name": *"companion-v[0-9]+\.[0-9]+\.[0-9]+"' | grep -oE 'companion-v[0-9]+\.[0-9]+\.[0-9]+' | sort -V | tail -1)
   _valid_tag "$tag" && { printf '%s' "$tag"; return 0; }
   return 1
 }
