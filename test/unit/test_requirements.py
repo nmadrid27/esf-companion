@@ -1,6 +1,10 @@
 # test/unit/test_requirements.py
 import dataclasses
+import tempfile
 import unittest
+from pathlib import Path
+
+from esf_pack.aggregate import resolve_requirements
 from esf_pack.schema import BriefRequirements
 
 
@@ -16,10 +20,6 @@ class TestBriefRequirements(unittest.TestCase):
         with self.assertRaises(dataclasses.FrozenInstanceError):
             r.ror_minimum = 5  # type: ignore[misc]
 
-
-import tempfile
-from pathlib import Path
-from esf_pack.aggregate import resolve_requirements
 
 _STATE = (
     "# State\n## Current Project\n"

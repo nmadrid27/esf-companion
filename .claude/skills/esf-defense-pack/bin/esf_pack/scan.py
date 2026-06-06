@@ -55,6 +55,17 @@ def _level(snapshot: dict) -> str:
     return "supported"
 
 
+# Artifacts with a fillable template worth pointing a Guided-level user to.
+# Auto-generated (disclosure) and no-template artifacts (evolution_log,
+# workspace_layout, duplicate-record warnings) get no pointer.
+_TEMPLATE_HINTS = {
+    "position_statement": "position-statement-template.md",
+    "record_of_resistance": "record-of-resistance-template.md",
+    "ai_use_log": "ai-use-log-template.md",
+    "reflection": "reflection-template.md",
+}
+
+
 def gap_report(snapshot: dict) -> str:
     level = _level(snapshot)
     arts = snapshot["artifacts"]
@@ -85,7 +96,9 @@ def gap_report(snapshot: dict) -> str:
         for g in gaps:
             line = f"- [{g['severity']}] {g['message']}"
             if level == "guided":
-                line += " (see the matching template in esf/toolkit/templates/)"
+                tmpl = _TEMPLATE_HINTS.get(g["artifact"])
+                if tmpl:
+                    line += f" (template: esf/toolkit/templates/{tmpl})"
             lines.append(line)
 
     return "\n".join(lines)

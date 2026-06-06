@@ -1,6 +1,6 @@
 import unittest
 from esf_pack.schema import BriefRequirements
-from esf_pack.scan import build_scan_snapshot
+from esf_pack.scan import build_scan_snapshot, gap_report
 from test.unit.test_render_script import _full_pack
 
 
@@ -24,9 +24,6 @@ class TestBuildScanSnapshot(unittest.TestCase):
     def test_position_statement_present(self):
         snap = build_scan_snapshot(_full_pack())
         self.assertEqual(snap["artifacts"]["position_statement"], "present")
-
-
-from esf_pack.scan import gap_report
 
 
 def _snap(scaffolding="Supported", minimum=None, count=2, gaps=None):
@@ -70,6 +67,16 @@ class TestGapReport(unittest.TestCase):
         gaps = [{"artifact": "disclosure", "severity": "info", "message": "info gap"}]
         out = gap_report(_snap(scaffolding="Supported", gaps=gaps))
         self.assertIn("info gap", out)
+
+    def test_guided_hints_only_templated_artifacts(self):
+        gaps = [
+            {"artifact": "record_of_resistance", "severity": "warning", "message": "ror gap"},
+            {"artifact": "evolution_log", "severity": "info", "message": "evo gap"},
+        ]
+        out = gap_report(_snap(scaffolding="Guided", gaps=gaps))
+        self.assertIn("(template: esf/toolkit/templates/record-of-resistance-template.md)", out)
+        evo_line = [ln for ln in out.splitlines() if "evo gap" in ln][0]
+        self.assertNotIn("template", evo_line)
 
 
 if __name__ == "__main__":

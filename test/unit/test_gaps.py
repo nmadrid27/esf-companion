@@ -1,6 +1,6 @@
 import unittest
 from esf_pack.schema import (
-    DefensePack, PositionStatement, RecordOfResistance, GapSeverity,
+    BriefRequirements, DefensePack, PositionStatement, RecordOfResistance, GapSeverity,
 )
 from esf_pack.gaps import detect_gaps, has_hard_stop
 
@@ -75,9 +75,6 @@ class TestGapDetection(unittest.TestCase):
         gaps = detect_gaps(pack)
         warnings = [g for g in gaps if g.severity == GapSeverity.WARNING]
         self.assertEqual(warnings, [])
-
-
-from esf_pack.schema import BriefRequirements
 
 
 class TestCountAwareGaps(unittest.TestCase):
