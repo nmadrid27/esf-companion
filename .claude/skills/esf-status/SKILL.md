@@ -11,6 +11,16 @@ Changes made here will be overwritten on the next /esf-update run.
 
 Show the current ESF project's gap snapshot. Run the aggregator in scan-only mode and relay its report. Do not fabricate; relay what the scan returns.
 
+## Update check (read-only)
+
+Before the gap snapshot, surface any pending update without consuming the session-start nudge:
+
+```bash
+bash .claude/hooks/esf-update-check.sh status-readonly
+```
+
+If it prints an "update available" line, show that single line above the snapshot. If it prints nothing, say nothing about updates.
+
 ## Step 1: Run the scan
 
 The aggregator owns workspace resolution, so run it first and let it tell you whether a workspace exists. From the current directory:

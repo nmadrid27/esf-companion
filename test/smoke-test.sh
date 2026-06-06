@@ -68,6 +68,7 @@ assert "esf-cognitive skill present"                   "$([ -f .claude/skills/es
 assert "esf-onboarding skill present"                  "$([ -f .claude/skills/esf-onboarding/SKILL.md ] && echo 0 || echo 1)"
 assert "START_HERE.md present in esf/toolkit"          "$([ -f esf/toolkit/START_HERE.md ] && echo 0 || echo 1)"
 assert "WORKFLOW.md present in esf/toolkit"            "$([ -f esf/toolkit/WORKFLOW.md ] && echo 0 || echo 1)"
+assert "esf-update-check.sh hook installed + executable" "$([ -x .claude/hooks/esf-update-check.sh ] && echo 0 || echo 1)"
 assert "git commit created"                            "$(git log --oneline | grep -q 'Install ESF Companion' && echo 0 || echo 1)"
 assert "esf/toolkit in git commit"                     "$(git show --name-only HEAD | grep -q 'esf/toolkit/' && echo 0 || echo 1)"
 assert "esf-cognitive in git commit"                   "$(git show --name-only HEAD | grep -q 'esf-cognitive' && echo 0 || echo 1)"

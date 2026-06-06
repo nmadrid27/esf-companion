@@ -6,11 +6,15 @@ on:
       - 'install.sh'
       - 'setup-repo.sh'
       - '.github/workflows/test-install.yml'
+      - '.claude/hooks/esf-update-check.sh'
+      - 'test/test-update-check.sh'
   pull_request:
     paths:
       - 'install.sh'
       - 'setup-repo.sh'
       - '.github/workflows/test-install.yml'
+      - '.claude/hooks/esf-update-check.sh'
+      - 'test/test-update-check.sh'
 
 jobs:
   syntax-check:
@@ -75,3 +79,12 @@ jobs:
             exit 1
           fi
           echo "Platform validation: correctly rejected invalid value"
+
+  test-update-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint + run update-check shell tests
+        run: |
+          bash -n .claude/hooks/esf-update-check.sh
+          bash test/test-update-check.sh
