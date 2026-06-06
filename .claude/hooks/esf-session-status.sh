@@ -90,4 +90,12 @@ fi
 echo "" >&2
 echo "ESF Companion active. Project: ${CURRENT_PROJECT}. Context: ${CONTEXT}. Active corrections: ${ACTIVE_CORRECTIONS}. Session buffer: ${SESSION_BUFFER}. Last session log: ${LAST_SESSION_LOG}." >&2
 echo "" >&2
+
+# Update notification (fail-open, never blocks the session).
+HOOK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+if [ -x "$HOOK_DIR/esf-update-check.sh" ]; then
+    "$HOOK_DIR/esf-update-check.sh" status 2>&1 1>/dev/null || true
+    nohup "$HOOK_DIR/esf-update-check.sh" refresh </dev/null >/dev/null 2>&1 &
+fi
+
 exit 0
