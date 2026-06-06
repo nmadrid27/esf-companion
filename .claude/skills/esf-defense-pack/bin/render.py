@@ -25,6 +25,8 @@ from esf_pack.schema import (
     KeyDecision, AIUseLog, Reflection, Disclosure, Gap, GapSeverity,
     DecisionWalkthroughEntry,
 )
+from esf_pack.gaps import has_hard_stop
+from esf_pack.parsers import _normalize
 from esf_pack.render_html import render_html
 from esf_pack.render_pdf import render_pdf_or_skip
 from esf_pack.render_script import render_script
@@ -140,6 +142,7 @@ def _parse_narrative_md(text: str) -> Narrative:
       - 'What I'd defend if asked' — numbered claims
       - 'Disclosure' — overrides auto-generated disclosure if present
     """
+    text = _normalize(text)  # strip UTF-8 BOM / CRLF so the ^## anchor matches
     sections = {}
     for m in re.finditer(r"^## (.+?)\n(.*?)(?=^## |\Z)", text, re.MULTILINE | re.DOTALL):
         sections[m.group(1).strip()] = m.group(2).strip()
@@ -190,6 +193,8 @@ def main():
     ap.add_argument("pack_json", type=Path)
     ap.add_argument("narrative_md", type=Path)
     ap.add_argument("--out-dir", type=Path, required=True)
+    ap.add_argument("--strict", action="store_true",
+                    help="Exit non-zero if the pack has a HARD_STOP gap (for CI)")
     args = ap.parse_args()
 
     data = json.loads(args.pack_json.read_text(encoding="utf-8"))
@@ -237,6 +242,11 @@ def main():
     else:
         print(f"Wrote: {html_out}, {script_out}")
         print(f"PDF skipped: {msg}")
+
+    # --strict: artifacts are still written, but signal non-defensibility to
+    # automated callers via a non-zero exit when the pack has a HARD_STOP gap.
+    if args.strict and has_hard_stop(pack.gaps):
+        sys.exit(1)
 
 
 if __name__ == "__main__":
