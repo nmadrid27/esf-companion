@@ -4,9 +4,23 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.10.0] - 2026-06-06
+
 ### Added
 - **Gap scanner (on-demand).** New Claude Code `esf-status` skill reports present and missing artifacts for the current project, scaffolding-aware, via the Defense Pack aggregator's `--scan-only` mode (now emitting a structured snapshot). Brief frontmatter `records-of-resistance-minimum` (alias `ror-minimum`) drives a below-minimum WARNING. Because the aggregator is shared, the Defense Pack export now also shows this WARNING when a brief sets a minimum and the RoR count is below it.
 - **Update notifications.** Claude Code now surfaces a one-line "update available" nudge at session start (cached, non-naggy, network-free on the hot path; a detached background check refreshes at most once per 24h). `/esf-update` shows the CHANGELOG sections for everything new since your installed version, and `/esf-status` surfaces a read-only update line. Backed by a shared `esf-update-check.sh` helper with a per-user cache at `~/.claude/.esf-update-check`.
+- **Cycle-based workspace auto-discovery.** The Defense Pack aggregator auto-detects milestone-directory layouts (e.g. `p2-break-through/`, `p3-next-steps/`) that hold artifacts directly, and surfaces an INFO gap naming which artifacts resolved through the cycle path. (#27, #34)
+
+### Fixed
+- **Five parser bugs** in the Defense Pack aggregator surfaced by review. (#29)
+- **Render-pipeline polish.** Added `--strict` exit codes to the aggregator and renderer CLIs; multi-paragraph prose and decision-narration line breaks are now preserved in HTML and PDF; the UTF-8 BOM is stripped when re-reading `defense-narrative.md`; removed a dead render helper. (#30)
+
+### Changed
+- **Completed the v0.7 `projects/` to `esf/` workspace migration** across the Cowork plugin, top-level docs, and the Codex agent, so every surface points at the canonical `esf/[context]/` layout (legacy `projects/` paths kept as read fallbacks). (#36)
+- **Defense Pack install file list is driven by `MANIFEST.txt`** with a CI guard. (#33)
+
+### Internal
+- Dataclass typing for `Narrative.decision_walkthrough` (#32); cycle-layout polish (#34); no-em-dash sweep across prose (#26); mechanical polish rollup (#35); gitignore for the agent worktree scratch dir (#31).
 
 ## [companion-v0.9.1] - 2026-05-23
 
