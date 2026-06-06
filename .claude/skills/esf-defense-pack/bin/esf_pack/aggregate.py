@@ -248,7 +248,7 @@ def resolve_requirements(workspace: Path) -> BriefRequirements:
     return _brief_requirements(workspace, context, project_name)
 
 
-def aggregate_from_dir(workspace: Path) -> DefensePack:
+def aggregate_from_dir(workspace: Path, requirements: "BriefRequirements | None" = None) -> DefensePack:
     workspace = Path(workspace)
     state = _read_state(workspace)
     if not state:
@@ -268,6 +268,9 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
     student_name = state.get("Preferred name", "") or state.get("Name", "")
     _validate_path_segment(project_name, "Project name")
     _validate_path_segment(context, "Context")
+
+    if requirements is None:
+        requirements = _brief_requirements(workspace, context, project_name)
 
     # Resolve artifact locations. Order:
     #   1. Explicit overrides from companion-state's "Defense Pack Paths" section
@@ -609,7 +612,7 @@ def aggregate_from_dir(workspace: Path) -> DefensePack:
         narrative=None,
         gaps=[],
     )
-    pack.gaps = detect_gaps(pack)
+    pack.gaps = detect_gaps(pack, requirements)
 
     # Soften the AI Use Log and Reflection warnings when a process blog is
     # present — for students using the @resist / @default / @shift convention,
