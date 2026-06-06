@@ -745,6 +745,8 @@ echo "  Fetching hooks..."
 mkdir -p .claude/hooks
 curl -fsSL "$TOOLKIT_BASE/.claude/hooks/esf-session-status.sh" -o .claude/hooks/esf-session-status.sh
 chmod +x .claude/hooks/esf-session-status.sh
+curl -fsSL "$TOOLKIT_BASE/.claude/hooks/esf-update-check.sh" -o .claude/hooks/esf-update-check.sh
+chmod +x .claude/hooks/esf-update-check.sh
 
 # Wire the SessionStart hook into .claude/settings.json (project-level, committed to git).
 # Uses Python so the merge is safe regardless of existing settings.json content.
