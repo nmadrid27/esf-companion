@@ -1,0 +1,43 @@
+name: Release drift
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 14 * * 1"   # Mondays, weekly backstop
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # full history + tags for drift math
+      - name: Compute drift and maintain tracking issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -u
+          gh label create release --color a2eeef --description "Release tracking" 2>/dev/null || true
+          REPORT="$(bash scripts/release-drift.sh)"
+          DRIFT="$(printf '%s\n' "$REPORT" | head -1 | cut -d= -f2)"
+          existing="$(gh issue list --label release --state open \
+            --search 'Release pending in:title' --json number --jq '.[0].number // empty')"
+          if [ "${DRIFT:-0}" -gt 0 ] 2>/dev/null; then
+            title="Release pending: ${DRIFT} unreleased commit(s)"
+            body="$(printf 'Unreleased commits on \`main\` since the latest \`companion-v*\` tag.\n\nCut a release with \`scripts/release.sh companion-vX.Y.Z\`.\n\n```\n%s\n```\n' "$REPORT")"
+            if [ -n "$existing" ]; then
+              gh issue edit "$existing" --title "$title" --body "$body"
+            else
+              gh issue create --label release --title "$title" --body "$body"
+            fi
+          else
+            if [ -n "$existing" ]; then
+              gh issue close "$existing" --comment "Released; drift back to 0."
+            fi
+          fi
