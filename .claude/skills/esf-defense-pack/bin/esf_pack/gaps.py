@@ -1,9 +1,9 @@
 """Gap detection logic. Reused by Defense Pack aggregator and (future) periodic scanner."""
 from __future__ import annotations
-from .schema import DefensePack, Gap, GapSeverity
+from .schema import DefensePack, Gap, GapSeverity, BriefRequirements
 
 
-def detect_gaps(pack: DefensePack) -> list[Gap]:
+def detect_gaps(pack: DefensePack, requirements: "BriefRequirements | None" = None) -> list[Gap]:
     """Return list of Gap objects describing what's missing or insufficient."""
     gaps: list[Gap] = []
 
@@ -17,7 +17,16 @@ def detect_gaps(pack: DefensePack) -> list[Gap]:
                     "See templates/position-statement-template.md.",
         ))
 
-    if not pack.records_of_resistance:
+    ror_min = requirements.ror_minimum if requirements else None
+    ror_count = len(pack.records_of_resistance)
+    if ror_min is not None and ror_count < ror_min:
+        gaps.append(Gap(
+            artifact="record_of_resistance",
+            severity=GapSeverity.WARNING,
+            message=f"Records of Resistance: {ror_count} of {ror_min} required "
+                    f"(below the brief's minimum).",
+        ))
+    elif ror_min is None and ror_count == 0:
         gaps.append(Gap(
             artifact="record_of_resistance",
             severity=GapSeverity.WARNING,
