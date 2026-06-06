@@ -4,6 +4,9 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Added
+- **Gap scanner (on-demand).** New Claude Code `esf-status` skill reports present and missing artifacts for the current project, scaffolding-aware, via the Defense Pack aggregator's `--scan-only` mode (now emitting a structured snapshot). Brief frontmatter `records-of-resistance-minimum` (alias `ror-minimum`) drives a below-minimum WARNING. Because the aggregator is shared, the Defense Pack export now also shows this WARNING when a brief sets a minimum and the RoR count is below it.
+
 ## [companion-v0.9.1] - 2026-05-23
 
 ### Fixed

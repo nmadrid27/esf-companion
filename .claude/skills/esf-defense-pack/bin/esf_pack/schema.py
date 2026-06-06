@@ -18,6 +18,16 @@ class Gap:
     message: str
 
 
+@dataclass(frozen=True)
+class BriefRequirements:
+    """Assignment/course requirements parsed from the project brief.
+
+    Kept OFF DefensePack (which is the serialized artifact contract). Passed to
+    gap detection as injected config so requirements never leak into pack.json.
+    """
+    ror_minimum: Optional[int] = None
+
+
 @dataclass
 class PositionStatement:
     stance: str

@@ -1,6 +1,6 @@
 import unittest
 from esf_pack.schema import (
-    DefensePack, PositionStatement, RecordOfResistance, GapSeverity,
+    BriefRequirements, DefensePack, PositionStatement, RecordOfResistance, GapSeverity,
 )
 from esf_pack.gaps import detect_gaps, has_hard_stop
 
@@ -75,6 +75,40 @@ class TestGapDetection(unittest.TestCase):
         gaps = detect_gaps(pack)
         warnings = [g for g in gaps if g.severity == GapSeverity.WARNING]
         self.assertEqual(warnings, [])
+
+
+class TestCountAwareGaps(unittest.TestCase):
+    def _rors(self, n):
+        from esf_pack.schema import RecordOfResistance
+        return [RecordOfResistance(i, "2026-01-01", "a", "b", "c") for i in range(1, n + 1)]
+
+    def test_below_minimum_warns_with_count(self):
+        pack = _pack(records_of_resistance=self._rors(1))
+        gaps = detect_gaps(pack, BriefRequirements(ror_minimum=3))
+        ror = [g for g in gaps if g.artifact == "record_of_resistance"]
+        self.assertEqual(len(ror), 1)
+        self.assertEqual(ror[0].severity, GapSeverity.WARNING)
+        self.assertIn("1 of 3", ror[0].message)
+
+    def test_zero_with_minimum_replaces_generic(self):
+        pack = _pack(records_of_resistance=[])
+        gaps = detect_gaps(pack, BriefRequirements(ror_minimum=3))
+        ror = [g for g in gaps if g.artifact == "record_of_resistance"]
+        self.assertEqual(len(ror), 1)
+        self.assertIn("0 of 3", ror[0].message)
+        self.assertNotIn("No Records of Resistance found", ror[0].message)
+
+    def test_at_or_above_minimum_no_gap(self):
+        pack = _pack(records_of_resistance=self._rors(3))
+        gaps = detect_gaps(pack, BriefRequirements(ror_minimum=3))
+        self.assertEqual([g for g in gaps if g.artifact == "record_of_resistance"], [])
+
+    def test_no_requirements_one_arg_unchanged(self):
+        pack = _pack(records_of_resistance=[])
+        gaps = detect_gaps(pack)  # one-arg call must still work
+        ror = [g for g in gaps if g.artifact == "record_of_resistance"]
+        self.assertEqual(len(ror), 1)
+        self.assertIn("No Records of Resistance found", ror[0].message)
 
 
 if __name__ == "__main__":

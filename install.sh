@@ -696,7 +696,7 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-onboarding/SKILL.md" -o .claude/ski
   || { echo -e "${RED}Failed to fetch esf-onboarding/SKILL.md.${NC}"; exit 1; }
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-project/SKILL.md"    -o .claude/skills/esf-project/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-project/SKILL.md.${NC}"; exit 1; }
-mkdir -p .claude/skills/esf-git .claude/skills/esf-verify .claude/skills/esf-update .claude/skills/esf-cognitive
+mkdir -p .claude/skills/esf-git .claude/skills/esf-verify .claude/skills/esf-update .claude/skills/esf-cognitive .claude/skills/esf-status
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-git/SKILL.md"        -o .claude/skills/esf-git/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-git/SKILL.md.${NC}"; exit 1; }
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-verify/SKILL.md"     -o .claude/skills/esf-verify/SKILL.md \
@@ -705,6 +705,8 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/ski
   || { echo -e "${RED}Failed to fetch esf-update/SKILL.md.${NC}"; exit 1; }
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md \
   || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
+curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-status/SKILL.md"     -o .claude/skills/esf-status/SKILL.md \
+  || { echo -e "${RED}Failed to fetch esf-status/SKILL.md.${NC}"; exit 1; }
 
 # esf-defense-pack: SKILL.md plus bin/ and render/ subdirectories.
 # The file list is driven by MANIFEST.txt in the skill, so adding a new module

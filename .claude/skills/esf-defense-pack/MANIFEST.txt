@@ -7,6 +7,7 @@ bin/esf_pack/parsers.py
 bin/esf_pack/render_html.py
 bin/esf_pack/render_pdf.py
 bin/esf_pack/render_script.py
+bin/esf_pack/scan.py
 bin/esf_pack/schema.py
 render/print.css
 render/script.md.tmpl
