@@ -17,8 +17,9 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).parent))
 
-from esf_pack.aggregate import aggregate_from_dir
+from esf_pack.aggregate import aggregate_from_dir, resolve_requirements
 from esf_pack.gaps import has_hard_stop
+from esf_pack.scan import build_scan_snapshot
 
 
 def main():
@@ -31,10 +32,13 @@ def main():
                     help="Exit non-zero if the pack has a HARD_STOP gap (for CI)")
     args = ap.parse_args()
 
-    pack = aggregate_from_dir(args.workspace)
-    payload = asdict(pack)
     if args.scan_only:
-        payload = {"gaps": payload["gaps"], "project_name": payload["project_name"]}
+        requirements = resolve_requirements(args.workspace)
+        pack = aggregate_from_dir(args.workspace, requirements)
+        payload = build_scan_snapshot(pack, requirements)
+    else:
+        pack = aggregate_from_dir(args.workspace)
+        payload = asdict(pack)
 
     out_json = json.dumps(payload, indent=2, default=str)
     if args.out:
