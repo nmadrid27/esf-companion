@@ -541,5 +541,30 @@ class TestProcessBlogScanIncludesCycleDirs(unittest.TestCase):
             )
 
 
+class TestAggregateRorMinimum(unittest.TestCase):
+    def test_below_minimum_gap_from_brief(self):
+        import tempfile, shutil
+        from pathlib import Path
+        src = FIXTURES / "partial"  # has a PS + some RoRs, fewer than 3
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp = Path(tmp)
+            shutil.copytree(src, tmp / "ws")
+            briefs = tmp / "ws" / "esf" / "test-course" / "briefs"
+            briefs.mkdir(parents=True, exist_ok=True)
+            (briefs / "partial-project-brief.md").write_text(
+                "---\nrecords-of-resistance-minimum: 3\n---\n# Brief\n", encoding="utf-8"
+            )
+            pack = aggregate_from_dir(tmp / "ws")
+        ror = [g for g in pack.gaps if g.artifact == "record_of_resistance"]
+        self.assertEqual(len(ror), 1)
+        self.assertIn("of 3 required", ror[0].message)
+
+    def test_absent_brief_still_aggregates(self):
+        # All bundled fixtures reference briefs that do not exist on disk;
+        # the aggregator must not raise on the brief read.
+        pack = aggregate_from_dir(FIXTURES / "full")
+        self.assertEqual(pack.project_name, "responsive-system")
+
+
 if __name__ == "__main__":
     unittest.main()
