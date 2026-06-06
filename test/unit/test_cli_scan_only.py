@@ -40,6 +40,15 @@ class TestScanOnlyPayload(unittest.TestCase):
             data = json.loads(r.stdout)
             self.assertEqual(data["error"], "no_workspace")
 
+    def test_scan_only_strict_no_workspace_does_not_crash(self):
+        # --scan-only + --strict on a missing workspace must not NameError on the
+        # strict check (pack is None on the no-workspace path); exits 0.
+        with tempfile.TemporaryDirectory() as tmp:
+            r = subprocess.run([sys.executable, str(AGG), tmp, "--scan-only", "--strict"],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            self.assertEqual(json.loads(r.stdout)["error"], "no_workspace")
+
 
 if __name__ == "__main__":
     unittest.main()

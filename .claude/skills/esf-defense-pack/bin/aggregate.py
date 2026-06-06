@@ -38,6 +38,7 @@ def main():
             pack = aggregate_from_dir(args.workspace, requirements)
             payload = build_scan_snapshot(pack, requirements)
         except (FileNotFoundError, ValueError):
+            pack = None
             payload = {
                 "error": "no_workspace",
                 "message": "No ESF workspace found. Run /esf-onboarding to set one up.",
@@ -55,7 +56,7 @@ def main():
 
     # --strict: signal non-defensibility to automated callers without changing
     # default behavior (the SKILL flow reads gaps[] from pack.json itself).
-    if args.strict and has_hard_stop(pack.gaps):
+    if args.strict and pack is not None and has_hard_stop(pack.gaps):
         sys.exit(1)
 
 
