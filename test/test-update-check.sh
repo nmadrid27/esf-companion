@@ -27,5 +27,30 @@ ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/nope" bash "$HELPER" res
 check "resolve exits 0 even with missing version file" '[ $? -eq 0 ]'
 
 rm -rf "$T"
+
+# --- refresh writes latest_tag + last_checked, no network ---
+T=$(newtmp); echo "companion-v0.9.1" > "$T/esf-version"
+ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
+  ESF_UPDATE_LATEST="companion-v0.10.0" bash "$HELPER" refresh
+check "refresh wrote latest_tag" 'grep -q "^latest_tag=companion-v0.10.0$" "$T/cache"'
+check "refresh wrote last_checked" 'grep -q "^last_checked=[0-9][0-9]*$" "$T/cache"'
+
+# --- refresh preserves an existing last_notified ---
+printf 'last_notified=companion-v0.9.1\n' >> "$T/cache"
+ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
+  ESF_UPDATE_LATEST="companion-v0.11.0" bash "$HELPER" refresh
+# last_checked is recent now, so a second refresh is throttled; force by zeroing it:
+sed -i.bak 's/^last_checked=.*/last_checked=0/' "$T/cache"; rm -f "$T/cache.bak"
+ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
+  ESF_UPDATE_LATEST="companion-v0.11.0" bash "$HELPER" refresh
+check "refresh preserved last_notified" 'grep -q "^last_notified=companion-v0.9.1$" "$T/cache"'
+
+# --- throttle: recent last_checked means no rewrite ---
+T2=$(newtmp); printf 'latest_tag=companion-v0.9.1\nlast_checked=%s\n' "$(date +%s)" > "$T2/cache"
+ESF_UPDATE_CACHE="$T2/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
+  ESF_UPDATE_LATEST="companion-v0.10.0" bash "$HELPER" refresh
+check "throttle: latest_tag unchanged when recent" 'grep -q "^latest_tag=companion-v0.9.1$" "$T2/cache"'
+rm -rf "$T" "$T2"
+
 echo "PASS=$PASS FAIL=$FAIL"
 [ "$FAIL" -eq 0 ]

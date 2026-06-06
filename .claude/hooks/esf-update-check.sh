@@ -63,9 +63,22 @@ cmd_resolve() {
   latest="$(_resolve_latest)" && echo "latest=$latest"
 }
 
+cmd_refresh() {
+  local last_checked now latest
+  now=$(date +%s)
+  last_checked="$(_cache_get last_checked 2>/dev/null || echo 0)"
+  case "$last_checked" in (*[!0-9]*|'') last_checked=0 ;; esac
+  if [ -f "$CACHE" ] && [ $((now - last_checked)) -lt "$THROTTLE_SECONDS" ]; then
+    return 0
+  fi
+  latest="$(_resolve_latest)" || return 0   # fail-open: leave cache untouched
+  _cache_set "latest_tag=$latest" "last_checked=$now"
+}
+
 main() {
   case "${1:-status}" in
     resolve) cmd_resolve ;;
+    refresh) cmd_refresh ;;
     *) : ;;
   esac
   return 0
