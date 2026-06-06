@@ -89,12 +89,39 @@ cmd_status() {  # $1: "readonly" to skip the last_notified write
   [ "${1:-}" = "readonly" ] || _cache_set "last_notified=$latest"
 }
 
+cmd_changelog() {  # $1=OLD $2=NEW
+  local old="$1" new="$2" text
+  if [ -n "${ESF_UPDATE_CHANGELOG_FILE:-}" ]; then
+    text="$(cat "$ESF_UPDATE_CHANGELOG_FILE" 2>/dev/null)" || return 0
+  else
+    _valid_tag "$new" || return 0
+    text="$(curl -fsSL --max-time 6 --connect-timeout 3 \
+      "https://raw.githubusercontent.com/nmadrid27/esf-companion/$new/CHANGELOG.md" 2>/dev/null)" || return 0
+  fi
+  # Print each '## [companion-vX.Y.Z]' section whose version is in (old, new].
+  printf '%s\n' "$text" | awk -v old="$old" -v new="$new" '
+    function vget(line,   v) { v=line; sub(/^## \[/,"",v); sub(/\].*/,"",v); return v }
+    function inrange(v,   arr) {
+      if (v !~ /^companion-v[0-9]+\.[0-9]+\.[0-9]+$/) return 0
+      # v > old  AND  v <= new, via external sort -V comparisons
+      cmd1="printf \x27%s\\n%s\\n\x27 \x27" old "\x27 \x27" v "\x27 | sort -V | tail -1"
+      cmd1 | getline top1; close(cmd1)
+      cmd2="printf \x27%s\\n%s\\n\x27 \x27" v "\x27 \x27" new "\x27 | sort -V | tail -1"
+      cmd2 | getline top2; close(cmd2)
+      return (top1==v && v!=old) && (top2==new || v==new)
+    }
+    /^## \[/ { keep = inrange(vget($0)) }
+    keep { print }
+  '
+}
+
 main() {
   case "${1:-status}" in
     status)          cmd_status ;;
     status-readonly) cmd_status readonly ;;
     resolve)         cmd_resolve ;;
     refresh)         cmd_refresh ;;
+    changelog)       cmd_changelog "${2:-}" "${3:-}" ;;
     *) : ;;
   esac
   return 0

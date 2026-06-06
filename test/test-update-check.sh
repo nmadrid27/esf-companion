@@ -81,5 +81,28 @@ check "readonly nudges" '[[ "$err" == *"update available"* ]]'
 check "readonly did not write last_notified" '! grep -q "^last_notified=" "$T/cache"'
 rm -rf "$T"
 
+# --- changelog: prints sections in (OLD, NEW], excludes Unreleased + legacy ---
+T=$(newtmp)
+cat > "$T/CHANGELOG.md" <<'EOF'
+# Changelog
+## [Unreleased]
+- unreleased item
+## [companion-v0.11.0] - 2026-06-10
+- eleven
+## [companion-v0.10.0] - 2026-06-05
+- ten
+## [companion-v0.9.1] - 2026-05-23
+- nine-one
+## [0.7.0] - legacy
+- legacy item
+EOF
+out=$(ESF_UPDATE_CHANGELOG_FILE="$T/CHANGELOG.md" bash "$HELPER" changelog companion-v0.9.1 companion-v0.11.0)
+check "changelog includes v0.11.0"  '[[ "$out" == *"eleven"* ]]'
+check "changelog includes v0.10.0"  '[[ "$out" == *"ten"* ]]'
+check "changelog excludes OLD v0.9.1" '[[ "$out" != *"nine-one"* ]]'
+check "changelog excludes Unreleased" '[[ "$out" != *"unreleased item"* ]]'
+check "changelog excludes legacy"     '[[ "$out" != *"legacy item"* ]]'
+rm -rf "$T"
+
 echo "PASS=$PASS FAIL=$FAIL"
 [ "$FAIL" -eq 0 ]
