@@ -52,5 +52,34 @@ ESF_UPDATE_CACHE="$T2/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" \
 check "throttle: latest_tag unchanged when recent" 'grep -q "^latest_tag=companion-v0.9.1$" "$T2/cache"'
 rm -rf "$T" "$T2"
 
+# --- status: nudges when latest newer + not notified; silent on repeat ---
+T=$(newtmp); echo "companion-v0.9.1" > "$T/esf-version"
+printf 'latest_tag=companion-v0.10.0\nlast_checked=%s\n' "$(date +%s)" > "$T/cache"
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status 2>&1 1>/dev/null)
+check "status nudges" '[[ "$err" == *"update available: companion-v0.9.1 -> companion-v0.10.0"* ]]'
+check "status set last_notified" 'grep -q "^last_notified=companion-v0.10.0$" "$T/cache"'
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status 2>&1 1>/dev/null)
+check "status silent on repeat" '[ -z "$err" ]'
+
+# --- downgrade guard: local newer than latest -> silent ---
+T=$(newtmp); echo "companion-v0.11.0" > "$T/esf-version"
+printf 'latest_tag=companion-v0.10.0\n' > "$T/cache"
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status 2>&1 1>/dev/null)
+check "no downgrade nudge" '[ -z "$err" ]'
+
+# --- non-matching local tag -> silent (never nag on odd state) ---
+T=$(newtmp); echo "companion-v0.11.0-dev" > "$T/esf-version"
+printf 'latest_tag=companion-v0.10.0\n' > "$T/cache"
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status 2>&1 1>/dev/null)
+check "non-matching local silent" '[ -z "$err" ]'
+
+# --- status-readonly nudges but does NOT write last_notified ---
+T=$(newtmp); echo "companion-v0.9.1" > "$T/esf-version"
+printf 'latest_tag=companion-v0.10.0\n' > "$T/cache"
+err=$(ESF_UPDATE_CACHE="$T/cache" ESF_UPDATE_VERSION_FILE="$T/esf-version" bash "$HELPER" status-readonly 2>&1 1>/dev/null)
+check "readonly nudges" '[[ "$err" == *"update available"* ]]'
+check "readonly did not write last_notified" '! grep -q "^last_notified=" "$T/cache"'
+rm -rf "$T"
+
 echo "PASS=$PASS FAIL=$FAIL"
 [ "$FAIL" -eq 0 ]

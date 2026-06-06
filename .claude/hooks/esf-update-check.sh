@@ -75,10 +75,26 @@ cmd_refresh() {
   _cache_set "latest_tag=$latest" "last_checked=$now"
 }
 
+cmd_status() {  # $1: "readonly" to skip the last_notified write
+  local local_tag latest notified
+  local_tag="$(_read_local_tag)"
+  _valid_tag "$local_tag" || return 0          # none / dev / suffixed -> never nudge
+  latest="$(_cache_get latest_tag)" || return 0
+  _valid_tag "$latest" || return 0
+  _newer "$local_tag" "$latest" || return 0    # strict-above only; no downgrade nudge
+  notified="$(_cache_get last_notified 2>/dev/null || echo '')"
+  [ "$notified" = "$latest" ] && return 0
+  printf '\nESF Companion update available: %s -> %s. Run /esf-update to see what changed and install.\n\n' \
+    "$local_tag" "$latest" >&2
+  [ "${1:-}" = "readonly" ] || _cache_set "last_notified=$latest"
+}
+
 main() {
   case "${1:-status}" in
-    resolve) cmd_resolve ;;
-    refresh) cmd_refresh ;;
+    status)          cmd_status ;;
+    status-readonly) cmd_status readonly ;;
+    resolve)         cmd_resolve ;;
+    refresh)         cmd_refresh ;;
     *) : ;;
   esac
   return 0
