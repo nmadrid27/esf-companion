@@ -32,6 +32,14 @@ class TestScanOnlyPayload(unittest.TestCase):
             self.assertIn("artifacts", data)
             self.assertEqual(data["artifacts"]["records_of_resistance"]["minimum"], 3)
 
+    def test_no_workspace_exits_clean(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            r = subprocess.run([sys.executable, str(AGG), tmp, "--scan-only"],
+                               capture_output=True, text=True)
+            self.assertEqual(r.returncode, 0, r.stderr)
+            data = json.loads(r.stdout)
+            self.assertEqual(data["error"], "no_workspace")
+
 
 if __name__ == "__main__":
     unittest.main()

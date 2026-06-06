@@ -33,9 +33,15 @@ def main():
     args = ap.parse_args()
 
     if args.scan_only:
-        requirements = resolve_requirements(args.workspace)
-        pack = aggregate_from_dir(args.workspace, requirements)
-        payload = build_scan_snapshot(pack, requirements)
+        try:
+            requirements = resolve_requirements(args.workspace)
+            pack = aggregate_from_dir(args.workspace, requirements)
+            payload = build_scan_snapshot(pack, requirements)
+        except (FileNotFoundError, ValueError):
+            payload = {
+                "error": "no_workspace",
+                "message": "No ESF workspace found. Run /esf-onboarding to set one up.",
+            }
     else:
         pack = aggregate_from_dir(args.workspace)
         payload = asdict(pack)

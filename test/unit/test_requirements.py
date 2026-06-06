@@ -1,4 +1,5 @@
 # test/unit/test_requirements.py
+import dataclasses
 import unittest
 from esf_pack.schema import BriefRequirements
 
@@ -12,7 +13,7 @@ class TestBriefRequirements(unittest.TestCase):
 
     def test_is_frozen(self):
         r = BriefRequirements(ror_minimum=3)
-        with self.assertRaises(Exception):
+        with self.assertRaises(dataclasses.FrozenInstanceError):
             r.ror_minimum = 5  # type: ignore[misc]
 
 

@@ -11,19 +11,21 @@ Changes made here will be overwritten on the next /esf-update run.
 
 Show the current ESF project's gap snapshot. Run the aggregator in scan-only mode and relay its report. Do not fabricate; relay what the scan returns.
 
-## Step 1: Locate the workspace
+## Step 1: Run the scan
 
-The workspace root is the directory containing `esf/companion-state.md` (or a legacy `projects/_esf/companion-state.md`). If neither resolves, tell the user: "No ESF workspace found here. Run /esf-onboarding to set one up." and stop.
-
-## Step 2: Run the scan
-
-Run, from the workspace root:
+The aggregator owns workspace resolution, so run it first and let it tell you whether a workspace exists. From the current directory:
 
 ```
 .claude/skills/esf-defense-pack/bin/aggregate.py . --scan-only
 ```
 
-This prints a JSON snapshot. If the command errors (no Python, missing skill), say so plainly and stop; do not invent a report.
+This prints a JSON snapshot.
+
+## Step 2: Check for a workspace
+
+If the JSON output contains `"error": "no_workspace"` (or the command otherwise fails to run, e.g. no Python, missing skill), tell the user: "No ESF workspace found here. Run /esf-onboarding to set one up." and stop. Do not invent a report.
+
+Otherwise, proceed to render the snapshot.
 
 ## Step 3: Render the report
 
