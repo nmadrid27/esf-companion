@@ -2,13 +2,14 @@
 from __future__ import annotations
 import datetime
 from pathlib import Path
-from .schema import DefensePack, Disclosure
+from .schema import DefensePack, Disclosure, BriefRequirements
 from .parsers import (
     parse_position_statement,
     parse_record_of_resistance,
     parse_ai_use_log,
     parse_reflection,
     extract_inline_resists,
+    parse_frontmatter_and_body,
 )
 from .gaps import detect_gaps
 
@@ -192,6 +193,59 @@ def _validate_relative_path(value: str, field_name: str) -> None:
                 f"companion-state.md Defense Pack Paths `{field_name}` contains "
                 f"a parent-directory reference (`..`) that isn't allowed: {value!r}."
             )
+
+
+def _brief_requirements(workspace: Path, context: str, project_name: str) -> BriefRequirements:
+    """Locate the project brief and read its RoR minimum. Fully guarded: any
+    failure (no brief, no frontmatter, non-integer, unreadable) returns an empty
+    BriefRequirements rather than raising."""
+    brief_dirs = [
+        workspace / "esf" / context / "briefs",
+        workspace / "projects" / context / "briefs",
+    ]
+    chosen = None
+    for d in brief_dirs:
+        if not d.is_dir():
+            continue
+        matches = sorted(d.glob("*.md"))
+        preferred = [m for m in matches if project_name and project_name in m.name]
+        chosen = preferred[0] if preferred else (matches[0] if matches else None)
+        if chosen:
+            break
+    if not chosen or not chosen.exists():
+        return BriefRequirements()
+    try:
+        fm, _ = parse_frontmatter_and_body(chosen.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError):
+        return BriefRequirements()
+    raw = fm.get("records-of-resistance-minimum")
+    if raw is None:
+        raw = fm.get("ror-minimum")
+    if raw is None:
+        return BriefRequirements()
+    try:
+        return BriefRequirements(ror_minimum=int(str(raw).strip()))
+    except (ValueError, TypeError):
+        return BriefRequirements()
+
+
+def resolve_requirements(workspace: Path) -> BriefRequirements:
+    """Standalone entry: read companion-state, then resolve the brief's RoR
+    minimum. Used by the scan CLI; aggregate_from_dir resolves inline."""
+    workspace = Path(workspace)
+    try:
+        state = _read_state(workspace)
+    except (FileNotFoundError, OSError):
+        return BriefRequirements()
+    if not state:
+        return BriefRequirements()
+    context = state.get("Context", "")
+    project_name = state.get("Project name", "")
+    try:
+        _validate_path_segment(context, "Context")
+    except ValueError:
+        return BriefRequirements()
+    return _brief_requirements(workspace, context, project_name)
 
 
 def aggregate_from_dir(workspace: Path) -> DefensePack:
