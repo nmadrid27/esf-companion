@@ -4,6 +4,9 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Docs
+- **README folder-structure accuracy.** The `skills/` annotation in the post-install folder diagram now lists `status` and `defense pack`, added after the original diagram was written.
+
 ## [companion-v0.10.1] - 2026-06-06
 
 ### Internal

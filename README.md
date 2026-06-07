@@ -270,7 +270,7 @@ The Position Statement is the gate. Everything downstream depends on it. Without
 your-project/
 ├── .claude/                            ← Claude Code configuration
 │   ├── agents/esf-companion.md         ← AI companion identity
-│   ├── skills/                         ← Onboarding, project workflow, git, verify, update, cognitive
+│   ├── skills/                         ← Onboarding, project workflow, git, verify, update, cognitive, status, defense pack
 │   └── reference/esf-guide.md          ← Framework reference
 ├── CLAUDE.md                           ← Ambient activation block
 └── esf/
