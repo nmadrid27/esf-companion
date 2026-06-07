@@ -4,6 +4,9 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Internal
+- **Release tooling.** `scripts/release-drift.sh` reports unreleased commits since the latest `companion-v*` tag; a CI workflow keeps a single self-healing "Release pending" issue open until a release is cut; `scripts/release.sh` cuts a release (version bump, CHANGELOG dating, commit, annotated tag, GitHub release) in one guarded command with `--dry-run`. Prevents merged work from sitting unreleased on `main`. See `RELEASING.md`.
+
 ## [companion-v0.10.0] - 2026-06-06
 
 ### Added
