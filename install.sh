@@ -469,6 +469,11 @@ if [ "$PLATFORM" != "claude" ]; then
   mkdir -p esf/toolkit/templates
 
   echo "  Fetching companion prompts..."
+  # Per-audience prompt set: conversation and templates installs ship
+  # quick-start.md (the single-paste chat prompt) and intentionally omit
+  # cowork.md, which documents Cowork-specific verbal commands. The Claude Code
+  # path below mirrors this in reverse. Keep the two lists curated by audience,
+  # not identical. See issue #42.
   fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
   fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
   fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
@@ -811,6 +816,11 @@ fi
 
 # Download prompts
 echo "  Fetching prompts..."
+# Per-audience prompt set: the Claude Code install ships cowork.md (a cross-
+# reference for users who also run Cowork) and intentionally omits
+# quick-start.md, the single-paste chat prompt, which a skills-driven Claude
+# Code user does not use. The non-Claude path above mirrors this in reverse.
+# Keep the two lists curated by audience, not identical. See issue #42.
 fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
 fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
 fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
