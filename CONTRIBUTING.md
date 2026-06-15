@@ -41,6 +41,16 @@ The Companion is designed to be adapted. If you customize it for your domain, te
 - **Cite sources.** If your contribution references research, include full citations. The ESF has zero tolerance for fabricated references.
 - **Test your changes.** If you modify templates or install scripts, verify they work before submitting.
 
+## Maintainer tooling (Claude Code)
+
+If you work in this repo with Claude Code, a committed `.claude/settings.json` wires three path-gated `PostToolUse` hooks that run on your edits:
+
+- Editing a Defense Pack module under `.claude/skills/esf-defense-pack/bin/` or `render/` re-runs the MANIFEST guard, so a new module missing from `MANIFEST.txt` is caught before CI.
+- Editing a `.sh` file runs `bash -n` (and `shellcheck` if installed).
+- Editing a `.py` file runs Pyright against `pyrightconfig.json` (skipped if Pyright is not installed).
+
+These are maintainer-only quality gates, not part of the product. They are fail-open, they fire only on the files they target, and `install.sh` never ships them (it fetches shipped hooks by explicit name). The scripts live in `.claude/hooks/dev-*.sh`. To opt out locally, drop the hook from `.claude/settings.json` or override it in the gitignored `.claude/settings.local.json`.
+
 ## Code of Conduct
 
 All contributors are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md).

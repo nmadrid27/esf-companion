@@ -1,0 +1,27 @@
+{
+  "//": "Committed maintainer dev settings for the ESF Companion repo. These PostToolUse hooks are maintainer-only quality gates; they are NOT part of the product. install.sh fetches shipped hooks (esf-session-status.sh, esf-update-check.sh) by explicit name and never reads this file, so nothing here reaches end users. Each hook is path-gated and fail-open: it no-ops unless the edit touches its target files, and never blocks the session except to feed a real error back to Claude (exit 2). Personal-only overrides still belong in the gitignored settings.local.json.",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dev-manifest-guard.sh\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dev-shell-syntax-check.sh\"",
+            "timeout": 15
+          },
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/dev-pyright-check.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ]
+  }
+}
