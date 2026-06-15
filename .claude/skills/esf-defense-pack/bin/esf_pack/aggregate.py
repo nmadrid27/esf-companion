@@ -600,7 +600,7 @@ def aggregate_from_dir(workspace: Path, requirements: "BriefRequirements | None"
         # (`date -u +%Y-%m-%dT%H%M%SZ`) so the pack's `export_timestamp` field
         # and the timestamped folder name share the same shape (no colons,
         # trailing `Z`).
-        export_timestamp=datetime.datetime.now(datetime.UTC).strftime("%Y-%m-%dT%H%M%SZ"),
+        export_timestamp=datetime.datetime.now(datetime.timezone.utc).strftime("%Y-%m-%dT%H%M%SZ"),
         companion_version=COMPANION_VERSION,
         position_statement=ps,
         records_of_resistance=rors,
