@@ -47,9 +47,11 @@ If you work in this repo with Claude Code, a committed `.claude/settings.json` w
 
 - Editing a Defense Pack module under `.claude/skills/esf-defense-pack/bin/` or `render/` re-runs the MANIFEST guard, so a new module missing from `MANIFEST.txt` is caught before CI.
 - Editing a `.sh` file runs `bash -n` (and `shellcheck` if installed).
-- Editing a `.py` file runs Pyright against `pyrightconfig.json` (skipped if Pyright is not installed).
+- Editing a `.py` file runs Pyright against `pyrightconfig.json` (skipped if Pyright is not installed). Note: `pyrightconfig.json` currently excludes the Defense Pack `bin/` tree from analysis (see issue #46), so for those files the hook prints a transparent "not analyzed" note rather than a type-check pass; `test/` and other Python are checked normally.
 
 These are maintainer-only quality gates, not part of the product. They are fail-open, they fire only on the files they target, and `install.sh` never ships them (it fetches shipped hooks by explicit name). The scripts live in `.claude/hooks/dev-*.sh`. To opt out locally, drop the hook from `.claude/settings.json` or override it in the gitignored `.claude/settings.local.json`.
+
+The repo also carries maintainer-only review agents and skills (likewise unshipped). Two subagents: `distribution-integrity-reviewer` (audits the `install.sh` / MANIFEST / cross-platform / release-gate contract) and `skill-frontmatter-reviewer` (validates `SKILL.md` and agent frontmatter). Two user-invocable skills: `/release-notes` (drafts the CHANGELOG `[Unreleased]` section from commits since the last tag) and `/scaffold-esf-skill` (scaffolds a new shipped skill with cross-platform parity and installer registration built in).
 
 ## Code of Conduct
 

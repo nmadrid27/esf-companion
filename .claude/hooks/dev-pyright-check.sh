@@ -11,12 +11,18 @@
 # This keeps it from bothering contributors who do not have pyright, while
 # still helping maintainers who do. Remove it from settings.json if unwanted.
 #
+# Coverage note: pyrightconfig.json currently lists the Defense Pack bin/ tree
+# in extraPaths, so pyright treats those files as a library and analyzes none
+# of them (filesAnalyzed=0). When that happens this hook prints a transparent
+# "not analyzed" note and exits 0 rather than reporting a false clean pass.
+# See issue #46. test/ and any other non-extraPaths Python is checked normally.
+#
 # Maintainer-only: install.sh fetches hooks by explicit name, so this file
 # is never shipped to end users.
 #
 # Contract: reads the PostToolUse JSON payload on stdin, extracts
 # .tool_input.file_path. Exit 2 (errors on stderr) when Pyright reports type
-# errors, so Claude sees them. Exit 0 otherwise (fail-open).
+# errors in an analyzed file, so Claude sees them. Exit 0 otherwise (fail-open).
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 
@@ -33,6 +39,15 @@ except Exception:
 ' 2>/dev/null)"
 
 [ -z "$FILE_PATH" ] && exit 0
+
+# Normalize a relative file_path to absolute against the project dir, so the
+# repo gate below (anchored on an absolute prefix) matches whether Claude Code
+# sent an absolute or a relative path.
+case "$FILE_PATH" in
+  /*) ;;
+  *) FILE_PATH="$PROJECT_DIR/$FILE_PATH" ;;
+esac
+
 [ -f "$FILE_PATH" ] || exit 0
 
 # Only Python sources, and skip virtualenvs and caches.
@@ -53,17 +68,33 @@ esac
 # Run from the repo root so pyrightconfig.json (extraPaths, pythonVersion)
 # applies. Pyright exits non-zero when it reports errors.
 OUTPUT="$(cd "$PROJECT_DIR" && pyright --outputjson "$FILE_PATH" 2>/dev/null)"
+[ -z "$OUTPUT" ] && exit 0   # pyright produced nothing parseable; fail-open
 
-ERROR_COUNT="$(printf '%s' "$OUTPUT" | python3 -c '
+# Read filesAnalyzed and errorCount in one pass ("- -" on a parse failure).
+SUMMARY_LINE="$(printf '%s' "$OUTPUT" | python3 -c '
 import json, sys
 try:
-    data = json.load(sys.stdin)
-    print(data.get("summary", {}).get("errorCount", 0))
+    s = json.load(sys.stdin).get("summary", {})
+    print(s.get("filesAnalyzed", 0), s.get("errorCount", 0))
 except Exception:
-    print(0)
+    print("- -")
 ' 2>/dev/null)"
+FILES_ANALYZED="${SUMMARY_LINE%% *}"
+ERROR_COUNT="${SUMMARY_LINE##* }"
 
-if [ "${ERROR_COUNT:-0}" -gt 0 ] 2>/dev/null; then
+# Unparseable summary -> fail-open.
+case "$FILES_ANALYZED" in ''|*[!0-9]*) exit 0 ;; esac
+
+# Transparent skip: pyright analyzed nothing, so the file is excluded by
+# pyrightconfig.json (e.g. it sits under an extraPaths library root). Surface
+# the gap instead of a false clean pass, but do not block. See issue #46.
+if [ "$FILES_ANALYZED" -eq 0 ]; then
+  echo "Pyright did not analyze $FILE_PATH (excluded by pyrightconfig.json; see issue #46). Not type-checked." >&2
+  exit 0
+fi
+
+case "$ERROR_COUNT" in ''|*[!0-9]*) exit 0 ;; esac
+if [ "$ERROR_COUNT" -gt 0 ]; then
   SUMMARY="$(printf '%s' "$OUTPUT" | python3 -c '
 import json, sys
 try:
@@ -76,7 +107,9 @@ for d in data.get("generalDiagnostics", []):
     rng = d.get("range", {}).get("start", {})
     line = rng.get("line", 0) + 1
     col = rng.get("character", 0) + 1
-    print(f"  {d.get(\"file\",\"\")}:{line}:{col}  {d.get(\"message\",\"\").splitlines()[0]}")
+    fname = d.get("file", "")
+    msg = (d.get("message", "").splitlines() or [""])[0]
+    print(f"  {fname}:{line}:{col}  {msg}")
 ' 2>/dev/null)"
   {
     echo "Pyright reported $ERROR_COUNT type error(s) in:"
