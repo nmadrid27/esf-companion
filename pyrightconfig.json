@@ -1,4 +1,5 @@
 {
+  "exclude": ["**/node_modules", "**/__pycache__"],
   "extraPaths": [".claude/skills/esf-defense-pack/bin"],
   "include": [
     ".claude/skills/esf-defense-pack/bin",
