@@ -47,7 +47,7 @@ If you work in this repo with Claude Code, a committed `.claude/settings.json` w
 
 - Editing a Defense Pack module under `.claude/skills/esf-defense-pack/bin/` or `render/` re-runs the MANIFEST guard, so a new module missing from `MANIFEST.txt` is caught before CI.
 - Editing a `.sh` file runs `bash -n` (and `shellcheck` if installed).
-- Editing a `.py` file runs Pyright against `pyrightconfig.json` (skipped if Pyright is not installed). Note: `pyrightconfig.json` currently excludes the Defense Pack `bin/` tree from analysis (see issue #46), so for those files the hook prints a transparent "not analyzed" note rather than a type-check pass; `test/` and other Python are checked normally.
+- Editing a `.py` file runs Pyright against `pyrightconfig.json`, **advisory only**: it surfaces type errors as a non-blocking note and never blocks the edit (skipped if Pyright is not installed). Note: `pyrightconfig.json` currently excludes the Defense Pack `bin/` tree from analysis (see issue #46), so for those files the hook prints a transparent "not analyzed" note; `test/` and other Python are checked normally. (The MANIFEST and shell-syntax hooks do block on a real failure; only Pyright is advisory.)
 
 These are maintainer-only quality gates, not part of the product. They are fail-open, they fire only on the files they target, and `install.sh` never ships them (it fetches shipped hooks by explicit name). The scripts live in `.claude/hooks/dev-*.sh`. To opt out locally, drop the hook from `.claude/settings.json` or override it in the gitignored `.claude/settings.local.json`.
 

@@ -20,9 +20,13 @@
 # Maintainer-only: install.sh fetches hooks by explicit name, so this file
 # is never shipped to end users.
 #
+# Advisory: this hook never blocks. It always exits 0; when Pyright reports
+# type errors in an analyzed file it prints them to stderr as a non-blocking
+# note. Run advisory (not exit 2) so it does not block on the repo's
+# pre-existing type errors. Flip the marked exit below to 2 to make it block.
+#
 # Contract: reads the PostToolUse JSON payload on stdin, extracts
-# .tool_input.file_path. Exit 2 (errors on stderr) when Pyright reports type
-# errors in an analyzed file, so Claude sees them. Exit 0 otherwise (fail-open).
+# .tool_input.file_path. Always exits 0 (fail-open / advisory).
 
 PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 
@@ -112,12 +116,12 @@ for d in data.get("generalDiagnostics", []):
     print(f"  {fname}:{line}:{col}  {msg}")
 ' 2>/dev/null)"
   {
-    echo "Pyright reported $ERROR_COUNT type error(s) in:"
+    echo "Pyright (advisory, non-blocking) found $ERROR_COUNT type error(s) in:"
     echo "  $FILE_PATH"
     echo ""
     [ -n "$SUMMARY" ] && echo "$SUMMARY"
   } >&2
-  exit 2
+  exit 0   # advisory; change to `exit 2` to make type errors blocking
 fi
 
 exit 0
