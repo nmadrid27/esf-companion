@@ -45,8 +45,8 @@ STATUS=$?
 
 if [ "$STATUS" -ne 0 ]; then
   {
-    echo "Defense Pack MANIFEST.txt is out of sync after editing:"
-    echo "  $FILE_PATH"
+    echo "Defense Pack MANIFEST.txt is out of sync (detected after editing"
+    echo "  $FILE_PATH; the drift may pre-date this change):"
     echo ""
     echo "$OUTPUT"
     echo ""
