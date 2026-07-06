@@ -31,11 +31,21 @@ if [ -z "$COMPANION_STATE" ]; then
     exit 0
 fi
 
-# Parse key fields from companion-state.md
+# Parse key fields from companion-state.md.
+# These values reach the model's context via the activation line below, and
+# companion-state.md is a user/AI-authored file that travels in shared repos
+# and templates. Sanitize to a safe character set and cap length so a crafted
+# value cannot smuggle instruction-like text into the session preamble.
+_sanitize_field() {
+    printf '%s' "$1" | LC_ALL=C tr -cd '[:alnum:] _.,:/()\-' | cut -c1-80
+}
 CURRENT_PROJECT=$(grep -m1 '^\- \*\*Project name:\*\*' "$COMPANION_STATE" \
     | sed 's/- \*\*Project name:\*\* //' | sed 's/[[:space:]]*$//')
 CONTEXT=$(grep -m1 '^\- \*\*Context:\*\*' "$COMPANION_STATE" \
     | sed 's/- \*\*Context:\*\* //' | sed 's/[[:space:]]*$//')
+
+CURRENT_PROJECT=$(_sanitize_field "$CURRENT_PROJECT")
+CONTEXT=$(_sanitize_field "$CONTEXT")
 
 [ -z "$CURRENT_PROJECT" ] && CURRENT_PROJECT="not set"
 [ -z "$CONTEXT" ]         && CONTEXT="none"
