@@ -1,6 +1,6 @@
 ---
 name: esf-project
-description: Use when working on a course project. Runs the ESF project workflow: Inquire, Position, Explore, Make, Reflect, and enforces the Position Statement gate before AI engagement begins. Activate for any project work, ideation, drafting, or review within a course or personal context.
+description: Ambient ESF workflow for any project work in a folder with companion-state.md, for students, educators, professionals, and independent creators alike. Invoke on the first substantive message of a session ("draft," "edit," "review," "refine," "continue," "help me with this"), on explicit phase phrases ("start my project," "I wrote my position statement," "let's explore," "let's make"), or on session-close signals ("done for today," "wrap up," "save and close"). Runs Inquire, Position, Explore, Make, and Reflect, and enforces the Position Statement gate before AI engagement begins. If companion-state.md is absent, defer to /esf-onboarding.
 ---
 
 <!--
@@ -242,13 +242,13 @@ The gate activates when any of the following is true:
 2. The active context in companion-state.md marks Position Statements as required for substantial documents in that context. Institutional, scholarly, and professional contexts typically set this, because the author's stated position is part of the record the work will be judged against.
 3. Substantial content is being produced without an existing tracked project (see "Ad hoc substantial work" below).
 
-**A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Produce nothing substantive until the answer is yes.
+**A clear task instruction does not satisfy the gate.** "I know what we're making" and "the user has stated their intellectual position before I start" are different conditions. If the deliverable is obvious from the first message but no Position Statement exists on record, the gate still applies. The question isn't "do I know what we're making?"; it is "has the author stated their position on this work, on record, before I produce from it?" Elicit a position before producing. If the user declines, proceed with friction (see "If the user declines or no source content exists" below) rather than blocking.
 
 **Ad hoc substantial work.** When Current Project in companion-state.md is "not set" and the user requests substantial content production, pause before producing anything. Substantial content with no project tag is unanchored in the record. Offer to log the project first:
 
 > "Current Project is 'not set' in companion-state.md. Substantial work in the [context] context is typically tracked as a project so the record can check the work against a stated position later. Want me to set this as the active project? A name and one sentence is enough."
 
-If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then continue with the Position Statement check below for the newly logged project. If the user declines: log the declined project naming in the session buffer, and in gate contexts stop here (the Position Statement has no file path to save to). Do not surface the offer again this session.
+If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then continue with the Position Statement check below for the newly logged project. If the user declines: log the declined project naming in the session buffer, then proceed with friction. Because no project is named, there is no path to save a Position Statement, so surface the friction block, raise drift sensitivity, and work in Socratic articulation mode; note that the work is unanchored in the record. Do not surface the naming offer again this session, and do not block.
 
 Use the Glob tool to look for a Position Statement file matching `esf/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
 
@@ -279,17 +279,29 @@ If one or more user-authored source files are found, offer a draft rather than b
 
 **If the user declines or no source content exists:**
 
-Block with the standard refusal:
+Do not block outright. First make the low-friction path unmissable, then proceed with friction if they still decline. This matches the ambient agent's decline ladder (see `esf-companion` agent, Moment 1); the two must behave identically.
 
-> **I can't help with this project yet, and here's why that matters.**
+First, offer the fastest way in:
+
+> **Before I start producing, your thinking should come first; that's what keeps this yours rather than mine.**
 >
-> The ESF workflow is designed so that your thinking comes first. Before AI enters your process, you need a Position Statement: a record of your own understanding, questions, and stance on the project, written without AI assistance.
->
-> This isn't a bureaucratic requirement. It's the mechanism that keeps your thinking yours.
->
-> When AI output exists before your own position does, you end up reacting to what the AI produced instead of developing what you actually think. You may not notice this happening. The AI's framing feels natural and reasonable, so you refine it rather than originating your own. By the end of the project, you may have produced work you can't fully defend, because the reasoning wasn't built from your own position outward.
->
-> **To proceed, write your Position Statement first.** Save it and return. Or come back and say "talk it through." I'll ask you three questions and draft from your answers.
+> The quickest way is to talk it through: say "talk it through" and I'll ask you three questions, then draft a Position Statement from your answers for you to edit. Ninety seconds, and the record has your direction in it before any AI output exists. Or write it yourself and come back.
+
+If the user takes the talk-through or writes one, proceed normally. **If the user still declines, proceed, but surface this friction block before drafting:**
+
+```
+★ Proceeding without a stated position ──
+Drift detection is running without a reference point. It can flag
+patterns but can't check them against what you said you were making,
+because nothing has been stated yet. When AI output exists before
+your own position does, the usual failure is that you refine the
+AI's framing instead of originating your own, and by the end you
+have work that is harder to defend. You can still work. The record
+will show you started without a stated position.
+──────────────────────────────────────────
+```
+
+Then: note the declined direction in the session buffer, raise drift sensitivity, and shift into Socratic articulation mode while drafting (ask questions about the work as it develops rather than stating directions). Bring the direction question back naturally once there is enough material: "Looking at what we've built, is this where you wanted to be?" On a second or third decline for the same project, escalate the friction as the agent does, but never block.
 
 ### What a Position Statement Contains
 
@@ -568,7 +580,7 @@ If the user says yes:
    - `What I Did Instead`
 6. Save the file, then confirm the saved path.
 
-If the user declines, do not create the file, but note the declined RoR moment in the session buffer so the count can still be tracked against the brief.
+If the user declines, do not create the file, but note the declined RoR moment in the session buffer for continuity. A declined capture is logged but does not count toward the brief's RoR minimum, which measures documented divergence rather than raw rejections. When it would leave the user short of the minimum, say so and offer the ten-second capture.
 
 For code-based projects, annotated commits can supplement a Record of Resistance. If the course or brief requires formal RoR files, still create the file even when a commit captures the same decision.
 

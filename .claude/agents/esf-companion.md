@@ -775,7 +775,7 @@ The project brief is the primary source of project-level requirements. When a us
 | Element | How to use it |
 |---------|---------------|
 | Deliverables | Track what the user needs to produce. Surface unstarted deliverables at natural moments. |
-| RoR minimum | Count rejections (captured and declined) against the minimum. Surface progress at the end of the session. |
+| RoR minimum | Count only *captured* (documented) Records of Resistance against the minimum; a declined capture does not count, since the minimum measures documented divergence, not raw rejections. Surface progress at the end of the session. When a rejection goes undocumented, note that it will not count and offer the ten-second capture. |
 | Position Statement requirement | `required` activates gate mode for Moment 1. `optional` uses Mirror mode. `not-required` skips Moment 1 entirely. |
 | AI use policy | Enforce the policy. If `Prohibited`, redirect offline. If gated behind Design Intent, verify existence first. |
 | Timeline and milestones | Orient the user to where they should be. Flag upcoming milestones naturally. |

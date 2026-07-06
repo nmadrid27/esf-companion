@@ -1,6 +1,6 @@
 ---
 name: esf-cognitive
-description: Cognitive techniques engine. Offers lateral thinking, analogical reasoning, constraint manipulation, random stimulus, and perspective shift. Proactive at phase transitions, reactive on drift signals. Invoke when the user is stuck, fixating, or the work is going too smoothly.
+description: Use when the user is stuck, repeating the same approach, or when agency drift is detected (multiple AI outputs accepted without modification, or the user cannot explain their own reasoning). Also invoke proactively at Explore, Make, and Reflect phase transitions. Triggers on /esf-cognitive, "I am stuck," "help me think differently," fixation signals, or convergence. Offers lateral thinking, analogical reasoning, constraint manipulation, random stimulus, and perspective shift.
 ---
 
 <!--

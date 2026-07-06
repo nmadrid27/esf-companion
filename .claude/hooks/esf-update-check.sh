@@ -91,10 +91,15 @@ cmd_status() {  # $1: "readonly" to skip the last_notified write
 
 cmd_changelog() {  # $1=OLD $2=NEW
   local old="$1" new="$2" text
+  # Both operands are interpolated into an awk->shell sort-V shell-out below, so
+  # they MUST be validated tags before use, regardless of the text source.
+  # `old` in particular is untrusted: it originates from .claude/esf-version,
+  # which is only whitespace-stripped on read.
+  _valid_tag "$old" || return 0
+  _valid_tag "$new" || return 0
   if [ -n "${ESF_UPDATE_CHANGELOG_FILE:-}" ]; then
     text="$(cat "$ESF_UPDATE_CHANGELOG_FILE" 2>/dev/null)" || return 0
   else
-    _valid_tag "$new" || return 0
     text="$(curl -fsSL --max-time 6 --connect-timeout 3 \
       "https://raw.githubusercontent.com/nmadrid27/esf-companion/$new/CHANGELOG.md" 2>/dev/null)" || return 0
   fi

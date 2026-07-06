@@ -310,11 +310,13 @@ if [ ! -d ".git" ]; then
     case "$GIT_CHOICE" in
       1)
         echo "Downloading setup script..."
-        curl -fsSL "$SETUP_URL" -o /tmp/esf-setup-repo.sh
+        _setup_tmp="$(mktemp)" || { echo -e "${RED}Failed to create temp file.${NC}"; exit 1; }
+        curl -fsSL "$SETUP_URL" -o "$_setup_tmp"
         echo "Running setup script..."
-        bash /tmp/esf-setup-repo.sh </dev/tty
-        rm -f /tmp/esf-setup-repo.sh
-        exit $?
+        bash "$_setup_tmp" </dev/tty
+        _setup_rc=$?
+        rm -f "$_setup_tmp"
+        exit $_setup_rc
         ;;
       2)
         echo "Continuing without git..."
@@ -486,6 +488,7 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" esf/toolkit/templates/record-of-resistance-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" esf/toolkit/templates/record-of-resistance.md
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" esf/toolkit/templates/ai-use-log-template.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" esf/toolkit/templates/ai-use-log-lite-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" esf/toolkit/templates/ai-use-log.md
   fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" esf/toolkit/templates/companion-state-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" esf/toolkit/templates/companion-notes-template.md
@@ -498,6 +501,7 @@ if [ "$PLATFORM" != "claude" ]; then
   fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
   fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
+  fetch_if_missing "$TOOLKIT_BASE/templates/README.md" esf/toolkit/templates/README.md
 
   if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
@@ -725,6 +729,12 @@ curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/MANIFEST.txt" -o "$_MA
 while IFS= read -r _f || [ -n "$_f" ]; do
   # Skip blank lines so a trailing newline in the manifest is harmless.
   [ -z "$_f" ] && continue
+  # Path containment: reject traversal, absolute, or backslash paths so a
+  # tampered manifest can never write outside the skill tree.
+  case "$_f" in
+    /*|*..*|*\\*)
+      echo -e "${RED}Refusing unsafe manifest path: $_f${NC}"; rm -f "$_MANIFEST_TMP"; exit 1 ;;
+  esac
   mkdir -p ".claude/skills/esf-defense-pack/$(dirname "$_f")"
   curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/$_f" \
     -o ".claude/skills/esf-defense-pack/$_f" \
@@ -848,6 +858,7 @@ fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates
 fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
 fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
+fetch_if_missing "$TOOLKIT_BASE/templates/README.md" esf/toolkit/templates/README.md
 
 # Download reference files
 echo "  Fetching reference files..."
