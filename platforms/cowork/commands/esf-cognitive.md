@@ -7,7 +7,7 @@ Offer the user a cognitive technique from the ESF Companion's Cognitive Techniqu
 
 ## Step 1: Read the current project context
 
-Read `projects/_esf/companion-state.md`. If not found, check `companion-state.md` at root and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches under `sample/`, `examples/`, or `templates/`. If found, extract the current project name and phase. Use this context to frame the technique as relevant to their actual work.
+Search for `esf/companion-state.md` first. If not found, check `projects/_esf/companion-state.md` (legacy pre-v0.7 layout), `companion-state.md` at root, and `*/companion-state.md` one level deep for backwards compatibility. Ignore matches whose path contains `sample/`, `examples/`, or `templates/`. If found, extract the current project name and phase. Use this context to frame the technique as relevant to their actual work.
 
 ## Step 2: Present techniques with preview cards
 

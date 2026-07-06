@@ -1,6 +1,6 @@
 ---
 name: esf-project
-description: Use when working on a course project. Runs the ESF project workflow: Inquire, Position, Explore, Make, Reflect, and enforces the Position Statement gate before AI engagement begins. Activate for any project work, ideation, drafting, or review within a course or personal context.
+description: Ambient ESF workflow for any project work in a folder with companion-state.md, for students, educators, professionals, and independent creators alike. Invoke on the first substantive message of a session ("draft," "edit," "review," "refine," "continue," "help me with this"), on explicit phase phrases ("start my project," "I wrote my position statement," "let's explore," "let's make"), or on session-close signals ("done for today," "wrap up," "save and close"). Runs Inquire, Position, Explore, Make, and Reflect, and enforces the Position Statement gate before AI engagement begins. If companion-state.md is absent, defer to /esf-onboarding.
 ---
 
 <!--
@@ -568,7 +568,7 @@ If the user says yes:
    - `What I Did Instead`
 6. Save the file, then confirm the saved path.
 
-If the user declines, do not create the file, but note the declined RoR moment in the session buffer so the count can still be tracked against the brief.
+If the user declines, do not create the file, but note the declined RoR moment in the session buffer for continuity. A declined capture is logged but does not count toward the brief's RoR minimum, which measures documented divergence rather than raw rejections. When it would leave the user short of the minimum, say so and offer the ten-second capture.
 
 For code-based projects, annotated commits can supplement a Record of Resistance. If the course or brief requires formal RoR files, still create the file even when a commit captures the same decision.
 
