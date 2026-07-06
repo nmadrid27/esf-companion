@@ -1,6 +1,6 @@
 ---
 name: esf-onboarding
-description: Run this first. Sets up your ESF Companion by collecting your identity and project context, then writing your workspace state file and creating your workspace. Run once when you first install, and again when you start a new project or context.
+description: Use when the user has just installed the ESF Companion and needs first-time setup, invokes /esf-onboarding, says something like "set up ESF" or "I just installed this," or wants to add a new context or project to an existing install. Collects identity and project context, writes companion-state.md, and creates the workspace folder structure.
 ---
 
 <!--

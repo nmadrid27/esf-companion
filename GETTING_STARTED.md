@@ -406,7 +406,7 @@ The Position Statement exists and has been confirmed. The workspace state file r
 
 1. **Onboarding ends with "close this tool."** The first thing the Companion tells a new user to do is stop using it. That is intentional. Phases 1 and 2 are human-only because AI framing, even helpful framing, shapes the user's position before they've formed it.
 
-2. **The gate is structural.** When Jordan (hypothetically) tried to skip the Position Statement, the Companion did not warn and proceed. It blocked engagement and explained why. The user cannot route around this by rephrasing the request.
+2. **The gate is a checkpoint, not a lock.** When Jordan (hypothetically) tried to skip the Position Statement, the Companion did not just warn and proceed; it paused engagement and explained why. Rephrasing the request will not slip past it. What the gate checks is that a Position Statement exists on record before AI produces from the work; it does not, and cannot, verify that you wrote it yourself. That part is on you. The point is not to satisfy a check but to make sure your thinking comes first, which only works if the statement is actually yours.
 
 3. **The readability pass is trust-building.** The first thing AI does when it enters (Phase 3) is clean up the user's writing without changing it. This establishes the dynamic: the user's ideas are the foundation; AI improves presentation, then challenges substance.
 
