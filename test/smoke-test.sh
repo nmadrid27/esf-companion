@@ -226,19 +226,21 @@ assert "Cowork: Disclosure AI-drafted with user review" \
   "$(grep -q 'draft the disclosure candidate' "$COWORK_SKILL" && \
     grep -q 'explicit.*approval\|explicitly approves' "$COWORK_SKILL" && echo 0 || echo 1)"
 
-# Version lockstep: plugin.json version must match the value baked into /esf-start
-# so the in-session version check doesn't emit spurious update notices.
+# Version handling: esf-start reads the shipped version dynamically from the
+# bundled plugin.json (no hardcoded literal), so the only invariant to guard is
+# that the manifest version is parseable and that esf-start reads it that way.
 COWORK_MANIFEST="$REPO_ROOT/platforms/cowork/.claude-plugin/plugin.json"
 COWORK_VERSION=$(grep '"version"' "$COWORK_MANIFEST" | sed -E 's/.*"version"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
 
 assert "Cowork: plugin.json has a parseable version"   \
   "$([ -n "$COWORK_VERSION" ] && echo 0 || echo 1)"
 
-# The version should appear at least twice in esf-start.md Step 0:
-# once in "shipped with this command is `X.Y.Z`" and once in "(you have vX.Y.Z)".
-BAKED_COUNT=$(grep -E "\`${COWORK_VERSION}\`|v${COWORK_VERSION}" "$COWORK_START" 2>/dev/null | wc -l | tr -d ' ')
-assert "Cowork: esf-start.md baked-in version matches plugin.json ($COWORK_VERSION)" \
-  "$([ "$BAKED_COUNT" -ge 2 ] && echo 0 || echo 1)"
+# esf-start.md Step 0 must read the version from plugin.json, not bake a literal.
+assert "Cowork: esf-start.md reads version from bundled plugin.json" \
+  "$(grep -q 'CLAUDE_PLUGIN_ROOT}/.claude-plugin/plugin.json' "$COWORK_START" && echo 0 || echo 1)"
+
+assert "Cowork: esf-start.md hardcodes no version literal" \
+  "$(grep -qE 'v?[0-9]+\.[0-9]+\.[0-9]+' "$COWORK_START" && echo 1 || echo 0)"
 
 # CHANGELOG should mention the current Cowork plugin version somewhere.
 # Loose check: the version string appears in the file. Exact formatting is
