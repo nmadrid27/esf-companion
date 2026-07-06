@@ -50,6 +50,12 @@ mkrelrepo() {  # $1 = current version, $2 = unreleased-has-content (yes/no)
   else
     printf '# Changelog\n\n## [Unreleased]\n\n## [%s] - 2026-01-01\n- old\n' "$1" > "$d/CHANGELOG.md"
   fi
+  # Version-locked satellites the release script keeps in step with the tag.
+  local semver="${1#companion-v}"
+  mkdir -p "$d/platforms/cowork/.claude-plugin"
+  printf '{\n  "name": "esf-companion",\n  "version": "%s",\n  "description": "x"\n}\n' "$semver" \
+    > "$d/platforms/cowork/.claude-plugin/plugin.json"
+  printf 'cff-version: 1.2.0\nversion: "%s"\ndate-released: "2026-01-01"\n' "$semver" > "$d/CITATION.cff"
   git -C "$d" add -A; git -C "$d" commit -q -m "init"
   echo "$d"
 }
@@ -76,6 +82,12 @@ check "dry-run previews new version" '[[ "$out" == *"companion-v0.10.0 -> compan
 check "dry-run shows the new section content" '[[ "$out" == *"a new thing"* ]]'
 check "dry-run made no commit" '[ "$(git -C "$D" rev-list --count HEAD)" -eq 1 ]'
 check "dry-run did not touch esf-version" '[ "$(cat "$D/.claude/esf-version")" = "companion-v0.10.0" ]'
+
+# --- version-locked satellites: previewed in dry-run, left unwritten ---
+check "dry-run previews plugin.json bump" '[[ "$out" == *"would set"*"plugin.json"*"0.11.0"* ]]'
+check "dry-run previews CITATION bump" '[[ "$out" == *"would set"*"CITATION.cff"* ]]'
+check "dry-run did not touch plugin.json" '[[ "$(cat "$D/platforms/cowork/.claude-plugin/plugin.json")" == *"\"version\": \"0.10.0\""* ]]'
+check "dry-run did not touch CITATION" '[[ "$(cat "$D/CITATION.cff")" == *"version: \"0.10.0\""* ]]'
 rm -rf "$D" "$D2"
 
 echo "PASS=$PASS FAIL=$FAIL"

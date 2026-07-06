@@ -15,8 +15,22 @@ done
 
 VERSION_FILE=".claude/esf-version"
 CHANGELOG="CHANGELOG.md"
+PLUGIN_JSON="platforms/cowork/.claude-plugin/plugin.json"
+CITATION="CITATION.cff"
 TAG_RE='^companion-v[0-9]+\.[0-9]+\.[0-9]+$'
 die() { echo "release: $1" >&2; exit 1; }
+
+# Rewrite one line in place, portably (no sed -i: BSD and GNU disagree on it).
+# _replace_line FILE MATCH_ERE REPLACEMENT_LINE
+_replace_line() {
+  local f="$1" pat="$2" repl="$3" tmp
+  # 'pat' not 'match': match is a reserved built-in in BSD awk (macOS default).
+  tmp="$(mktemp)" || die "mktemp failed"
+  awk -v pat="$pat" -v repl="$repl" '
+    !seen && $0 ~ pat { print repl; seen=1; next }
+    { print }
+  ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp"; die "failed to update $f"; }
+}
 
 # --- Guards (each fails before any mutation) ---
 printf '%s' "$TAG" | grep -qE "$TAG_RE" || die "version must match companion-vX.Y.Z (got: '${TAG}')"
@@ -42,6 +56,7 @@ if [ "$DRY_RUN" = false ]; then
 fi
 
 DATE="$(date +%F)"
+SEMVER="${TAG#companion-v}"   # bare X.Y.Z for plugin.json and CITATION.cff
 NEW_CHANGELOG="$(awk -v tag="$TAG" -v date="$DATE" '
   !done && /^## \[Unreleased\]/ { print; print ""; print "## [" tag "] - " date; done=1; next }
   { print }
@@ -51,6 +66,8 @@ NOTES="$(printf '%s\n' "$NEW_CHANGELOG" | awk -v tag="$TAG" '
 
 if [ "$DRY_RUN" = true ]; then
   echo "DRY RUN: $CURRENT -> $TAG (date $DATE)"
+  [ -f "$PLUGIN_JSON" ] && echo "DRY RUN: would set $PLUGIN_JSON version -> $SEMVER"
+  [ -f "$CITATION" ]    && echo "DRY RUN: would set $CITATION version -> $SEMVER, date-released -> $DATE"
   echo "--- release notes (new CHANGELOG section) ---"
   printf '%s\n' "$NOTES"
   echo "--- would: commit, push main, annotated tag $TAG, push tag, gh release create ---"
@@ -60,6 +77,19 @@ fi
 printf '%s\n' "$TAG" > "$VERSION_FILE"
 printf '%s\n' "$NEW_CHANGELOG" > "$CHANGELOG"
 git add "$VERSION_FILE" "$CHANGELOG"
+
+# Keep the Cowork plugin manifest and citation metadata in lockstep with the
+# toolkit version. Both are optional so the tooling still runs in minimal repos.
+if [ -f "$PLUGIN_JSON" ]; then
+  _replace_line "$PLUGIN_JSON" '"version"[[:space:]]*:' "  \"version\": \"$SEMVER\","
+  git add "$PLUGIN_JSON"
+fi
+if [ -f "$CITATION" ]; then
+  _replace_line "$CITATION" '^version:'        "version: \"$SEMVER\""
+  _replace_line "$CITATION" '^date-released:'  "date-released: \"$DATE\""
+  git add "$CITATION"
+fi
+
 git commit -m "chore(release): $TAG"
 git push origin main
 git tag -a "$TAG" -m "ESF Companion $TAG"
