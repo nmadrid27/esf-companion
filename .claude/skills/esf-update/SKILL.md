@@ -1,6 +1,7 @@
 ---
 name: esf-update
-description: Check for ESF Companion updates and install the latest version.
+description: Use when the user runs /esf-update, asks to update the Companion, asks whether a newer version is available, or wants to install the latest skills and templates. Resolves the latest companion-vX.Y.Z release, shows what changed, and runs the installer on confirmation.
+disable-model-invocation: true
 ---
 
 <!--
