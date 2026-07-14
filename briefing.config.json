@@ -1,6 +1,6 @@
 {
   "project": "esf-companion",
-  "state_file": "~/.claude/projects/-user-projects-esf-companion/memory/session_state.md",
+  "state_file": "session_state.md",
   "state_mode": "entries",
   "state_entries": 2,
   "backlog_file": "docs/PILOT-BACKLOG.md",
