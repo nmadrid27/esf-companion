@@ -39,6 +39,11 @@ launch/
 # Local Claude Code settings (machine-specific overrides)
 .claude/settings.local.json
 
+# Local Claude Code notes: documents the gitignored local-only working folders
+# (ibl-mentor/, landing/, launch/). Loaded from disk for local sessions and
+# synced across machines via Syncthing; not part of the public repo.
+CLAUDE.md
+
 # Other AI tool local state
 .qwen/
 
