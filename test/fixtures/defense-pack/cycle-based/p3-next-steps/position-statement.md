@@ -1,13 +1,13 @@
 ---
 type: position-statement
-context: AI180
+context: CORE-101
 project: P1-cycle-project
 date: 2026-04-15
 ---
 
 # Position Statement
 
-**Context:** AI180
+**Context:** CORE-101
 **Project:** P1-cycle-project
 **Date:** 2026-04-15
 
