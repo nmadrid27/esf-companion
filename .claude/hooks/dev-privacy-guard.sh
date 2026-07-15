@@ -33,6 +33,15 @@ except Exception:
 [ -f "$FILE_PATH" ] || exit 0
 [ -f "$SCANNER" ] || exit 0
 
+# Only scan files that could actually be committed to THIS repo. A file outside
+# the repo tree (e.g. a ~/.claude memory note) can't leak into it, and a
+# gitignored file (local-only) never reaches the public remote.
+case "$FILE_PATH" in
+  "$PROJECT_DIR"/*) ;;
+  *) exit 0 ;;
+esac
+git -C "$PROJECT_DIR" check-ignore -q "$FILE_PATH" 2>/dev/null && exit 0
+
 OUTPUT="$(python3 "$SCANNER" --file "$FILE_PATH" 2>&1)"
 STATUS=$?
 
