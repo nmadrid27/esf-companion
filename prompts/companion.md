@@ -20,7 +20,7 @@
   Position Statement timing: [project start / required before Phase 3 / self-defined]
 
 Examples:
-- AI-201: Creative Computing with AI, with Prof. Madrid
+- CORE-201: Creative Computing with AI
   ESF level: full
   Records of Resistance required: yes, 3 per project
   Position Statement timing: required before Phase 3

@@ -182,7 +182,7 @@ class TestProjectFilter(unittest.TestCase):
 
 
 class TestCycleBasedLayout(unittest.TestCase):
-    """Workspaces organized by milestone/cycle directories (CJ Snyder layout, issue #25).
+    """Workspaces organized by milestone/cycle directories (cycle-based layout, issue #25).
 
     Artifacts live at the top of cycle dirs (`p2-break-through/`, `p3-next-steps/`)
     instead of under `records-of-resistance/`. The aggregator must auto-discover
@@ -270,7 +270,7 @@ class TestCycleBasedLayout(unittest.TestCase):
             shutil.copytree(src, tmp / "ws")
             (tmp / "ws" / "p3-next-steps" / "reflection.md").write_text(
                 "---\ntype: reflection\nproject: P1-cycle-project\n"
-                "context: AI180\n---\n\n# Reflection\n\n"
+                "context: CORE-101\n---\n\n# Reflection\n\n"
                 "End-of-project synthesis of what was kept, revised, rejected.\n",
                 encoding="utf-8",
             )

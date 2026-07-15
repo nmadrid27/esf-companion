@@ -323,7 +323,7 @@ Ask:
 > "What contexts are you working in right now? These could be courses, client projects, a personal project, a job, research: anything where you'll use the Companion."
 
 For each context they name, collect:
-- A short label or code they want to use (e.g., "AI-180", "client-rebrand", "thesis")
+- A short label or code they want to use (e.g., "CORE-101", "client-rebrand", "thesis")
 - A brief description (optional: who leads it, what it is)
 - Whether it has specific ESF requirements (Records of Resistance count, Position Statement timing), or whether those are self-defined
 

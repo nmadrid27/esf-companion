@@ -1,6 +1,6 @@
 ---
 type: record-of-resistance
-context: AI180
+context: CORE-101
 project: P1-cycle-project
 date: 2026-04-20
 record-number: 1
@@ -8,7 +8,7 @@ record-number: 1
 
 # Record of Resistance
 
-**Course:** AI180
+**Course:** CORE-101
 **Project:** P1-cycle-project
 **Date:** 2026-04-20
 **Record #:** 1

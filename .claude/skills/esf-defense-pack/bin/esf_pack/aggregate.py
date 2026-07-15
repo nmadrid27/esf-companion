@@ -170,7 +170,7 @@ def _validate_relative_path(value: str, field_name: str) -> None:
     """Reject only true traversal in multi-segment override paths.
 
     Applied to the optional Defense Pack Paths override values, which ARE
-    relative paths (e.g. `projects/AI201/references/M2-position-statement.md`)
+    relative paths (e.g. `projects/CORE-201/references/M2-position-statement.md`)
     and legitimately contain `/`. We block parent-directory references (`..`),
     absolute paths (leading `/`), and null bytes.
     """

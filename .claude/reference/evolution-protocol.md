@@ -109,7 +109,7 @@ Instructors using ESF in a course context can also invoke FEP to document how th
 
 Document course-level adaptations in `courses/[CONTEXT_CODE]-evolution.md` and reference them in the brief frontmatter:
 ```yaml
-framework-evolution: courses/AI-180-evolution.md
+framework-evolution: courses/CORE-101-evolution.md
 ```
 
 The Companion reads this file when loading the brief and adjusts its behavior accordingly.

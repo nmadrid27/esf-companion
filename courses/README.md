@@ -22,10 +22,10 @@ A course config is a plain Markdown file that documents:
 
 ## Example config file
 
-Create a file like `courses/AI-180.md`:
+Create a file like `courses/CORE-101.md`:
 
 ```markdown
-# AI 180: Artificial Intelligence in Creative Practice
+# CORE-101: Introduction to Creative AI
 
 **ESF level:** full
 **Position Statement:** required before AI engagement (Phase 2)

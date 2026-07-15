@@ -17,7 +17,7 @@ Corrections the Companion applies every session. Add anything that the default b
 <!-- Format: plain sentence. Examples:
 - Do not offer Design Intent drafts in the social context.
 - Skip the Phase 3 readability pass for curriculum-dev work.
-- In AI-180 sessions, always check the P2 brief before starting.
+- In CORE-101 sessions, always check the P2 brief before starting.
 -->
 
 
@@ -32,7 +32,7 @@ Per-context overrides to default scaffolding. Reference the context code from co
 Examples:
 - social: reduce drift detection sensitivity; these sessions are exploratory
 - esf-scholarship: always invoke esf-verify before logging any factual claim
-- AI-180: check P2 brief frontmatter before each session
+- CORE-101: check P2 brief frontmatter before each session
 -->
 
 
