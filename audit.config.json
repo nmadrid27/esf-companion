@@ -1,0 +1,7 @@
+{
+  "default_tier": "unclassified",
+  "rules": [
+    {"tool": "Write|Edit", "target": "(^|/)(docs|logs|\\.claude)/", "tier": "autonomous"},
+    {"tool": "Bash", "target": "\\b(git\\s+push|gh)\\b", "tier": "propose-approve"}
+  ]
+}

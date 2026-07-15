@@ -39,6 +39,11 @@ launch/
 # Local Claude Code settings (machine-specific overrides)
 .claude/settings.local.json
 
+# Local Claude Code notes: documents the gitignored local-only working folders
+# (ibl-mentor/, landing/, launch/). Loaded from disk for local sessions and
+# synced across machines via Syncthing; not part of the public repo.
+CLAUDE.md
+
 # Other AI tool local state
 .qwen/
 
@@ -67,3 +72,10 @@ esf/*/defense-packs/
 # subagent dispatch (isolation=worktree). Each worktree is its own git
 # checkout pinned to a stable commit; the parent repo does not track them.
 .claude/worktrees/
+
+# ibl.ai mentor setup: local-only. Files for deploying the ESF Companion as a
+# no-code mentor on ibl.ai (system prompt, proactive message, guided prompts,
+# dataset copies, setup guide). Never part of the public repo.
+ibl-mentor/
+docs/BRIEFING.md
+logs/

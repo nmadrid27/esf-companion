@@ -1,0 +1,14 @@
+{
+  "project": "esf-companion",
+  "state_file": "session_state.md",
+  "state_mode": "entries",
+  "state_entries": 2,
+  "backlog_file": "docs/PILOT-BACKLOG.md",
+  "backlog_sections": [
+    "Open"
+  ],
+  "adr_dir": "docs/adr",
+  "adr_count": 2,
+  "briefing_file": "docs/BRIEFING.md",
+  "git_commits": 3
+}

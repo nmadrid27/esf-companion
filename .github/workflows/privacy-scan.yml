@@ -1,0 +1,24 @@
+name: Privacy Scan
+
+# This is a public repo. Block personal/institutional/student identifiers from
+# reaching main. Runs on every push and PR (no path filter — any file can
+# introduce a leak). The dev hook (.claude/hooks/dev-privacy-guard.sh) catches
+# these at edit time for maintainers; this is the backstop for everyone else.
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  privacy-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Scan tracked tree for forbidden identifiers
+        run: python3 test/check-privacy.py --tree
