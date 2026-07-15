@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # SPDX-License-Identifier: MIT
-# ESF Companion maintainer dev hook — privacy guard.
+# ESF Companion maintainer dev hook: privacy guard.
 #
 # PostToolUse hook. Fires after a Write/Edit/MultiEdit. Scans the edited file
 # for personal/institutional/student identifiers that must not appear in this
