@@ -49,4 +49,4 @@ The Defense Pack is the **curated argument** a student walks an instructor throu
 - **Process book**: exploratory documentation, browsable, multi-page. The full record of how the work evolved.
 - **Defense Pack**: the curated argument extracted from that documentation, sequential, single-page. Designed for a specific 15-minute defense moment.
 
-Both visual languages overlap on purpose; students producing a process book in [the canonical aesthetic](https://ai-201-process-book-sample.vercel.app/) get a Defense Pack that feels like the same project.
+Both visual languages overlap on purpose; students producing a process book in the canonical aesthetic get a Defense Pack that feels like the same project.
