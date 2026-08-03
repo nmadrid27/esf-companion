@@ -184,6 +184,12 @@ def quote_content(content: str) -> str:
     """
     raw = [line for line in content.splitlines() if line.strip()]
     quoted = [line for line in raw if line.lstrip().startswith(">")]
+    # Only trust the blockquote when something was actually written in it. A
+    # student who ignores the convention and types around an untouched `>` slot
+    # would otherwise have their answer silently dropped, which is worse than
+    # letting the prompt through with it.
+    if not any(_strip_blockquote_prefix(line).strip() for line in quoted):
+        quoted = []
     source = quoted or raw
     lines: list[str] = []
     for line in source:

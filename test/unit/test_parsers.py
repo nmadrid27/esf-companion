@@ -366,6 +366,23 @@ class TestFooterStripping(unittest.TestCase):
         self.assertEqual(quote_content("Just prose, no marker."), "Just prose, no marker.")
         self.assertEqual(quote_content("line one\nline two"), "line one line two")
 
+    def test_empty_quote_marker_does_not_swallow_the_answer(self):
+        """A student who types around an untouched `>` must not lose their words.
+
+        The templates ship an empty `>` slot. Treating any `>` line as the
+        authoritative answer meant an ignored marker reduced the section to the
+        empty string, silently discarding what the student actually wrote.
+        Letting the prompt through with the answer is the lesser failure.
+        """
+        below = "What is my position?\n\n>\n\nI think time is friction."
+        above = "What is my position?\n\nI think time is friction.\n\n>"
+        for text in (below, above):
+            self.assertIn("I think time is friction.", quote_content(text))
+
+        # An untouched slot with nothing else written is still empty, so the
+        # position-statement HARD_STOP gap keeps firing on a blank template.
+        self.assertEqual(quote_content("*What direction am I exploring?*\n\n>"), "")
+
     def test_ror_reads_date_from_preamble_when_frontmatter_absent(self):
         """The frontmatter-free Default template carries its date as a bold label."""
         body = (
