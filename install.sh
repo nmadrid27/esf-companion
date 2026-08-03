@@ -116,6 +116,29 @@ fetch_if_missing() {
   fi
 }
 
+# Fetch each toolkit-relative path into esf/toolkit/<path>, skipping any file
+# that already exists. Callers pass a bare path list so the source and the
+# destination cannot drift apart. The per-audience lists stay separate on
+# purpose (see issue #42); this only removes the repetition inside each list.
+fetch_toolkit_files() {
+  local path
+  for path in "$@"; do
+    fetch_if_missing "$TOOLKIT_BASE/$path" "esf/toolkit/$path"
+  done
+}
+
+# Fetch each repo-relative path to the same path locally. Unlike
+# fetch_if_missing, this OVERWRITES an existing file (machine-managed agents,
+# skills, and hooks must refresh on update) and ABORTS the install if any fetch
+# fails, rather than leaving a half-installed tree behind.
+fetch_required() {
+  local path
+  for path in "$@"; do
+    curl -fsSL "$TOOLKIT_BASE/$path" -o "$path" \
+      || { echo -e "${RED}Failed to fetch $path. Check your connection or the remote URL.${NC}"; exit 1; }
+  done
+}
+
 echo ""
 echo -e "${CYAN}ESF Companion - Installer${NC}"
 echo "──────────────────────────────────────"
@@ -476,32 +499,34 @@ if [ "$PLATFORM" != "claude" ]; then
   # cowork.md, which documents Cowork-specific verbal commands. The Claude Code
   # path below mirrors this in reverse. Keep the two lists curated by audience,
   # not identical. See issue #42.
-  fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/quick-start.md" esf/toolkit/prompts/quick-start.md
-  fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" esf/toolkit/prompts/README.md
+  fetch_toolkit_files \
+    prompts/companion.md \
+    prompts/esf-companion.md \
+    prompts/project-workflow.md \
+    prompts/quick-start.md \
+    prompts/README.md
 
   echo "  Fetching templates..."
-  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" esf/toolkit/templates/position-statement-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" esf/toolkit/templates/position-statement.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" esf/toolkit/templates/record-of-resistance-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" esf/toolkit/templates/record-of-resistance.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" esf/toolkit/templates/ai-use-log-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" esf/toolkit/templates/ai-use-log-lite-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" esf/toolkit/templates/ai-use-log.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" esf/toolkit/templates/companion-state-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" esf/toolkit/templates/companion-notes-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" esf/toolkit/templates/five-questions-checklist.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" esf/toolkit/templates/disclosure-statement.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" esf/toolkit/templates/session-log-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" esf/toolkit/templates/reflection-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
-  fetch_if_missing "$TOOLKIT_BASE/templates/README.md" esf/toolkit/templates/README.md
+  fetch_toolkit_files \
+    templates/position-statement-template.md \
+    templates/position-statement.md \
+    templates/record-of-resistance-template.md \
+    templates/record-of-resistance.md \
+    templates/ai-use-log-template.md \
+    templates/ai-use-log-lite-template.md \
+    templates/ai-use-log.md \
+    templates/companion-state-template.md \
+    templates/companion-notes-template.md \
+    templates/five-questions-checklist.md \
+    templates/disclosure-statement.md \
+    templates/session-log-template.md \
+    templates/reflection-template.md \
+    templates/project-plan.md \
+    templates/project-scope-template.md \
+    templates/evolution-log-template.md \
+    templates/defense-narrative-template.md \
+    templates/defense-pack-checklist.md \
+    templates/README.md
 
   if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
     curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
@@ -696,33 +721,26 @@ mkdir -p esf/toolkit/templates
 
 # Download the static agent. User-specific state now lives in esf/.
 echo "  Fetching agents..."
-curl -fsSL "$TOOLKIT_BASE/.claude/agents/esf-companion.md" -o .claude/agents/esf-companion.md \
-  || { echo -e "${RED}Failed to fetch esf-companion.md. Check your connection or the remote URL.${NC}"; exit 1; }
+fetch_required .claude/agents/esf-companion.md
 
 # Download skills
 echo "  Fetching skills..."
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-onboarding/SKILL.md" -o .claude/skills/esf-onboarding/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-onboarding/SKILL.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-project/SKILL.md"    -o .claude/skills/esf-project/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-project/SKILL.md.${NC}"; exit 1; }
+fetch_required \
+  .claude/skills/esf-onboarding/SKILL.md \
+  .claude/skills/esf-project/SKILL.md
 mkdir -p .claude/skills/esf-git .claude/skills/esf-verify .claude/skills/esf-update .claude/skills/esf-cognitive .claude/skills/esf-status
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-git/SKILL.md"        -o .claude/skills/esf-git/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-git/SKILL.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-verify/SKILL.md"     -o .claude/skills/esf-verify/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-verify/SKILL.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-update/SKILL.md"     -o .claude/skills/esf-update/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-update/SKILL.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-cognitive/SKILL.md"  -o .claude/skills/esf-cognitive/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-cognitive/SKILL.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-status/SKILL.md"     -o .claude/skills/esf-status/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-status/SKILL.md.${NC}"; exit 1; }
+fetch_required \
+  .claude/skills/esf-git/SKILL.md \
+  .claude/skills/esf-verify/SKILL.md \
+  .claude/skills/esf-update/SKILL.md \
+  .claude/skills/esf-cognitive/SKILL.md \
+  .claude/skills/esf-status/SKILL.md
 
 # esf-defense-pack: SKILL.md plus bin/ and render/ subdirectories.
 # The file list is driven by MANIFEST.txt in the skill, so adding a new module
 # only requires updating that manifest. CI guards the manifest vs. the tree.
 mkdir -p .claude/skills/esf-defense-pack
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/SKILL.md" -o .claude/skills/esf-defense-pack/SKILL.md \
-  || { echo -e "${RED}Failed to fetch esf-defense-pack/SKILL.md.${NC}"; exit 1; }
+fetch_required .claude/skills/esf-defense-pack/SKILL.md
 _MANIFEST_TMP="$(mktemp)"
 curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/MANIFEST.txt" -o "$_MANIFEST_TMP" \
   || { echo -e "${RED}Failed to fetch esf-defense-pack/MANIFEST.txt.${NC}"; rm -f "$_MANIFEST_TMP"; exit 1; }
@@ -751,8 +769,7 @@ chmod +x .claude/skills/esf-defense-pack/bin/render.py 2>/dev/null || true
 if [ -n "$RESOLVED_TAG" ]; then
   echo "$RESOLVED_TAG" > .claude/esf-version
 else
-  curl -fsSL "$TOOLKIT_BASE/.claude/esf-version" -o .claude/esf-version \
-    || { echo -e "${RED}Failed to fetch esf-version.${NC}"; exit 1; }
+  fetch_required .claude/esf-version
 fi
 
 # Download and register the session-status hook
@@ -831,43 +848,43 @@ echo "  Fetching prompts..."
 # quick-start.md, the single-paste chat prompt, which a skills-driven Claude
 # Code user does not use. The non-Claude path above mirrors this in reverse.
 # Keep the two lists curated by audience, not identical. See issue #42.
-fetch_if_missing "$TOOLKIT_BASE/prompts/companion.md" esf/toolkit/prompts/companion.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/esf-companion.md" esf/toolkit/prompts/esf-companion.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/project-workflow.md" esf/toolkit/prompts/project-workflow.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/cowork.md" esf/toolkit/prompts/cowork.md
-fetch_if_missing "$TOOLKIT_BASE/prompts/README.md" esf/toolkit/prompts/README.md
+fetch_toolkit_files \
+  prompts/companion.md \
+  prompts/esf-companion.md \
+  prompts/project-workflow.md \
+  prompts/cowork.md \
+  prompts/README.md
 
 # Download templates
 echo "  Fetching templates..."
-fetch_if_missing "$TOOLKIT_BASE/templates/position-statement-template.md" esf/toolkit/templates/position-statement-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/position-statement.md" esf/toolkit/templates/position-statement.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-template.md" esf/toolkit/templates/ai-use-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log-lite-template.md" esf/toolkit/templates/ai-use-log-lite-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/ai-use-log.md" esf/toolkit/templates/ai-use-log.md
-fetch_if_missing "$TOOLKIT_BASE/templates/companion-state-template.md" esf/toolkit/templates/companion-state-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/companion-notes-template.md" esf/toolkit/templates/companion-notes-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance-template.md" esf/toolkit/templates/record-of-resistance-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/record-of-resistance.md" esf/toolkit/templates/record-of-resistance.md
-fetch_if_missing "$TOOLKIT_BASE/templates/five-questions-checklist.md" esf/toolkit/templates/five-questions-checklist.md
-fetch_if_missing "$TOOLKIT_BASE/templates/disclosure-statement.md" esf/toolkit/templates/disclosure-statement.md
-fetch_if_missing "$TOOLKIT_BASE/templates/evolution-log-template.md" esf/toolkit/templates/evolution-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/session-log-template.md" esf/toolkit/templates/session-log-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/reflection-template.md" esf/toolkit/templates/reflection-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-brief-template.md" esf/toolkit/templates/project-brief-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-plan.md" esf/toolkit/templates/project-plan.md
-fetch_if_missing "$TOOLKIT_BASE/templates/project-scope-template.md" esf/toolkit/templates/project-scope-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/defense-narrative-template.md" esf/toolkit/templates/defense-narrative-template.md
-fetch_if_missing "$TOOLKIT_BASE/templates/defense-pack-checklist.md" esf/toolkit/templates/defense-pack-checklist.md
-fetch_if_missing "$TOOLKIT_BASE/templates/README.md" esf/toolkit/templates/README.md
+fetch_toolkit_files \
+  templates/position-statement-template.md \
+  templates/position-statement.md \
+  templates/ai-use-log-template.md \
+  templates/ai-use-log-lite-template.md \
+  templates/ai-use-log.md \
+  templates/companion-state-template.md \
+  templates/companion-notes-template.md \
+  templates/record-of-resistance-template.md \
+  templates/record-of-resistance.md \
+  templates/five-questions-checklist.md \
+  templates/disclosure-statement.md \
+  templates/evolution-log-template.md \
+  templates/session-log-template.md \
+  templates/reflection-template.md \
+  templates/project-brief-template.md \
+  templates/project-plan.md \
+  templates/project-scope-template.md \
+  templates/defense-narrative-template.md \
+  templates/defense-pack-checklist.md \
+  templates/README.md
 
 # Download reference files
 echo "  Fetching reference files..."
-curl -fsSL "$TOOLKIT_BASE/.claude/reference/esf-guide.md"           -o .claude/reference/esf-guide.md \
-  || { echo -e "${RED}Failed to fetch esf-guide.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/reference/disclosure-protocol.md" -o .claude/reference/disclosure-protocol.md \
-  || { echo -e "${RED}Failed to fetch disclosure-protocol.md.${NC}"; exit 1; }
-curl -fsSL "$TOOLKIT_BASE/.claude/reference/evolution-protocol.md"  -o .claude/reference/evolution-protocol.md \
-  || { echo -e "${RED}Failed to fetch evolution-protocol.md.${NC}"; exit 1; }
+fetch_required \
+  .claude/reference/esf-guide.md \
+  .claude/reference/disclosure-protocol.md \
+  .claude/reference/evolution-protocol.md
 
 # Download workflow diagram and onboarding guide (skip if already exists)
 if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then

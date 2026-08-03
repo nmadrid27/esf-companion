@@ -160,5 +160,31 @@ class TestSchemaVersion(unittest.TestCase):
         self.assertEqual(rebuilt.schema_version, "1.0")
 
 
+    def test_round_trip_preserves_every_declared_field(self):
+        """asdict() -> pack.json -> _to_dataclass() must not drop any field.
+
+        render.py used to rehydrate DefensePack from a hand-written argument
+        list, which silently dropped resist_count, default_count, shift_count,
+        and process_blog_sources: a pack recording 147 @resist moments rendered
+        as 0. Assert over fields(DefensePack) rather than naming those four, so
+        a field added to the schema later is covered without editing this test.
+        """
+        pack = _sample_pack(
+            resist_count=147,
+            default_count=22,
+            shift_count=9,
+            process_blog_sources=["session-01.md", "session-02.md"],
+        )
+        wire = json.loads(json.dumps(asdict(pack), default=str))
+        rebuilt = _to_dataclass(DefensePack, wire)
+        self.assertIsNotNone(rebuilt)
+        for f in fields(DefensePack):
+            self.assertEqual(
+                getattr(rebuilt, f.name),
+                getattr(pack, f.name),
+                f"field {f.name!r} did not survive the pack.json round trip",
+            )
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -12,7 +12,7 @@ import argparse
 import json
 import re
 import sys
-from dataclasses import fields
+from dataclasses import MISSING, fields
 from pathlib import Path
 from typing import TypeVar, Type, Optional, Any, cast
 
@@ -30,6 +30,21 @@ from esf_pack.parsers import _normalize
 from esf_pack.render_html import render_html
 from esf_pack.render_pdf import render_pdf_or_skip
 from esf_pack.render_script import render_script
+
+
+# Nested dataclass fields of DefensePack, by field name. Everything not listed
+# here (and not `gaps`) is a plain value that round-trips as-is.
+_PACK_NESTED: dict[str, type] = {
+    "position_statement": PositionStatement,
+    "ai_use_log": AIUseLog,
+    "reflection": Reflection,
+    "disclosure": Disclosure,
+    "narrative": Narrative,
+}
+_PACK_NESTED_LISTS: dict[str, type] = {
+    "records_of_resistance": RecordOfResistance,
+    "key_decisions": KeyDecision,
+}
 
 
 def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
@@ -54,44 +69,38 @@ def _to_dataclass(cls: Type[T], data: Optional[dict]) -> Optional[T]:
         ]
         return cast(T, Narrative(**kwargs))
     if cls is DefensePack:
-        # Use .get() with sensible defaults throughout so an older pack.json
-        # missing a field (added in a later schema revision) doesn't crash with
-        # an unhelpful KeyError. Required identity fields still default to "".
-        return cast(T, DefensePack(
-            project_name=data.get("project_name", ""),
-            context=data.get("context", ""),
-            student_name=data.get("student_name", ""),
-            scaffolding_level=data.get("scaffolding_level", ""),
-            phase_at_export=data.get("phase_at_export", ""),
-            export_timestamp=data.get("export_timestamp", ""),
-            companion_version=data.get("companion_version", ""),
-            position_statement=_to_dataclass(PositionStatement, data.get("position_statement")),
-            records_of_resistance=[
-                r for r in (_to_dataclass(RecordOfResistance, x) for x in data.get("records_of_resistance", []))
-                if r is not None
-            ],
-            key_decisions=[
-                k for k in (_to_dataclass(KeyDecision, x) for x in data.get("key_decisions", []))
-                if k is not None
-            ],
-            ai_use_log=_to_dataclass(AIUseLog, data.get("ai_use_log")),
-            reflection=_to_dataclass(Reflection, data.get("reflection")),
-            disclosure=_to_dataclass(Disclosure, data.get("disclosure")),
-            evolution_log_entries=data.get("evolution_log_entries", []),
-            narrative=_to_dataclass(Narrative, data.get("narrative")),
-            gaps=[
-                Gap(
-                    artifact=g["artifact"],
-                    severity=GapSeverity(g["severity"]) if isinstance(g["severity"], str) else g["severity"],
-                    message=g["message"],
-                )
-                for g in data.get("gaps", [])
-            ],
-            # Older packs predate `schema_version`; the dataclass default ("1.0")
-            # applies when the field is absent, so a missing key is interpreted
-            # the same as an explicit 1.0.
-            schema_version=data.get("schema_version", "1.0"),
-        ))
+        # Driven off fields(DefensePack) rather than a hand-written argument list:
+        # an enumerated list silently drops any field added to the schema later
+        # (resist_count and friends were lost this way, rendering as 0). Only the
+        # nested types need naming; everything else round-trips by name.
+        #
+        # A field absent from an older pack.json falls back to its dataclass
+        # default, or to "" for the required identity scalars that have none, so
+        # older packs still load instead of raising KeyError/TypeError.
+        kwargs: dict[str, Any] = {}
+        for f in fields(cast(Any, DefensePack)):
+            if f.name in _PACK_NESTED:
+                kwargs[f.name] = _to_dataclass(_PACK_NESTED[f.name], data.get(f.name))
+            elif f.name in _PACK_NESTED_LISTS:
+                kwargs[f.name] = [
+                    x for x in (_to_dataclass(_PACK_NESTED_LISTS[f.name], e)
+                                for e in data.get(f.name) or [])
+                    if x is not None
+                ]
+            elif f.name == "gaps":
+                kwargs[f.name] = [
+                    Gap(
+                        artifact=g["artifact"],
+                        severity=GapSeverity(g["severity"]) if isinstance(g["severity"], str) else g["severity"],
+                        message=g["message"],
+                    )
+                    for g in data.get("gaps", [])
+                ]
+            elif f.name in data:
+                kwargs[f.name] = data[f.name]
+            elif f.default is MISSING and f.default_factory is MISSING:
+                kwargs[f.name] = ""
+        return cast(T, DefensePack(**kwargs))
     field_names = {f.name for f in fields(cast(Any, cls))}
     return cast(T, cls(**{k: v for k, v in data.items() if k in field_names}))
 
