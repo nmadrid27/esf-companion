@@ -1,4 +1,14 @@
-# AGENTS.md
+# ESF Companion: Agent Notes
+
+## Local-only working folders (gitignored)
+
+These directories exist on disk but are excluded from the public repo via `.gitignore`:
+
+- `ibl-mentor/`: files for deploying the ESF Companion as a student-facing no-code mentor on ibl.ai (system prompt, proactive message, guided prompts, dataset copies, install guide). See `ibl-mentor/README.md` and `ibl-mentor/INSTALL.md`.
+- `landing/`: landing page drafts.
+- `launch/`: outreach drafts (newsletter pitches, OER submissions, LinkedIn).
+
+Run `git check-ignore -v <path>` to confirm any path is excluded before sharing or pushing.
 
 ## Cursor Cloud specific instructions
 
@@ -6,7 +16,7 @@ The ESF Companion is a distribution/toolkit repo, not a long-running service. Th
 **no package manager, no build step, and no server to start**. It is pure Bash plus a
 Python (stdlib-only) "Defense Pack" tool under `.claude/skills/esf-defense-pack/bin/`.
 Runtimes (`bash`, `python3`) are system-provided, so the startup update script is
-effectively a no-op — there are no dependencies to refresh.
+effectively a no-op; there are no dependencies to refresh.
 
 ### Tests / checks
 
@@ -26,5 +36,5 @@ CI lives in `.github/workflows/` (`test-install.yml`, `test-defense-pack.yml`). 
 ### Non-obvious gotchas
 
 - **WeasyPrint is optional.** PDF rendering is skipped gracefully when `weasyprint` is absent (1 unit test reports `skipped`). HTML + recording-script outputs are always produced. Installing WeasyPrint pulls heavy system libs (pango/cairo); only do it if you specifically need PDF output.
-- **`test/e2e/`** drives a real `claude` CLI (Claude Code, an external product). It is not installed here and is **not** part of CI — `run-e2e.sh` exits early with "claude CLI not found". Skip unless Claude Code is available.
+- **`test/e2e/`** drives a real `claude` CLI (Claude Code, an external product). It is not installed here and is **not** part of CI; `run-e2e.sh` exits early with "claude CLI not found". Skip unless Claude Code is available.
 - **`test/smoke-test.sh` has a pre-existing failing assertion** ("Cowork: esf-start.md baked-in version matches plugin.json"): `esf-start.md` was refactored to read the version dynamically from `plugin.json` (no hardcoded literal), but the assertion still greps for the literal. This is repo-level test drift, not an environment problem, and `smoke-test.sh` is not run by CI.
