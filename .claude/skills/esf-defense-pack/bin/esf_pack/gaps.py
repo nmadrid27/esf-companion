@@ -34,11 +34,26 @@ def detect_gaps(pack: DefensePack, requirements: "BriefRequirements | None" = No
                     "and Reflection only. Consider whether this matches your scaffolding level.",
         ))
 
-    if pack.ai_use_log is None:
+    log = pack.ai_use_log
+    if log is None:
         gaps.append(Gap(
             artifact="ai_use_log",
             severity=GapSeverity.WARNING,
             message="No AI Use Log found. Pack includes Records of Resistance and Reflection only.",
+        ))
+    elif not (log.interaction_count
+              or log.intervention_summary.strip()
+              or log.pattern_analysis.strip()):
+        # A log whose headings don't match the parser produces an object with
+        # every field blank. Without this it renders as an empty section and
+        # nothing warns the student, which is the one place a silent gap is
+        # least affordable: they find out during the defense.
+        gaps.append(Gap(
+            artifact="ai_use_log",
+            severity=GapSeverity.WARNING,
+            message="AI Use Log found but empty: no interactions logged, no intervention "
+                    "summary, and no pattern analysis. It will render as a blank section. "
+                    "Check that its headings match the template you started from.",
         ))
 
     if pack.reflection is None:

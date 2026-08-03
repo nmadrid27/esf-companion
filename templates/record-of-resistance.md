@@ -4,6 +4,8 @@ A Record of Resistance documents a moment where you deliberately rejected, revis
 
 Save each record as its own file in `esf/[context]/records-of-resistance/[project-slug]-ror-NN.md`.
 
+Write each answer on the `>` line under its question, keeping the `>`. That is what separates your words from the prompts if this file is ever read back.
+
 **Project:** [Project name]
 **Date:** [YYYY-MM-DD]
 
@@ -13,19 +15,19 @@ Save each record as its own file in `esf/[context]/records-of-resistance/[projec
 
 Describe or quote the AI output you chose not to accept as-is.
 
-[Write here]
+>
 
 ## Why I Rejected or Revised It
 
 What was wrong with the suggestion? Did it conflict with your Position Statement, miss context, or feel like someone else's work? Name the reason.
 
-[Write here]
+>
 
 ## What I Did Instead
 
 What did you keep, change, or create in place of the AI's suggestion? How is your version different?
 
-[Write here]
+>
 
 ---
 

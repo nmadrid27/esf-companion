@@ -343,6 +343,63 @@ class TestFooterStripping(unittest.TestCase):
         self.assertNotIn("Epistemic", ror.what_i_did_instead)
         self.assertNotIn("---", ror.what_i_did_instead)
 
+    def test_quote_content_ignores_the_prompt_above_the_slot(self):
+        """The template's prompt question must not be read as the user's answer.
+
+        Every shipped template puts its prompt as plain or italic text above a
+        `>` slot. quote_content used to take every line in the section, so a
+        filled-in template returned the prompt with the answer glued on after
+        it, and that string was rendered as the student's own words.
+        """
+        italic = "*What creative direction am I exploring?*\n\n> I want time to feel like friction."
+        self.assertEqual(quote_content(italic), "I want time to feel like friction.")
+
+        plain = "What is my position? State it in your own words.\n\n> Time as resistance, not flow."
+        self.assertEqual(quote_content(plain), "Time as resistance, not flow.")
+
+        # Multi-line answers still join, and the prompt stays out.
+        multi = "Prompt line here.\n\n> first line\n> second line"
+        self.assertEqual(quote_content(multi), "first line second line")
+
+    def test_quote_content_falls_back_to_plain_prose(self):
+        """Artifacts written without any blockquote must still parse."""
+        self.assertEqual(quote_content("Just prose, no marker."), "Just prose, no marker.")
+        self.assertEqual(quote_content("line one\nline two"), "line one line two")
+
+    def test_ror_reads_date_from_preamble_when_frontmatter_absent(self):
+        """The frontmatter-free Default template carries its date as a bold label."""
+        body = (
+            "# Record of Resistance\n\n"
+            "**Project:** My Cool Thing\n"
+            "**Date:** 2026-08-03\n\n"
+            "## What AI Suggested\n\n> a\n\n"
+            "## Why I Rejected or Revised It\n\n> b\n\n"
+            "## What I Did Instead\n\n> c\n"
+        )
+        ror = parse_record_of_resistance(body)
+        self.assertEqual(ror.date, "2026-08-03")
+        # project stays empty on purpose: the aggregator drops records whose
+        # project mismatches the workspace name, and this label is free text.
+        self.assertEqual(ror.project, "")
+
+    def test_ror_ignores_unfilled_preamble_placeholder(self):
+        """An untouched template must not report its own placeholder as a date."""
+        body = (
+            "# Record of Resistance\n\n"
+            "**Date:** [YYYY-MM-DD]\n\n"
+            "## What AI Suggested\n\n> a\n"
+        )
+        self.assertEqual(parse_record_of_resistance(body).date, "")
+
+    def test_frontmatter_date_wins_over_preamble(self):
+        """Institutional templates keep their existing behaviour."""
+        body = (
+            "---\ndate: 2026-01-01\n---\n\n"
+            "**Date:** 2026-12-31\n\n"
+            "## What AI Suggested\n\n> a\n"
+        )
+        self.assertEqual(parse_record_of_resistance(body).date, "2026-01-01")
+
 
 class TestEncodingAndLineEndings(unittest.TestCase):
     """Real files in the wild use CRLF (Windows / web editors) or have a UTF-8 BOM.

@@ -147,18 +147,46 @@ def _strip_blockquote_prefix(line: str) -> str:
     return _BLOCKQUOTE_PREFIX_RE.sub("", line, count=1)
 
 
+def _labelled_value(body: str, label: str) -> str:
+    """Read a `**Label:** value` line from a template preamble.
+
+    The frontmatter-free "Default" templates (templates/README.md) carry their
+    project and date as bold labels above the first heading instead of YAML.
+    extract_sections only returns content under H2 headings, so the preamble is
+    invisible to it and this reads the raw body.
+
+    An unfilled placeholder (`[YYYY-MM-DD]`) counts as absent, so an untouched
+    template does not report its own instructions as data.
+    """
+    m = re.search(rf"^\*\*{re.escape(label)}:\*\*[ \t]*(.+)$", body, re.MULTILINE)
+    if not m:
+        return ""
+    value = m.group(1).strip()
+    if value.startswith("[") and value.endswith("]"):
+        return ""
+    return value
+
+
 def quote_content(content: str) -> str:
     """Extract the user's prose from a `> ...` blockquote, joining lines, stripping markers.
+
+    When the section contains any `> ` blockquote lines, ONLY those lines are the
+    user's words: every shipped template puts its prompt question as plain or
+    italic text above a `>` slot, so including the non-quoted lines prepends the
+    prompt to the student's answer ("*What creative direction am I exploring?* I
+    want to make..."). Sections with no blockquote at all fall back to taking
+    every line, so artifacts written as plain prose still parse.
 
     Also strips trailing thematic-break lines (`---`) and trailing italic-only lines
     that come from template footers (e.g. `*Epistemic Stewardship Framework, ...*`).
     Those are template artifacts, not user content, and would otherwise bleed into
     the rendered defense pack and the recording script.
     """
+    raw = [line for line in content.splitlines() if line.strip()]
+    quoted = [line for line in raw if line.lstrip().startswith(">")]
+    source = quoted or raw
     lines: list[str] = []
-    for line in content.splitlines():
-        if not line.strip():
-            continue
+    for line in source:
         stripped = _strip_blockquote_prefix(line).rstrip()
         if not stripped:
             continue
@@ -507,7 +535,14 @@ def parse_record_of_resistance(text: str) -> RecordOfResistance:
         record_number = int(str(raw_num).strip() or "0")
     except (ValueError, TypeError):
         record_number = 0
-    date = fm.get("date", "")
+    # Fall back to the `**Date:**` preamble line used by the frontmatter-free
+    # Default template, so those records still carry a date in the pack.
+    date = fm.get("date", "") or _labelled_value(body, "Date")
+    # `project` is deliberately NOT read from the preamble. The aggregator drops
+    # any record whose project does not match the workspace project name, and a
+    # free-text label ("My Cool Thing" vs. the folder name) would mismatch and
+    # silently delete the student's record. Empty means "unfiltered", which is
+    # the safe reading for a template that never asked for a canonical name.
     project = fm.get("project", "")
     return RecordOfResistance(
         record_number=record_number,

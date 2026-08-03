@@ -1,6 +1,7 @@
 import unittest
 from esf_pack.schema import (
-    BriefRequirements, DefensePack, PositionStatement, RecordOfResistance, GapSeverity,
+    AIUseLog, BriefRequirements, DefensePack, PositionStatement, RecordOfResistance,
+    GapSeverity,
 )
 from esf_pack.gaps import detect_gaps, has_hard_stop
 
@@ -68,13 +69,52 @@ class TestGapDetection(unittest.TestCase):
         )
         pack = _pack(
             records_of_resistance=[ror],
-            ai_use_log="present_stub",  # gap detector checks truthiness, not type
+            # A real AIUseLog, not a stub: the detector now inspects its fields so
+            # it can flag a log that parsed to entirely empty (see
+            # test_empty_ai_use_log_is_flagged).
+            ai_use_log=AIUseLog(
+                interaction_count=12, verification_count=3,
+                intervention_summary="Rewrote the easing curve.",
+                pattern_analysis="Accepted structure, rejected voice.",
+                five_questions_pass_rate=1.0,
+            ),
             reflection="present_stub",
             disclosure="present_stub",
         )
         gaps = detect_gaps(pack)
         warnings = [g for g in gaps if g.severity == GapSeverity.WARNING]
         self.assertEqual(warnings, [])
+
+    def test_empty_ai_use_log_is_flagged(self):
+        """A log that parsed to nothing must warn, not render as a blank section.
+
+        The simplest AI Use Log template uses per-session tables whose headings
+        the parser does not recognise, so it yields an AIUseLog with every field
+        blank. `is None` alone missed that: the student got an empty section in
+        the pack with no warning, and found out during the defense.
+        """
+        pack = _pack(ai_use_log=AIUseLog(
+            interaction_count=0, verification_count=1,
+            intervention_summary="", pattern_analysis="",
+            five_questions_pass_rate=None,
+        ))
+        hits = [g for g in detect_gaps(pack) if g.artifact == "ai_use_log"]
+        self.assertEqual(len(hits), 1)
+        self.assertEqual(hits[0].severity, GapSeverity.WARNING)
+        self.assertIn("empty", hits[0].message)
+
+    def test_ai_use_log_with_any_content_is_not_flagged(self):
+        """One populated field is enough; don't nag a partially filled log."""
+        for field in ("interaction_count", "intervention_summary", "pattern_analysis"):
+            kwargs = dict(
+                interaction_count=0, verification_count=0,
+                intervention_summary="", pattern_analysis="",
+                five_questions_pass_rate=None,
+            )
+            kwargs[field] = 5 if field == "interaction_count" else "something"
+            pack = _pack(ai_use_log=AIUseLog(**kwargs))
+            hits = [g for g in detect_gaps(pack) if g.artifact == "ai_use_log"]
+            self.assertEqual(hits, [], f"{field} alone should suppress the gap")
 
 
 class TestCountAwareGaps(unittest.TestCase):
