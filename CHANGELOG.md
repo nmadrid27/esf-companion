@@ -9,16 +9,31 @@ All notable changes to the ESF Companion are documented here.
 - **Defense Pack dropped four fields when re-reading `pack.json`.** `render.py` rehydrated `DefensePack` from a hand-written argument list that omitted `resist_count`, `default_count`, `shift_count`, and `process_blog_sources`. The HTML renderer displays all four, so a pack recording 147 `@resist` moments rendered as 0 and the process-blog section vanished. Rehydration is now driven off `fields(DefensePack)`, so a field added to the schema later cannot be silently dropped again. Older packs still load: a missing field falls back to its dataclass default, or `""` for the required identity scalars.
 - **An AI Use Log that parsed to entirely empty produced no warning.** Gap detection only checked for a missing log. The simplest template (`ai-use-log.md`) uses per-session tables whose headings the parser does not recognise, so it produced a log object with every field blank, rendered as an empty section, with nothing flagged. A log with no interactions, no intervention summary, and no pattern analysis is now a WARNING gap, so the student sees it before the defense rather than during it.
 - **Records of Resistance written from the frontmatter-free template carried no date.** `parse_record_of_resistance` now falls back to the `**Date:**` preamble line when frontmatter is absent. `**Project:**` is deliberately not read: the aggregator drops any record whose project does not match the workspace project name, so a free-text label would silently delete the record. An unfilled `[YYYY-MM-DD]` placeholder still counts as absent, and frontmatter wins wherever present.
+- **`esf-update-check.sh` could execute arbitrary commands from a crafted version file.** `OLD` came from `.claude/esf-version` (whitespace-stripped only) and was interpolated into an `awk` `sort -V` shell-out. Both `OLD` and `NEW` are now validated as tags before that comparison.
+- **`install.sh` downloaded the setup script to a fixed `/tmp` name**, so a pre-planted symlink could clobber a victim-writable file. The download now uses `mktemp`. The Defense Pack `MANIFEST` fetch loop also rejects traversal, absolute, and backslash entries.
+- **`esf-session-status.sh` forwarded unsanitized project and context fields** from `companion-state.md` into model context. Those fields are now sanitized and length-capped.
+- **Cowork `esf-cognitive` looked at the legacy `projects/_esf/` path** and silently missed every v0.7+ workspace. It now checks `esf/companion-state.md` first, matching the other commands.
+- **Defense Pack used `datetime.UTC`, which is absent on Python 3.10.** It now uses `timezone.utc`.
+- **Conversation-path install did not fetch `templates/README.md` and `ai-use-log-lite-template.md`**, which were shipped but never downloaded.
 
 ### Changed
 - **The frontmatter-free "Default" templates mark their fill-in slots with `>`** instead of `[Write here]`, so answers parse as the student's words rather than blending into the surrounding prompt text. `position-statement.md` and `record-of-resistance.md` stay frontmatter-free, which is their documented differentiator from the Institutional `-template.md` variants (see `templates/README.md`).
+- **Position Statement gate is proceed-with-friction**, matching the companion agent. The `esf-project` skill's Gate Mode had hard-blocked ("I can't help with this project yet") while the ambient agent proceeded after a decline. They now agree: elicit a position first, make the 90-second talk-through unmissable, and on an explicit decline proceed with a friction insight block, raised drift sensitivity, and Socratic articulation mode rather than a dead end. First-turn gate-surfacing (offer, don't produce yet) is unchanged.
+- **A declined Record of Resistance capture is logged but no longer counts** toward a brief's RoR minimum. Students could previously satisfy "minimum 3" by rejecting suggestions and documenting none.
+- **GETTING_STARTED no longer claims the gate checks authorship.** It checks that a Position Statement exists.
+- **Public-repo privacy scrub.** Third-party student names, course codes, and maintainer home paths are generalized; a privacy-scan CI job and a repo-scoped dev hook block re-introduction.
 
 ### Docs
 - **README folder-structure accuracy.** The `skills/` annotation in the post-install folder diagram now lists `status` and `defense pack`, added after the original diagram was written.
+- **Per-audience prompt curation** is documented for the installer (#42).
+- **`templates/README.md`** now lists the project-scope, defense-narrative, and defense-pack-checklist templates.
 
 ### Internal
 - **`install.sh` fetches are list-driven.** 54 repeated `fetch_if_missing "$TOOLKIT_BASE/<path>" esf/toolkit/<path>` calls, each restating the path twice, collapse into `fetch_toolkit_files` over a bare path list, and the 14 always-overwrite/fail-fast fetches into `fetch_required`. The per-audience prompt and template lists stay separate on purpose (#42). The raw `curl` calls that overwrite on update and abort on failure are intentionally not folded into `fetch_if_missing`, which skips existing files and tolerates failure. Verified by running the old and new installer on both platforms and diffing the results: byte-for-byte identical trees.
 - **Removed `docs/getting-started.md`**, a nine-line file whose only content was a pointer to `START_HERE.md` and `GETTING_STARTED.md`. Nothing linked to it.
+- **`release.sh` now bumps `plugin.json` and `CITATION.cff`** in lockstep with the tag. They had drifted (0.7.0 / 1.0.0) while the toolkit shipped 0.10.1. Dry-run previews both bumps and writes nothing.
+- **`/esf-update` cannot be invoked by the model.** `disable-model-invocation` plus a real trigger description, so the installer runs only on explicit `/esf-update`.
+- **`esf-project` skill description** no longer limits the skill to course projects; it covers educators, professionals, and creators, matching the Cowork twin.
 
 ## [companion-v0.10.1] - 2026-06-06
 
