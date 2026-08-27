@@ -17,6 +17,7 @@ VERSION_FILE=".claude/esf-version"
 CHANGELOG="CHANGELOG.md"
 PLUGIN_JSON="platforms/cowork/.claude-plugin/plugin.json"
 CITATION="CITATION.cff"
+COWORK_README="platforms/cowork/README.md"
 TAG_RE='^companion-v[0-9]+\.[0-9]+\.[0-9]+$'
 die() { echo "release: $1" >&2; exit 1; }
 
@@ -30,6 +31,25 @@ _replace_line() {
     !seen && $0 ~ pat { print repl; seen=1; next }
     { print }
   ' "$f" > "$tmp" && mv "$tmp" "$f" || { rm -f "$tmp"; die "failed to update $f"; }
+}
+
+# Pack platforms/cowork as esf-companion.plugin (zip of the plugin root).
+_pack_cowork_plugin() {
+  local dest="$1"
+  command -v python3 >/dev/null 2>&1 || die "python3 not found (needed to pack the Cowork plugin)"
+  python3 - "$dest" <<'PY'
+import sys, zipfile
+from pathlib import Path
+dest = Path(sys.argv[1])
+src = Path("platforms/cowork")
+manifest = src / ".claude-plugin" / "plugin.json"
+if not manifest.is_file():
+    raise SystemExit("platforms/cowork/.claude-plugin/plugin.json missing")
+with zipfile.ZipFile(dest, "w", compression=zipfile.ZIP_DEFLATED) as zf:
+    for p in sorted(src.rglob("*")):
+        if p.is_file() and p.name != ".DS_Store":
+            zf.write(p, p.relative_to(src).as_posix())
+PY
 }
 
 # --- Guards (each fails before any mutation) ---
@@ -68,9 +88,10 @@ if [ "$DRY_RUN" = true ]; then
   echo "DRY RUN: $CURRENT -> $TAG (date $DATE)"
   [ -f "$PLUGIN_JSON" ] && echo "DRY RUN: would set $PLUGIN_JSON version -> $SEMVER"
   [ -f "$CITATION" ]    && echo "DRY RUN: would set $CITATION version -> $SEMVER, date-released -> $DATE"
+  [ -f "$PLUGIN_JSON" ] && echo "DRY RUN: would pack platforms/cowork and upload esf-companion.plugin"
   echo "--- release notes (new CHANGELOG section) ---"
   printf '%s\n' "$NOTES"
-  echo "--- would: commit, push main, annotated tag $TAG, push tag, gh release create ---"
+  echo "--- would: commit, push main, annotated tag $TAG, push tag, gh release create, upload esf-companion.plugin ---"
   exit 0
 fi
 
@@ -84,6 +105,10 @@ if [ -f "$PLUGIN_JSON" ]; then
   _replace_line "$PLUGIN_JSON" '"version"[[:space:]]*:' "  \"version\": \"$SEMVER\","
   git add "$PLUGIN_JSON"
 fi
+if [ -f "$COWORK_README" ]; then
+  _replace_line "$COWORK_README" '^\*\*Current version:\*\*' "**Current version:** $SEMVER ([changelog](https://github.com/nmadrid27/esf-companion/blob/main/CHANGELOG.md) · [releases](https://github.com/nmadrid27/esf-companion/releases))"
+  git add "$COWORK_README"
+fi
 if [ -f "$CITATION" ]; then
   _replace_line "$CITATION" '^version:'        "version: \"$SEMVER\""
   _replace_line "$CITATION" '^date-released:'  "date-released: \"$DATE\""
@@ -95,4 +120,14 @@ git push origin main
 git tag -a "$TAG" -m "ESF Companion $TAG"
 git push origin "$TAG"
 printf '%s\n' "$NOTES" | gh release create "$TAG" --title "ESF Companion $TAG" --notes-file -
+
+# Cowork installer fetches releases/latest/download/esf-companion.plugin.
+# Skip in minimal test repos that have no platforms/cowork tree.
+if [ -f "$PLUGIN_JSON" ]; then
+  PLUGIN_ZIP="$(mktemp "${TMPDIR:-/tmp}/esf-companion.XXXXXX.plugin")" || die "mktemp failed"
+  _pack_cowork_plugin "$PLUGIN_ZIP" || { rm -f "$PLUGIN_ZIP"; die "failed to pack platforms/cowork"; }
+  gh release upload "$TAG" "$PLUGIN_ZIP#esf-companion.plugin"
+  rm -f "$PLUGIN_ZIP"
+fi
+
 echo "Released $TAG"

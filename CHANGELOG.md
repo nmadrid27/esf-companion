@@ -4,6 +4,12 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Fixed
+- **Cowork plugin download 404ed.** `install.sh --platform cowork` fetches `releases/latest/download/esf-companion.plugin`, but no `companion-v*` release attached that asset. `companion-v0.11.0` now includes it; `release.sh` packs `platforms/cowork` and uploads the file on every cut.
+
+### Changed
+- **Cowork plugin README version** stays in lockstep with `plugin.json` at release time.
+
 ## [companion-v0.11.0] - 2026-08-27
 
 ### Fixed

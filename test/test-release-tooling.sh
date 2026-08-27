@@ -85,6 +85,7 @@ check "dry-run did not touch esf-version" '[ "$(cat "$D/.claude/esf-version")" =
 
 # --- version-locked satellites: previewed in dry-run, left unwritten ---
 check "dry-run previews plugin.json bump" '[[ "$out" == *"would set"*"plugin.json"*"0.11.0"* ]]'
+check "dry-run previews plugin pack" '[[ "$out" == *"esf-companion.plugin"* ]]'
 check "dry-run previews CITATION bump" '[[ "$out" == *"would set"*"CITATION.cff"* ]]'
 check "dry-run did not touch plugin.json" '[[ "$(cat "$D/platforms/cowork/.claude-plugin/plugin.json")" == *"\"version\": \"0.10.0\""* ]]'
 check "dry-run did not touch CITATION" '[[ "$(cat "$D/CITATION.cff")" == *"version: \"0.10.0\""* ]]'

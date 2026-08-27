@@ -23,8 +23,9 @@ scripts/release.sh companion-vX.Y.Z             # then for real
 The script guards (on `main`, clean tree, synced with origin, version strictly
 newer, tag not taken, `[Unreleased]` non-empty), then bumps `.claude/esf-version`,
 dates the CHANGELOG `[Unreleased]` section (adding a fresh empty one), commits,
-pushes, creates the annotated tag, and publishes the GitHub release from that
-section.
+pushes, creates the annotated tag, publishes the GitHub release from that
+section, and uploads `esf-companion.plugin` (the Cowork pack of `platforms/cowork`)
+so `install.sh --platform cowork` can download it.
 
 Version convention: minor bump for new features, patch for fixes.
 
@@ -45,4 +46,5 @@ git tag -a "$TAG" -m "ESF Companion $TAG"
 git push origin "$TAG"
 awk -v t="$TAG" 'index($0,"## ["t"]")==1{f=1;next} /^## \[/{f=0} f' CHANGELOG.md \
   | gh release create "$TAG" --title "ESF Companion $TAG" --notes-file -
+# then pack platforms/cowork and: gh release upload "$TAG" esf-companion.plugin
 ```
