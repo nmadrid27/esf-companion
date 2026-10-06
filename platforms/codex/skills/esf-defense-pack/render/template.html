@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Defense Pack — $project_name</title>
+  <style>$print_css</style>
+</head>
+<body>
+
+  <!-- Hero: project framing, left-aligned (not centered title-page) -->
+  <header class="hero">
+    <p class="eyebrow">Defense Pack</p>
+    <h1 class="project">$project_name</h1>
+    <p class="byline">By <span class="student-name">$student_name</span></p>
+    <p class="frame">A curated argument from the student's ESF artifacts: stance, the moments where AI was overruled, and the evidence behind each.</p>
+    <dl class="hero-meta">
+      <dt>Context</dt><dd>$context</dd>
+      <dt>Phase at export</dt><dd>$phase</dd>
+      <dt>Scaffolding</dt><dd>$scaffolding_level</dd>
+      <dt>Generated</dt><dd>$timestamp</dd>
+    </dl>
+  </header>
+
+  $gaps_block
+
+  <!-- Section cards: equal-weight scannable destinations -->
+  <nav class="section-cards" aria-label="Table of contents">
+    $section_cards
+  </nav>
+
+  $intro_section
+
+  <section id="position">
+    <p class="section-eyebrow">§ 01 · Position</p>
+    <h2>How I came in</h2>
+    <div class="position-grid">
+      <div class="position-pillar"><h3>Stance</h3><p>$ps_stance</p></div>
+      <div class="position-pillar"><h3>What matters most</h3><p>$ps_matters</p></div>
+      <div class="position-pillar"><h3>Non-negotiables</h3><p>$ps_non_neg</p></div>
+    </div>
+    $protect_block
+    $drift_block
+  </section>
+
+  <section id="decisions">
+    <p class="section-eyebrow">§ 02 · Key decisions</p>
+    <h2>The decisions I would defend</h2>
+    $decisions_html
+    $process_metrics_block
+  </section>
+
+  <section id="records">
+    <p class="section-eyebrow">§ 03 · Records of Resistance</p>
+    <h2>The full record</h2>
+    <p class="section-intro">A Record of Resistance documents a moment when AI's suggestion was rejected or revised. Each record below is the evidence for a specific decision.</p>
+    $records_html
+  </section>
+
+  $timeline_section
+
+  <section id="reflection">
+    <p class="section-eyebrow">§ 05 · Reflection</p>
+    <h2>How my position held (or shifted)</h2>
+    $reflection_html
+  </section>
+
+  <section id="closing">
+    <p class="section-eyebrow">§ 06 · Defense</p>
+    <h2>What I would defend if asked</h2>
+    $closing_html
+  </section>
+
+  <section id="disclosure">
+    <p class="section-eyebrow">§ 07 · Disclosure</p>
+    <h2>AI collaboration disclosure</h2>
+    <blockquote class="disclosure">$disclosure_text</blockquote>
+  </section>
+
+  <footer class="meta-footer">
+    <p>This Defense Pack was generated from the student's ESF artifacts. The narrative was drafted with AI assistance and approved by the student. All Records of Resistance, Position Statement, and Reflection contents are the student's own.</p>
+  </footer>
+
+  <button id="presenter-toggle" aria-label="Toggle presenter mode" hidden>Presenter</button>
+  <script>
+    // Presenter mode: append ?presenter=1 to the URL or click the Presenter button.
+    (function() {
+      const hasPresenterNotes = document.querySelector('.presenter-notes') !== null;
+      const btn = document.getElementById('presenter-toggle');
+      if (hasPresenterNotes) {
+        btn.hidden = false;
+        const params = new URLSearchParams(location.search);
+        if (params.get('presenter') === '1') document.body.classList.add('presenter');
+        btn.addEventListener('click', () => {
+          document.body.classList.toggle('presenter');
+          const url = new URL(location.href);
+          if (document.body.classList.contains('presenter')) url.searchParams.set('presenter', '1');
+          else url.searchParams.delete('presenter');
+          history.replaceState(null, '', url);
+        });
+      }
+      // Process blog timeline sessions collapsed by default; record blocks visible.
+      document.querySelectorAll('details.session-row').forEach(d => d.open = false);
+    })();
+  </script>
+</body>
+</html>

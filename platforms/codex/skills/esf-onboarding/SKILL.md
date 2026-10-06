@@ -1,13 +1,12 @@
 ---
 name: esf-onboarding
-description: Use when the user has just installed the ESF Companion and needs first-time setup, invokes /esf-onboarding, says something like "set up ESF" or "I just installed this," or wants to add a new context or project to an existing install. Collects identity and project context, writes companion-state.md, and creates the workspace folder structure.
+description: Use when the user has just installed the ESF Companion and needs first-time setup, invokes $esf-onboarding, says something like "set up ESF" or "I just installed this," or wants to add a new context or project to an existing install. Collects identity and project context, writes companion-state.md, and creates the workspace folder structure.
 ---
 
 <!--
-MANAGED FILE: do not edit directly.
-Changes made here will be overwritten on the next /esf-update run.
+GENERATED FILE: do not edit directly.
+Source: .claude/ in https://github.com/nmadrid27/esf-companion, rebuilt by scripts/build-codex-plugin.py.
 To customize Companion behavior, edit companion-notes.md instead.
-To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
 -->
 
 # ESF Onboarding
@@ -425,7 +424,7 @@ For teaching contexts (educator is the brief author, not a participant):
 
 Write the formatted context list to the Active Contexts section of `companion-state.md` (at the path determined in Step 5). Do NOT edit any skill files. All personalization lives in the repo-local state file only.
 
-The esf-project skill reads these entries at runtime to calibrate its behavior. No `.claude/` file mutation is needed.
+The esf-project skill reads these entries at runtime to calibrate its behavior. No plugin file mutation is needed.
 
 ---
 
@@ -540,7 +539,7 @@ Step 8 already routed them into Phase 3. No close message needed; the session co
 
 > "Setup complete. Your next step: work through Phase 1 (read and think) and Phase 2 (Position Statement) on your own. When your Position Statement is ready, come back and tell me what you're working on. Or say 'talk it through' and I'll ask you three questions.
 >
-> To add a new project or context later, run `/esf-onboarding` again and say 'update.'"
+> To add a new project or context later, run `$esf-onboarding` again and say 'update.'"
 
 **For educators with teaching contexts:**
 
@@ -552,7 +551,7 @@ Step 8 already routed them into Phase 3. No close message needed; the session co
 >
 > For your own work, write your Position Statement before your first AI session. Or say 'talk it through' and I'll help you articulate it.
 >
-> To add a new course or project later, run `/esf-onboarding` again and say 'update.'"
+> To add a new course or project later, run `$esf-onboarding` again and say 'update.'"
 
 ---
 
@@ -605,7 +604,7 @@ When migration is detected or requested, offer three options:
 
 | Capability | Claude Code | Claude.ai Projects | ChatGPT / Gemini | Codex CLI |
 |------------|-------------|-------------------|-----------------|-----------|
-| Agent + skills (full experience) | Yes | No | No | Partial |
+| Agent + skills (full experience) | Yes | No | No | Yes (plugin) |
 | Persistent files (auto-loaded) | Yes (local) | Yes (project files) | No (paste required) | Yes (local) |
 | Drift detection | Full | Prompt-guided | Prompt-guided | Prompt-guided |
 | Checkpoint saves | Full | Full | Manual | Full |
@@ -620,7 +619,7 @@ Be honest about capability differences. Do not oversell non-Claude-Code platform
 - Do not help with project work during onboarding. This skill's only job is setup
 - Do not suggest how the user should answer the questions
 - Do not skip folder creation. The structure is what makes the gate logic work
-- Do not edit reference files (`.claude/reference/`): those are read-only
-- Do not edit `.claude/agents/esf-companion.md` for personalization or session state
+- Do not edit the plugin's reference files: they are read-only
+- Do not edit `references/companion.md` for personalization or session state
 - Do not ask the user to write a Position Statement in the setup questions (the Step 1 demonstration is the only exception)
 - Do not ask the user to choose a scaffolding level. That is determined from their first Position Statement

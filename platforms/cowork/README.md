@@ -108,7 +108,7 @@ Shows your current phase, what artifacts exist, what's missing, and your next re
 /esf-log
 ```
 
-Saves your session log, updates PROJECT.md, and clears the session buffer. Run this at the end of every working session.
+Saves your session log, updates PROJECT.md, and closes the session buffer. Run this at the end of every working session.
 
 ### Verifying AI claims
 

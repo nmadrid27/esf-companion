@@ -1,13 +1,12 @@
 ---
 name: esf-project
-description: Ambient ESF workflow for any project work in a folder with companion-state.md, for students, educators, professionals, and independent creators alike. Invoke on the first substantive message of a session ("draft," "edit," "review," "refine," "continue," "help me with this"), on explicit phase phrases ("start my project," "I wrote my position statement," "let's explore," "let's make"), or on session-close signals ("done for today," "wrap up," "save and close"). Runs Inquire, Position, Explore, Make, and Reflect, and enforces the Position Statement gate before AI engagement begins. If companion-state.md is absent, defer to /esf-onboarding.
+description: Ambient ESF workflow for any project work in a folder with companion-state.md, for students, educators, professionals, and independent creators alike. Invoke on the first substantive message of a session ("draft," "edit," "review," "refine," "continue," "help me with this"), on explicit phase phrases ("start my project," "I wrote my position statement," "let's explore," "let's make"), or on session-close signals ("done for today," "wrap up," "save and close"). Runs Inquire, Position, Explore, Make, and Reflect, and enforces the Position Statement gate before AI engagement begins. If companion-state.md is absent, defer to $esf-onboarding.
 ---
 
 <!--
-MANAGED FILE: do not edit directly.
-Changes made here will be overwritten on the next /esf-update run.
+GENERATED FILE: do not edit directly.
+Source: .claude/ in https://github.com/nmadrid27/esf-companion, rebuilt by scripts/build-codex-plugin.py.
 To customize Companion behavior, edit companion-notes.md instead.
-To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
 -->
 
 # ESF Project Workflow
@@ -24,10 +23,10 @@ To report a bug or suggest a change: https://github.com/nmadrid27/esf-companion
 
 - Use the resolved path for all reads and writes throughout the session. Do not switch paths mid-session.
 - Do not translate the resolved path into an absolute path (`~/...`, `/Users/...`).
-- Do not use Bash to probe fallback locations.
+- Do not probe locations beyond the lookup order.
 - Store the resolved path as the session's canonical state path. All references to "read companion-state.md" or "write to companion-state.md" in this skill use this resolved path.
 
-If no `companion-state.md` is found at any of these locations, stop and tell the user to run `/esf-onboarding` in this repository. Do not continue with project work.
+If no `companion-state.md` is found at any of these locations, stop and tell the user to run `$esf-onboarding` in this repository. Do not continue with project work.
 
 ## Silence Mode
 
@@ -179,7 +178,7 @@ Two modes govern how Position Statement absence is surfaced, depending on what t
 
 Two-tier behavior: a low-friction inline text nudge on first touch, and a higher-friction selection card on the structural-edit re-fire. Both tiers respect `silent_mode`.
 
-**Silent mode override.** If `silent_mode: true` in `companion-state.md`, suppress all Nudge Mode behavior. Do not print the inline text and do not call `AskUserQuestion`. The Position Statement gate in Gate Mode still applies regardless of `silent_mode`.
+**Silent mode override.** If `silent_mode: true` in `companion-state.md`, suppress all Nudge Mode behavior. Do not print the inline text and do not present a numbered-choice card in chat (Codex has no selection-card tool) and wait for the user's reply. The Position Statement gate in Gate Mode still applies regardless of `silent_mode`.
 
 **First touch (inline text nudge).** When producing substantive content and no Position Statement exists for the work, prepend a one-line nudge to the response:
 
@@ -195,7 +194,7 @@ No pause, no blocking refusal, no three-question prompt. The user can note a PS,
 
 **Decline logic (first touch).** First decline ("skip," "later," "no," or equivalent) silences the first-touch nudge for that document. The structural-edit re-fire (below) is a separate trigger and is not suppressed by a first-touch decline.
 
-**Structural-edit re-fire (selection card).** When the user makes a structural edit (a change to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame) and no Position Statement exists, call `AskUserQuestion` instead of printing inline text. Use this question shape:
+**Structural-edit re-fire (selection card).** When the user makes a structural edit (a change to a claim's assertion, a first-person observation presented as evidence, an attributed quote, a specific datum, or the document's argument or frame) and no Position Statement exists, present a numbered-choice card in chat (Codex has no selection-card tool) and wait for the user's reply instead of printing inline text. Use this question shape:
 
 - **question:** `"This edit changes [what changed]. Still no Position Statement on file for [doc]. How do you want to handle it?"`
 - **header:** `"ESF nudge"`
@@ -250,7 +249,7 @@ The gate activates when any of the following is true:
 
 If the user agrees: ask for a project name and a one-sentence description, write the project block to companion-state.md, then continue with the Position Statement check below for the newly logged project. If the user declines: log the declined project naming in the session buffer, then proceed with friction. Because no project is named, there is no path to save a Position Statement, so surface the friction block, raise drift sensitivity, and work in Socratic articulation mode; note that the work is unanchored in the record. Do not surface the naming offer again this session, and do not block.
 
-Use the Glob tool to look for a Position Statement file matching `esf/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
+Use file search (`rg --files` or `find`) to look for a Position Statement file matching `esf/*/position-statements/*.md` or the context-specific path from companion-state.md. If no file exists for the current project:
 
 **Step 1: Check for existing user-authored content.**
 
@@ -835,7 +834,7 @@ did_instead: [user replacement action]
 
 If the user declines capture, still append a `## RoR` block with `status: declined`, the AI output summary, and any brief reason they gave for declining.
 
-**Implementation:** After each gate interaction where the user provides responses (Five Questions Y/N, drift assessment, RoR documentation), silently use the Edit or Write tool to append the data point to the session buffer. For Records of Resistance, append the structured block immediately after saving the file so later synthesis has the full artifact details, not just a count. Do not announce this to the user. Do not ask permission. This is bookkeeping, not a process step.
+**Implementation:** After each gate interaction where the user provides responses (Five Questions Y/N, drift assessment, RoR documentation), silently write with the shell or `apply_patch` to append the data point to the session buffer. For Records of Resistance, append the structured block immediately after saving the file so later synthesis has the full artifact details, not just a count. Do not announce this to the user. Do not ask permission. This is bookkeeping, not a process step.
 
 ### Layer 2: End-of-Session Synthesis
 
@@ -882,7 +881,7 @@ When a project reaches Phase 5 (Reflect) and the user completes their final refl
 - Prompt evolution summary (one sentence: how did their prompting mature?)
 - Nudge selection distribution: [N write-now / N talk-through / N skip-doc / N skip-session]
 
-**Where to store:** Append to `companion-state.md` under the "Growth Record" section. Each completed project adds one entry. Over time, this builds a visible development arc without requiring writes inside `.claude/`.
+**Where to store:** Append to `companion-state.md` under the "Growth Record" section. Each completed project adds one entry. Over time, this builds a visible development arc without requiring writes inside the plugin directory.
 
 ### Session Start: Context Loading
 
@@ -912,8 +911,8 @@ If any read of `companion-state.md` fails, stop immediately. Tell the user the w
 
 ## Reference Documents
 
-- `.claude/reference/esf-guide.md`: Full ESF guide
-- `.claude/reference/disclosure-protocol.md`: Disclosure templates
+- `references/esf-guide.md`: Full ESF guide
+- `references/disclosure-protocol.md`: Disclosure templates
 - `esf/[context]/position-statements/`: User's Position Statements (gate artifact)
 - `esf/[context]/records-of-resistance/`: Records of Resistance
 - `esf/[context]/briefs/`: Project briefs

@@ -11,6 +11,13 @@ on:
       - 'scripts/release.sh'
       - 'scripts/release-drift.sh'
       - 'test/test-release-tooling.sh'
+      - 'platforms/codex/**'
+      - '.agents/plugins/**'
+      - 'scripts/build-codex-plugin.py'
+      - 'test/test-codex-plugin.sh'
+      - '.claude/skills/**'
+      - '.claude/agents/**'
+      - '.claude/reference/**'
   pull_request:
     paths:
       - 'install.sh'
@@ -21,6 +28,13 @@ on:
       - 'scripts/release.sh'
       - 'scripts/release-drift.sh'
       - 'test/test-release-tooling.sh'
+      - 'platforms/codex/**'
+      - '.agents/plugins/**'
+      - 'scripts/build-codex-plugin.py'
+      - 'test/test-codex-plugin.sh'
+      - '.claude/skills/**'
+      - '.claude/agents/**'
+      - '.claude/reference/**'
 
 jobs:
   syntax-check:
@@ -105,3 +119,10 @@ jobs:
         run: |
           bash -n scripts/release-drift.sh scripts/release.sh
           bash test/test-release-tooling.sh
+
+  test-codex-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Codex plugin is current, clean, and installs
+        run: bash test/test-codex-plugin.sh

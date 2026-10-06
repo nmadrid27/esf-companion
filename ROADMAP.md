@@ -10,7 +10,7 @@ The full Claude Code experience: five-phase workflow, drift detection, Position 
 
 ## What Is Shipped (v2)
 
-Multi-platform support: install with a `--platform` flag targeting Claude Code, Claude.ai, ChatGPT, Gemini, or Codex CLI. Platform-specific config files included: `chatgpt-instructions.md`, `GEMINI.md`, `.codex/AGENTS.md`.
+Multi-platform support: install with a `--platform` flag targeting Claude Code, Claude.ai, ChatGPT, Gemini, or Codex CLI. Platform-specific config files included: `chatgpt-instructions.md`, `GEMINI.md`, Codex plugin (`platforms/codex`).
 
 Platform migration: migrate/fresh/cancel options when switching platforms. Portable PROJECT.md generated for conversation-platform users at session end.
 
@@ -182,7 +182,7 @@ The install script detects or asks the platform, then installs only what that us
 | **Claude Code** | `.claude/` directory (agents, skills, reference) | [SHIPPED] |
 | **ChatGPT** | `chatgpt-instructions.md` (custom instructions format) | [SHIPPED] |
 | **Gemini CLI** | `GEMINI.md` format | [SHIPPED] |
-| **Codex CLI** | `.codex/AGENTS.md` directory | [SHIPPED] |
+| **Codex CLI** | Codex plugin (`platforms/codex`) + `AGENTS.md` block | [SHIPPED] |
 | **Other / Not sure** | `esf/toolkit/prompts/` (universal system prompts) | [SHIPPED] |
 
 **v1 scope:** Claude Code is the full experience. Other platforms get the `esf/toolkit/prompts/` directory (manual paste, honest about limitations). Platform-specific files for ChatGPT, Gemini, and Codex are [ROADMAP].
@@ -570,7 +570,7 @@ All adaptations available to everyone. No labels. No disclosure required. Calibr
 
 **Shipped:**
 - Multi-platform install: `--platform` flag for claude, conversation, chatgpt, gemini, codex [SHIPPED]
-- Platform-specific config files: `chatgpt-instructions.md`, `GEMINI.md`, `.codex/AGENTS.md` [SHIPPED]
+- Platform-specific config files: `chatgpt-instructions.md`, `GEMINI.md`, Codex plugin (`platforms/codex`) [SHIPPED]
 - Platform migration (migrate/fresh/cancel) in esf-onboarding skill [SHIPPED]
 - Accessibility: checkpoint saves, thread tracking, structured Socratic alternatives [SHIPPED]
 - Growth Record with development tracking (appended to companion-state.md at project close) [SHIPPED]
