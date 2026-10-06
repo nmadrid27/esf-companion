@@ -543,9 +543,21 @@ if [ "$PLATFORM" != "claude" ]; then
       fetch_if_missing "$TOOLKIT_BASE/GEMINI.md" esf/toolkit/GEMINI.md
       ;;
     codex)
-      echo "  Fetching Codex CLI agent config..."
-      mkdir -p .codex
-      fetch_if_missing "$TOOLKIT_BASE/.codex/AGENTS.md" .codex/AGENTS.md
+      # The skills ship as a Codex plugin (platforms/codex); the always-on
+      # behavior lives in AGENTS.md, which Codex reads at session start.
+      if [ "$AMBIENT" = true ]; then
+        if [ -f AGENTS.md ] && grep -q "## ESF Companion (Always On)" AGENTS.md 2>/dev/null; then
+          echo -e "  ${YELLOW}ESF ambient block already present in AGENTS.md; skipping.${NC}"
+        else
+          echo "  Writing ESF ambient block to AGENTS.md..."
+          _ambient_tmp=$(mktemp) || exit 1
+          curl -fsSL "$TOOLKIT_BASE/platforms/codex/ambient-block.md" -o "$_ambient_tmp" \
+            || { rm -f "$_ambient_tmp"; echo -e "${RED}Failed to fetch platforms/codex/ambient-block.md.${NC}"; exit 1; }
+          [ -s AGENTS.md ] && echo "" >> AGENTS.md
+          cat "$_ambient_tmp" >> AGENTS.md
+          rm -f "$_ambient_tmp"
+        fi
+      fi
       ;;
   esac
 
@@ -559,7 +571,7 @@ if [ "$PLATFORM" != "claude" ]; then
     done
     git add esf/toolkit/ 2>/dev/null
     [ -f .gitignore ] && git add .gitignore 2>/dev/null
-    [ -d .codex ] && git add .codex/ 2>/dev/null
+    [ -f AGENTS.md ] && git add AGENTS.md 2>/dev/null
     git commit -m "Install ESF Companion ($PLATFORM)" --quiet 2>/dev/null && \
       echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
   fi
@@ -598,14 +610,15 @@ if [ "$PLATFORM" != "claude" ]; then
       echo "     Save it and paste it at the start of your next conversation."
       ;;
     codex)
-      echo "  1. .codex/AGENTS.md is now in your project directory."
-      echo "     Codex CLI reads it automatically when you open a session."
+      echo "  1. Install the ESF plugin (skills, Defense Pack) into Codex:"
+      echo "     codex plugin marketplace add nmadrid27/esf-companion"
+      echo "     codex plugin add esf-companion@esf-companion"
       echo ""
-      echo "  2. Run onboarding in your first session:"
-      echo "     Tell the Companion: 'Run ESF onboarding. Here are my details: [your context]'"
+      echo "  2. AGENTS.md carries the always-on ESF block; Codex reads it at session start."
+      echo "     (Skipped under --no-ambient. Invoke skills with \$esf-project.)"
       echo ""
-      echo "  3. The Companion will create esf/companion-state.md"
-      echo "     and guide you through the ESF workflow from there."
+      echo "  3. Run onboarding in your first session: \$esf-onboarding"
+      echo "     It creates esf/companion-state.md and guides you from there."
       ;;
     *)
       # Claude.ai or generic conversation

@@ -30,6 +30,8 @@ See **[examples](https://github.com/nmadrid27/esf-companion/tree/main/examples)*
 | **Install** | None | Download ZIP or run installer | Download ZIP | Run installer |
 | **Best for** | Any tool, any folder, no setup | Regular AI chat users | Desktop Claude users | Developers, power users, students in AI courses |
 
+**Using Codex CLI?** Run the installer with `--platform codex`, then `codex plugin marketplace add nmadrid27/esf-companion` and `codex plugin add esf-companion@esf-companion`. You get the same skills as Claude Code (invoked as `$esf-project`, `$esf-defense-pack`, and so on) plus the always-on block in `AGENTS.md`. Codex has no hooks equivalent here, so the session status line and update nudge are not included; update with `codex plugin marketplace upgrade`.
+
 **Not sure where to start?** Path 1 is the zero-install option. No terminal, no account, no install script. Download two files, open one, fill it in.
 
 ### Path 1: Download and use the templates (no install needed)

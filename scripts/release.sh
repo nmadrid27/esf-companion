@@ -105,6 +105,11 @@ if [ -f "$PLUGIN_JSON" ]; then
   _replace_line "$PLUGIN_JSON" '"version"[[:space:]]*:' "  \"version\": \"$SEMVER\","
   git add "$PLUGIN_JSON"
 fi
+# Rebuild the Codex plugin so its manifest picks up the new version.
+if [ -f scripts/build-codex-plugin.py ] && [ -d platforms/codex ]; then
+  python3 scripts/build-codex-plugin.py >/dev/null || die "failed to rebuild platforms/codex"
+  git add platforms/codex
+fi
 if [ -f "$COWORK_README" ]; then
   _replace_line "$COWORK_README" '^\*\*Current version:\*\*' "**Current version:** $SEMVER ([changelog](https://github.com/nmadrid27/esf-companion/blob/main/CHANGELOG.md) · [releases](https://github.com/nmadrid27/esf-companion/releases))"
   git add "$COWORK_README"
