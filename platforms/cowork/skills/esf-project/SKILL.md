@@ -732,7 +732,7 @@ Update the progress indicator whenever a phase regression occurs. Log the regres
 
 Surface once, do not repeat more than every 8 exchanges, do not block:
 
-> "Ready to wrap up? I can generate the session log, update PROJECT.md, and clear the buffer. Say 'save and close,' or keep going and I'll ask again at the next natural break."
+> "Ready to wrap up? I can generate the session log, update PROJECT.md, and close the buffer. Say 'save and close,' or keep going and I'll ask again at the next natural break."
 
 **On user confirmation, run the synthesis inline** (do not defer to `/esf-log`):
 
@@ -744,7 +744,7 @@ Surface once, do not repeat more than every 8 exchanges, do not block:
    - AI Use Log update → append to `esf/[context]/ai-use-logs/[project-name]-ai-use-log.md`
 5. **Update `esf/[context]/PROJECT.md`** with current phase, PS summary, RoR count, last session note, and Next.
 6. **Update `companion-state.md`** (Edit tool only; do not rewrite the file): set Phase to the current phase and Last session to today's date with a brief note drawn from the session log's "What we worked on."
-7. **Clear the session buffer.** Write an empty string (zero-byte file) to `esf/[context]/logs/.session-buffer.md`. Do not delete the file; the path must remain valid for the next session.
+7. **Close the session buffer.** Append `[ts] session-end: log saved to [path]` to `esf/[context]/logs/.session-buffer.md` and leave it on disk. Do not clear or delete it.
 8. **Confirm:** "Session logged and saved. Project state updated. See you next time."
 
 **Session log template:**

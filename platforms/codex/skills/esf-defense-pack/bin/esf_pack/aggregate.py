@@ -110,7 +110,7 @@ def _find_companion_state(workspace: Path) -> Path:
     raise FileNotFoundError(
         f"companion-state.md not found in {workspace} or any known subdirectory "
         f"({', '.join(_COMPANION_STATE_LOCATIONS)}). "
-        f"Run /esf-onboarding to initialize the workspace, or move your "
+        f"Run the esf-onboarding skill to initialize the workspace, or move your "
         f"companion-state.md to {workspace}/companion-state.md."
     )
 
@@ -259,7 +259,7 @@ def aggregate_from_dir(workspace: Path, requirements: "BriefRequirements | None"
         raise ValueError(
             f"companion-state.md at {workspace} could not be parsed or is empty. "
             f"Expected bullet lines like `- **Project name:** my-project`. "
-            f"Run /esf-onboarding to (re)initialize the workspace."
+            f"Run the esf-onboarding skill to (re)initialize the workspace."
         )
     project_name = state.get("Project name", "")
     context = state.get("Context", "")

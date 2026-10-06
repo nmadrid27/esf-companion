@@ -41,7 +41,7 @@ def main():
             pack = None
             payload = {
                 "error": "no_workspace",
-                "message": "No ESF workspace found. Run /esf-onboarding to set one up.",
+                "message": "No ESF workspace found. Run the esf-onboarding skill to set one up.",
             }
     else:
         pack = aggregate_from_dir(args.workspace)

@@ -3,7 +3,7 @@ description: Save session log and update project state
 allowed-tools: Read, Write, Edit, Glob
 ---
 
-Run end-of-session synthesis: save the session log, update PROJECT.md, and clear the session buffer.
+Run end-of-session synthesis: save the session log, update PROJECT.md, and close the session buffer.
 
 **All files are written to the user's selected folder.** Every Write, Edit, and Glob call targets paths relative to the workspace root (the folder the user selected in Cowork). Never write to temporary or sandbox paths.
 
@@ -104,9 +104,9 @@ Next: [what to work on next session, pulled from session log "Next session" sect
 
 Then use the Edit tool to update only the Phase and Last session fields in the Current Project block. Do not rewrite the entire file. Set Phase to the current phase and Last session to today's date with a brief note from the session log's "What we worked on" section.
 
-## Step 6: Clear the Session Buffer
+## Step 6: Close the Session Buffer
 
-Use the Write tool to overwrite `esf/[context]/logs/.session-buffer.md` with an empty string (zero-byte file). Do not delete the file. Overwrite it so the path remains valid for the next session.
+Append `[ts] session-end: log saved to [path]` to `esf/[context]/logs/.session-buffer.md` and leave the file on disk. Do not clear or delete it.
 
 Confirm to the user:
 
