@@ -613,6 +613,7 @@ if [ "$PLATFORM" != "claude" ]; then
       echo "  1. Install the ESF plugin (skills, Defense Pack) into Codex:"
       echo "     codex plugin marketplace add nmadrid27/esf-companion"
       echo "     codex plugin add esf-companion@esf-companion"
+      echo "     On first launch Codex asks to review the plugin's hook: choose 'Trust all and continue'."
       echo ""
       echo "  2. AGENTS.md carries the always-on ESF block; Codex reads it at session start."
       echo "     (Skipped under --no-ambient. Invoke skills with \$esf-project.)"

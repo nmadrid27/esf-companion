@@ -105,6 +105,21 @@ def ambient():
     return re.sub(rf"(?<![\w/.-])/({SKILL_RE})\b", r"$\1", block) + "\n"
 
 
+def session_hook():
+    """Claude's SessionStart hook prints to stderr; Codex reads additionalContext JSON."""
+    t = (ROOT / ".claude" / "hooks" / "esf-session-status.sh").read_text()
+    workspace = ("# Codex runs hooks in the session working directory.\nWORKSPACE=\"${PWD}\"\n\n"
+                 "emit() {\n    printf '{\"hookSpecificOutput\":{\"hookEventName\":\"SessionStart\","
+                 "\"additionalContext\":\"%s\"}}\\n' \"$1\"\n}\n")
+    t = sub(t, r"# Prefer CLAUDE_PROJECT_DIR.*?\nWORKSPACE=[^\n]*\n", lambda m: workspace, "hook workspace", flags=re.S)
+    t = sub(t, r'    echo "ESF Companion: companion-state\.md not found\. Run /esf-onboarding to initialize\." >&2',
+            '    emit "ESF Companion: companion-state.md not found. Run \\$esf-onboarding to initialize."', "hook not found")
+    t = sub(t, r'echo "" >&2\necho "(ESF Companion active\.[^"]*)" >&2\necho "" >&2',
+            r'emit "\1"', "hook activation", flags=re.S)
+    t = sub(t, r"\n# Update notification.*?\nfi\n", "\n", "hook update check", flags=re.S)
+    return t
+
+
 def build(out):
     version = (ROOT / ".claude" / "esf-version").read_text().strip().removeprefix("companion-v")
     (out / ".codex-plugin").mkdir(parents=True)
@@ -116,6 +131,7 @@ def build(out):
         "homepage": "https://github.com/nmadrid27/esf-companion",
         "license": "MIT",
         "skills": "./skills/",
+        "hooks": "./hooks/hooks.json",
         "interface": {
             "displayName": "ESF Companion",
             "shortDescription": "Stay the author of your own thinking while working with AI.",
@@ -136,6 +152,14 @@ def build(out):
         (refs / r).write_text(common((ROOT / ".claude" / "reference" / r).read_text(), r))
     (refs / "companion.md").write_text(persona((ROOT / ".claude" / "agents" / "esf-companion.md").read_text()))
     (out / "ambient-block.md").write_text(ambient())
+    hooks = out / "hooks"
+    hooks.mkdir()
+    (hooks / "esf-session-status.sh").write_text(session_hook())
+    (hooks / "esf-session-status.sh").chmod(0o755)
+    (hooks / "hooks.json").write_text(json.dumps({"hooks": {"SessionStart": [{
+        "matcher": "startup|resume|clear",
+        "hooks": [{"type": "command", "command": "bash \"$CLAUDE_PLUGIN_ROOT/hooks/esf-session-status.sh\"",
+                   "timeout": 5, "statusMessage": "Loading ESF Companion..."}]}]}}, indent=2) + "\n")
 
 
 def same(a, b):

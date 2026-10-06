@@ -23,6 +23,11 @@ check bash -c "! grep -rn -E 'AskUserQuestion|CLAUDE\.md|hooks/|esf-update' plat
 DESC="every skill has a SKILL.md"
 check bash -c 'for s in esf-cognitive esf-defense-pack esf-git esf-onboarding esf-project esf-status esf-verify; do test -f platforms/codex/skills/$s/SKILL.md || exit 1; done'
 
+DESC="session hook emits valid additionalContext JSON"
+check bash -c "d=\$(mktemp -d) && mkdir \$d/esf && printf -- '- **Project name:** p\\n- **Context:** C\\n' > \$d/esf/companion-state.md && cd \$d && bash '$ROOT/platforms/codex/hooks/esf-session-status.sh' | python3 -c 'import json,sys; assert \"ESF Companion active\" in json.load(sys.stdin)[\"hookSpecificOutput\"][\"additionalContext\"]'"
+DESC="manifest wires hooks/hooks.json"
+check grep -q '"hooks": "./hooks/hooks.json"' platforms/codex/.codex-plugin/plugin.json
+
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 ( cd "$tmp" && git init -q && bash "$ROOT/install.sh" --force --platform codex --source "$ROOT" )
 DESC="codex install writes the AGENTS.md ambient block once"
