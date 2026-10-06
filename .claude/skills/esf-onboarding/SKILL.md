@@ -351,7 +351,7 @@ If they have a project, collect:
 - A project name (they can make this up; it just names the folder)
 - Whether they have a brief to add now
 
-Do not ask the user to write a Position Statement during onboarding. Explain that it comes in Phase 2, after they've read the brief on their own.
+Do not ask the user to write a Position Statement in these setup questions. The Step 1 demonstration is the only exception; the project's real Position Statement comes in Phase 2, after they've read the brief on their own.
 
 ---
 
@@ -437,7 +437,7 @@ Two paths depending on install mode.
 
 **Standard install path:**
 
-Create the shared state folder and a full context structure for each active context:
+Create the shared state folder and each active context's root. Artifact folders (`briefs/`, `position-statements/`, `records-of-resistance/`, `ai-use-logs/`, `gate-records/`, `reflections/`, `logs/`) are created lazily the first time an artifact is written, so empty folders are not pre-created.
 
 ```bash
 mkdir -p esf
@@ -445,13 +445,6 @@ mkdir -p esf
 
 For each active context:
 ```bash
-mkdir -p esf/[context-label]/briefs
-mkdir -p esf/[context-label]/position-statements
-mkdir -p esf/[context-label]/records-of-resistance
-mkdir -p esf/[context-label]/ai-use-logs
-mkdir -p esf/[context-label]/gate-records
-mkdir -p esf/[context-label]/reflections
-mkdir -p esf/[context-label]/logs
 mkdir -p esf/[context-label]/work
 ```
 
@@ -598,7 +591,7 @@ When migration is detected or requested, offer three options:
    - Instruct: "Save this. Paste it at the start of each session on [new platform] to restore your context."
    - If the new platform supports persistent files (ChatGPT Projects, Claude.ai Projects), explain how to upload `companion-state.md` so context loads automatically.
 5. For Codex CLI:
-   - Confirm `.codex/AGENTS.md` is in the project directory.
+   - Confirm the ESF plugin is installed (`codex plugin add esf-companion@esf-companion`) and that `AGENTS.md` carries the "ESF Companion (Always On)" block.
    - The existing `companion-state.md` will be read automatically.
 6. Close with: "Migration complete. Your ESF workspace carries forward. The five-phase process works the same on every platform; what changes is how context is restored each session."
 
@@ -629,5 +622,5 @@ Be honest about capability differences. Do not oversell non-Claude-Code platform
 - Do not skip folder creation. The structure is what makes the gate logic work
 - Do not edit reference files (`.claude/reference/`): those are read-only
 - Do not edit `.claude/agents/esf-companion.md` for personalization or session state
-- Do not ask the user to write a Position Statement during setup
+- Do not ask the user to write a Position Statement in the setup questions (the Step 1 demonstration is the only exception)
 - Do not ask the user to choose a scaffolding level. That is determined from their first Position Statement

@@ -850,7 +850,7 @@ When the user indicates they are done working for the session (says "I'm done," 
 > "Here is your session log for today. Review it, edit anything that is off, and I will save it."
 
 4. After the user confirms (or edits), save to `esf/[context]/logs/session-YYYY-MM-DD.md`
-5. Clear the session buffer by overwriting it with empty content, then re-read it to confirm it is empty before reporting success
+5. Append `[ts] session-end: log saved to [path]` to the session buffer and leave it on disk; do not clear it
 6. Update `companion-state.md` in the current workspace with the current phase, last activity date, and current scaffolding level if it changed during the session
 7. Generate or update `esf/[context]/PROJECT.md` with current state:
 

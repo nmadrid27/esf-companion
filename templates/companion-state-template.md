@@ -1,7 +1,7 @@
 # ESF Companion State
 
-This file holds mutable local state for the Claude Code workflow.
-Onboarding and session memory update this file instead of editing `.claude/`.
+This file holds mutable local state for the ESF Companion workflow.
+Onboarding and session memory update this file instead of editing skill files.
 
 ## Identity
 
