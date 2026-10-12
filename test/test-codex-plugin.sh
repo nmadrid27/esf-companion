@@ -25,6 +25,8 @@ check bash -c 'for s in esf-cognitive esf-defense-pack esf-git esf-onboarding es
 
 tmp="$(mktemp -d)"; trap 'rm -rf "$tmp"' EXIT
 ( cd "$tmp" && git init -q && bash "$ROOT/install.sh" --force --platform codex --source "$ROOT" )
+DESC="installed ambient block matches generated plugin instructions"
+check cmp "$tmp/AGENTS.md" "$ROOT/platforms/codex/ambient-block.md"
 DESC="codex install writes the AGENTS.md ambient block once"
 check bash -c "cd '$tmp' && bash '$ROOT/install.sh' --force --platform codex --source '$ROOT' && [ \$(grep -c 'ESF Companion (Always On)' AGENTS.md) = 1 ]"
 DESC="codex install leaves no .claude/ or .codex/"

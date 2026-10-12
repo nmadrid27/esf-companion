@@ -15,6 +15,7 @@ on:
       - '.agents/plugins/**'
       - 'scripts/build-codex-plugin.py'
       - 'test/test-codex-plugin.sh'
+      - 'test/test_install.py'
       - '.claude/skills/**'
       - '.claude/agents/**'
       - '.claude/reference/**'
@@ -32,6 +33,7 @@ on:
       - '.agents/plugins/**'
       - 'scripts/build-codex-plugin.py'
       - 'test/test-codex-plugin.sh'
+      - 'test/test_install.py'
       - '.claude/skills/**'
       - '.claude/agents/**'
       - '.claude/reference/**'
@@ -126,3 +128,10 @@ jobs:
       - uses: actions/checkout@v4
       - name: Codex plugin is current, clean, and installs
         run: bash test/test-codex-plugin.sh
+
+  test-installer-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Installer preserves user work and handles reruns and failures
+        run: python3 test/test_install.py

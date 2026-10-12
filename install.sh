@@ -43,6 +43,12 @@ SCOPE_NEXT=false
 SOURCE_DIR=""
 SOURCE_NEXT=false
 for arg in "$@"; do
+  if [ "$PLATFORM_NEXT" = true ] || [ "$SCOPE_NEXT" = true ] || [ "$SOURCE_NEXT" = true ]; then
+    if [ -z "$arg" ] || [[ "$arg" == --* ]]; then
+      echo "Error: --platform, --scope, and --source require a value." >&2
+      exit 1
+    fi
+  fi
   if [ "$PLATFORM_NEXT" = true ]; then
     PLATFORM_FLAG="$arg"
     PLATFORM_NEXT=false
@@ -70,7 +76,20 @@ for arg in "$@"; do
     SOURCE_DIR="${arg#--source=}"
   elif [ "$arg" = "--source" ]; then
     SOURCE_NEXT=true
+  else
+    echo "Error: unknown option: $arg" >&2
+    exit 1
   fi
+done
+if [ "$PLATFORM_NEXT" = true ] || [ "$SCOPE_NEXT" = true ] || [ "$SOURCE_NEXT" = true ]; then
+  echo "Error: --platform, --scope, and --source require a value." >&2
+  exit 1
+fi
+for arg in "$@"; do
+  case "$arg" in
+    --platform=|--scope=|--source=)
+      echo "Error: $arg requires a value." >&2; exit 1 ;;
+  esac
 done
 
 resolve_latest_tag() {
@@ -107,12 +126,23 @@ YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-# Download a file only if it does not already exist (preserves user customizations)
+# Publish downloads only after curl succeeds, preserving existing files on failure.
+fetch_file() {
+  local url="$1" dest="$2" tmp
+  tmp=$(mktemp "${dest}.tmp.XXXXXX") || return 1
+  if curl -fsSL "$url" -o "$tmp"; then
+    mv "$tmp" "$dest"
+  else
+    rm -f "$tmp"
+    echo "Failed to fetch $dest. Existing file preserved; rerun to retry." >&2
+    return 1
+  fi
+}
+
+# Download a file only if it does not already exist (preserves user customizations).
 fetch_if_missing() {
-  local url="$1"
-  local dest="$2"
-  if [ ! -f "$dest" ]; then
-    curl -fsSL "$url" -o "$dest"
+  if [ ! -f "$2" ]; then
+    fetch_file "$1" "$2"
   fi
 }
 
@@ -130,13 +160,96 @@ fetch_toolkit_files() {
 # Fetch each repo-relative path to the same path locally. Unlike
 # fetch_if_missing, this OVERWRITES an existing file (machine-managed agents,
 # skills, and hooks must refresh on update) and ABORTS the install if any fetch
-# fails, rather than leaving a half-installed tree behind.
+# fails; completed files may remain, but failed downloads never replace files.
 fetch_required() {
   local path
   for path in "$@"; do
-    curl -fsSL "$TOOLKIT_BASE/$path" -o "$path" \
-      || { echo -e "${RED}Failed to fetch $path. Check your connection or the remote URL.${NC}"; exit 1; }
+    fetch_file "$TOOLKIT_BASE/$path" "$path" || exit 1
   done
+}
+
+
+# Only remove a bounded ESF block; never guess where user instructions resume.
+remove_ambient_block() {
+  local dest="$1" tmp
+  [ -f "$dest" ] || return 0
+  grep -q '^## ESF Companion (Always On)$' "$dest" || return 0
+  tmp=$(mktemp "${dest}.tmp.XXXXXX")
+  if awk '
+    /^## ESF Companion \(Always On\)$/ { block = 1; next }
+    block && /^Full spec: / { block = 0; next }
+    !block { print }
+    END { if (block) exit 1 }
+  ' "$dest" > "$tmp"; then
+    cat "$tmp" > "$dest"
+    rm -f "$tmp"
+  else
+    rm -f "$tmp"
+    echo "Error: cannot safely replace the ESF block in $dest; missing Full spec boundary." >&2
+    exit 1
+  fi
+}
+
+ignore_session_buffer() {
+  touch .gitignore
+  if ! grep -qxF '.session-buffer.md' .gitignore; then
+    printf '\n# ESF session buffer (ephemeral, not versioned)\n.session-buffer.md\n' >> .gitignore
+  fi
+}
+
+# Keep ambient instructions in the installer so older release tags need no new file.
+write_ambient_block() {
+  cat << 'ESF_AMBIENT_EOF'
+## ESF Companion (Always On)
+
+Every session. Full wording, insight blocks, scaffolding levels, and edge cases: `.claude/agents/esf-companion.md`. The triggers below fire without invocation.
+
+### Session start
+
+1. Resolve companion-state.md: check esf/companion-state.md first, then context/companion-state.md, then projects/_esf/companion-state.md (legacy), then workspace root. If not found, tell the user to run /esf-onboarding and stop.
+2. Read companion-notes.md (same location). Apply Active Corrections before any other behavior.
+3. Extract context, project, phase, scaffolding level.
+4. **Emit before any other output:** `ESF Companion active. Project: [name or "not set"]. Context: [code or "none"]. Active corrections: [N]. Session buffer: [path or "will create on first decision"]. Last session log: [path or "none"].` If companion-state.md is missing or unreadable, surface the failure and stop.
+5. If a current project is set, display the progress indicator.
+
+### Session buffer (mandatory)
+
+Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint). **Narration is not logging.** If the agent describes a Moment firing to the user, walks through what a Moment would catch, or acknowledges that one just fired, the agent must also write the buffer entry. Test-mode prompts ("test moment N," "walk me through Moment N") log as walkthrough firings with a `test: true` flag; see the agent file for the full event table.
+
+### Four key moments
+
+- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc]; note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `esf/[context]/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause; elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
+- **Drift (Moment 2).** When work moves away from a stated PS across two or more exchanges, surface the drift observation with the reference point visible.
+- **Rejection capture (Moment 3).** When the user pushes back, redirects scope, corrects framing, corrects the audience read, or signals "not that," offer to log a Record of Resistance. Bar is low: scope and framing redirections count. Formatting cleanup and tool-use corrections do not.
+- **Ownership check (Moment 4).** When the user signals wrap-up, ask about specific choices before finalizing.
+
+### Position Statement gate modes
+
+If the user responds with a PS, save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
+
+**Gate mode.** Moment 1 fires as a full pause-and-elicit gate in four situations: (1) the project brief frontmatter specifies `position-statement: required`; (2) the active context in companion-state.md marks Position Statements as required for substantive documents (institutional, scholarly, some professional contexts); (3) the user introduces a new project with no Position Statement file and the request requires substantive content (writing, design, analysis, code architecture, planning); (4) any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb). **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message. Produce nothing substantive until a PS is confirmed for the track or declined with acknowledgment.
+
+### Pre-draft and pre-ready gates
+
+- **Content weight check:** before drafting or materially editing substantive first-person content, classify by weight. Material edits include: changing what a factual claim asserts, adding a first-person biographical assertion, revising a teaching observation presented as evidence. Formatting, punctuation, phrasing cleanup, and targeted factual corrections (e.g., fixing a product name or URL) do not trigger. High weight includes: first-person biographical claims, teaching observations presented as evidence, professional observations from the user's practice, specific factual claims (numbers, dates, attributed quotes, cited studies), and anything published under the user's name asserting personal authority. For High-weight content, stop and ask whether the claim is based on specific sources, the user's own observation with specifics, or plausible construction. Do not draft biographical content from inference; ask the user to state the path in their own words.
+- **Ready-status transition gate:** before any deliverable moves from draft to ready (frontmatter change or user says "done," "ready to post," "submit," etc.) and contains specific factual claims, surface each claim with a verified-source / own-observation / plausible-inference question. Hold the status change on anything flagged as inference until verified or explicitly accepted as unverifiable with disclosure.
+
+### Ad hoc project and brief forcing functions
+
+- If Current Project is "not set" and substantial content is requested, pause and offer to log the project before producing anything.
+- If a bulk command fires and no brief exists for the project, stop and run the four-question minimal-brief flow (project in one sentence, success criterion, audience, non-negotiable) before drafting. Save to `esf/[context]/briefs/[project-name]-brief.md`, then run Moment 1 against the brief.
+- **Install hygiene.** All ESF artifacts for a context live in `esf/[context]/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install. Install hygiene applies only to ESF-created files. Never move, rename, or reorganize files that existed before this session. If an existing file conflicts with an ESF path, write to an alternate location and notify the user.
+
+### Late initialization
+
+If the first content-producing action arrives before the activation status line has been emitted, run steps 1–4 now and prefix the line with `(late init on first content action)`. Content-producing actions include: the first Write or Edit; the first substantive response that begins shaping a deliverable (draft, outline, summary, analysis, plan, deliverable-focused brainstorming); the first dispatched research or subagent task whose results feed user-facing content. They do not include orientation-only reads, greps, or globs. The activation status line takes precedence over any competing first-turn skill (vault session bootstrap, writing preflight, brainstorming, rules-registry loader, etc.); other skills proceed only after the activation line is emitted. If companion-state.md is missing at this point, emit the failure message and stop.
+
+### Session end
+
+Wrap-up offer fires on any of: 4+ substantive exchanges in Make or Reflect without a continuation signal; 12+ substantive exchanges in any phase; user says "done for today," "wrap up," "save this session," or equivalent. On user confirmation, generate the AI Use Log from buffer entries only (do not fabricate), write the session log to `esf/[context]/logs/session-[ISO-date].md` with a "Next Session" section, update companion-state.md, and append a final buffer entry.
+
+Full spec: `.claude/agents/esf-companion.md`.
+ESF_AMBIENT_EOF
 }
 
 echo ""
@@ -334,7 +447,7 @@ if [ ! -d ".git" ]; then
       1)
         echo "Downloading setup script..."
         _setup_tmp="$(mktemp)" || { echo -e "${RED}Failed to create temp file.${NC}"; exit 1; }
-        curl -fsSL "$SETUP_URL" -o "$_setup_tmp"
+        fetch_file "$SETUP_URL" "$_setup_tmp"
         echo "Running setup script..."
         bash "$_setup_tmp" </dev/tty
         _setup_rc=$?
@@ -423,7 +536,7 @@ if [ "$PLATFORM" = "cowork" ]; then
   PLUGIN_DEST="esf-companion.plugin"
 
   echo "  Downloading ESF Companion plugin for Cowork..."
-  if curl -fsSL "$PLUGIN_URL" -o "$PLUGIN_DEST"; then
+  if fetch_file "$PLUGIN_URL" "$PLUGIN_DEST"; then
     echo ""
     echo -e "${GREEN}ESF Companion plugin downloaded.${NC}"
     echo -e "${YELLOW}This is the Cowork plugin from the latest companion-v release.${NC}"
@@ -528,7 +641,7 @@ if [ "$PLATFORM" != "claude" ]; then
     templates/README.md
 
   if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
-    curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
+    fetch_file "$TOOLKIT_BASE/WORKFLOW.md" esf/toolkit/WORKFLOW.md
   fi
   fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" esf/toolkit/START_HERE.md
 
@@ -545,36 +658,21 @@ if [ "$PLATFORM" != "claude" ]; then
     codex)
       # The skills ship as a Codex plugin (platforms/codex); the always-on
       # behavior lives in AGENTS.md, which Codex reads at session start.
+      remove_ambient_block AGENTS.md
+      ignore_session_buffer
       if [ "$AMBIENT" = true ]; then
-        if [ -f AGENTS.md ] && grep -q "## ESF Companion (Always On)" AGENTS.md 2>/dev/null; then
-          echo -e "  ${YELLOW}ESF ambient block already present in AGENTS.md; skipping.${NC}"
-        else
-          echo "  Writing ESF ambient block to AGENTS.md..."
-          _ambient_tmp=$(mktemp) || exit 1
-          curl -fsSL "$TOOLKIT_BASE/platforms/codex/ambient-block.md" -o "$_ambient_tmp" \
-            || { rm -f "$_ambient_tmp"; echo -e "${RED}Failed to fetch platforms/codex/ambient-block.md.${NC}"; exit 1; }
-          [ -s AGENTS.md ] && echo "" >> AGENTS.md
-          cat "$_ambient_tmp" >> AGENTS.md
-          rm -f "$_ambient_tmp"
-        fi
+        echo "  Writing ESF ambient block to AGENTS.md..."
+        [ -s AGENTS.md ] && echo "" >> AGENTS.md
+        write_ambient_block | sed \
+          -e 's|`.claude/agents/esf-companion.md`|the `esf-project` skill (`references/companion.md`)|g' \
+          -e 's|/esf-onboarding|$esf-onboarding|g' \
+          -e 's|/esf-project|$esf-project|g' \
+          -e 's|/esf-log|$esf-log|g' >> AGENTS.md
       fi
       ;;
   esac
 
-  # Auto-commit if in a git repo
-  if [ -d ".git" ]; then
-    # Stage tracked-file deletions from migration. Loop per-path so a missing
-    # pathspec on one doesn't abort staging of the others (git add -u errors
-    # on unknown pathspecs).
-    for _legacy in prompts templates WORKFLOW.md START_HERE.md GEMINI.md chatgpt-instructions.md; do
-      git add -u "$_legacy" 2>/dev/null || true
-    done
-    git add esf/toolkit/ 2>/dev/null
-    [ -f .gitignore ] && git add .gitignore 2>/dev/null
-    [ -f AGENTS.md ] && git add AGENTS.md 2>/dev/null
-    git commit -m "Install ESF Companion ($PLATFORM)" --quiet 2>/dev/null && \
-      echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
-  fi
+  echo "  Files are not staged or committed. Review changes before committing."
 
   echo ""
   echo -e "${GREEN}ESF Companion installed.${NC}"
@@ -590,11 +688,14 @@ if [ "$PLATFORM" != "claude" ]; then
       echo "     Custom Instructions > 'What to know about you'."
       echo "     Copy Section 2 into 'How to respond'."
       echo ""
-      echo "  2. (Optional) Use ChatGPT Projects for persistent context:"
+      echo "  2. Create your state file from esf/toolkit/templates/companion-state-template.md:"
+      echo "     Copy it to esf/companion-state.md and fill in your identity and context."
+      echo ""
+      echo "  3. (Optional) Use ChatGPT Projects for persistent context:"
       echo "     Create a project and upload companion-state.md as a project file."
       echo "     Context loads automatically each session."
       echo ""
-      echo "  3. Start a conversation and paste your Position Statement to begin."
+      echo "  4. Start a conversation and paste your Position Statement to begin."
       echo "     The Companion will guide you through the ESF workflow."
       ;;
     gemini)
@@ -754,7 +855,7 @@ fetch_required \
 mkdir -p .claude/skills/esf-defense-pack
 fetch_required .claude/skills/esf-defense-pack/SKILL.md
 _MANIFEST_TMP="$(mktemp)"
-curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/MANIFEST.txt" -o "$_MANIFEST_TMP" \
+fetch_file "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/MANIFEST.txt" "$_MANIFEST_TMP" \
   || { echo -e "${RED}Failed to fetch esf-defense-pack/MANIFEST.txt.${NC}"; rm -f "$_MANIFEST_TMP"; exit 1; }
 while IFS= read -r _f || [ -n "$_f" ]; do
   # Skip blank lines so a trailing newline in the manifest is harmless.
@@ -766,8 +867,7 @@ while IFS= read -r _f || [ -n "$_f" ]; do
       echo -e "${RED}Refusing unsafe manifest path: $_f${NC}"; rm -f "$_MANIFEST_TMP"; exit 1 ;;
   esac
   mkdir -p ".claude/skills/esf-defense-pack/$(dirname "$_f")"
-  curl -fsSL "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/$_f" \
-    -o ".claude/skills/esf-defense-pack/$_f" \
+  fetch_file "$TOOLKIT_BASE/.claude/skills/esf-defense-pack/$_f" ".claude/skills/esf-defense-pack/$_f" \
     || { echo -e "${RED}Failed to fetch esf-defense-pack/$_f.${NC}"; rm -f "$_MANIFEST_TMP"; exit 1; }
 done < "$_MANIFEST_TMP"
 rm -f "$_MANIFEST_TMP"
@@ -787,9 +887,9 @@ fi
 # Download and register the session-status hook
 echo "  Fetching hooks..."
 mkdir -p .claude/hooks
-curl -fsSL "$TOOLKIT_BASE/.claude/hooks/esf-session-status.sh" -o .claude/hooks/esf-session-status.sh
+fetch_file "$TOOLKIT_BASE/.claude/hooks/esf-session-status.sh" .claude/hooks/esf-session-status.sh
 chmod +x .claude/hooks/esf-session-status.sh
-curl -fsSL "$TOOLKIT_BASE/.claude/hooks/esf-update-check.sh" -o .claude/hooks/esf-update-check.sh
+fetch_file "$TOOLKIT_BASE/.claude/hooks/esf-update-check.sh" .claude/hooks/esf-update-check.sh
 chmod +x .claude/hooks/esf-update-check.sh
 
 # Wire the SessionStart hook into .claude/settings.json (project-level, committed to git).
@@ -823,8 +923,9 @@ fi
 # Install ESF status line into the user's global Claude Code config (user scope only)
 if [ "$SCOPE" = "user" ]; then
   echo "  Installing status line..."
+  mkdir -p "$HOME/.claude"
   STATUSLINE_DEST="$HOME/.claude/statusline-command.sh"
-  curl -fsSL "$TOOLKIT_BASE/.claude/statusline-command.sh" -o "$STATUSLINE_DEST"
+  fetch_file "$TOOLKIT_BASE/.claude/statusline-command.sh" "$STATUSLINE_DEST"
   chmod +x "$STATUSLINE_DEST"
 
   # Wire statusLine into ~/.claude/settings.json without clobbering existing keys
@@ -900,84 +1001,21 @@ fetch_required \
 
 # Download workflow diagram and onboarding guide (skip if already exists)
 if [ ! -f "esf/toolkit/WORKFLOW.md" ]; then
-  curl -fsSL "$TOOLKIT_BASE/WORKFLOW.md" -o esf/toolkit/WORKFLOW.md
+  fetch_file "$TOOLKIT_BASE/WORKFLOW.md" esf/toolkit/WORKFLOW.md
 fi
 fetch_if_missing "$TOOLKIT_BASE/START_HERE.md" esf/toolkit/START_HERE.md
 
-# Write ambient activation block to CLAUDE.md if requested
+# Refresh or remove the bounded managed block while preserving user instructions.
+remove_ambient_block CLAUDE.md
 if [ "$AMBIENT" = true ]; then
-  ESF_SECTION_MARKER="## ESF Companion (Always On)"
-  if [ -f "CLAUDE.md" ] && grep -q "$ESF_SECTION_MARKER" CLAUDE.md 2>/dev/null; then
-    echo -e "  ${YELLOW}ESF ambient block already present in CLAUDE.md; skipping.${NC}"
-  else
-    if [ ! -f "CLAUDE.md" ]; then
-      echo "# CLAUDE.md" > CLAUDE.md
-      echo "" >> CLAUDE.md
-      echo "Project configuration for Claude Code." >> CLAUDE.md
-      echo "" >> CLAUDE.md
-    else
-      echo "" >> CLAUDE.md
-    fi
-    cat >> CLAUDE.md << 'ESF_AMBIENT_EOF'
-## ESF Companion (Always On)
-
-Every session. Full wording, insight blocks, scaffolding levels, and edge cases: `.claude/agents/esf-companion.md`. The triggers below fire without invocation.
-
-### Session start
-
-1. Resolve companion-state.md: check esf/companion-state.md first, then context/companion-state.md, then projects/_esf/companion-state.md (legacy), then workspace root. If not found, tell the user to run /esf-onboarding and stop.
-2. Read companion-notes.md (same location). Apply Active Corrections before any other behavior.
-3. Extract context, project, phase, scaffolding level.
-4. **Emit before any other output:** `ESF Companion active. Project: [name or "not set"]. Context: [code or "none"]. Active corrections: [N]. Session buffer: [path or "will create on first decision"]. Last session log: [path or "none"].` If companion-state.md is missing or unreadable, surface the failure and stop.
-5. If a current project is set, display the progress indicator.
-
-### Session buffer (mandatory)
-
-Path: `esf/[context]/logs/.session-buffer.md`. On the first Write, Edit, or Moment trigger of a session, if the file does not exist, create `esf/[context]/logs/` and write the buffer with a header block. Append a single line immediately (never batch, never narrate) for: any Moment firing, phase transition, Position Statement save/update, gate bypass, agency-drift signal, cognitive technique offer, ad hoc project logging, bulk-production trigger, content-weight-High classification, ready-status gate firing, brief creation via forcing function, or every 10 substantive exchanges (checkpoint). **Narration is not logging.** If the agent describes a Moment firing to the user, walks through what a Moment would catch, or acknowledges that one just fired, the agent must also write the buffer entry. Test-mode prompts ("test moment N," "walk me through Moment N") log as walkthrough firings with a `test: true` flag; see the agent file for the full event table.
-
-### Four key moments
-
-- **Direction (Moment 1).** Nudge mode: on first Write or Edit to a document with no Position Statement, prepend `[ESF: no PS for [doc]; note one?]`. Re-fires once on structural edits (claim assertion, biographical observation, attributed quote, datum, argument or frame change). Max 2 nudges per doc per session; second decline silences all nudges for that doc. PS lookup: `esf/[context]/position-statements/[project-slug].md`. Gate mode: bulk commands (more than one substantive artifact in one turn) trigger a full pause; elicit direction, produce nothing until PS confirmed. Task-is-clear ≠ PS-exists.
-- **Drift (Moment 2).** When work moves away from a stated PS across two or more exchanges, surface the drift observation with the reference point visible.
-- **Rejection capture (Moment 3).** When the user pushes back, redirects scope, corrects framing, corrects the audience read, or signals "not that," offer to log a Record of Resistance. Bar is low: scope and framing redirections count. Formatting cleanup and tool-use corrections do not.
-- **Ownership check (Moment 4).** When the user signals wrap-up, ask about specific choices before finalizing.
-
-### Position Statement gate modes
-
-If the user responds with a PS, save to the Position Statement path for this context, confirm briefly ("Saved. I'll check the work against this as we go."), and continue.
-
-**Gate mode.** Moment 1 fires as a full pause-and-elicit gate in four situations: (1) the project brief frontmatter specifies `position-statement: required`; (2) the active context in companion-state.md marks Position Statements as required for substantive documents (institutional, scholarly, some professional contexts); (3) the user introduces a new project with no Position Statement file and the request requires substantive content (writing, design, analysis, code architecture, planning); (4) any command producing more than one substantive artifact in a single turn ("draft all," "generate the set," "write the N posts," "draft these," or any numeric-count + production verb). **Task-is-clear ≠ Position-Statement-exists:** the gate fires even when the deliverable is obvious from the first message. Produce nothing substantive until a PS is confirmed for the track or declined with acknowledgment.
-
-### Pre-draft and pre-ready gates
-
-- **Content weight check:** before drafting or materially editing substantive first-person content, classify by weight. Material edits include: changing what a factual claim asserts, adding a first-person biographical assertion, revising a teaching observation presented as evidence. Formatting, punctuation, phrasing cleanup, and targeted factual corrections (e.g., fixing a product name or URL) do not trigger. High weight includes: first-person biographical claims, teaching observations presented as evidence, professional observations from the user's practice, specific factual claims (numbers, dates, attributed quotes, cited studies), and anything published under the user's name asserting personal authority. For High-weight content, stop and ask whether the claim is based on specific sources, the user's own observation with specifics, or plausible construction. Do not draft biographical content from inference; ask the user to state the path in their own words.
-- **Ready-status transition gate:** before any deliverable moves from draft to ready (frontmatter change or user says "done," "ready to post," "submit," etc.) and contains specific factual claims, surface each claim with a verified-source / own-observation / plausible-inference question. Hold the status change on anything flagged as inference until verified or explicitly accepted as unverifiable with disclosure.
-
-### Ad hoc project and brief forcing functions
-
-- If Current Project is "not set" and substantial content is requested, pause and offer to log the project before producing anything.
-- If a bulk command fires and no brief exists for the project, stop and run the four-question minimal-brief flow (project in one sentence, success criterion, audience, non-negotiable) before drafting. Save to `esf/[context]/briefs/[project-name]-brief.md`, then run Moment 1 against the brief.
-- **Install hygiene.** All ESF artifacts for a context live in `esf/[context]/`: `position-statements/`, `records-of-resistance/`, `ai-use-logs/`. Never scattered into project folders. Folders are created lazily: the first time an artifact is written, its parent folder is created if missing. Empty folders are not pre-created at install. Install hygiene applies only to ESF-created files. Never move, rename, or reorganize files that existed before this session. If an existing file conflicts with an ESF path, write to an alternate location and notify the user.
-
-### Late initialization
-
-If the first content-producing action arrives before the activation status line has been emitted, run steps 1–4 now and prefix the line with `(late init on first content action)`. Content-producing actions include: the first Write or Edit; the first substantive response that begins shaping a deliverable (draft, outline, summary, analysis, plan, deliverable-focused brainstorming); the first dispatched research or subagent task whose results feed user-facing content. They do not include orientation-only reads, greps, or globs. The activation status line takes precedence over any competing first-turn skill (vault session bootstrap, writing preflight, brainstorming, rules-registry loader, etc.); other skills proceed only after the activation line is emitted. If companion-state.md is missing at this point, emit the failure message and stop.
-
-### Session end
-
-Wrap-up offer fires on any of: 4+ substantive exchanges in Make or Reflect without a continuation signal; 12+ substantive exchanges in any phase; user says "done for today," "wrap up," "save this session," or equivalent. On user confirmation, generate the AI Use Log from buffer entries only (do not fabricate), write the session log to `esf/[context]/logs/session-[ISO-date].md` with a "Next Session" section, update companion-state.md, and append a final buffer entry.
-
-Full spec: `.claude/agents/esf-companion.md`.
-ESF_AMBIENT_EOF
-    echo -e "  ${GREEN}ESF ambient mode written to CLAUDE.md.${NC}"
+  if [ ! -f CLAUDE.md ]; then
+    printf '# CLAUDE.md\n\nProject configuration for Claude Code.\n' > CLAUDE.md
   fi
+  echo "" >> CLAUDE.md
+  write_ambient_block >> CLAUDE.md
+  echo -e "  ${GREEN}ESF ambient mode written to CLAUDE.md.${NC}"
 fi
-
-# Ensure .session-buffer.md is gitignored (covers fresh and existing repos)
-touch .gitignore
-if ! grep -q '.session-buffer.md' .gitignore 2>/dev/null; then
-  printf '\n# ESF session buffer (ephemeral, not versioned)\n.session-buffer.md\n' >> .gitignore
-fi
+ignore_session_buffer
 
 
 # Install sample data if --sample flag was passed
@@ -992,47 +1030,14 @@ if [ "$SAMPLE" = true ]; then
   mkdir -p esf/build-course/reflections
   mkdir -p esf/build-course/logs
   mkdir -p esf/build-course/work
-  curl -fsSL "$TOOLKIT_BASE/sample/esf/companion-state.md" \
-    -o esf/companion-state.md
-  curl -fsSL "$TOOLKIT_BASE/sample/esf/build-course/briefs/p2-responsive-system.md" \
-    -o esf/build-course/briefs/p2-responsive-system.md
-  curl -fsSL "$TOOLKIT_BASE/sample/esf/build-course/position-statements/responsive-system.md" \
-    -o esf/build-course/position-statements/responsive-system.md
-  curl -fsSL "$TOOLKIT_BASE/sample/esf/build-course/records-of-resistance/responsive-system-ror-01.md" \
-    -o esf/build-course/records-of-resistance/responsive-system-ror-01.md
-  curl -fsSL "$TOOLKIT_BASE/sample/esf/build-course/records-of-resistance/responsive-system-ror-02.md" \
-    -o esf/build-course/records-of-resistance/responsive-system-ror-02.md
+  fetch_file "$TOOLKIT_BASE/sample/esf/companion-state.md" esf/companion-state.md
+  fetch_file "$TOOLKIT_BASE/sample/esf/build-course/briefs/p2-responsive-system.md" esf/build-course/briefs/p2-responsive-system.md
+  fetch_file "$TOOLKIT_BASE/sample/esf/build-course/position-statements/responsive-system.md" esf/build-course/position-statements/responsive-system.md
+  fetch_file "$TOOLKIT_BASE/sample/esf/build-course/records-of-resistance/responsive-system-ror-01.md" esf/build-course/records-of-resistance/responsive-system-ror-01.md
+  fetch_file "$TOOLKIT_BASE/sample/esf/build-course/records-of-resistance/responsive-system-ror-02.md" esf/build-course/records-of-resistance/responsive-system-ror-02.md
 fi
 
-# Auto-commit only Companion files if in a git repo (do not stage unrelated work)
-if [ -d ".git" ]; then
-  # Stage tracked-file deletions from migration. Loop per-path so a missing
-  # pathspec on one doesn't abort staging of the others (git add -u errors
-  # on unknown pathspecs).
-  for _legacy in prompts templates WORKFLOW.md START_HERE.md GEMINI.md chatgpt-instructions.md; do
-    git add -u "$_legacy" 2>/dev/null || true
-  done
-  git add .claude/ esf/toolkit/ 2>/dev/null
-  [ -f .gitignore ] && git add .gitignore 2>/dev/null
-  [ -f CLAUDE.md ]  && git add CLAUDE.md 2>/dev/null
-  [ -f .claude/settings.json ] && git add .claude/settings.json 2>/dev/null
-
-  # Sample installs also create tracked demo project files.
-  if [ "$SAMPLE" = true ] && [ -d "esf/build-course" ]; then
-    git add esf/ 2>/dev/null
-  fi
-
-  # Check git identity before committing
-  if git config user.name > /dev/null 2>&1 && git config user.email > /dev/null 2>&1; then
-    git commit -m "Install ESF Companion" --quiet 2>/dev/null && \
-      echo -e "  ${GREEN}Companion files committed to git.${NC}" || true
-  else
-    echo -e "  ${YELLOW}Note:${NC} Git identity not configured. Run:"
-    echo "    git config --global user.name \"Your Name\""
-    echo "    git config --global user.email \"you@example.com\""
-    echo "  Then commit manually: git commit -m \"Install ESF Companion\""
-  fi
-fi
+echo "  Files are not staged or committed. Review changes before committing."
 
 echo ""
 echo -e "${GREEN}ESF Companion installed.${NC}"
