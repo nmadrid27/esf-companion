@@ -77,6 +77,13 @@ Or run the installer for a cleaner setup:
 curl -fsSL https://raw.githubusercontent.com/nmadrid27/esf-companion/main/install.sh | bash
 ```
 
+The installer does not stage or commit files. Review the changes before committing.
+Rerunning refreshes the managed ambient block in `AGENTS.md` (Codex) or
+`CLAUDE.md` (Claude Code); `--no-ambient` removes that block. Keep personal
+corrections in `companion-notes.md`. If an existing block lacks its `Full spec:`
+ending, the installer stops and preserves the instruction file for manual review.
+
+
 Choose option 2 (conversation tools) when prompted. This installs the prompt file, templates, and workflow diagram.
 
 After install, those files live under `esf/toolkit/prompts/`. The installer creates that layout; the GitHub repo source keeps `prompts/` at the root for the no-install workflow.
