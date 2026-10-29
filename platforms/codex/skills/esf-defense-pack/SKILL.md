@@ -1,6 +1,6 @@
 ---
 name: esf-defense-pack
-description: Generate a Defense Pack for the user's current ESF project: a portable bundle (HTML/PDF/recording script) the user can walk through in an oral defense or crit. Aggregates existing Position Statement, Records of Resistance, AI Use Log, Reflection, and Disclosure into a single defensible artifact. Use when the user invokes $esf-defense-pack or asks to prepare a defense or crit walkthrough for a project.
+description: "Generate a Defense Pack for the user's current ESF project: a portable bundle (HTML/PDF/recording script) the user can walk through in an oral defense or crit. Aggregates existing Position Statement, Records of Resistance, AI Use Log, Reflection, and Disclosure into a single defensible artifact. Use when the user invokes $esf-defense-pack or asks to prepare a defense or crit walkthrough for a project."
 ---
 
 <!--
