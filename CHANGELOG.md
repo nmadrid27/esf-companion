@@ -12,6 +12,7 @@ All notable changes to the ESF Companion are documented here.
 
 ### Fixed
 - **Cowork plugin download 404ed.** `install.sh --platform cowork` fetches `releases/latest/download/esf-companion.plugin`, but no `companion-v*` release attached that asset. `companion-v0.11.0` now includes it; `release.sh` packs `platforms/cowork` and uploads the file on every cut.
+- **Invalid YAML frontmatter in two shipped files.** The `description:` of `.claude/agents/esf-companion.md` and `.claude/skills/esf-defense-pack/SKILL.md` contained an unquoted `: `, which strict YAML parsers reject. Both are now double-quoted, and `platforms/codex` is regenerated.
 
 ### Changed
 - **Installer no longer auto-commits.** `install.sh` previously staged and committed its files in a git repo. It now leaves everything unstaged and prints a reminder to review before committing.

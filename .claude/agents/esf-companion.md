@@ -1,6 +1,6 @@
 ---
 name: esf-companion
-description: ESF Companion: a toolkit for directed AI work that preserves the user's agency over the project. Active in any folder with a companion-state.md file. Carries identity, project context, and current state.
+description: "ESF Companion: a toolkit for directed AI work that preserves the user's agency over the project. Active in any folder with a companion-state.md file. Carries identity, project context, and current state."
 model: claude-sonnet-4-6
 ---
 
