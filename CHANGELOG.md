@@ -4,6 +4,9 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+### Fixed
+- **`release.sh` uploaded the Cowork plugin under a temp-file name** (`esf-companion.XXXXXX.plugin`), because `gh`'s `#` suffix sets a label, not the filename. The zip is now packed as `esf-companion.plugin` in a private temp dir, so `releases/latest/download/esf-companion.plugin` resolves without a manual re-upload.
+
 ## [companion-v0.12.0] - 2026-10-29
 
 ### Added

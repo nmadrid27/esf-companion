@@ -129,10 +129,13 @@ printf '%s\n' "$NOTES" | gh release create "$TAG" --title "ESF Companion $TAG" -
 # Cowork installer fetches releases/latest/download/esf-companion.plugin.
 # Skip in minimal test repos that have no platforms/cowork tree.
 if [ -f "$PLUGIN_JSON" ]; then
-  PLUGIN_ZIP="$(mktemp "${TMPDIR:-/tmp}/esf-companion.XXXXXX.plugin")" || die "mktemp failed"
-  _pack_cowork_plugin "$PLUGIN_ZIP" || { rm -f "$PLUGIN_ZIP"; die "failed to pack platforms/cowork"; }
-  gh release upload "$TAG" "$PLUGIN_ZIP#esf-companion.plugin"
-  rm -f "$PLUGIN_ZIP"
+  # gh names the asset after the file's basename ("#label" is only a display
+  # label), so pack under the real name inside a private temp dir.
+  PLUGIN_DIR="$(mktemp -d "${TMPDIR:-/tmp}/esf-release.XXXXXX")" || die "mktemp failed"
+  PLUGIN_ZIP="$PLUGIN_DIR/esf-companion.plugin"
+  _pack_cowork_plugin "$PLUGIN_ZIP" || { rm -rf "$PLUGIN_DIR"; die "failed to pack platforms/cowork"; }
+  gh release upload "$TAG" "$PLUGIN_ZIP" || { rm -rf "$PLUGIN_DIR"; die "failed to upload esf-companion.plugin"; }
+  rm -rf "$PLUGIN_DIR"
 fi
 
 echo "Released $TAG"
