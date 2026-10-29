@@ -4,6 +4,8 @@ All notable changes to the ESF Companion are documented here.
 
 ## [Unreleased]
 
+## [companion-v0.12.0] - 2026-10-29
+
 ### Added
 - **Codex plugin with Claude Code parity.** `platforms/codex/` is a Codex plugin (`.codex-plugin/plugin.json`, seven skills including the Defense Pack, the persona as `references/companion.md`) generated from `.claude/` by `scripts/build-codex-plugin.py`, so the two cannot drift. `.agents/plugins/marketplace.json` makes the repo a Codex marketplace. `install.sh --platform codex` now writes the always-on block to `AGENTS.md` and prints the plugin install commands. Selection cards become numbered-choice prompts in chat; the hook-driven session status line and update nudge are not ported. `test/test-codex-plugin.sh` fails CI when the plugin is stale.
 
