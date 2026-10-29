@@ -14,6 +14,11 @@ All notable changes to the ESF Companion are documented here.
 - **Cowork plugin download 404ed.** `install.sh --platform cowork` fetches `releases/latest/download/esf-companion.plugin`, but no `companion-v*` release attached that asset. `companion-v0.11.0` now includes it; `release.sh` packs `platforms/cowork` and uploads the file on every cut.
 
 ### Changed
+- **Installer no longer auto-commits.** `install.sh` previously staged and committed its files in a git repo. It now leaves everything unstaged and prints a reminder to review before committing.
+- **Installer downloads are atomic.** Files are fetched to a temp file and moved into place only after `curl` succeeds, so a failed fetch no longer overwrites an existing file. Rerunning retries.
+- **Ambient block is refreshed on rerun.** The managed `## ESF Companion (Always On)` block in `AGENTS.md` / `CLAUDE.md` is replaced rather than skipped; `--no-ambient` removes it. If the block lacks its `Full spec:` ending, the installer stops and leaves the file untouched. The Codex block is now written by the installer itself, so older release tags need no extra file.
+- **`install.sh` rejects bad flags.** `--platform`, `--scope`, and `--source` without a value, and unknown options, now error instead of being silently misread.
+- **Conversation install prints a state-file step** (copy `companion-state-template.md` to `esf/companion-state.md`) and `.session-buffer.md` is added to `.gitignore`. `test/test_install.py` and a CI job cover reruns, failures, and preservation of user work.
 - **`release.sh` rebuilds `platforms/codex`** so its manifest version tracks the release.
 - **Cowork plugin README version** stays in lockstep with `plugin.json` at release time.
 
